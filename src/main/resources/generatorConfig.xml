@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<!-- 引入配置文件 -->
+	<properties resource="jdbc.properties" />
+	
+	<!-- 数据库驱动文件 -->
+	<classPathEntry location="D:\Program Files\apache-tomcat-7.0.6-windows-x86\apache-tomcat-7.0.6\lib\mysql-connector-java-5.1.26-bin.jar" />
+	
+	<!-- 一个库一个context -->
+	<context id="test" targetRuntime="MyBatis3" defaultModelType="flat">
+		<property name="beginningDelimiter" value="`" />
+		<property name="endingDelimiter" value="`" />
+
+		<!-- 注释 -->
+		<commentGenerator>
+			<!-- 是否取消注释 -->
+			<property name="suppressAllComments" value="true" />
+			<!-- 是否生成注释代时间戳 -->
+			<property name="suppressDate" value="true" />
+		</commentGenerator>
+
+		<!-- 数据库连接 -->
+		<jdbcConnection connectionURL="${jdbc.url}"
+			driverClass="${jdbc.driveClass}" password="${jdbc.password}" userId="${jdbc.username}" />
+
+		<!-- 类型转换 -->
+		<javaTypeResolver>
+			<!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- 生成实体类地址 -->
+		<javaModelGenerator targetPackage="com.springmvc.generatorCode.model" targetProject="myspringmvc\src\main\java">
+			<!-- 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] -->
+			<property name="enableSubPackages" value="false" />
+			<!-- 是否针对string类型的字段在set的时候进行trim调用 -->
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<!-- 生成mapxml文件 -->
+		<sqlMapGenerator targetPackage="com.springmvc.generatorCode.mapper"	targetProject="myspringmvc\src\main\java">
+			<!-- 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] -->
+			<property name="enableSubPackages" value="false" />
+		</sqlMapGenerator>
+
+		<!-- 生成DAO的包名和位置 -->  
+		<javaClientGenerator targetPackage="com.springmvc.generatorCode.mapper" targetProject="myspringmvc\src\main\java" type="XMLMAPPER">
+			<!-- 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] -->
+			<property name="enableSubPackages" value="false" />
+		</javaClientGenerator>
+
+        <!-- 要生成的哪些表 (更改tableName 和domainObjectName 就可以了) %：所有表 -->  
+		<table schema="springmvc" tableName="users" enableSelectByExample="false"
+			enableDeleteByExample="false" enableCountByExample="false"
+			selectByExampleQueryId="true" enableUpdateByExample="false">
+			<!--<generatedKey column="id" sqlStatement="Mysql"/> -->
+			<!-- 忽略列，不生成bean 字段 <ignoreColumn column="FRED" /> -->
+			<!-- 指定列的java数据类型 <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" 
+				/> -->
+		</table>
+
+	</context>
+
+</generatorConfiguration>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript">
+
+//default 缺省参数
+function animal(type = 'cat'){
+    console.log(type)
+}
+
+animal()
+
+
+//rest 
+function animals(...types){
+    console.log(types)
+}
+
+animals('cat', 'dog', 'fish') //["cat", "dog", "fish"]
+
+</script>
+<body>
+</body>
+</html>

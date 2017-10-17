@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>ES6 modules tryout</title>
+    <!-- in case ES6 modules are supported -->
+    <script src="modules/index.js" type="module"></script>
+    <!-- in case ES6 modules aren't support -> fallback to bundle -->
+    <script src="bundle.js" nomodule defer></script>
+  </head>
+  <script type="text/javascript">
+  /*
+  
+    浏览器对于带有type="module"的<script>，都是异步加载，不会造成堵塞浏览器，即等到整个页面渲染完，再执行模块脚本，等同于打开了<script>标签的defer属性。
+  
+   另外，如果有多个defer脚本，会按照它们在页面出现的顺序加载，而多个async脚本是不能保证加载顺序的。
+  
+  */  
+  </script>
+  <body>
+  </body>
+</html>

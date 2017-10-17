@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript">
+window.onload=function(){
+	var basket={
+		     count:100,
+		     onSale:'open'
+		};
+
+
+		var str=`
+		  There are <b>${basket.count}</b> items
+		   in your basket, <em>${basket.onSale}</em>
+		  are on sale!`
+
+		console.log(str);
+		  
+		  document.getElementById("result").innerHTML=str;
+	
+}
+</script>
+<body>
+<div id="result">
+</div>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ include file="taglib/taglibs.jsp"%>
+<html>
+<head>
+<title>登录</title>
+<meta name="keywords" content="管理系统">
+<meta name="description" content="管理系统">    
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>  
+<link rel="stylesheet" href="css/login/reveal.css">
+<link rel="stylesheet" href="css/login/moudlelogin.css">
+<link rel="stylesheet" href="css/login/firebugResetStyles.css">
+</head>
+<body>
+	<input style="display: none" id="massage" value="">
+	<div style="position: fixed; z-index: -1; background: transparent none repeat scroll 0% 0%;"
+		id="js-login-bg" class="ModuleLogin-bg">
+		<div
+			style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; z-index: -999998; position: absolute; width: 1920px; height: 457px;"
+			class="backstretch">
+			<img src="images/login/5.jpg"
+				style="position: absolute; margin: 0px; padding: 0px; border: medium none; max-height: none; max-width: none; z-index: -999999; width: 1920px; height: 925.763px; left: 0px; top: -234.382px;">
+		</div>
+	</div>
+	<form method="post" id="form1">
+		<div class="ModuleLogin-layer">
+			<table>
+				<tbody>
+					<tr>
+						<td>
+
+							<div class="ModuleLogin-wrap">
+								<div class="ModuleLogin-logo">&nbsp;</div>
+								<div class="ModuleLogin-main">
+
+
+									<div class="tMainWrap" style="">
+										<p class="tUserWrap">
+											<i class="tUserImg"></i>
+											<input name="username" id="txtUser" class="tUser" placeholder="用户名" type="text" > 
+											<span class="tUserExt"></span>
+										</p>
+
+										<p class="tPasswordWrap">
+											<i class="tPasswordImg"></i> <input name="password" id="txtPwd"	class="tPassword" placeholder="密码" type="password" value="" autocomplete="off">
+										</p>
+
+
+										<p class="tError">
+											<span>
+												<!-- 错误提示书写位置 -->
+											</span>
+										</p>
+										<input name="loginBtn" value="登&nbsp;录" id="loginBtn" class="tSubmit" type="button">
+										<p class="tResetPassword">
+											<a href="#">忘记密码</a>
+										</p>
+									</div>
+
+								</div>
+
+								<div class="ModuleLogin-Copyright">
+									<p>程序员有限公司</p>
+									<p>Copyright chy Corporation, All Rights Reserved</p>
+									<p>
+										<em>©</em>chy 版权所有
+									</p>
+								</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="ModuleLogin-Qrcode">
+			<div class="tQrcodeWrap">
+				<div class="tQrcode">&nbsp;</div>
+				<div class="tQrcodeTips">Android版</div>
+			</div>
+			<div class="tQrcodeWrapr">
+				<div class="tQrcoder">&nbsp;</div>
+				<div class="tQrcodeTips">IOS版</div>
+			</div>
+		</div>
+	</form>
+
+	<div id="myModal" class="reveal-modal">
+		<h3 style="margin-bottom: 35px; font-size: 16px;">温馨提示:</h3>
+		<p style="text-align: center; font-size: 15px;">信息不正确!</p>
+		<a class="close-reveal-modal">&#215;</a>
+	</div>
+
+	<script type="text/javascript" src="js/login/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="js/login/jquery.reveal.js"></script>
+	<script type="text/javascript" src="js/login/jquery.backstretch.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			var listArr = [ "images/login/1.jpg", "images/login/2.jpg", "images/login/3.jpg", "images/login/4.jpg", "images/login/5.jpg", "images/login/6.jpg", "images/login/7.jpg"];
+			$(".ModuleLogin-bg").backstretch(listArr, {
+				fade : 1000,
+				duration : 5000
+			});
+			
+			$("#loginBtn").click(function(){
+				if($("#txtUser").val()==""||$("#txtPwd").val()==""){
+				           $("#myModal").reveal("{data-animation:'none'}");
+                }
+                else{
+                      window.location.href="${ctx}/main.jsp";
+				}
+			});
+		});
+	</script>
+</body>
+</html>

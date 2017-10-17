@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx" 
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd 
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context.xsd 
+       http://www.springframework.org/schema/tx 
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- 配置扫描的包 -->
+    <context:component-scan base-package="com.springmvc.*" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />  
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
+   </context:component-scan>
+
+    <!-- 注册HandlerMapper、HandlerAdapter两个映射类 -->
+    <!-- 解决中文编码 -->
+    <mvc:annotation-driven>
+     <mvc:message-converters>
+          <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+              <property name="supportedMediaTypes">
+                  <list>
+                      <value>text/plain;charset=UTF-8</value>    
+                      <value>text/html;charset=UTF-8</value>    
+                      <value>application/json;charset=UTF-8</value> 
+                      <value>application/x-www-form-urlencoded;charset=UTF-8</value>                                    
+                  </list>
+              </property>
+          </bean>
+      </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!-- 访问静态资源 -->
+    <mvc:default-servlet-handler />
+    
+    <!-- 视图解析器 -->
+    <bean
+        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/view/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+    
+    <!-- configure SimpleMappingExceptionResolver  -->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.ArithmeticException">error</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <!-- configure jsonConverters  -->
+    <!-- Ajax请求时编码 -->
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="jsonHttpMessageConverter" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="jsonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>                 
+                <value>application/json;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+    
+  
+    <mvc:cors>
+         <mvc:mapping path="/**" />
+    </mvc:cors>   
+   
+   
+    <!-- 
+    
+    <mvc:cors>
+
+    <mvc:mapping path="/api/**"
+        allowed-origins="http://domain1.com, http://domain2.com"
+        allowed-methods="GET, PUT"
+        allowed-headers="header1, header2, header3"
+        exposed-headers="header1, header2" allow-credentials="false"
+        max-age="123" />
+
+    <mvc:mapping path="/resources/**"
+        allowed-origins="http://domain1.com" />
+
+    </mvc:cors>
+    
+     -->
+   
+</beans>

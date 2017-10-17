@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>async</title>
+</head>
+<script type="text/javascript">
+
+/**
+ async 表示这是一个async函数，await只能用在这个函数里面。
+
+ await 表示在这里等待promise返回结果了，再继续执行。
+
+ await 后面跟着的应该是一个promise对象（当然，其他返回值也没关系，只是会立即执行，不过那样就没有意义了…）
+ 
+ await等待的虽然是promise对象，但不必写.then(..)，直接可以得到返回值。
+ */
+
+//=======================================================
+ 
+var sleep = function (time) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(function () {            
+        	resolve('ok');      //await等待可以得到返回值
+        }, time);
+    })
+};
+
+var start1 = async function () {	    
+    console.log('start');
+    let result =await sleep(3000); //等待sleep执行完毕，才会继续执行
+    console.log(result);
+    console.log('end');
+};
+
+//start1();
+
+//=======================================================
+
+var ajax = function (time) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+        	reject('ajaxCancel'); //async会产生异常,在catch中获取值
+        }, time);
+    })
+};
+
+var start2 = async function () {	
+	try{
+	    console.log('loading.....');
+	    let result =await ajax(3000);
+	    console.log(result);
+	    console.log('ajaxEnd');
+	}catch (err) {
+        console.log(err); // 这里捕捉到错误 `error`
+    }
+};
+
+//start2();
+
+
+//=======================================================
+	
+let datas = [1,2,3,4,5];
+	
+var receive = function (time,index) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+        	resolve(index); 
+        }, time);
+    })
+};
+
+var start3 = async function () {	
+	try{
+	    console.log('receiving.....');
+	    
+	    for(var v of datas) {
+	        console.log(`当前是第${v}次等待..`);
+	        let result =await receive(1000,v);
+	        console.log("receiv"+result);
+	    }  
+	    
+	    console.log('receiveEnd');
+	    
+	}catch (err) {
+        console.log(err); // 这里捕捉到错误 `error`
+    }
+};
+
+//start3();
+
+//=======================================================
+
+</script>
+<body>
+</body>
+</html>

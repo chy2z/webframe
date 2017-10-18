@@ -87,7 +87,7 @@
 	</form>
 
 	<div id="myModal" class="reveal-modal">
-		<h3 style="margin-bottom: 35px; font-size: 16px;">温馨提示:</h3>
+		<h3 style="margin-bottom: 20px; font-size: 16px;">温馨提示</h3>
 		<p style="text-align: center; font-size: 15px;">信息不正确!</p>
 		<a class="close-reveal-modal">&#215;</a>
 	</div>

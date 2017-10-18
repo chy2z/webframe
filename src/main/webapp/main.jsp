@@ -4,8 +4,9 @@
 <%@ include file="taglib/import_iview.jsp"%>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>主页</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>
     <style>
         html, body {
             width: 100%;

@@ -1,6 +1,7 @@
 package com.springmvc.model;
 
 public class Users {
+
     private Integer id;
 
     private String loginname;
@@ -9,7 +10,7 @@ public class Users {
 
     private String password;
 
-    private String depart;
+    private Integer depart;
 
     private String office;
 
@@ -21,8 +22,8 @@ public class Users {
 
     private String state;
 
-    private String corporationname;
-    
+    private Integer corporationid;
+
     private String token;
 
     public Integer getId() {
@@ -57,12 +58,12 @@ public class Users {
         this.password = password == null ? null : password.trim();
     }
 
-    public String getDepart() {
+    public Integer getDepart() {
         return depart;
     }
 
-    public void setDepart(String depart) {
-        this.depart = depart == null ? null : depart.trim();
+    public void setDepart(Integer depart) {
+        this.depart = depart;
     }
 
     public String getOffice() {
@@ -105,20 +106,19 @@ public class Users {
         this.state = state == null ? null : state.trim();
     }
 
-    public String getCorporationname() {
-        return corporationname;
+    public Integer getCorporationid() {
+        return corporationid;
     }
 
-    public void setCorporationname(String corporationname) {
-        this.corporationname = corporationname == null ? null : corporationname.trim();
+    public void setCorporationid(Integer corporationid) {
+        this.corporationid = corporationid;
     }
 
-	public String getToken() {
-		return token;
-	}
+    public String getToken() {
+        return token;
+    }
 
-	public void setToken(String token) {
-		this.token = token;
-	}   
-    
+    public void setToken(String token) {
+        this.token = token == null ? null : token.trim();
+    }
 }

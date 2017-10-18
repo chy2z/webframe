@@ -22,13 +22,6 @@ public class UsersService {
 
 		Users u = new Users();
 
-		u.setName("成龙");
-
-		u.setLoginname("jack");
-
-		u.setDepart("市场部");
-
-		u.setPassword("123456");
 
 		return umap.insert(u) > 0;
 	}

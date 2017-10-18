@@ -43,10 +43,5 @@ public class UsersService {
 		return umap.updateByPrimaryKey(u) > 0;
 	}
 
-	/*
-	 * 获取所有用户信息
-	 */
-	public List<Map<String, Object>> getAllUsers() {
-		return umap.getAllHashMap();
-	}
+
 }

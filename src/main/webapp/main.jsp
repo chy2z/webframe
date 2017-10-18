@@ -6,7 +6,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>主页</title>
-
     <style>
         html, body {
             width: 100%;
@@ -63,6 +62,7 @@
             overflow: hidden;
         }
 
+        /*使菜单高度沾满屏幕*/
         .layout-menu {
             height: 100%;
         }
@@ -107,8 +107,6 @@
             transition: width .2s ease-in-out;
         }
 
-
-
         /* tab选项卡头部和内容的间距  */
         .ivu-tabs-bar {
             border-bottom: 1px solid #dddee1;
@@ -141,14 +139,12 @@
 <body>
 <div id="app">
     <div class="head">
-
         <div class="head-content">
             <div class="head-logo-left-logo">
                 <img src="../../images/logo.png" >
             </div>
             <div class="head-logo-left-title">后台管理系统</div>
         </div>
-
     </div>
 
     <div class="layout" :class="{'layout-hide-text': spanLeft < 3}">

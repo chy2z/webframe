@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.mapper.MenuItemMapper">
+  <resultMap id="BaseResultMap" type="com.springmvc.model.MenuItem">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="parentId" jdbcType="VARCHAR" property="parentid" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="but" jdbcType="VARCHAR" property="but" />
+    <result column="leaf" jdbcType="VARCHAR" property="leaf" />
+    <result column="lmage" jdbcType="VARCHAR" property="lmage" />
+    <result column="toolImage" jdbcType="VARCHAR" property="toolimage" />
+    <result column="navigationImage" jdbcType="VARCHAR" property="navigationimage" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, parentId, level, but, leaf, lmage, toolImage, navigationImage, url
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from menu_item
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from menu_item
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.springmvc.model.MenuItem">
+    insert into menu_item (id, name, parentId, 
+      level, but, leaf, lmage, 
+      toolImage, navigationImage, url
+      )
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{parentid,jdbcType=VARCHAR}, 
+      #{level,jdbcType=VARCHAR}, #{but,jdbcType=VARCHAR}, #{leaf,jdbcType=VARCHAR}, #{lmage,jdbcType=VARCHAR}, 
+      #{toolimage,jdbcType=VARCHAR}, #{navigationimage,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.springmvc.model.MenuItem">
+    insert into menu_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="parentid != null">
+        parentId,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="but != null">
+        but,
+      </if>
+      <if test="leaf != null">
+        leaf,
+      </if>
+      <if test="lmage != null">
+        lmage,
+      </if>
+      <if test="toolimage != null">
+        toolImage,
+      </if>
+      <if test="navigationimage != null">
+        navigationImage,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="but != null">
+        #{but,jdbcType=VARCHAR},
+      </if>
+      <if test="leaf != null">
+        #{leaf,jdbcType=VARCHAR},
+      </if>
+      <if test="lmage != null">
+        #{lmage,jdbcType=VARCHAR},
+      </if>
+      <if test="toolimage != null">
+        #{toolimage,jdbcType=VARCHAR},
+      </if>
+      <if test="navigationimage != null">
+        #{navigationimage,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.model.MenuItem">
+    update menu_item
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        parentId = #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="but != null">
+        but = #{but,jdbcType=VARCHAR},
+      </if>
+      <if test="leaf != null">
+        leaf = #{leaf,jdbcType=VARCHAR},
+      </if>
+      <if test="lmage != null">
+        lmage = #{lmage,jdbcType=VARCHAR},
+      </if>
+      <if test="toolimage != null">
+        toolImage = #{toolimage,jdbcType=VARCHAR},
+      </if>
+      <if test="navigationimage != null">
+        navigationImage = #{navigationimage,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.model.MenuItem">
+    update menu_item
+    set name = #{name,jdbcType=VARCHAR},
+      parentId = #{parentid,jdbcType=VARCHAR},
+      level = #{level,jdbcType=VARCHAR},
+      but = #{but,jdbcType=VARCHAR},
+      leaf = #{leaf,jdbcType=VARCHAR},
+      lmage = #{lmage,jdbcType=VARCHAR},
+      toolImage = #{toolimage,jdbcType=VARCHAR},
+      navigationImage = #{navigationimage,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

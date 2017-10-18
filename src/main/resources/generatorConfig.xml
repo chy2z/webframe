@@ -9,6 +9,18 @@
 	<classPathEntry location="D:\Program Files\apache-tomcat-7.0.6-windows-x86\apache-tomcat-7.0.6\lib\mysql-connector-java-5.1.26-bin.jar" />
 	
 	<!-- 一个库一个context -->
+	<!--
+    context:生成一组对象的环境
+    id:必选，上下文id，用于在生成错误时提示
+    defaultModelType:指定生成对象的样式
+        1，conditional：类似hierarchical；
+        2，flat：所有内容（主键，blob）等全部生成在一个对象中；
+        3，hierarchical：主键生成一个XXKey对象(key class)，Blob等单独生成一个对象，其他简单属性在一个对象中(record class)
+    targetRuntime:
+        1，MyBatis3：默认的值，生成基于MyBatis3.x以上版本的内容，包括XXXBySample；
+        2，MyBatis3Simple：类似MyBatis3，只是不生成XXXBySample；
+    introspectedColumnImpl：类全限定名，用于扩展MBG
+    -->
 	<context id="test" targetRuntime="MyBatis3" defaultModelType="flat">
 		<property name="beginningDelimiter" value="`" />
 		<property name="endingDelimiter" value="`" />
@@ -60,8 +72,10 @@
 		</javaClientGenerator>
 
         <!-- 要生成的哪些表 (更改tableName 和domainObjectName 就可以了) %：所有表 -->  
-		<table schema="springmvc" tableName="users" enableSelectByExample="false"
-			enableDeleteByExample="false" enableCountByExample="false"
+		<table schema="managementsystem" tableName="role_menu_item"
+			   enableSelectByExample="false"
+			enableDeleteByExample="false"
+			   enableCountByExample="false"
 			selectByExampleQueryId="true" enableUpdateByExample="false">
 			<!--<generatedKey column="id" sqlStatement="Mysql"/> -->
 			<!-- 忽略列，不生成bean 字段 <ignoreColumn column="FRED" /> -->

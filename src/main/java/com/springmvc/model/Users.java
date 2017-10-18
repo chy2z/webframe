@@ -1,5 +1,11 @@
 package com.springmvc.model;
 
+/**
+* @Title: Users
+* @Description: 用户表
+* @author chy
+* @date 2017/10/18 14:09
+*/
 public class Users {
 
     private Integer id;

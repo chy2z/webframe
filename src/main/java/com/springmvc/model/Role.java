@@ -1,6 +1,13 @@
 package com.springmvc.model;
 
+/**
+* @Title: Role
+* @Description:  角色
+* @author chy
+* @date 2017/10/18 14:21
+*/
 public class Role {
+
     private Integer id;
 
     private String group;

@@ -1,36 +1,40 @@
 package com.springmvc.service;
 
-import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.springmvc.mapper.UsersMapper;
 import com.springmvc.model.Users;
 
+/**
+* @Title: UsersService
+* @Description: 用户业务层
+* @author chy
+* @date 2017/10/18 16:00
+*/
 @Service
 public class UsersService {
 
 	@Autowired
 	private UsersMapper umap;
 
-	/*
-	 * 新增用户信息
-	 */
-	public boolean addUsers() {
-
-		Users u = new Users();
-
-
-		return umap.insert(u) > 0;
-	}
-
-	/*
+	/**
 	 * 获取用户信息
+ 	 * @param id
+	 * @return
 	 */
 	public Users getUsers(int id) {
 		return umap.selectByPrimaryKey(id);
+	}
+
+	/**
+	 * 获取用户信息
+	 * @param name
+	 * @param pwd
+	 * @return
+	 */
+	public Users getUsers(String name,String pwd){
+		return umap.selectByNameAndPwd(name,pwd);
 	}
 
 	/**

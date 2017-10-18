@@ -1,6 +1,13 @@
 package com.springmvc.model;
 
+/**
+* @Title: RoleMenuItem
+* @Description: 角色菜单
+* @author chy
+* @date 2017/10/18 14:22
+*/
 public class RoleMenuItem {
+
     private Integer id;
 
     private String rolename;

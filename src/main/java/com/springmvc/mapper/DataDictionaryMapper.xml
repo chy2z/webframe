@@ -103,42 +103,4 @@
       dorder = #{dorder,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <resultMap id="BaseResultMap" type="com.springmvc.model.DataDictionary">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="dkey" jdbcType="VARCHAR" property="dkey" />
-    <result column="dvalue" jdbcType="VARCHAR" property="dvalue" />
-    <result column="dmemo" jdbcType="VARCHAR" property="dmemo" />
-    <result column="display" jdbcType="INTEGER" property="display" />
-    <result column="dorder" jdbcType="INTEGER" property="dorder" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from data_dictionary
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.springmvc.model.DataDictionary">
-    insert into data_dictionary (id, dkey, dvalue, 
-      dmemo, display, dorder
-      )
-    values (#{id,jdbcType=INTEGER}, #{dkey,jdbcType=VARCHAR}, #{dvalue,jdbcType=VARCHAR}, 
-      #{dmemo,jdbcType=VARCHAR}, #{display,jdbcType=INTEGER}, #{dorder,jdbcType=INTEGER}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.model.DataDictionary">
-    update data_dictionary
-    set dkey = #{dkey,jdbcType=VARCHAR},
-      dvalue = #{dvalue,jdbcType=VARCHAR},
-      dmemo = #{dmemo,jdbcType=VARCHAR},
-      display = #{display,jdbcType=INTEGER},
-      dorder = #{dorder,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, dkey, dvalue, dmemo, display, dorder
-    from data_dictionary
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, dkey, dvalue, dmemo, display, dorder
-    from data_dictionary
-  </select>
 </mapper>

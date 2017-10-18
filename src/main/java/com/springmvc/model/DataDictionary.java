@@ -1,6 +1,13 @@
 package com.springmvc.model;
 
+/**
+* @Title: DataDictionary
+* @Description: 数据字典
+* @author chy
+* @date 2017/10/18 14:09
+*/
 public class DataDictionary {
+
     private Integer id;
 
     private String dkey;

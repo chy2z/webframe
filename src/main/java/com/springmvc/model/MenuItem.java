@@ -1,6 +1,13 @@
 package com.springmvc.model;
 
+/**
+* @Title: MenuItem
+* @Description: 菜单
+* @author chy
+* @date 2017/10/18 14:10
+*/
 public class MenuItem {
+
     private String id;
 
     private String name;

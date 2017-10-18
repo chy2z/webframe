@@ -1,5 +1,11 @@
 package com.springmvc.model;
 
+/**
+* @Title: Corporation
+* @Description: 组织机构
+* @author chy
+* @date 2017/10/18 14:09
+*/
 public class Corporation {
 
     private Integer id;

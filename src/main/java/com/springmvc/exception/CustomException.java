@@ -1,8 +1,13 @@
 package com.springmvc.exception;
 
+/**
+* @Title: CustomException
+* @Description: 自定义异常
+* @author chy
+* @date 2017/10/18 14:25
+*/
 public class CustomException  extends  Exception{
-	
-	//异常信息
+
     public String message;
 
     public CustomException(String message){

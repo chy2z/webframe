@@ -141,8 +141,9 @@ public class DateUtil {
 
 	/**
 	 * 时间段比大小
-	 * 
-	 * @param args
+	 * @param firstTime
+	 * @param secondTime
+	 * @return
 	 */
 	public static int compareTime(String firstTime, String secondTime) {
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

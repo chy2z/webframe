@@ -38,7 +38,7 @@
       </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <!-- 访问静态资源 -->
+    <!-- 访问静态资源处理 -->
     <mvc:default-servlet-handler />
     
     <!-- 视图解析器 -->
@@ -47,12 +47,13 @@
         <property name="prefix" value="/WEB-INF/view/"></property>
         <property name="suffix" value=".jsp"></property>
     </bean>
-    
-    <!-- configure SimpleMappingExceptionResolver  -->
+
+    <!--定义异常处理页面-->
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="exceptionMappings">
             <props>
-                <prop key="java.lang.ArithmeticException">error</prop>
+                <!-- 发生 HttpSessionRequiredException自动跳转到WEB-INF/views/error.jsp页面 -->
+                <prop key="org.springframework.web.HttpSessionRequiredException">error</prop>
             </props>
         </property>
     </bean>
@@ -75,12 +76,21 @@
         </property>
     </bean>
     
-  
+    <!-- 跨域访问 -->
     <mvc:cors>
          <mvc:mapping path="/**" />
-    </mvc:cors>   
-   
-   
+    </mvc:cors>
+
+
+    <!-- 拦截器 -->
+    <mvc:interceptors>
+        <!-- 多个拦截器，顺序执行 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.springmvc.interceptor.LoginInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
     <!-- 
     
     <mvc:cors>

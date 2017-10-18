@@ -88,15 +88,20 @@
 
 	<div id="myModal" class="reveal-modal">
 		<h3 style="margin-bottom: 20px; font-size: 16px;">温馨提示</h3>
-		<p style="text-align: center; font-size: 15px;">信息不正确!</p>
+		<p id="tip" style="text-align: center; font-size: 15px;">信息不正确!</p>
 		<a class="close-reveal-modal">&#215;</a>
 	</div>
 
 	<script type="text/javascript" src="js/login/jquery-1.8.3.min.js"></script>
 	<script type="text/javascript" src="js/login/jquery.reveal.js"></script>
 	<script type="text/javascript" src="js/login/jquery.backstretch.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
 	<script type="text/javascript">
 		$(function() {
+		    var domain="${ctx}";
+		    var validateLogon_url=domain+"/login/validateLogon";
+		    var main_url=domain+"/main.jsp";
+
 			var listArr = [ "images/login/1.jpg", "images/login/2.jpg", "images/login/3.jpg", "images/login/4.jpg", "images/login/5.jpg", "images/login/6.jpg", "images/login/7.jpg"];
 			$(".ModuleLogin-bg").backstretch(listArr, {
 				fade : 1000,
@@ -104,11 +109,33 @@
 			});
 			
 			$("#loginBtn").click(function(){
-				if($("#txtUser").val()==""||$("#txtPwd").val()==""){
-				           $("#myModal").reveal("{data-animation:'none'}");
+			    var name=$("#txtUser").val();
+			    var pwd=$("#txtPwd").val();
+				if(name==""||pwd==""){
+					$("#tip").text("用户名和密码都不能为空");
+					$("#myModal").reveal("{data-animation:'none'}");
                 }
                 else{
-                      window.location.href="${ctx}/main.jsp";
+                    var data = {uname:name,upwd:pwd };
+                    $.ajax({
+                        url: validateLogon_url,
+                        type: "POST",
+                        data: data,
+                        success: function(data){
+							//log(data);
+							if(data&&data.success){
+                                window.location.href=main_url+"?token="+data.data;
+							}
+							else{
+                                $("#tip").text(data.tip);
+                                $("#myModal").reveal("{data-animation:'none'}");
+							}
+                        },
+                        error: function(res){
+                            alert(res.responseText);
+                        }
+                    });
+
 				}
 			});
 		});

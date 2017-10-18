@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JwtToken {
+public class JwtTokenUtil {
 
-	protected static Logger logger = LoggerFactory.getLogger(JwtToken.class);
+	protected static Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);
 
 	public final static String alg = "HS256";
 

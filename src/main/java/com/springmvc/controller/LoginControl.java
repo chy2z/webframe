@@ -5,7 +5,7 @@ import com.springmvc.model.RequestResult;
 import com.springmvc.model.Users;
 import com.springmvc.service.UsersService;
 import com.springmvc.util.DateUtil;
-import com.springmvc.util.JwtToken;
+import com.springmvc.util.JwtTokenUtil;
 import com.springmvc.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -71,7 +71,7 @@ public class LoginControl extends BaseController {
 		map.put("role", user.getIsadmin());
 		map.put("loginTime", DateUtil.formatDate(new Date()));
 		try {
-			token = JwtToken.createToken(map);
+			token = JwtTokenUtil.createToken(map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

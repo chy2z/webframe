@@ -16,12 +16,21 @@
   <sql id="Base_Column_List">
     id, name, parentId, level, but, leaf, lmage, toolImage, navigationImage, url
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from menu_item
     where id = #{id,jdbcType=VARCHAR}
   </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from menu_item
+  </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from menu_item
     where id = #{id,jdbcType=VARCHAR}

@@ -1,9 +1,11 @@
 package com.springmvc.controller;
 
 import com.springmvc.base.BaseController;
+import com.springmvc.config.SysConfig;
 import com.springmvc.model.RequestResult;
 import com.springmvc.model.Users;
 import com.springmvc.model.UsersToken;
+import com.springmvc.service.MenuItemService;
 import com.springmvc.service.UsersService;
 import com.springmvc.service.UsersTokenService;
 import com.springmvc.util.DateUtil;
@@ -38,6 +40,9 @@ public class LoginControl extends BaseController {
 
 	@Autowired
 	UsersTokenService utService;
+
+	@Autowired
+	MenuItemService miService;
 
 	/**
 	 * 测试
@@ -121,6 +126,21 @@ public class LoginControl extends BaseController {
 			return "redirect:../../login.jsp";
 		}
 		else {
+
+			Users u= uService.getUsers(ut.getUserid());
+
+			//是否是超级管理员
+			if(SysConfig.superAdmin.equals(u.getIsadmin())){
+
+				model.addAttribute("menu",miService.toIviewMenuforJson(miService.getAll()));
+
+			}
+			//不是超级管理员
+			else{
+
+
+			}
+
 			model.addAttribute("jwt", jwt);
 		}
 

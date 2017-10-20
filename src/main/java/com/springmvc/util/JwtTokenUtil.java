@@ -21,8 +21,6 @@ public class JwtTokenUtil {
 
 	public final static String secret = "#web-frame#";
 
-	public final static String superAdmin = "adminmvc";
-
 	/**
 	 * 创建token
 	 * @param info

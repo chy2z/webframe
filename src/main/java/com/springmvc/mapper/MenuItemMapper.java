@@ -2,6 +2,8 @@ package com.springmvc.mapper;
 
 import com.springmvc.model.MenuItem;
 
+import java.util.List;
+
 public interface MenuItemMapper {
     int deleteByPrimaryKey(String id);
 
@@ -14,4 +16,6 @@ public interface MenuItemMapper {
     int updateByPrimaryKeySelective(MenuItem record);
 
     int updateByPrimaryKey(MenuItem record);
+
+    List<MenuItem> selectAll();
 }

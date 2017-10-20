@@ -133,29 +133,30 @@
     </appender>
     
      <!--  自定义 -->
-     <appender name="myDefinition" class="ch.qos.logback.core.rolling.RollingFileAppender">
+     <appender name="watch" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log_dir}/%d{yyyy-MM-dd}/myDefinition-log.log</fileNamePattern> 
+            <fileNamePattern>${log_dir}/%d{yyyy-MM-dd}/watch-log.log</fileNamePattern>
             <maxHistory>${maxHistory}</maxHistory> 
         </rollingPolicy>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger - %msg%n</pattern>
         </encoder>
     </appender>
-    
-     <logger name="watchlog" level="info" additivity="false">
-        <appender-ref ref="myDefinition" />
+
+     <!-- 若是additivity设为false，则子Logger只会在自己的appender里输出，而不会在父Logger的appender里输出 -->
+     <logger name="watchlog" level="info" additivity="true">
+        <appender-ref ref="watch" />
      </logger>     
      
-    <!-- root级别   DEBUG -->
+    <!-- root级别  DEBUG -->
     <root>
         <!-- 打印debug级别日志及以上级别日志 -->
-        <level value="debug" />
+        <level value="INFO" />
         <!-- 控制台输出 -->
         <appender-ref ref="console" />
         <!-- 文件输出 -->

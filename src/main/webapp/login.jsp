@@ -100,14 +100,20 @@
 		$(function() {
 		    var domain="${ctx}";
 		    var validateLogon_url=domain+"/login/validateLogon";
-		    var main_url=domain+"/main.jsp";
+            var mainFrame_url=domain+"/login/mainFrame/";
 
 			var listArr = [ "images/login/1.jpg", "images/login/2.jpg", "images/login/3.jpg", "images/login/4.jpg", "images/login/5.jpg", "images/login/6.jpg", "images/login/7.jpg"];
 			$(".ModuleLogin-bg").backstretch(listArr, {
 				fade : 1000,
 				duration : 5000
 			});
-			
+
+            $(document).keyup(function(event){
+                if(event.keyCode ==13){
+                    $("#loginBtn").click();
+                }
+            });
+
 			$("#loginBtn").click(function(){
 			    var name=$("#txtUser").val();
 			    var pwd=$("#txtPwd").val();
@@ -122,9 +128,8 @@
                         type: "POST",
                         data: data,
                         success: function(data){
-							//log(data);
 							if(data&&data.success){
-                                window.location.href=main_url+"?token="+data.data;
+                                window.location.href=mainFrame_url+data.data;
 							}
 							else{
                                 $("#tip").text(data.tip);

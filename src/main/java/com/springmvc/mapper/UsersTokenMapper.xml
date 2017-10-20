@@ -10,22 +10,41 @@
   <sql id="Base_Column_List">
     id, userId, token, md5Token
   </sql>
+
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from users_token
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from users_token
+    where userId = #{userid,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByMd5Token" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from users_token
+    where md5Token = #{md5Token,jdbcType=VARCHAR}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from users_token
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.springmvc.model.UsersToken">
     insert into users_token (id, userId, token, 
       md5Token)
     values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{token,jdbcType=VARCHAR}, 
       #{md5token,jdbcType=VARCHAR})
   </insert>
+
   <insert id="insertSelective" parameterType="com.springmvc.model.UsersToken">
     insert into users_token
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -57,6 +76,7 @@
       </if>
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.model.UsersToken">
     update users_token
     <set>
@@ -72,6 +92,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.springmvc.model.UsersToken">
     update users_token
     set userId = #{userid,jdbcType=INTEGER},

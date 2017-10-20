@@ -3,13 +3,18 @@ package com.springmvc.controller;
 import com.springmvc.base.BaseController;
 import com.springmvc.model.RequestResult;
 import com.springmvc.model.Users;
+import com.springmvc.model.UsersToken;
 import com.springmvc.service.UsersService;
+import com.springmvc.service.UsersTokenService;
 import com.springmvc.util.DateUtil;
 import com.springmvc.util.JwtTokenUtil;
 import com.springmvc.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +35,9 @@ public class LoginControl extends BaseController {
 
 	@Autowired
 	UsersService uService;
+
+	@Autowired
+	UsersTokenService utService;
 
 	/**
 	 * 测试
@@ -53,8 +61,8 @@ public class LoginControl extends BaseController {
 		String uName = (String) request.getParameter("uname");
 		String uPwd = (String) request.getParameter("upwd");
 		String token = "";
-		System.out.println("账户：" + uName);
-		System.out.println("密码:" + uPwd);
+		//System.out.println("账户：" + uName);
+		//System.out.println("密码:" + uPwd);
 		if(uName.trim().equals("")||uPwd.trim().equals("")){
 		    result.setFail("用户名或者密码为空");
 		    return  result;
@@ -75,7 +83,47 @@ public class LoginControl extends BaseController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		result.setSucceed("登录成功",SecurityUtil.MD5_32(token));
+
+		UsersToken ut=utService.getUsersToken(user.getId());
+
+		if(ut==null){
+			ut=new UsersToken();
+		}
+
+		ut.setUserid(user.getId());
+		ut.setToken(token);
+		ut.setMd5token(SecurityUtil.MD5_32(token));
+
+		if(ut.getId()==null) {
+			utService.insert(ut);
+		}
+		else{
+			utService.update(ut);
+		}
+
+		result.setSucceed("登录成功",ut.getMd5token());
+
 		return result;
+	}
+
+	/**
+	 * 加载主界面
+	 * @return
+	 */
+	@RequestMapping(value="/mainFrame/{jwt}",method = {RequestMethod.POST,RequestMethod.GET})
+	public String mainFrame(@PathVariable("jwt") String jwt, Model model) {
+
+		logger.info("{}:{}","jwt",jwt);
+
+		UsersToken ut= utService.getUsersToken(jwt);
+
+		if(ut==null){
+			return "redirect:../../login.jsp";
+		}
+		else {
+			model.addAttribute("jwt", jwt);
+		}
+
+		return "forward:../../main.jsp";
 	}
 }

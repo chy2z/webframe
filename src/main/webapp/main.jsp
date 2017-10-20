@@ -233,6 +233,7 @@
         new Vue({
             el: '#app',
             data:{
+                jwt:"${requestScope.jwt}",
                 spanLeft: 3,
                 spanRight: 21,
                 menus:[

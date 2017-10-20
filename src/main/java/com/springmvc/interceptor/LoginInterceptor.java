@@ -40,11 +40,12 @@ public class LoginInterceptor implements HandlerInterceptor {
         //获取请求的URL
         String url = request.getRequestURI();
 
-        logger.info("拦截请求----->"+url);
+        logger.info("{}:{}","拦截请求",url);
+
+        //logger.info("{}:{}","jwt",request.getParameter("jwt"));
+
 
         /*
-
-
 
         if(url.indexOf("login.action")>=0){
             return true;

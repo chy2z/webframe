@@ -52,7 +52,7 @@
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="exceptionMappings">
             <props>
-                <!-- 发生 HttpSessionRequiredException自动跳转到WEB-INF/views/error.jsp页面 -->
+                <!-- 发生 HttpSessionRequiredException自动跳转到WEB-INF/view/error.jsp页面 -->
                 <prop key="org.springframework.web.HttpSessionRequiredException">error</prop>
             </props>
         </property>

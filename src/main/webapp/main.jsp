@@ -2,10 +2,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ include file="taglib/taglibs.jsp"%>
 <%@ include file="taglib/import_iview.jsp"%>
+<%@ include file="taglib/import_jquery.jsp"%>
 <html>
 <head>
     <title>主页</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>
     <style>
         html, body {
@@ -198,11 +200,12 @@
 
                         <menu-Group v-if="group.leaf" :title="group.title">
 
-                            <menu-Item v-for="l in group.childs" :id="l.name" :name="l.name">{{l.title}}</menu-Item>
+                            <!-- 加载自定义属性 url -->
+                            <menu-Item v-for="l in group.childs" :url="l.url" :id="l.name" :name="l.name">{{l.title}}</menu-Item>
 
                         </menu-Group>
 
-                        <menu-Item v-else :id="group.name" :name="group.name">{{group.title}}</menu-Item>
+                        <menu-Item v-else :id="group.name" :url="group.url" :name="group.name">{{group.title}}</menu-Item>
 
                         </template>
 
@@ -212,16 +215,18 @@
             </i-col>
             <i-col :span="spanRight">
                 <div class="layout-right">
-                    <Tabs class="layout-right-content" type="card" >
-                        <Tab-Pane label="首页"  icon="social-apple">
-                            <iframe id="mainframe"  frameborder="0" scrolling="yes" style="border: 0px; height: 100%; width: 100%;"></iframe>
+                    <Tabs  @on-tab-remove="tabRemove" class="layout-right-content" type="card" v-model="tabSelected" >
+                        <Tab-Pane label="首页" name="mainframe" icon="social-apple">
+                            <iframe id="mainframe" frameborder="0" scrolling="yes"
+                                    style="border: 0px; height: 100%; width: 100%;"></iframe>
                         </Tab-Pane>
-                        <Tab-Pane v-for="item in tabItems" :label="item.name" closable="false" :icon="item.icon">
+                        <!-- :key 一定要加，否则动态删除和增加tabpanel会有问题 -->
+                        <Tab-Pane v-for="item in tabItems" :key="item.id" :name="item.id" :label="item.name" closable="false" :icon="item.icon">
                             <iframe :id="item.id" :src="item.src" frameborder="0" scrolling="yes" style="border: 0px; height: 100%; width: 100%;"></iframe>
                         </Tab-Pane>
                     </Tabs>
 
-                    <div class="layout-right-copy">2011-2017 &copy; chy</div>
+                    <div class="layout-right-copy">2011-2017 &copy; chy- {{ tabSelected }}</div>
                 </div>
             </i-col>
         </Row>
@@ -233,34 +238,12 @@
         new Vue({
             el: '#app',
             data:{
+                tabSelected:"0",
                 jwt:"${requestScope.jwt}",
                 spanLeft: 3,
                 spanRight: 21,
-                menus:[
-                    {name:"1",icon:"ios-paper",title:"内容管理",childs:[
-                        {leaf:false,name:"m1-1",title:"文章管理"  },
-                        {leaf:false,name:"m1-2",title:"评论管理"  }
-                    ]},
-                    {name:"2",icon:"ios-people",title:"用户管理",childs:[
-                        {leaf:false,name:"m2-1",title:"新增用户"  },
-                        {leaf:false,name:"m2-2",title:"活跃用户"  }
-                    ]},
-                    {name:"3",icon:"stats-bars",title:"统计分析",childs:[
-                        {leaf:true,title:"使用",childs:[
-                            {leaf:false,name:"m3-1",title:"活跃分析"  },
-                            {leaf:false,name:"m3-2",title:"时段分析"  }
-                        ]},
-                        {leaf:true,title:"留存",childs:[
-                            {leaf:false,name:"m3-3",title:"用户留存"  },
-                            {leaf:false,name:"m3-4",title:"流失用户"  }
-                        ]},
-                        {leaf:false,name:"m3-6",title:"其他统计"  }
-                    ]}
-                ],
-                tabItems:[
-                    {id:"mainframe0",name:"其他",src:"${ctx}/index.jsp",icon:"social-apple"},
-                    {id:"mainframe1",name:"图表",src:"${ctx}/index.jsp",icon:"social-apple"}
-                ]
+                menus:${requestScope.menu},
+                tabItems:[]
             },
             created:function(){
                 document.querySelector("#mainframe").src="${ctx}/index.jsp";
@@ -272,8 +255,37 @@
             },
             methods: {
                 menuItemClick(name){
-                    var str= document.querySelector("#"+name).innerText;
-                    this.tabItems.push({id:"mainframe"+this.tabItems.length,name:str,src:"${ctx}/index.jsp",icon:"social-apple"});
+                    //document.querySelector("#"+name).innerText;
+                    let title=$("#"+name).text();
+                    let url=$("#"+name).attr("url");
+                    let id="mainframe"+name;
+                    let extis=false;
+                    for(let index in this.tabItems){
+                         if(this.tabItems[index].id==id){
+                             extis=true;
+                             // 激活选项卡
+                             this.tabSelected=id;
+                             break;
+                         }
+                    }
+                    if(!extis){
+                       this.tabItems.push({id:id,name:title,src:"${ctx}/WEB-INF/view/configuration/corporation_page.jsp",icon:"social-apple"});
+                       // 激活新增选项卡
+                       this.tabSelected=id;
+                    }
+                },
+                tabRemove(name){
+                    let del="";
+                    for(let index in this.tabItems){
+                        if(this.tabItems[index].id==name){
+                            del=index;
+                            break;
+                        }
+                    }
+                    if(del!="") {
+                        Vue.delete(this.tabItems, del);      //删除数组元素
+                        //this.tabItems.splice(parseInt(del),1); //删除数组元素
+                    }
                 },
                 toggleClick () {
                     if (this.spanLeft === 3) {

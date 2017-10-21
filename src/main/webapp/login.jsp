@@ -36,11 +36,10 @@
 								<div class="ModuleLogin-logo">&nbsp;</div>
 								<div class="ModuleLogin-main">
 
-
 									<div class="tMainWrap" style="">
 										<p class="tUserWrap">
 											<i class="tUserImg"></i>
-											<input name="username" id="txtUser" class="tUser" placeholder="用户名" type="text" > 
+											<input name="username" id="txtUser" class="tUser" placeholder="用户名" value="admins" type="text" >
 											<span class="tUserExt"></span>
 										</p>
 
@@ -69,6 +68,7 @@
 										<em>©</em>chy 版权所有
 									</p>
 								</div>
+							</div>
 						</td>
 					</tr>
 				</tbody>

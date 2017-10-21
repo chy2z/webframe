@@ -18,4 +18,6 @@ public interface MenuItemMapper {
     int updateByPrimaryKey(MenuItem record);
 
     List<MenuItem> selectAll();
+
+    List<MenuItem> selectByRole(String roleName);
 }

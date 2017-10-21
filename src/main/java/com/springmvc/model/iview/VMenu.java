@@ -33,6 +33,10 @@ public class VMenu {
 
     @Getter
     @Setter
+    String url;
+
+    @Getter
+    @Setter
     List<VMenu> childs;
 
 }

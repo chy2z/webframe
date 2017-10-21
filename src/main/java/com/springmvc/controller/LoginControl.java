@@ -131,14 +131,11 @@ public class LoginControl extends BaseController {
 
 			//是否是超级管理员
 			if(SysConfig.superAdmin.equals(u.getIsadmin())){
-
-				model.addAttribute("menu",miService.toIviewMenuforJson(miService.getAll()));
-
+				model.addAttribute("menu",miService.toIviewMenuforJson(miService.getMenuAll()));
 			}
 			//不是超级管理员
 			else{
-
-
+				model.addAttribute("menu",miService.toIviewMenuforJson(miService.getMenuByRoleName(u.getIsadmin())));
 			}
 
 			model.addAttribute("jwt", jwt);

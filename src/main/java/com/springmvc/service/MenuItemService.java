@@ -22,10 +22,23 @@ public class MenuItemService {
     @Autowired
     MenuItemMapper mimap;
 
-
-    public List<MenuItem> getAll(){
+    /**
+     * 获取全部菜单
+     * @return
+     */
+    public List<MenuItem> getMenuAll(){
        return mimap.selectAll();
     }
+
+    /**
+     * 通获取角色获取菜单
+     * @param roleName
+     * @return
+     */
+    public List<MenuItem> getMenuByRoleName(String roleName){
+        return mimap.selectByRole(roleName);
+    }
+
 
     public String toIviewMenuforJson(List<MenuItem> listMenuItem){
 
@@ -69,6 +82,7 @@ public class MenuItemService {
                     menu3.setLeaf(false);
                     menu3.setName("m"+mi.getId());
                     menu3.setTitle(mi.getName());
+                    menu3.setUrl(mi.getUrl());
                     if(menu2!=null) {
                         menu2.getChilds().add(menu3);
                     }

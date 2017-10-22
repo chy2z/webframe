@@ -78,7 +78,7 @@
         </Row>
         <Row class-name="my-layout-body" type="flex">
             <i-col span="24">
-                <i-Table border="true" highlight-row="true" stripe
+                <i-Table border="true" highlight-row="true"
                          size="default" :columns="columnsCorpration" :data="dataCorpration"></i-Table>
             </i-col >
         </Row>

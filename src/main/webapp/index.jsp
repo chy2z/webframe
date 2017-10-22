@@ -22,7 +22,7 @@
     new Vue({
         el: '#app',
         data:{
-            loading: true,
+            loading: false,
             columns1: [
                 {
                     title: '姓名',

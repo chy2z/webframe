@@ -78,8 +78,8 @@
         </Row>
         <Row class-name="my-layout-body" type="flex">
             <i-col span="24">
-                <i-Table border="true" highlight-row="true"
-                         size="default" :columns="columnsCorpration" :data="dataCorpration"></i-Table>
+                <i-Table border highlight-row size="default"
+                         :loading="pageLoading" :columns="columnsCorpration" :data="dataCorpration"></i-Table>
             </i-col >
         </Row>
         <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
@@ -99,6 +99,7 @@
         new Vue({
             el: '#app',
             data: {
+                pageLoading:true,
                 columnsCorpration:[
                     {
                         title: '姓名',

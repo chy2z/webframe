@@ -15,13 +15,14 @@
 </style>
 <body>
 <div id="app">
-    <i-Table stripe :columns="columns1" :data="data1"></i-Table>
+    <i-Table stripe :loading="loading" :columns="columns1" :data="data1"></i-Table>
 </div>
 </body>
 <script>
     new Vue({
         el: '#app',
         data:{
+            loading: true,
             columns1: [
                 {
                     title: '姓名',

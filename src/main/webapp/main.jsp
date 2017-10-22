@@ -80,7 +80,8 @@
             height: 100%;
             min-height: 400px;
             margin: 0px;
-            padding: 1px 1px 0px;
+            /*padding: 1px 1px 0px;*/
+            padding: 33px 1px 0px;
             overflow: hidden;
             background: #eee;
             border-radius: 4px;
@@ -90,7 +91,7 @@
             height: 50px;
             margin: 0 0 -50px;
             text-align: center;
-            padding: 15px 0 15px;
+            padding: 15px 0;
             color: #9ea7b4;
         }
 
@@ -114,6 +115,7 @@
         .ivu-tabs-bar {
             border-bottom: 1px solid #dddee1;
             margin-bottom: 2px;
+            margin-top: -32px;
         }
 
         /* tab选项卡内容的高度  */
@@ -201,11 +203,17 @@
                         <menu-Group v-if="group.leaf" :title="group.title">
 
                             <!-- 加载自定义属性 url -->
-                            <menu-Item v-for="l in group.childs" :url="l.url" :icon="l.icon" :id="l.name" :name="l.name">{{l.title}}</menu-Item>
+                            <menu-Item v-for="l in group.childs" :url="l.url" :icon="l.icon" :id="l.name" :name="l.name">
+                                <Icon :type="l.icon"></Icon>
+                                {{l.title}}
+                            </menu-Item>
 
                         </menu-Group>
 
-                        <menu-Item v-else :id="group.name" :url="group.url" :icon="group.icon" :name="group.name">{{group.title}}</menu-Item>
+                        <menu-Item v-else :id="group.name" :url="group.url" :icon="group.icon" :name="group.name">
+                            <Icon :type="group.icon"></Icon>
+                            {{group.title}}
+                        </menu-Item>
 
                         </template>
 
@@ -226,7 +234,7 @@
                         </Tab-Pane>
                     </Tabs>
 
-                    <div class="layout-right-copy">2011-2017 &copy; chy- {{ tabSelected }}</div>
+                    <div class="layout-right-copy">2011-2017 &copy; chy</div>
                 </div>
             </i-col>
         </Row>

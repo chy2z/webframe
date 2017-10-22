@@ -83,6 +83,7 @@ public class MenuItemService {
                     menu3.setName("m"+mi.getId());
                     menu3.setTitle(mi.getName());
                     menu3.setUrl(mi.getUrl());
+                    menu3.setIcon(mi.getLmage());
                     if(menu2!=null) {
                         menu2.getChilds().add(menu3);
                     }

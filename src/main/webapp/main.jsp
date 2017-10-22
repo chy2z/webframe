@@ -87,7 +87,7 @@
         }
 
         .layout-right-copy {
-            height: 100px;
+            height: 50px;
             margin: 0 0 -50px;
             text-align: center;
             padding: 15px 0 15px;
@@ -201,11 +201,11 @@
                         <menu-Group v-if="group.leaf" :title="group.title">
 
                             <!-- 加载自定义属性 url -->
-                            <menu-Item v-for="l in group.childs" :url="l.url" :id="l.name" :name="l.name">{{l.title}}</menu-Item>
+                            <menu-Item v-for="l in group.childs" :url="l.url" :icon="l.icon" :id="l.name" :name="l.name">{{l.title}}</menu-Item>
 
                         </menu-Group>
 
-                        <menu-Item v-else :id="group.name" :url="group.url" :name="group.name">{{group.title}}</menu-Item>
+                        <menu-Item v-else :id="group.name" :url="group.url" :icon="group.icon" :name="group.name">{{group.title}}</menu-Item>
 
                         </template>
 
@@ -216,7 +216,7 @@
             <i-col :span="spanRight">
                 <div class="layout-right">
                     <Tabs  @on-tab-remove="tabRemove" class="layout-right-content" type="card" v-model="tabSelected" >
-                        <Tab-Pane label="首页" name="mainframe" icon="social-apple">
+                        <Tab-Pane label="首页" name="mainframe" icon="ios-home">
                             <iframe id="mainframe" frameborder="0" scrolling="yes"
                                     style="border: 0px; height: 100%; width: 100%;"></iframe>
                         </Tab-Pane>
@@ -255,9 +255,9 @@
             },
             methods: {
                 menuItemClick(name){
-                    //document.querySelector("#"+name).innerText;
                     let title=$("#"+name).text();
-                    let url=$("#"+name).attr("url");
+                    let url="${ctx}/login/menu/"+this.jwt+"?menu="+$("#"+name).attr("url");
+                    let icon=$("#"+name).attr("icon");
                     let id="mainframe"+name;
                     let extis=false;
                     for(let index in this.tabItems){
@@ -269,7 +269,7 @@
                          }
                     }
                     if(!extis){
-                       this.tabItems.push({id:id,name:title,src:"${ctx}/WEB-INF/view/configuration/corporation_page.jsp",icon:"social-apple"});
+                       this.tabItems.push({id:id,name:title,src:url,icon:icon});
                        // 激活新增选项卡
                        this.tabSelected=id;
                     }

@@ -50,7 +50,7 @@ public class LoginControl extends BaseController {
 	 */
 	@RequestMapping("/index")
 	public String index() {
-		return "token";
+		return "test";
 	}
 
 	/**
@@ -143,4 +143,22 @@ public class LoginControl extends BaseController {
 
 		return "forward:../../main.jsp";
 	}
+
+	/**
+	 * 加载菜单页面
+	 * @param jwt
+	 * @param request
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/menu/{jwt}",method = {RequestMethod.POST,RequestMethod.GET})
+	public String menu(@PathVariable("jwt") String jwt, HttpServletRequest request,Model model) {
+
+		String menu = (String) request.getParameter("menu");
+
+		logger.info("{}:{}","menu",menu);
+
+		return menu;
+	}
+
 }

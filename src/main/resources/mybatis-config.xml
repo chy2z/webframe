@@ -4,6 +4,7 @@
     <settings>
         <!-- 指定 MyBatis 所用日志的具体实现，未指定时将自动查找
          SLF4J | LOG4J | LOG4J2 | JDK_LOGGING | COMMONS_LOGGING | STDOUT_LOGGING | NO_LOGGING
+         日志输出级别必须是DEBUG
          -->
         <setting name="logImpl" value="SLF4J" />
         <!-- 指定 MyBatis 增加到日志名称的前缀 Any String-->

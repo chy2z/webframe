@@ -2,6 +2,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ include file="../../../taglib/taglibs.jsp"%>
 <%@ include file="../../../taglib/import_iview.jsp"%>
+<%@ include file="../../../taglib/import_jquery.jsp"%>
+<%@ include file="../../../taglib/import_common.jsp"%>
 <html>
 <head>
     <title>组织机构</title>
@@ -78,15 +80,24 @@
         </Row>
         <Row class-name="my-layout-body" type="flex">
             <i-col span="24">
-                <i-Table border highlight-row size="default"
-                         :loading="pageLoading" :columns="columnsCorpration" :data="dataCorpration"></i-Table>
+                <i-Table :show-header="tableCroporation.showHeader" :loading="tableCroporation.pageLoading"
+                         :stripe="tableCroporation.showStripe" :border="tableCroporation.showBorder"
+                         :highlight-row="tableCroporation.highlightRow" :size="tableCroporation.tableSize"
+                         :columns="tableCroporation.columnsCorpration" :data="tableCroporation.dataCorpration"></i-Table>
             </i-col >
         </Row>
         <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
             <i-col  span="12"></i-col >
             <i-col  span="12">
                 <div style="float: right;margin: 0 5px;">
-                   <Page @on-change="pageChange" @on-page-size-change="pageSizeChange" :total="100" placement="top" show-elevator show-total show-sizer></Page>
+                   <Page @on-change="pageChange" @on-page-size-change="pageSizeChange"
+                         :page-size="pageCroporation.pageSize"
+                         :page-size-opts="pageCroporation.pageSizeOpts"
+                         :placement="pageCroporation.placement"
+                         :current:="pageCroporation.pageNo"
+                         :total="pageCroporation.totalCount"
+                         :show-elevator="pageCroporation.showElevator" :show-total="pageCroporation.showTotal"
+                         :show-sizer="pageCroporation.showSizer"></Page>
                 </div>
             </i-col >
 
@@ -99,88 +110,76 @@
         new Vue({
             el: '#app',
             data: {
-                pageLoading:true,
-                columnsCorpration:[
-                    {
-                        title: '姓名',
-                        "fixed": "left",
-                        key: 'name',
-                        width:100
+                jwt:"${requestScope.jwt}",
+                pageCroporation:{
+                    showElevator:true,
+                    showTotal:true,
+                    showSizer:true,
+                    placement:"top",
+                    pageSize:1,
+                    pageSizeOpts:[1,10,20,30,50],
+                    pageNo:1,
+                    totalCount:2
+                },
+                tableCroporation:{
+                    pageLoading:true,
+                    showBorder: true,
+                    showStripe: true,
+                    showHeader: true,
+                    highlightRow:true,
+                    showIndex: false,
+                    showCheckbox: false,
+                    fixedHeader: false,
+                    tableSize: 'default',
+                    columnsCorpration:[
+                        {
+                            title: '序号',
+                            key: 'id'
+                        },
+                        {
+                            title: '姓名',
+                            key: 'name'
+                        },
+                        {
+                            title: '编号',
+                            key: 'code'
+                        }
+                    ],
+                    dataCorpration:[]
+                }
+            },
+            created:function(){
+                var vue=this;
+                var jwt=this.jwt;
+                var data = {pageNo:vue.pageCroporation.pageNo,pageSize:vue.pageCroporation.pageSize,where:null,orderBy:null};
+                $.ajax({
+                    url: "${ctx}/corporation/pagination?jwt="+jwt,
+                    type: "POST",
+                    data: data,
+                    beforeSend:function(){
+                       vue.tableCroporation.pageLoading=true;
                     },
-                    {
-                        title: '年龄',
-                        key: 'age',
-                        width:100
+                    complete:function(){
+                        vue.tableCroporation.pageLoading=false;
                     },
-                    {
-                        title: '地址',
-                        key: 'address'
+                    success: function(res){
+                        //log(res);
+                        var json=$.evalJSON(res);
+                        vue.tableCroporation.dataCorpration=json.result;
+                        vue.pageCroporation.pageNo=json.pageNo;
+                        vue.pageCroporation.totalCount=json.totalCount;
+                    },
+                    error: function(res){
+                        alert(res.responseText);
                     }
-                ],
-                dataCorpration:[
-                    {
-                        name: '王小明',
-                        age: 18,
-                        address: '北京市朝阳区芍药居'
-                    },
-                    {
-                        name: '张小刚',
-                        age: 25,
-                        address: '北京市海淀区西二旗'
-                    },
-                    {
-                        name: '李小红',
-                        age: 30,
-                        address: '上海市浦东新区世纪大道'
-                    },
-                    {
-                        name: '周小伟',
-                        age: 26,
-                        address: '深圳市南山区深南大道'
-                    },
-                    {
-                        name: '王小明',
-                        age: 18,
-                        address: '北京市朝阳区芍药居'
-                    },
-                    {
-                        name: '张小刚',
-                        age: 25,
-                        address: '北京市海淀区西二旗'
-                    },
-                    {
-                        name: '李小红',
-                        age: 30,
-                        address: '上海市浦东新区世纪大道'
-                    },
-                    {
-                        name: '周小伟',
-                        age: 26,
-                        address: '深圳市南山区深南大道'
-                    },
-                    {
-                        name: '王小明',
-                        age: 18,
-                        address: '北京市朝阳区芍药居'
-                    },
-                    {
-                        name: '张小刚',
-                        age: 25,
-                        address: '北京市海淀区西二旗'
-                    },
-                    {
-                        name: '李小红',
-                        age: 30,
-                        address: '上海市浦东新区世纪大道'
-                    }
-                ]
+                });
             },
             methods:{
                 pageChange(index){
-                    alert(index);
+                    //alert(index);
                 },
                 pageSizeChange(pageSize){
-                    alert(pageSize);
+                    //alert(pageSize);
                 }
             }
         });

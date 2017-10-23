@@ -158,6 +158,8 @@ public class LoginControl extends BaseController {
 
 		logger.info("{}:{}","menu",menu);
 
+		model.addAttribute("jwt", jwt);
+
 		return menu;
 	}
 

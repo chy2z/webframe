@@ -22,7 +22,7 @@
         <encoder>
             <pattern>
                 <!-- 设置日志输出格式 -->
-                %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger - %msg%n
+                %d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %logger - %msg%n
             </pattern>
         </encoder>
     </appender>
@@ -53,7 +53,7 @@
         <encoder>
             <pattern>
                 <!-- 设置日志输出格式 -->
-                %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger - %msg%n
+                %d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %logger - %msg%n
             </pattern>
         </encoder>
     </appender>
@@ -77,7 +77,7 @@
             <maxHistory>${maxHistory}</maxHistory> 
         </rollingPolicy>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %logger - %msg%n</pattern>
         </encoder>
     </appender>
      
@@ -94,7 +94,7 @@
             <maxHistory>${maxHistory}</maxHistory> 
         </rollingPolicy>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %logger - %msg%n</pattern>
         </encoder>
     </appender>
      
@@ -111,7 +111,7 @@
             <maxHistory>${maxHistory}</maxHistory> 
         </rollingPolicy>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %logger - %msg%n</pattern>
         </encoder>
     </appender>
      
@@ -128,7 +128,7 @@
             <maxHistory>${maxHistory}</maxHistory> 
         </rollingPolicy>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %logger - %msg%n</pattern>
         </encoder>
     </appender>
     
@@ -144,7 +144,7 @@
             <maxHistory>${maxHistory}</maxHistory> 
         </rollingPolicy>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %logger - %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -156,7 +156,7 @@
     <!-- root级别  DEBUG -->
     <root>
         <!-- 打印debug级别日志及以上级别日志 -->
-        <level value="INFO" />
+        <level value="DEBUG" />
         <!-- 控制台输出 -->
         <appender-ref ref="console" />
         <!-- 文件输出 -->

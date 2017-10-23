@@ -66,16 +66,15 @@
             <i-col  span="12">
                 <div style="float: right;margin: 0 5px;">
                 <Button-Group size="large" shape="circle">
-                    <i-Button type="primary" icon="ios-search-strong">搜索</i-Button>
-                    <i-Button type="primary" icon="plus">增加</i-Button>
-                    <i-Button type="primary" icon="edit">修改</i-Button>
-                    <i-Button type="primary" icon="close">删除</i-Button>
-                    <i-Button type="primary" icon="ios-glasses">查看</i-Button>
-                    <i-Button type="primary" icon="arrow-down-c">导出</i-Button>
-                    <i-Button type="primary" icon="refresh">刷新</i-Button>
+                    <i-Button type="primary" @click="butSearch()" icon="ios-search-strong">搜索</i-Button>
+                    <i-Button type="primary" @click="butAdd()" icon="plus">增加</i-Button>
+                    <i-Button type="primary" @click="butEdit()" icon="edit">修改</i-Button>
+                    <i-Button type="primary" @click="butDel()" icon="close">删除</i-Button>
+                    <i-Button type="primary" @click="butLook()" icon="ios-glasses">查看</i-Button>
+                    <i-Button type="primary" @click="butExport()" icon="arrow-down-c">导出</i-Button>
+                    <i-Button type="primary" @click="butRefresh()" icon="refresh">刷新</i-Button>
                 </Button-Group>
                 </div>
-
             </i-col >
         </Row>
         <Row class-name="my-layout-body" type="flex">
@@ -107,6 +106,9 @@
 </body>
 <script>
     window.onload=function() {
+
+        var pageHelper=null;
+
         new Vue({
             el: '#app',
             data: {
@@ -149,37 +151,24 @@
                 }
             },
             created:function(){
-                var vue=this;
-                var jwt=this.jwt;
-                var data = {pageNo:vue.pageCroporation.pageNo,pageSize:vue.pageCroporation.pageSize,where:null,orderBy:null};
-                $.ajax({
-                    url: "${ctx}/corporation/pagination?jwt="+jwt,
-                    type: "POST",
-                    data: data,
-                    beforeSend:function(){
-                       vue.tableCroporation.pageLoading=true;
-                    },
-                    complete:function(){
-                        vue.tableCroporation.pageLoading=false;
-                    },
-                    success: function(res){
-                        //log(res);
-                        var json=$.evalJSON(res);
-                        vue.tableCroporation.dataCorpration=json.result;
-                        vue.pageCroporation.pageNo=json.pageNo;
-                        vue.pageCroporation.totalCount=json.totalCount;
-                    },
-                    error: function(res){
-                        alert(res.responseText);
-                    }
-                });
+                pageHelper=new pageHepler("${ctx}/corporation/pagination?jwt="+this.jwt,this.tableCroporation,this.pageCroporation);
+                pageHelper.load(this.pageCroporation.pageNo,this.pageCroporation.pageSize,null,null);
             },
             methods:{
                 pageChange(index){
-                    //alert(index);
+                    pageHelper.pageIndexChanging(index);
                 },
                 pageSizeChange(pageSize){
-                    //alert(pageSize);
+                    pageHelper.load(1,pageSize,null,null);
+                },
+                butSearch(){
+
+                },
+                butAdd(){
+
+                },
+                butDel(){
+
                 }
             }
         });

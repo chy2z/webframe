@@ -62,18 +62,10 @@
 <div id="app">
     <div class="my-layout">
         <Row class-name="my-layout-top" justify="end" align="middle" type="flex">
-            <i-col  span="12"></i-col >
-            <i-col  span="12">
+            <i-col span="6"></i-col >
+            <i-col span="18">
                 <div style="float: right;margin: 0 5px;">
-                <Button-Group size="large" shape="circle">
-                    <i-Button type="primary" @click="butSearch()" icon="ios-search-strong">搜索</i-Button>
-                    <i-Button type="primary" @click="butAdd()" icon="plus">增加</i-Button>
-                    <i-Button type="primary" @click="butEdit()" icon="edit">修改</i-Button>
-                    <i-Button type="primary" @click="butDel()" icon="close">删除</i-Button>
-                    <i-Button type="primary" @click="butLook()" icon="ios-glasses">查看</i-Button>
-                    <i-Button type="primary" @click="butExport()" icon="arrow-down-c">导出</i-Button>
-                    <i-Button type="primary" @click="butRefresh()" icon="refresh">刷新</i-Button>
-                </Button-Group>
+                    <%@include file="../rightTemplate.jsp" %>
                 </div>
             </i-col >
         </Row>
@@ -86,8 +78,8 @@
             </i-col >
         </Row>
         <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
-            <i-col  span="12"></i-col >
-            <i-col  span="12">
+            <i-col  span="6"></i-col >
+            <i-col  span="18">
                 <div style="float: right;margin: 0 5px;">
                    <Page @on-change="pageChange" @on-page-size-change="pageSizeChange"
                          :page-size="pageCroporation.pageSize"
@@ -113,6 +105,15 @@
             el: '#app',
             data: {
                 jwt:"${requestScope.jwt}",
+                butShow:{
+                    isSearchShow:true,
+                    isAddShow:true,
+                    isEditShow:true,
+                    isDelShow:true,
+                    isLookShow:true,
+                    isExportShow:true,
+                    isRefreshShow:true
+                },
                 pageCroporation:{
                     showElevator:true,
                     showTotal:true,
@@ -167,8 +168,20 @@
                 butAdd(){
 
                 },
+                butEdit(){
+
+                },
                 butDel(){
 
+                },
+                butLook(){
+
+                },
+                butExport(){
+
+                },
+                butRefresh(){
+                    window.location.reload();
                 }
             }
         });

@@ -24,6 +24,8 @@
         .head {
             height: 80px;
             box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+            /*background-color: #2b85e4;*/
+            background-color:#2d8cf0;
         }
 
         .head-content{
@@ -51,17 +53,34 @@
             margin: 25px 0;
             border-radius: 3px;
             text-align: center;
-            color: #57a3f3;
+            color:#fff;
+        }
+
+        /* 头部右侧菜单的高度 */
+        .head-right-menu{
+            height: 80px;
+            float: right;
+        }
+
+        /* 头部右侧菜单垂直剧中 */
+        .head-right-menu .ivu-menu-horizontal {
+            height: 80px;
+            line-height: 80px;
+        }
+
+        /* 头部右侧菜单项选中颜色和背景色一致 */
+        .head-right-menu .ivu-menu-horizontal .ivu-menu-item-active {
+            background: #2d8cf0;
         }
 
         .layout {
             position: absolute;
             width: 100%;
-            top: 81px;
+            top: 80px;
             bottom: 0px;
             border: 0px solid #d7dde4;
             background: #f5f7f9;
-            border-radius: 4px;
+            border-radius: 0px;
             overflow: hidden;
         }
 
@@ -103,7 +122,13 @@
             color: #9ba7b5;
         }
 
-        .layout-hide-text .layout-text {
+        /* 当左侧菜单折叠时，隐藏文字和菜单子项 */
+        .layout-hide-text .layout-item-hidden {
+            display: none;
+        }
+
+        /* 当左侧菜单折叠时，隐藏图标 */
+        .layout-hide-text .ivu-menu-submenu-title-icon{
             display: none;
         }
 
@@ -139,6 +164,7 @@
             border-right: 2px solid #fff;
         }
 
+
     </style>
 </head>
 <body>
@@ -149,6 +175,54 @@
                 <img src="../../images/logo.png" >
             </div>
             <div class="head-logo-left-title">后台管理系统</div>
+            <div class="head-right-menu">
+                <i-Menu @on-select="headMenuItemClick" mode="horizontal" theme="primary" active-name="userinfo">
+                    <Menu-Item name="toggleMenu">
+                        <Icon type="arrow-swap"></Icon>
+                        折叠菜单
+                    </Menu-Item>
+                    <Submenu name="userinfo">
+                        <template slot="title">
+                            <Icon type="person"></Icon>
+                            用户信息
+                        </template>
+                        <Menu-Group title="基本信息">
+                            <Menu-Item name="3-1">姓名:程鸿雁</Menu-Item>
+                            <Menu-Item name="3-2">部门:技术部</Menu-Item>
+                            <Menu-Item name="3-3">电话:18955545431</Menu-Item>
+                            <Menu-Item name="3-4">邮件:chy2z@163.com</Menu-Item>
+                            <Menu-Item name="3-5">角色:管理员</Menu-Item>
+                        </Menu-Group>
+                        <Menu-Group title="其他信息">
+                            <Menu-Item name="3-6">登录:2017-10-10 11:23</Menu-Item>
+                        </Menu-Group>
+                    </Submenu>
+                    <Menu-Item name="editPwd">
+                        <Icon type="key"></Icon>
+                        修改密码
+                    </Menu-Item>
+                    <Menu-Item name="lockSystem">
+                        <Icon type="locked"></Icon>
+                        系统锁屏
+                    </Menu-Item>
+                    <Menu-Item name="logOut">
+                        <Icon type="log-out"></Icon>
+                        退出系统
+                    </Menu-Item>
+                </i-Menu>
+                <Modal v-model="modalLock" :closable="false" :mask-closable="false" :styles="{top: '250px'}" width="360">
+                    <p slot="header" style="color:#f60;text-align:center">
+                        <Icon type="information-circled"></Icon>
+                        <span>系统锁定</span>
+                    </p>
+                    <div style="text-align:center">
+                        <p><i-Input size="large" icon="unlocked" placeholder="请输入密码解锁......" style="width: 300px"></i-Input></p>
+                    </div>
+                    <div slot="footer">
+                        <i-Button type="error" size="large" long  @click="unLock">确定</i-Button>
+                    </div>
+                </Modal>
+            </div>
         </div>
     </div>
 
@@ -156,63 +230,27 @@
         <Row class-name="layout-menu" type="flex">
             <i-col :span="spanLeft" class="layout-menu-left">
                 <i-menu @on-select="menuItemClick" accordion theme="dark" width="auto">
-                    <!--
-                    <submenu name="1">
-                        <template slot="title">
-                            <Icon type="ios-paper"></Icon>
-                            内容管理
-                        </template>
-                        <menu-Item id="m1-1" name="m1-1">文章管理</menu-Item>
-                        <menu-Item id="m1-2" name="m1-2">评论管理</menu-Item>
-                        <menu-Item id="m1-3" name="m1-3">举报管理</menu-Item>
-                    </submenu>
-                    <submenu name="2">
-                        <template slot="title">
-                            <Icon type="ios-people"></Icon>
-                            用户管理
-                        </template>
-                        <menu-Item id="m2-1" name="m2-1">新增用户</menu-Item>
-                        <menu-Item id="m2-2" name="m2-2">活跃用户</menu-Item>
-                    </submenu>
-                    <submenu name="3">
-                        <template slot="title">
-                            <Icon type="stats-bars"></Icon>
-                            统计分析
-                        </template>
-                        <menu-Group title="使用">
-                            <menu-Item id="m3-1" name="m3-1">新增和启动</menu-Item>
-                            <menu-Item id="m3-2" name="m3-2">活跃分析</menu-Item>
-                            <menu-Item id="m3-3" name="m3-3">时段分析</menu-Item>
-                        </menu-Group>
-                        <menu-Group title="留存">
-                            <menu-Item id="m3-4" name="m3-4">用户留存</menu-Item>
-                            <menu-Item id="m3-5" name="m3-5">流失用户</menu-Item>
-                        </menu-Group>
-                        <menu-Item id="m3-6" name="m6-6">其他统计</menu-Item>
-                    </submenu>
-                     -->
-
                     <submenu v-for="menu in menus" name="1">
                         <template slot="title">
-                            <Icon :type="menu.icon"></Icon>
-                            {{ menu.title }}
+                            <Icon :size="iconSize" :type="menu.icon"></Icon>
+                            <span class="layout-item-hidden">{{ menu.title }}</span>
                         </template>
 
                         <template v-for = "group in menu.childs">
 
-                        <menu-Group v-if="group.leaf" :title="group.title">
+                        <menu-Group class="layout-item-hidden" v-if="group.leaf" :title="group.title">
 
                             <!-- 加载自定义属性 url -->
                             <menu-Item v-for="l in group.childs" :url="l.url" :icon="l.icon" :id="l.name" :name="l.name">
                                 <Icon :type="l.icon"></Icon>
-                                {{l.title}}
+                                <span >{{l.title}}</span>
                             </menu-Item>
 
                         </menu-Group>
 
-                        <menu-Item v-else :id="group.name" :url="group.url" :icon="group.icon" :name="group.name">
+                        <menu-Item class="layout-item-hidden" v-else :id="group.name" :url="group.url" :icon="group.icon" :name="group.name">
                             <Icon :type="group.icon"></Icon>
-                            {{group.title}}
+                            <span >{{group.title}}</span>
                         </menu-Item>
 
                         </template>
@@ -246,11 +284,12 @@
         new Vue({
             el: '#app',
             data:{
-                tabSelected:"0",
                 jwt:"${requestScope.jwt}",
+                menus:${requestScope.menu},
+                tabSelected:"mainframe",
+                modalLock:false,
                 spanLeft: 3,
                 spanRight: 21,
-                menus:${requestScope.menu},
                 tabItems:[]
             },
             created:function(){
@@ -295,14 +334,31 @@
                         //this.tabItems.splice(parseInt(del),1); //删除数组元素
                     }
                 },
-                toggleClick () {
-                    if (this.spanLeft === 3) {
-                        this.spanLeft = 1;
-                        this.spanRight = 23;
-                    } else {
-                        this.spanLeft = 3;
-                        this.spanRight = 21;
+                headMenuItemClick(name){
+                    //切换菜单隐藏显示
+                    if(name=="toggleMenu"){
+                        if (this.spanLeft === 3) {
+                            this.spanLeft = 1;
+                            this.spanRight = 23;
+                        } else {
+                            this.spanLeft = 3;
+                            this.spanRight = 21;
+                        }
                     }
+                    //锁屏
+                    else if(name=="lockSystem"){
+                        this.modalLock=true;
+                    }
+                    //提出登录
+                    else if(name=="logOut"){
+                        window.location.href="${ctx}/login.jsp";
+                    }
+                    else{
+                        alert(name)
+                    }
+                },
+                unLock(){
+                    this.modalLock=false;
                 }
             }
         });

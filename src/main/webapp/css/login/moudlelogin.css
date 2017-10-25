@@ -34,9 +34,9 @@ html,body,h1,h2,h3,h4,h5,h6{font-family:"Helvetica Neue", Helvetica, Arial, "Mic
 .ModuleLogin-main .tUserImg{ background:url(../../images/login/tIcon-user.png) 0 0 no-repeat; height:20px; padding-left:20px; position:absolute; left:10px; top:16px;}
 .ModuleLogin-main .tPasswordImg{background:url(../../images/login/tIcon-password.png) 0 0 no-repeat; height:20px; padding-left:20px; position:absolute; left:10px; top:16px;}
 
-.ModuleLogin-main .tSubmit{ background-color:#29a860; font-size:20px; display:block; width:100%; border:0; color:#fff; height:50px; cursor:pointer; border-radius:5px;}
+.ModuleLogin-main .tSubmit{ background-color:#2b85e4; font-size:20px; display:block; width:100%; border:0; color:#fff; height:50px; cursor:pointer; border-radius:5px;}
 .ModuleLogin-main .tResetPassword{padding-top:10px; text-align:right;}
-.ModuleLogin-main .tResetPassword a{color:#29a860; text-decoration:none;}
+.ModuleLogin-main .tResetPassword a{color:#2b85e4; text-decoration:none;}
 .ModuleLogin-main .tResetPassword a:hover{ text-decoration:underline;}
 
 .ModuleLogin-main .tTips{ color:#fff; line-height:20px; position:relative; top:-10px; display:none;}

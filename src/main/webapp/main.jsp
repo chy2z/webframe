@@ -264,7 +264,7 @@
             methods: {
                 menuItemClick(name){
                     let title=$("#"+name).text();
-                    let url="${ctx}/login/menu/"+this.jwt+"?menu="+$("#"+name).attr("url");
+                    let url="${ctx}/login/menu/"+this.jwt+"?menu="+$("#"+name).attr("url")+"&mid="+name;
                     let icon=$("#"+name).attr("icon");
                     let id="mainframe"+name;
                     let extis=false;

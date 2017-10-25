@@ -42,7 +42,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         logger.info("{}:{}","拦截请求",url);
 
-        //logger.info("{}:{}","jwt",request.getParameter("jwt"));
+        logger.info("{}:{}","jwt",request.getParameter("jwt"));
 
 
         /*

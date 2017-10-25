@@ -101,19 +101,21 @@
 
         var pageHelper=null;
 
+        var testBut={
+            butSearch:true,
+            butAdd:true,
+            butEdit:true,
+            butDel:true,
+            butLook:true,
+            butExport:true,
+            butRefresh:true
+        };
+
         new Vue({
             el: '#app',
             data: {
                 jwt:"${requestScope.jwt}",
-                butShow:{
-                    isSearchShow:true,
-                    isAddShow:true,
-                    isEditShow:true,
-                    isDelShow:true,
-                    isLookShow:true,
-                    isExportShow:true,
-                    isRefreshShow:true
-                },
+                butShow:${requestScope.rightBut},
                 pageCroporation:{
                     showElevator:true,
                     showTotal:true,

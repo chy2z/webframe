@@ -1,6 +1,7 @@
 package com.springmvc.mapper;
 
 import com.springmvc.model.MenuItem;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,7 +18,11 @@ public interface MenuItemMapper {
 
     int updateByPrimaryKey(MenuItem record);
 
-    List<MenuItem> selectAll();
+    List<MenuItem> selectMenuAll();
 
-    List<MenuItem> selectByRole(String roleName);
+    List<MenuItem> selectMenuByRole(String roleName);
+
+    List<MenuItem> selectButAll(String parentId);
+
+    List<MenuItem> selectButByRole(@Param("roleName") String roleName,@Param("parentId")  String parentId);
 }

@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
 * @Title: MenuItemService
@@ -27,7 +29,7 @@ public class MenuItemService {
      * @return
      */
     public List<MenuItem> getMenuAll(){
-       return mimap.selectAll();
+       return mimap.selectMenuAll();
     }
 
     /**
@@ -36,11 +38,36 @@ public class MenuItemService {
      * @return
      */
     public List<MenuItem> getMenuByRoleName(String roleName){
-        return mimap.selectByRole(roleName);
+        return mimap.selectMenuByRole(roleName);
+    }
+
+    /**
+     * 获取页面全部按钮
+     * @param parentId
+     * @return
+     */
+    public List<MenuItem> getButAll(String parentId){
+        return mimap.selectButAll(parentId);
+    }
+
+    /**
+     * 获取角色页面全部按钮
+     * @param roleName
+     * @param parentId
+     * @return
+     */
+    public List<MenuItem> getBuByRoleName(String roleName,String parentId){
+        return mimap.selectButByRole(roleName,parentId);
     }
 
 
-    public String toIviewMenuforJson(List<MenuItem> listMenuItem){
+
+    /**
+     * 转换菜单 javascript json 数据
+     * @param listMenuItem
+     * @return
+     */
+    public String toIviewMenuForJson(List<MenuItem> listMenuItem){
 
         List<VMenu> menus=new ArrayList<VMenu>();
 
@@ -97,4 +124,19 @@ public class MenuItemService {
         return JsonUtil.writeValueAsString(menus);
     }
 
+    /**
+     * 转换按钮权限 javascript json 数据
+     * @param listMenuItem
+     * @return
+     */
+    public String toIviewButForJson(List<MenuItem> listMenuItem)
+    {
+        Map<String,Boolean> map=new HashMap<String,Boolean>();
+
+        for (MenuItem mi : listMenuItem) {
+            map.put(mi.getName(),true);
+        }
+
+        return JsonUtil.writeValueAsString(map);
+    }
 }

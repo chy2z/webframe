@@ -131,11 +131,11 @@ public class LoginControl extends BaseController {
 
 			//是否是超级管理员
 			if(SysConfig.superAdmin.equals(u.getIsadmin())){
-				model.addAttribute("menu",miService.toIviewMenuforJson(miService.getMenuAll()));
+				model.addAttribute("menu",miService.toIviewMenuForJson(miService.getMenuAll()));
 			}
 			//不是超级管理员
 			else{
-				model.addAttribute("menu",miService.toIviewMenuforJson(miService.getMenuByRoleName(u.getIsadmin())));
+				model.addAttribute("menu",miService.toIviewMenuForJson(miService.getMenuByRoleName(u.getIsadmin())));
 			}
 
 			model.addAttribute("jwt", jwt);
@@ -154,11 +154,36 @@ public class LoginControl extends BaseController {
 	@RequestMapping(value="/menu/{jwt}",method = {RequestMethod.POST,RequestMethod.GET})
 	public String menu(@PathVariable("jwt") String jwt, HttpServletRequest request,Model model) {
 
-		String menu = (String) request.getParameter("menu");
+		String menu = (String) request.getParameter("menu"); //菜单url
+
+		String mid = (String) request.getParameter("mid");  //菜单id
 
 		logger.info("{}:{}","menu",menu);
 
-		model.addAttribute("jwt", jwt);
+		logger.info("{}:{}","mid",mid);
+
+		mid=mid.replace("m","");
+
+		UsersToken ut= utService.getUsersToken(jwt);
+
+		if(ut==null||mid==null){
+			return "redirect:../../login.jsp";
+		}
+		else
+		{
+			//获取用户按钮权限
+
+			Users u= uService.getUsers(ut.getUserid());
+
+			if(SysConfig.superAdmin.equals(u.getIsadmin())){
+				model.addAttribute("rightBut",miService.toIviewButForJson(miService.getButAll(mid)));
+			}
+			else{
+                model.addAttribute("rightBut",miService.toIviewButForJson(miService.getBuByRoleName(u.getIsadmin(),mid)));
+			}
+
+			model.addAttribute("jwt", jwt);
+		}
 
 		return menu;
 	}

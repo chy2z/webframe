@@ -1,6 +1,7 @@
 package com.springmvc.service;
 
 import com.springmvc.mapper.CorporationMapper;
+import com.springmvc.model.Corporation;
 import com.springmvc.model.PageHelper;
 import com.springmvc.util.JsonUtil;
 import com.springmvc.util.StringUtil;
@@ -16,6 +17,10 @@ public class CorporationService {
 
     @Autowired
     CorporationMapper cmap;
+
+    public boolean insert(Corporation c) {
+        return cmap.insertSelective(c) > 0;
+    }
 
     /**
      * 返回分页数据

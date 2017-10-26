@@ -1,6 +1,9 @@
 package com.springmvc.model;
 
+import java.util.Date;
+
 public class UsersToken {
+
     private Integer id;
 
     private Integer userid;
@@ -8,6 +11,8 @@ public class UsersToken {
     private String token;
 
     private String md5token;
+
+    private Date logintime;
 
     public Integer getId() {
         return id;
@@ -39,5 +44,13 @@ public class UsersToken {
 
     public void setMd5token(String md5token) {
         this.md5token = md5token == null ? null : md5token.trim();
+    }
+
+    public Date getLogintime() {
+        return logintime;
+    }
+
+    public void setLogintime(Date logintime) {
+        this.logintime = logintime;
     }
 }

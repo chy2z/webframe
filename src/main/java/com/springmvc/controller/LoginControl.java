@@ -5,6 +5,7 @@ import com.springmvc.config.SysConfig;
 import com.springmvc.model.RequestResult;
 import com.springmvc.model.Users;
 import com.springmvc.model.UsersToken;
+import com.springmvc.service.DepartmentService;
 import com.springmvc.service.MenuItemService;
 import com.springmvc.service.UsersService;
 import com.springmvc.service.UsersTokenService;
@@ -44,6 +45,9 @@ public class LoginControl extends BaseController {
 	@Autowired
 	MenuItemService miService;
 
+	@Autowired
+	DepartmentService departmentService;
+
 	/**
 	 * 测试
 	 * @return
@@ -54,13 +58,13 @@ public class LoginControl extends BaseController {
 	}
 
 	/**
-	 * 获取token（测试）
+	 * 获取token
 	 * @param request
 	 * @param response
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/validateLogon")
+	@RequestMapping(value = "/validateLogon",method = {RequestMethod.POST})
 	public RequestResult validateLogon(HttpServletRequest request, HttpServletResponse response) {
 		RequestResult result=new RequestResult();
 		String uName = (String) request.getParameter("uname");
@@ -98,6 +102,7 @@ public class LoginControl extends BaseController {
 		ut.setUserid(user.getId());
 		ut.setToken(token);
 		ut.setMd5token(SecurityUtil.MD5_32(token));
+		ut.setLogintime(new Date());
 
 		if(ut.getId()==null) {
 			utService.insert(ut);
@@ -139,6 +144,12 @@ public class LoginControl extends BaseController {
 			}
 
 			model.addAttribute("jwt", jwt);
+
+			model.addAttribute("user", u);
+
+			model.addAttribute("loginTime",DateUtil.formatDate(ut.getLogintime()));
+
+			model.addAttribute("depart",departmentService.getDepart(u.getDepart()).getName());
 		}
 
 		return "forward:../../main.jsp";
@@ -188,4 +199,38 @@ public class LoginControl extends BaseController {
 		return menu;
 	}
 
+	/**
+	 * 解锁
+	 * @param jwt
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/unLock/{jwt}",method = {RequestMethod.POST})
+	public RequestResult unLock(@PathVariable("jwt") String jwt,HttpServletRequest request,HttpServletResponse response){
+
+		String pwd = (String) request.getParameter("pwd");
+
+		UsersToken ut= utService.getUsersToken(jwt);
+
+		RequestResult result=new RequestResult();
+
+		if(pwd==null){
+			result.setFail("请输入密码！");
+		}
+		else if(jwt==null||ut==null) {
+			result.setFail("无权限！");
+		}
+		else{
+			if(SecurityUtil.MD5_16(pwd).equals(uService.getUsers(ut.getUserid()).getPassword())){
+				result.setSucceed("密码正确",null);
+			}
+			else{
+				result.setFail("密码不正确！");
+			}
+		}
+
+		return result;
+	}
 }

@@ -6,11 +6,11 @@
     <result column="userId" jdbcType="INTEGER" property="userid" />
     <result column="token" jdbcType="VARCHAR" property="token" />
     <result column="md5Token" jdbcType="VARCHAR" property="md5token" />
+    <result column="loginTime" jdbcType="TIMESTAMP" property="logintime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, userId, token, md5Token
+    id, userId, token, md5Token,loginTime
   </sql>
-
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -39,10 +39,10 @@
   </delete>
 
   <insert id="insert" parameterType="com.springmvc.model.UsersToken">
-    insert into users_token (id, userId, token, 
-      md5Token)
-    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{token,jdbcType=VARCHAR}, 
-      #{md5token,jdbcType=VARCHAR})
+    insert into users_token (id, userId, token,
+    md5Token, loginTime)
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{token,jdbcType=VARCHAR},
+    #{md5token,jdbcType=VARCHAR}, #{logintime,jdbcType=TIMESTAMP})
   </insert>
 
   <insert id="insertSelective" parameterType="com.springmvc.model.UsersToken">
@@ -60,6 +60,9 @@
       <if test="md5token != null">
         md5Token,
       </if>
+      <if test="logintime != null">
+        loginTime,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -73,6 +76,9 @@
       </if>
       <if test="md5token != null">
         #{md5token,jdbcType=VARCHAR},
+      </if>
+      <if test="logintime != null">
+        #{logintime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -89,6 +95,9 @@
       <if test="md5token != null">
         md5Token = #{md5token,jdbcType=VARCHAR},
       </if>
+      <if test="logintime != null">
+        loginTime = #{logintime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -97,7 +106,8 @@
     update users_token
     set userId = #{userid,jdbcType=INTEGER},
       token = #{token,jdbcType=VARCHAR},
-      md5Token = #{md5token,jdbcType=VARCHAR}
+      md5Token = #{md5token,jdbcType=VARCHAR},
+      loginTime = #{logintime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

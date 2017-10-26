@@ -29,9 +29,8 @@
             /* 上下间距 60px */
             padding: 60px 0;
             border: 0px solid #d7dde4;
-
             border-radius: 4px;
-            overflow: hidden;
+            overflow:hidden;
         }
 
         .my-layout-top{
@@ -61,7 +60,7 @@
 <body>
 <div id="app">
     <div class="my-layout">
-        <Row class-name="my-layout-top" justify="end" align="middle" type="flex">
+        <Row id="top" class-name="my-layout-top" justify="end" align="middle" type="flex">
             <i-col span="6"></i-col >
             <i-col span="18">
                 <div style="float: right;margin: 0 5px;">
@@ -71,7 +70,7 @@
         </Row>
         <Row class-name="my-layout-body" type="flex">
             <i-col span="24">
-                <i-Table :show-header="tableCroporation.showHeader" :loading="tableCroporation.pageLoading"
+                <i-Table :height="tableCroporation.height" :show-header="tableCroporation.showHeader" :loading="tableCroporation.pageLoading"
                          :stripe="tableCroporation.showStripe" :border="tableCroporation.showBorder"
                          :highlight-row="tableCroporation.highlightRow" :size="tableCroporation.tableSize"
                          :columns="tableCroporation.columnsCorpration" :data="tableCroporation.dataCorpration"></i-Table>
@@ -94,39 +93,71 @@
 
         </Row>
     </div>
+
+
+    <Modal v-model="formModal.modalAdd" :mask-closable="false" :styles="{top: '20px'}" :width="500">
+        <p slot="header" style="text-align:center">
+            <Icon size="16" type="compose"></Icon>
+            <span style="letter-spacing: 1px;font-size:16px;color:#2b85e4;font-weight:700;">增加组织结构</span>
+        </p>
+        <div style="text-align:center">
+            <i-Form ref="formValidateAdd" :model="formValidateAdd" :rules="ruleValidateAdd" label-position="left" label-width="50"  >
+                <Form-Item label="名称" prop="name">
+                    <i-Input v-model="formValidateAdd.name" placeholder="请输入名称"></i-Input>
+                </Form-Item>
+                <Form-Item label="编号" prop="code">
+                    <i-Input v-model="formValidateAdd.code" placeholder="请输入编号"></i-Input>
+                </Form-Item>
+            </i-Form>
+        </div>
+        <div slot="footer">
+            <i-Button type="test" size="large" @click="modalAddCancel" >取消</i-Button>
+            <i-Button type="primary" size="large"  :loading="formModal.addOkLoading" @click="modalAddOk" >确定</i-Button>
+        </div>
+    </Modal>
+
 </div>
 </body>
 <script>
     window.onload=function() {
-
+        var domain="${ctx}";
+        var corporationInsert_url=domain+"/corporation/insert?jwt=${requestScope.jwt}";
         var pageHelper=null;
-
-        var testBut={
-            butSearch:true,
-            butAdd:true,
-            butEdit:true,
-            butDel:true,
-            butLook:true,
-            butExport:true,
-            butRefresh:true
-        };
 
         new Vue({
             el: '#app',
             data: {
                 jwt:"${requestScope.jwt}",
                 butShow:${requestScope.rightBut},
+                formModal:{
+                    modalAdd:false,
+                    addOkLoading:false
+                },
+                formValidateAdd:{
+                    name:"",
+                    code:""
+                },
+                ruleValidateAdd:{
+                    name: [
+                        { required: true, message: '名称不能为空', trigger: 'blur' }
+                    ],
+                    code: [
+                        { required: true, message: '编号不能为空', trigger: 'blur' }
+                    ]
+                },
                 pageCroporation:{
                     showElevator:true,
                     showTotal:true,
                     showSizer:true,
                     placement:"top",
-                    pageSize:1,
-                    pageSizeOpts:[1,10,20,30,50],
+                    pageSize:10,
+                    pageSizeOpts:[10,20,30,50],
                     pageNo:1,
-                    totalCount:2
+                    totalCount:2,
+                    orderBy:" id desc "
                 },
                 tableCroporation:{
+                    height:200,
                     pageLoading:true,
                     showBorder: true,
                     showStripe: true,
@@ -155,20 +186,25 @@
             },
             created:function(){
                 pageHelper=new pageHepler("${ctx}/corporation/pagination?jwt="+this.jwt,this.tableCroporation,this.pageCroporation);
-                pageHelper.load(this.pageCroporation.pageNo,this.pageCroporation.pageSize,null,null);
+                pageHelper.load(this.pageCroporation.pageNo,this.pageCroporation.pageSize,null,this.pageCroporation.orderBy);
+            },
+            mounted:function () {
+                //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条
+                this.tableCroporation.height=$(".my-layout-body").height();
             },
             methods:{
                 pageChange(index){
                     pageHelper.pageIndexChanging(index);
                 },
                 pageSizeChange(pageSize){
-                    pageHelper.load(1,pageSize,null,null);
+                    pageHelper.load(1,pageSize,null,this.pageCroporation.orderBy);
                 },
                 butSearch(){
 
                 },
                 butAdd(){
-
+                    this.$refs['formValidateAdd'].resetFields();
+                    this.formModal.modalAdd=true;
                 },
                 butEdit(){
 
@@ -184,6 +220,48 @@
                 },
                 butRefresh(){
                     window.location.reload();
+                },
+                modalAddCancel(){
+                    this.formModal.modalAdd=false;
+                    this.formModal.addOkLoading=false;
+                },
+                modalAddOk(){
+                    this.$refs['formValidateAdd'].validate((valid) => {
+                        if (valid) {
+                            let vue=this;
+                            let data=vue.formValidateAdd;
+                            $.ajax({
+                                url: corporationInsert_url,
+                                type: "POST",
+                                dataType:"json",
+                                //设置请求头信息
+                                contentType : 'application/json;charset=utf-8',
+                                //将Json对象序列化成Json字符串，toJSON()需要引用jquery.json.min.js
+                                data: $.toJSON(data),
+                                beforeSend:function(){
+                                    vue.formModal.addOkLoading=true;
+                                },
+                                complete:function(){
+                                    vue.formModal.addOkLoading=false;
+                                },
+                                success: function(data){
+                                    if(data&&data.success){
+                                        vtoast(vue,data.tip);
+                                        vue.formModal.modalAdd=false;
+                                        vue.pageChange(1);
+                                    }
+                                    else{
+                                        valert(vue,data.tip);
+                                    }
+                                },
+                                error: function(res){
+                                    alert(res.responseText);
+                                }
+                            });
+                        } else {
+                           vtoast(this,'表单验证失败!');
+                        }
+                    });
                 }
             }
         });

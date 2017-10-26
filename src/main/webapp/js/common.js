@@ -15,7 +15,7 @@ function log(msg){
  * @param type    提示类型
  *
  */
-function alert(vue,content,title,type) {
+function valert(vue,content,title,type) {
     title=title||"信息提示";
     if(!type) {
         vue.$Modal.warning({
@@ -65,7 +65,7 @@ function alert(vue,content,title,type) {
  * @param vue
  * @param content
  */
-function confirm(vue,content,okEvent,cancelEvent){
+function vconfirm(vue,content,okEvent,cancelEvent){
     vue.$Modal.confirm({
         title: '确认提示框',
         content: content,
@@ -88,7 +88,7 @@ function confirm(vue,content,okEvent,cancelEvent){
  * @param type    类型
  * @param duration
  */
-function toast(vue,content,type,duration){
+function vtoast(vue,content,type,duration){
     duration=duration||4;
     if(!type) {
         vue.$Message.info({

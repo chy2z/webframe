@@ -3,6 +3,7 @@
 <%@ include file="taglib/taglibs.jsp"%>
 <%@ include file="taglib/import_iview.jsp"%>
 <%@ include file="taglib/import_jquery.jsp"%>
+<%@ include file="taglib/import_common.jsp"%>
 <html>
 <head>
     <title>主页</title>
@@ -71,6 +72,12 @@
         /* 头部右侧菜单项选中颜色和背景色一致 */
         .head-right-menu .ivu-menu-horizontal .ivu-menu-item-active {
             background: #2d8cf0;
+        }
+
+        /* 兼容获取浏览器，下拉菜单宽度不够 */
+        .head-right-menu .ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown{
+            width: 200px;
+            max-height: none;
         }
 
         .layout {
@@ -176,7 +183,7 @@
             </div>
             <div class="head-logo-left-title">后台管理系统</div>
             <div class="head-right-menu">
-                <i-Menu @on-select="headMenuItemClick" mode="horizontal" theme="primary" active-name="userinfo">
+                <i-Menu @on-select="headMenuItemClick" width="auto" mode="horizontal" theme="primary" active-name="userinfo">
                     <Menu-Item name="toggleMenu">
                         <Icon type="arrow-swap"></Icon>
                         折叠菜单
@@ -187,14 +194,15 @@
                             用户信息
                         </template>
                         <Menu-Group title="基本信息">
-                            <Menu-Item name="3-1">姓名:程鸿雁</Menu-Item>
-                            <Menu-Item name="3-2">部门:技术部</Menu-Item>
-                            <Menu-Item name="3-3">电话:18955545431</Menu-Item>
-                            <Menu-Item name="3-4">邮件:chy2z@163.com</Menu-Item>
-                            <Menu-Item name="3-5">角色:管理员</Menu-Item>
+                            <Menu-Item name="3-1"><Icon type="card"></Icon><Tooltip placement="top" content="姓名">${requestScope.user.name}</Tooltip></Menu-Item>
+                            <Menu-Item name="3-2"><Icon type="ios-flag"></Icon><Tooltip placement="top" content="部门">${requestScope.depart}</Tooltip></Menu-Item>
+                            <Menu-Item name="3-3"><Icon type="trophy"></Icon><Tooltip placement="top" content="职位">${requestScope.user.office}</Tooltip></Menu-Item>
+                            <Menu-Item name="3-4"><Icon type="ios-telephone"></Icon><Tooltip placement="top" content="电话">${requestScope.user.phone}</Tooltip></Menu-Item>
+                            <Menu-Item name="3-5"><Icon type="email"></Icon><Tooltip placement="top" content="邮件">${requestScope.user.email}</Tooltip></Menu-Item>
+                            <Menu-Item name="3-6"><Icon type="ribbon-b"></Icon><Tooltip placement="top" content="角色">${requestScope.user.isadmin}</Tooltip></Menu-Item>
                         </Menu-Group>
                         <Menu-Group title="其他信息">
-                            <Menu-Item name="3-6">登录:2017-10-10 11:23</Menu-Item>
+                            <Menu-Item name="3-7"><Icon type="ios-clock"></Icon><Tooltip placement="top" content="登录时间">${requestScope.loginTime}</Tooltip></Menu-Item>
                         </Menu-Group>
                     </Submenu>
                     <Menu-Item name="editPwd">
@@ -206,7 +214,7 @@
                         系统锁屏
                     </Menu-Item>
                     <Menu-Item name="logOut">
-                        <Icon type="log-out"></Icon>
+                        <Icon type="power"></Icon>
                         退出系统
                     </Menu-Item>
                 </i-Menu>
@@ -216,7 +224,7 @@
                         <span>系统锁定</span>
                     </p>
                     <div style="text-align:center">
-                        <p><i-Input size="large" icon="unlocked" placeholder="请输入密码解锁......" style="width: 300px"></i-Input></p>
+                        <p><i-Input  @on-enter="pwdEnter" element-id="ipwd" autocomplete="off" maxlength="25" type="password" size="large" icon="unlocked" placeholder="请输入密码解锁......" style="width: 300px"></i-Input></p>
                     </div>
                     <div slot="footer">
                         <i-Button type="error" size="large" long  @click="unLock">确定</i-Button>
@@ -281,6 +289,8 @@
 </body>
 <script>
     window.onload=function(){
+        var domain="${ctx}";
+        var unLock_url=domain+"/login/unLock/${requestScope.jwt}";
         new Vue({
             el: '#app',
             data:{
@@ -357,8 +367,34 @@
                         alert(name)
                     }
                 },
+                pwdEnter(){
+                    this.unLock();
+                },
                 unLock(){
-                    this.modalLock=false;
+                    if($("#ipwd").val()==""){
+                        valert(this,"请输入密码");
+                        return;
+                    }
+                    var vue=this;
+                    var data = {pwd:$("#ipwd").val()};
+                    $.ajax({
+                        url: unLock_url,
+                        type: "POST",
+                        data: data,
+                        success: function(data){
+                            if(data&&data.success){
+                                vue.modalLock=false;
+                                vtoast(vue,"解锁成功");
+                            }
+                            else{
+                              valert(vue,data.tip);
+                            }
+                        },
+                        error: function(res){
+                            alert(res.responseText);
+                        }
+                    });
+
                 }
             }
         });

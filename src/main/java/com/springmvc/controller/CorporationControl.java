@@ -68,4 +68,46 @@ public class CorporationControl {
 
         return  result;
     }
+
+    /**
+     * 修改
+     * @param c
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/update",method = {RequestMethod.POST})
+    public RequestResult update(@RequestBody Corporation c){
+        RequestResult result=new RequestResult();
+        if(null==c){
+            result.setFail("没有数据");
+        }
+        else{
+            if(cService.update(c)){
+                result.setSucceed("修改成功",null);
+            }
+            else{
+                result.setFail("没有数据");
+            }
+        }
+
+        return  result;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/delete",method = {RequestMethod.POST})
+    public RequestResult delete(String id){
+        RequestResult result=new RequestResult();
+        if(id==null){
+            result.setFail("没有数据");
+        }
+        else{
+            if(cService.delete(Integer.parseInt(id))){
+                result.setSucceed("删除成功",null);
+            }
+            else{
+                result.setFail("没有数据");
+            }
+        }
+        return result;
+    }
 }

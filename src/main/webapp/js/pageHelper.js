@@ -6,6 +6,34 @@
  */
 function pageHepler(url,ivTable,ivPage){
 
+    this.tableIivew=$.extend({
+        height:200,
+        pageLoading:true,
+        showBorder: true,
+        showStripe: true,
+        showHeader: true,
+        highlightRow:true,
+        showIndex: false,
+        showCheckbox: false,
+        fixedHeader: false,
+        tableSize: 'default',
+        selectRowIndex:-1,
+        columns:[],
+        dataTable:[]
+    },ivTable);
+
+    this.pageIview=$.extend({
+        showElevator:true,
+        showTotal:true,
+        showSizer:true,
+        placement:"top",
+        pageSize:10,
+        pageSizeOpts:[10,20,30,50],
+        pageNo:1,
+        totalCount:0,
+        orderBy:null
+    },ivPage);
+
     this.mPageSize=0;
 
     this.mpageNo=0;

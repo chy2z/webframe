@@ -218,6 +218,7 @@
                         退出系统
                     </Menu-Item>
                 </i-Menu>
+
                 <Modal v-model="modalLock" :closable="false" :mask-closable="false" :styles="{top: '250px'}" width="360">
                     <p slot="header" style="color:#f60;text-align:center">
                         <Icon type="information-circled"></Icon>
@@ -230,6 +231,33 @@
                         <i-Button type="error" size="large" long  @click="unLock">确定</i-Button>
                     </div>
                 </Modal>
+
+                <Modal v-model="modalEditPwd" :closable="false" :mask-closable="false" :styles="{top: '250px'}" width="400">
+                    <p slot="header" style="color:#f60;text-align:center">
+                        <Icon type="information-circled"></Icon>
+                        <span>修改密码</span>
+                    </p>
+                    <div style="text-align:center">
+                        <!--  111 -->
+                        <i-Form ref="formValidatePwd" :model="formValidatePwd" :rules="ruleValidatePwd" label-position="left" label-width="70"  >
+                            <Form-Item label="旧的密码" prop="oldPwd">
+                                <i-Input v-model="formValidatePwd.oldPwd" type="password" autocomplete="off" maxlength="25" placeholder="请输入原密码"></i-Input>
+                            </Form-Item>
+                            <Form-Item label="新的密码" prop="newPwd">
+                                <i-Input v-model="formValidatePwd.newPwd" type="password" autocomplete="off" maxlength="25" placeholder="请输入新密码"></i-Input>
+                            </Form-Item>
+                            <Form-Item label="确认密码" prop="newPwdSecond">
+                                <i-Input v-model="formValidatePwd.newPwdSecond" type="password" autocomplete="off" maxlength="25" placeholder="请确认密码"></i-Input>
+                            </Form-Item>
+                        </i-Form>
+                    </div>
+                    <div slot="footer">
+                        <i-Button type="text" size="large"   @click="modalEditPwdCancel">取消</i-Button>
+                        <i-Button type="error" size="large"   @click="modalEditPwdOk">确定</i-Button>
+                    </div>
+                </Modal>
+
+
             </div>
         </div>
     </div>
@@ -291,6 +319,7 @@
     window.onload=function(){
         var domain="${ctx}";
         var unLock_url=domain+"/login/unLock/${requestScope.jwt}";
+        var editPwd_url=domain+"/login/editPwd/${requestScope.jwt}";
         new Vue({
             el: '#app',
             data:{
@@ -298,9 +327,29 @@
                 menus:${requestScope.menu},
                 tabSelected:"mainframe",
                 modalLock:false,
+                modalEditPwd:false,
                 spanLeft: 3,
                 spanRight: 21,
-                tabItems:[]
+                tabItems:[],
+                formValidatePwd:{
+                    oldPwd:"",
+                    newPwd:"",
+                    newPwdSecond:""
+                },
+                ruleValidatePwd:{
+                    oldPwd: [
+                        { required: true, message: '旧密码不能为空', trigger: 'blur' },
+                        {type: 'string', min: 6, message: '密码不能少于6字', trigger: 'blur'}
+                    ],
+                    newPwd: [
+                        { required: true, message: '新密码不能为空', trigger: 'blur' },
+                        {type: 'string', min: 6, message: '密码不能少于6字', trigger: 'blur'}
+                    ],
+                    newPwdSecond: [
+                        { required: true, message: '确认密码不能为空', trigger: 'blur' },
+                        {type: 'string', min: 6, message: '密码不能少于6字', trigger: 'blur'}
+                    ]
+                }
             },
             created:function(){
                 document.querySelector("#mainframe").src="${ctx}/index.jsp";
@@ -359,13 +408,38 @@
                     else if(name=="lockSystem"){
                         this.modalLock=true;
                     }
-                    //提出登录
+                    //退出登录
                     else if(name=="logOut"){
                         window.location.href="${ctx}/login.jsp";
                     }
-                    else{
-                        alert(name)
+                    //编辑密码
+                    else if(name=="editPwd"){
+                        this.modalEditPwd=true;
+                        this.$refs['formValidatePwd'].resetFields();
                     }
+                    else{
+
+                    }
+                },
+                modalEditPwdCancel(){
+                    this.modalEditPwd=false;
+                },
+                modalEditPwdOk(){
+                    if(this.formValidatePwd.newPwd!=this.formValidatePwd.newPwdSecond){
+                        valert(this,"新的密码和确认密码不一样");
+                        return;
+                    }
+                    let vue=this;
+                    let data = {oldPwd:this.formValidatePwd.oldPwd,newPwd:this.formValidatePwd.newPwd};
+                    vajaxPost(editPwd_url,data,false,(result)=>{
+                        if(result&&result.success){
+                            vue.modalEditPwd=false;
+                            vtoast(vue,result.tip);
+                        }
+                        else{
+                            valert(vue,result.tip);
+                        }
+                    });
                 },
                 pwdEnter(){
                     this.unLock();
@@ -375,26 +449,17 @@
                         valert(this,"请输入密码");
                         return;
                     }
-                    var vue=this;
-                    var data = {pwd:$("#ipwd").val()};
-                    $.ajax({
-                        url: unLock_url,
-                        type: "POST",
-                        data: data,
-                        success: function(data){
-                            if(data&&data.success){
-                                vue.modalLock=false;
-                                vtoast(vue,"解锁成功");
-                            }
-                            else{
-                              valert(vue,data.tip);
-                            }
-                        },
-                        error: function(res){
-                            alert(res.responseText);
+                    let vue=this;
+                    let data = {pwd:$("#ipwd").val()};
+                    vajaxPost(unLock_url,data,false,(result)=>{
+                        if(result&&result.success){
+                            vue.modalLock=false;
+                            vtoast(vue,result.tip);
+                        }
+                        else{
+                            valert(vue,result.tip);
                         }
                     });
-
                 }
             }
         });

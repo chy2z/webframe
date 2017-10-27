@@ -46,6 +46,4 @@ public class UsersService {
 	public boolean updateUsers(Users u) {
 		return umap.updateByPrimaryKey(u) > 0;
 	}
-
-
 }

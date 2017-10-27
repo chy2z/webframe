@@ -55,6 +55,13 @@
             margin:0 0 -60px;
         }
 
+        .modal-title{
+            letter-spacing: 1px;
+            font-size:15px;
+            color:#2b85e4;
+            font-weight:700;
+        }
+
     </style>
 </head>
 <body>
@@ -70,11 +77,17 @@
         </Row>
         <Row class-name="my-layout-body" type="flex">
             <i-col span="24">
-                <i-Table :height="tableCroporation.height" :show-header="tableCroporation.showHeader" :loading="tableCroporation.pageLoading"
-                         :stripe="tableCroporation.showStripe" :border="tableCroporation.showBorder"
-                         :highlight-row="tableCroporation.highlightRow" :size="tableCroporation.tableSize"
-                         :columns="tableCroporation.columnsCorpration" :data="tableCroporation.dataCorpration"></i-Table>
-            </i-col >
+                <i-Table :height="tableCroporation.height"
+                         :show-header="tableCroporation.showHeader"
+                         :loading="tableCroporation.pageLoading"
+                         :stripe="tableCroporation.showStripe"
+                         :border="tableCroporation.showBorder"
+                         :highlight-row="tableCroporation.highlightRow"
+                         :size="tableCroporation.tableSize"
+                         :columns="tableCroporation.columnsCorpration"
+                         :data="tableCroporation.dataCorpration"
+                         @on-row-click="tableCroporationRowClick"></i-Table>
+            </i-col>
         </Row>
         <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
             <i-col  span="6"></i-col >
@@ -86,7 +99,8 @@
                          :placement="pageCroporation.placement"
                          :current:="pageCroporation.pageNo"
                          :total="pageCroporation.totalCount"
-                         :show-elevator="pageCroporation.showElevator" :show-total="pageCroporation.showTotal"
+                         :show-elevator="pageCroporation.showElevator"
+                         :show-total="pageCroporation.showTotal"
                          :show-sizer="pageCroporation.showSizer"></Page>
                 </div>
             </i-col >
@@ -98,7 +112,7 @@
     <Modal v-model="formModal.modalAdd" :mask-closable="false" :styles="{top: '20px'}" :width="500">
         <p slot="header" style="text-align:center">
             <Icon size="16" type="compose"></Icon>
-            <span style="letter-spacing: 1px;font-size:16px;color:#2b85e4;font-weight:700;">增加组织结构</span>
+            <span class="modal-title">{{formModal.title}}</span>
         </p>
         <div style="text-align:center">
             <i-Form ref="formValidateAdd" :model="formValidateAdd" :rules="ruleValidateAdd" label-position="left" label-width="50"  >
@@ -112,7 +126,7 @@
         </div>
         <div slot="footer">
             <i-Button type="test" size="large" @click="modalAddCancel" >取消</i-Button>
-            <i-Button type="primary" size="large"  :loading="formModal.addOkLoading" @click="modalAddOk" >确定</i-Button>
+            <i-Button type="primary" size="large"  v-show="formModal.isAddShow" :loading="formModal.addOkLoading" @click="modalAddOk" >确定</i-Button>
         </div>
     </Modal>
 
@@ -122,6 +136,8 @@
     window.onload=function() {
         var domain="${ctx}";
         var corporationInsert_url=domain+"/corporation/insert?jwt=${requestScope.jwt}";
+        var corporationUpdate_url=domain+"/corporation/update?jwt=${requestScope.jwt}";
+        var corporationDelete_url=domain+"/corporation/delete?jwt=${requestScope.jwt}";
         var pageHelper=null;
 
         new Vue({
@@ -130,10 +146,14 @@
                 jwt:"${requestScope.jwt}",
                 butShow:${requestScope.rightBut},
                 formModal:{
+                    title:"",
                     modalAdd:false,
-                    addOkLoading:false
+                    addOkLoading:false,
+                    isAddStatus:true,
+                    isAddShow:true
                 },
                 formValidateAdd:{
+                    id:0,
                     name:"",
                     code:""
                 },
@@ -153,7 +173,7 @@
                     pageSize:10,
                     pageSizeOpts:[10,20,30,50],
                     pageNo:1,
-                    totalCount:2,
+                    totalCount:0,
                     orderBy:" id desc "
                 },
                 tableCroporation:{
@@ -167,6 +187,7 @@
                     showCheckbox: false,
                     fixedHeader: false,
                     tableSize: 'default',
+                    selectRowIndex:-1,
                     columnsCorpration:[
                         {
                             title: '序号',
@@ -199,21 +220,79 @@
                 pageSizeChange(pageSize){
                     pageHelper.load(1,pageSize,null,this.pageCroporation.orderBy);
                 },
+                tableCroporationRowClick(data,index){
+                    this.tableCroporation.selectRowIndex=index;
+                },
                 butSearch(){
 
                 },
                 butAdd(){
                     this.$refs['formValidateAdd'].resetFields();
                     this.formModal.modalAdd=true;
+                    this.formModal.isAddStatus=true;
+                    this.formModal.isAddShow=true;
+                    this.formModal.title="增加组织结构";
                 },
                 butEdit(){
-
+                    if(this.tableCroporation.selectRowIndex>-1){
+                        this.$refs['formValidateAdd'].resetFields();
+                        this.formModal.modalAdd=true;
+                        this.formModal.isAddShow=true;
+                        this.formModal.isAddStatus=false;
+                        this.formModal.title="修改组织结构";
+                        //获取行记录
+                        let rowData=this.tableCroporation.dataCorpration[this.tableCroporation.selectRowIndex];
+                        let vue=this;
+                        //遍历属性
+                        $.each(rowData,function(key,value){
+                             if(vue.formValidateAdd[key]!=undefined){
+                                 vue.formValidateAdd[key]=value;
+                             }
+                        });
+                    }
+                    else{
+                        valert(this,"请选择一行记录修改");
+                    }
                 },
                 butDel(){
-
+                    if(this.tableCroporation.selectRowIndex>-1){
+                        vconfirm(this,"确认删除吗？",()=>{
+                            let rowData= this.tableCroporation.dataCorpration[this.tableCroporation.selectRowIndex];
+                            vajaxPost(corporationDelete_url,{id:rowData.id},false,(result)=>{
+                                if(result&&result.success){
+                                    this.tableCroporation.dataCorpration.splice(this.tableCroporation.selectRowIndex,1);
+                                    this.tableCroporation.selectRowIndex=-1;
+                                    vtoast(this,result.tip);
+                                }
+                                else{
+                                    valert(this,result.tip);
+                                }
+                            });
+                        });
+                    }
+                    else{
+                        valert(this,"请选择一行记录删除");
+                    }
                 },
                 butLook(){
-
+                    if(this.tableCroporation.selectRowIndex>-1){
+                        this.$refs['formValidateAdd'].resetFields();
+                        this.formModal.modalAdd=true;
+                        this.formModal.isAddShow=false;
+                        this.formModal.title="组织结构";
+                        //获取行记录
+                        let rowData=this.tableCroporation.dataCorpration[this.tableCroporation.selectRowIndex];
+                        let vue=this;
+                        //遍历属性
+                        $.each(rowData,function(key,value){
+                            if(vue.formValidateAdd[key]!=undefined){
+                                vue.formValidateAdd[key]=value;
+                            }
+                        });
+                    }
+                    else{
+                        valert(this,"请选择一行记录修改");
+                    }
                 },
                 butExport(){
 
@@ -226,42 +305,40 @@
                     this.formModal.addOkLoading=false;
                 },
                 modalAddOk(){
-                    this.$refs['formValidateAdd'].validate((valid) => {
-                        if (valid) {
-                            let vue=this;
-                            let data=vue.formValidateAdd;
-                            $.ajax({
-                                url: corporationInsert_url,
-                                type: "POST",
-                                dataType:"json",
-                                //设置请求头信息
-                                contentType : 'application/json;charset=utf-8',
-                                //将Json对象序列化成Json字符串，toJSON()需要引用jquery.json.min.js
-                                data: $.toJSON(data),
-                                beforeSend:function(){
-                                    vue.formModal.addOkLoading=true;
-                                },
-                                complete:function(){
-                                    vue.formModal.addOkLoading=false;
-                                },
-                                success: function(data){
-                                    if(data&&data.success){
-                                        vtoast(vue,data.tip);
+                        this.$refs['formValidateAdd'].validate((valid) => {
+                            if (valid) {
+                                let vue=this;
+                                let data=this.formValidateAdd;
+                                let url= this.formModal.isAddStatus?corporationInsert_url:corporationUpdate_url;
+                                vajaxPost(url,data,true,(result)=>{
+                                    if(result&&result.success){
+                                        vtoast(vue,result.tip);
                                         vue.formModal.modalAdd=false;
-                                        vue.pageChange(1);
+                                        if(vue.formModal.isAddStatus){
+                                            vue.pageChange(1);
+                                        }
+                                        else{
+                                            let rowData= vue.tableCroporation.dataCorpration[vue.tableCroporation.selectRowIndex];
+                                            $.each(data,function(key,value){
+                                                if(rowData[key]!=undefined){
+                                                    rowData[key]=value;
+                                                }
+                                            });
+                                        }
                                     }
                                     else{
-                                        valert(vue,data.tip);
+                                        valert(vue,result.tip);
                                     }
-                                },
-                                error: function(res){
-                                    alert(res.responseText);
-                                }
-                            });
-                        } else {
-                           vtoast(this,'表单验证失败!');
-                        }
-                    });
+                                },()=>{
+                                    vue.formModal.addOkLoading=true;
+                                },()=>{
+                                    vue.formModal.addOkLoading=false;
+                                });
+
+                            } else {
+                                vtoast(this,'表单验证失败!');
+                            }
+                        });
                 }
             }
         });

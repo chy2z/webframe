@@ -73,12 +73,12 @@ public class LoginControl extends BaseController {
 		//System.out.println("账户：" + uName);
 		//System.out.println("密码:" + uPwd);
 		if(uName.trim().equals("")||uPwd.trim().equals("")){
-		    result.setFail("用户名或者密码为空");
+		    result.setFail("用户名或密码为空");
 		    return  result;
 		}
 		Users user=uService.getUsers(uName, SecurityUtil.MD5_16(uPwd));
 		if(user==null){
-			result.setFail("用户不存在");
+			result.setFail("用户名或密码不正确");
 			return result;
 		}
 		Map<String, String> map = new HashMap<String, String>();
@@ -224,7 +224,7 @@ public class LoginControl extends BaseController {
 		}
 		else{
 			if(SecurityUtil.MD5_16(pwd).equals(uService.getUsers(ut.getUserid()).getPassword())){
-				result.setSucceed("密码正确",null);
+				result.setSucceed("解锁成功",null);
 			}
 			else{
 				result.setFail("密码不正确！");
@@ -232,5 +232,44 @@ public class LoginControl extends BaseController {
 		}
 
 		return result;
+	}
+
+	/**
+	 * 修改密码
+	 * @param jwt
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/editPwd/{jwt}",method = {RequestMethod.POST})
+	public RequestResult editPwd(@PathVariable("jwt") String jwt,HttpServletRequest request,HttpServletResponse response){
+		String oldPwd = (String) request.getParameter("oldPwd");
+		String newPwd = (String) request.getParameter("newPwd");
+		UsersToken ut= utService.getUsersToken(jwt);
+		RequestResult result=new RequestResult();
+		if(oldPwd==null||newPwd==null){
+			result.setFail("请输入密码！");
+		}
+		else if(jwt==null||ut==null) {
+			result.setFail("无权限！");
+		}
+		else{
+
+			Users user=uService.getUsers(ut.getUserid());
+
+			if(SecurityUtil.MD5_16(oldPwd).equals(user.getPassword())){
+
+				user.setPassword(SecurityUtil.MD5_16(newPwd));
+
+				uService.updateUsers(user);
+
+				result.setSucceed("修改密码成功",null);
+			}
+			else{
+				result.setFail("旧的密码不正确！");
+			}
+		}
+		return  result;
 	}
 }

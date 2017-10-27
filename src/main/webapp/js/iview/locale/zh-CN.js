@@ -43,9 +43,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -73,12 +70,12 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "/dist/locale/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 12:
+/***/ 13:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89,6 +86,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
     i: {
+        locale: 'zh-CN',
         select: {
             placeholder: '请选择',
             noMatch: '无匹配数据',
@@ -108,6 +106,7 @@ exports.default = {
             endTime: '结束时间',
             clear: '清空',
             ok: '确定',
+            datePanelLabel: '[yyyy年] [m月]',
             month: '月',
             month1: '1 月',
             month2: '2 月',
@@ -122,6 +121,7 @@ exports.default = {
             month11: '11 月',
             month12: '12 月',
             year: '年',
+            weekStartDay: '0',
             weeks: {
                 sun: '日',
                 mon: '一',

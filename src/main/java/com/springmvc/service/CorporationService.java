@@ -18,8 +18,32 @@ public class CorporationService {
     @Autowired
     CorporationMapper cmap;
 
+    /**
+     * 插入记录
+     * @param c
+     * @return
+     */
     public boolean insert(Corporation c) {
         return cmap.insertSelective(c) > 0;
+    }
+
+    /**
+     * 更新记录
+     * @param c
+     * @return
+     */
+    public boolean update(Corporation c) {
+        return cmap.updateByPrimaryKeySelective(c) > 0;
+    }
+
+
+    /**
+     * 删除记录
+     * @param id
+     * @return
+     */
+    public boolean delete(Integer id) {
+        return cmap.deleteByPrimaryKey(id) > 0;
     }
 
     /**

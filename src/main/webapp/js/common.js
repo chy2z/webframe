@@ -72,10 +72,10 @@ function vconfirm(vue,content,okEvent,cancelEvent){
         okText: '确定',
         cancelText: '取消',
         onOk: () => {
-            okEvent&&okEvent(vue);
+            okEvent&&okEvent();
         },
         onCancel: () => {
-            cancelEvent&&cancelEvent(vue);
+            cancelEvent&&cancelEvent();
         }
     });
 }
@@ -138,3 +138,47 @@ function vtoast(vue,content,type,duration){
     }
 }
 
+/**
+ * jquery ajax 请求
+ * @param url
+ * @param data
+ * @param dataTypeJson
+ * @param successEvnent
+ * @param completeEvnent
+ * @param beforeSendEvent
+ * @param errorEvent
+ */
+function vajaxPost(url,data,dataTypeJson,successEvnent,beforeSendEvent,completeEvnent,errorEvent){
+
+    if($==null){ alert("$不是对象"); return ; }
+
+    let ajaxConfig={
+        url: url,
+        type: "POST",
+        data: dataTypeJson?$.toJSON(data):data,
+        beforeSend:function(){
+            beforeSendEvent&&beforeSendEvent();
+        },
+        complete:function(){
+            completeEvnent&&completeEvnent();
+        },
+        success: function(result){
+            successEvnent&&successEvnent(result);
+        },
+        error: function(res){
+            alert(res.responseText);
+            errorEvent&&errorEvent(res);
+        }
+    };
+
+    if(dataTypeJson) {
+        ajaxConfig = $.extend(ajaxConfig, {
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8'
+        });
+    }
+
+    //log(ajaxConfig);
+
+    $.ajax(ajaxConfig);
+}

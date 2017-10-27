@@ -431,26 +431,16 @@
                         valert(this,"新的密码和确认密码不一样");
                         return;
                     }
-                    var vue=this;
-                    var data = {oldPwd:this.formValidatePwd.oldPwd,newPwd:this.formValidatePwd.newPwd};
-                    $.ajax({
-                        url: editPwd_url,
-                        type: "POST",
-                        data: data,
-                        success: function(data){
-                            if(data&&data.success){
-                                vue.modalEditPwd=false;
-                                vtoast(vue,data.tip);
-                            }
-                            else{
-                                valert(vue,data.tip);
-                            }
-                        },
-                        error: function(res){
-                            alert(res.responseText);
+                    let data = {oldPwd:this.formValidatePwd.oldPwd,newPwd:this.formValidatePwd.newPwd};
+                    vajaxPost(editPwd_url,data,false,(result)=>{
+                        if(result&&result.success){
+                            this.modalEditPwd=false;
+                            vtoast(this,result.tip);
+                        }
+                        else{
+                            valert(this,result.tip);
                         }
                     });
-
                 },
                 pwdEnter(){
                     this.unLock();
@@ -460,23 +450,14 @@
                         valert(this,"请输入密码");
                         return;
                     }
-                    var vue=this;
-                    var data = {pwd:$("#ipwd").val()};
-                    $.ajax({
-                        url: unLock_url,
-                        type: "POST",
-                        data: data,
-                        success: function(data){
-                            if(data&&data.success){
-                                vue.modalLock=false;
-                                vtoast(vue,data.tip);
-                            }
-                            else{
-                                valert(vue,data.tip);
-                            }
-                        },
-                        error: function(res){
-                            alert(res.responseText);
+                    let data = { pwd:$("#ipwd").val() };
+                    vajaxPost(unLock_url,data,false,(result)=>{
+                        if(result&&result.success){
+                            this.modalLock=false;
+                            vtoast(this,result.tip);
+                        }
+                        else{
+                            valert(this,result.tip);
                         }
                     });
                 }

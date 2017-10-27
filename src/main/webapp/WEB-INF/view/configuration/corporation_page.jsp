@@ -115,19 +115,44 @@
             <span class="modal-title">{{formModal.title}}</span>
         </p>
         <div style="text-align:center">
-            <i-Form ref="bindModel" :model="bindModel" :rules="ruleValidate" label-position="left" label-width="50"  >
+            <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate" label-position="left" label-width="50"  >
                 <Form-Item label="名称" prop="name">
-                    <i-Input v-model="bindModel.name" placeholder="请输入名称"></i-Input>
+                    <i-Input v-model="formModal.bindModel.name" placeholder="请输入名称"></i-Input>
                 </Form-Item>
                 <Form-Item label="编号" prop="code">
-                    <i-Input v-model="bindModel.code" placeholder="请输入编号"></i-Input>
+                    <i-Input v-model="formModal.bindModel.code" placeholder="请输入编号"></i-Input>
                 </Form-Item>
             </i-Form>
         </div>
         <div slot="footer">
             <i-Button type="text" size="large" @click="formModalCancel" >取消</i-Button>
-            <i-Button type="primary" size="large"  v-show="formModal.addButShow"
-                      :loading="formModal.addButLoading" @click="formModalOk" >确定</i-Button>
+            <i-Button type="primary" size="large"  @click="formModalOk"
+                      v-show="formModal.okButShow"
+                      :loading="formModal.okButLoading" >确定</i-Button>
+        </div>
+    </Modal>
+
+
+    <Modal v-model="queryModal.modalShow" :mask-closable="false" :styles="{top: '20px'}" :width="500">
+        <p slot="header" style="text-align:center">
+            <Icon size="16" type="search"></Icon>
+            <span class="modal-title">{{queryModal.title}}</span>
+        </p>
+        <div style="text-align:center">
+            <i-Form ref="queryModal.bindModel" :model="queryModal.bindModel" :rules="queryModal.ruleValidate" label-position="left" label-width="50"  >
+                <Form-Item label="名称" prop="name">
+                    <i-Input v-model="queryModal.bindModel.name" placeholder="请输入名称"></i-Input>
+                </Form-Item>
+                <Form-Item label="编号" prop="code">
+                    <i-Input v-model="queryModal.bindModel.code" placeholder="请输入编号"></i-Input>
+                </Form-Item>
+            </i-Form>
+        </div>
+        <div slot="footer">
+            <i-Button type="text" size="large" @click="queryModalCancel" >取消</i-Button>
+            <i-Button type="primary" size="large"  @click="queryModalOk"
+                      v-show="queryModal.okButShow"
+                      :loading="queryModal.okButLoading" >确定</i-Button>
         </div>
     </Modal>
 
@@ -162,27 +187,36 @@
                 jwt:"${requestScope.jwt}",
                 butShow:${requestScope.rightBut},
                 queryModal:{
-
+                    title:"条件查询",
+                    modalShow:false,
+                    okButShow:true,
+                    okButLoading:false,
+                    bindModel:{
+                        id:null,
+                        name:"",
+                        code:""
+                    },
+                    ruleValidate:{}
                 },
                 formModal:{
                     title:"",
                     modalShow:false,
-                    addButShow:true,
-                    addButLoading:false,
-                    isAddStatus:true
-                },
-                bindModel:{
-                    id:0,
-                    name:"",
-                    code:""
-                },
-                ruleValidate:{
-                    name: [
-                        { required: true, message: '名称不能为空', trigger: 'blur' }
-                    ],
-                    code: [
-                        { required: true, message: '编号不能为空', trigger: 'blur' }
-                    ]
+                    okButShow:true,
+                    okButLoading:false,
+                    isAddStatus:true,
+                    bindModel:{
+                        id:null,
+                        name:"",
+                        code:""
+                    },
+                    ruleValidate:{
+                        name: [
+                            { required: true, message: '名称不能为空', trigger: 'blur' }
+                        ],
+                        code: [
+                            { required: true, message: '编号不能为空', trigger: 'blur' }
+                        ]
+                    }
                 },
                 croporationTable:pageHelperCroporation.ivTable,
                 croporationPage:pageHelperCroporation.ivPage
@@ -205,28 +239,27 @@
                     pageHelperCroporation.setSelectRowIndex(index);
                 },
                 butSearch(){
-
+                    this.queryModal.modalShow=true;
                 },
                 butAdd(){
-                    this.$refs['bindModel'].resetFields();
+                    this.$refs['formModal.bindModel'].resetFields();
                     this.formModal.modalShow=true;
                     this.formModal.isAddStatus=true;
-                    this.formModal.addButShow=true;
+                    this.formModal.okButShow=true;
                     this.formModal.title="增加组织结构";
                 },
                 butEdit(){
                     if(pageHelperCroporation.getSelectRowIndex()>-1){
-                        this.$refs['bindModel'].resetFields();
+                        this.$refs['formModal.bindModel'].resetFields();
                         this.formModal.modalShow=true;
-                        this.formModal.addButShow=true;
+                        this.formModal.okButShow=true;
                         this.formModal.isAddStatus=false;
                         this.formModal.title="修改组织结构";
                         let rowData=pageHelperCroporation.getSelectRowData();
                         let vue=this;
-                        //遍历属性
                         $.each(rowData,function(key,value){
-                             if(vue.bindModel[key]!=undefined){
-                                 vue.bindModel[key]=value;
+                             if(typeof vue.formModal.bindModel[key]!=undefined){
+                                 vue.formModal.bindModel[key]=value;
                              }
                         });
                     }
@@ -256,17 +289,15 @@
                 },
                 butLook(){
                     if(pageHelperCroporation.getSelectRowIndex()>-1){
-                        this.$refs['bindModel'].resetFields();
+                        this.$refs['formModal.bindModel'].resetFields();
                         this.formModal.modalShow=true;
-                        this.formModal.isAddButShow=false;
+                        this.formModal.okButShow=false;
                         this.formModal.title="组织结构";
-                        //获取行记录
                         let rowData=pageHelperCroporation.getSelectRowData();
                         let vue=this;
-                        //遍历属性
                         $.each(rowData,function(key,value){
-                            if(vue.bindModel[key]!=undefined){
-                                vue.bindModel[key]=value;
+                            if(vue.formModal.bindModel[key]!=undefined){
+                                vue.formModal.bindModel[key]=value;
                             }
                         });
                     }
@@ -280,16 +311,31 @@
                 butRefresh(){
                     window.location.reload();
                 },
+                queryModalCancel(){
+                    this.queryModal.modalShow=false;
+                },
+                queryModalOk(){
+                    this.$refs['queryModal.bindModel'].validate((valid) => {
+                        if (valid) {
+
+                        }
+                        else{
+                            valert(this,'表单验证失败!');
+                        }
+                    });
+                },
                 formModalCancel(){
                     this.formModal.modalShow=false;
-                    this.formModal.addButLoading=false;
+                    this.formModal.okButLoading=false;
                 },
                 formModalOk(){
-                        this.$refs['bindModel'].validate((valid) => {
+                        this.$refs['formModal.bindModel'].validate((valid) => {
                             if (valid) {
                                 let vue=this;
                                 let url= this.formModal.isAddStatus?corporationInsert_url:corporationUpdate_url;
-                                let data=this.bindModel;
+                                let data=this.formModal.bindModel;
+
+                                log(data);
 
                                 if(this.formModal.isAddStatus&&data["id"]!=undefined){
                                     data["id"]=null;
@@ -315,13 +361,13 @@
                                         valert(vue,result.tip);
                                     }
                                 },()=>{
-                                    vue.formModal.addButLoading=true;
+                                    vue.formModal.okButLoading=true;
                                 },()=>{
-                                    vue.formModal.addButLoading=false;
+                                    vue.formModal.okButLoading=false;
                                 });
 
                             } else {
-                                vtoast(this,'表单验证失败!');
+                                valert(this,'表单验证失败!');
                             }
                         });
                 }

@@ -77,15 +77,15 @@
         </Row>
         <Row class-name="my-layout-body" type="flex">
             <i-col span="24">
-                <i-Table :height="tableCroporation.height"
-                         :show-header="tableCroporation.showHeader"
-                         :loading="tableCroporation.pageLoading"
-                         :stripe="tableCroporation.showStripe"
-                         :border="tableCroporation.showBorder"
-                         :highlight-row="tableCroporation.highlightRow"
-                         :size="tableCroporation.tableSize"
-                         :columns="tableCroporation.columnsCorpration"
-                         :data="tableCroporation.dataCorpration"
+                <i-Table :height="croporationTable.height"
+                         :show-header="croporationTable.showHeader"
+                         :loading="croporationTable.pageLoading"
+                         :stripe="croporationTable.showStripe"
+                         :border="croporationTable.showBorder"
+                         :highlight-row="croporationTable.highlightRow"
+                         :size="croporationTable.tableSize"
+                         :columns="croporationTable.columns"
+                         :data="croporationTable.dataTable"
                          @on-row-click="tableCroporationRowClick"></i-Table>
             </i-col>
         </Row>
@@ -94,14 +94,14 @@
             <i-col  span="18">
                 <div style="float: right;margin: 0 5px;">
                    <Page @on-change="pageChange" @on-page-size-change="pageSizeChange"
-                         :page-size="pageCroporation.pageSize"
-                         :page-size-opts="pageCroporation.pageSizeOpts"
-                         :placement="pageCroporation.placement"
-                         :current:="pageCroporation.pageNo"
-                         :total="pageCroporation.totalCount"
-                         :show-elevator="pageCroporation.showElevator"
-                         :show-total="pageCroporation.showTotal"
-                         :show-sizer="pageCroporation.showSizer"></Page>
+                         :page-size="croporationPage.pageSize"
+                         :page-size-opts="croporationPage.pageSizeOpts"
+                         :placement="croporationPage.placement"
+                         :current:="croporationPage.pageNo"
+                         :total="croporationPage.totalCount"
+                         :show-elevator="croporationPage.showElevator"
+                         :show-total="croporationPage.showTotal"
+                         :show-sizer="croporationPage.showSizer"></Page>
                 </div>
             </i-col >
 
@@ -109,24 +109,25 @@
     </div>
 
 
-    <Modal v-model="formModal.modalAdd" :mask-closable="false" :styles="{top: '20px'}" :width="500">
+    <Modal v-model="formModal.modalShow" :mask-closable="false" :styles="{top: '20px'}" :width="500">
         <p slot="header" style="text-align:center">
             <Icon size="16" type="compose"></Icon>
             <span class="modal-title">{{formModal.title}}</span>
         </p>
         <div style="text-align:center">
-            <i-Form ref="formValidateAdd" :model="formValidateAdd" :rules="ruleValidateAdd" label-position="left" label-width="50"  >
+            <i-Form ref="bindModel" :model="bindModel" :rules="ruleValidate" label-position="left" label-width="50"  >
                 <Form-Item label="名称" prop="name">
-                    <i-Input v-model="formValidateAdd.name" placeholder="请输入名称"></i-Input>
+                    <i-Input v-model="bindModel.name" placeholder="请输入名称"></i-Input>
                 </Form-Item>
                 <Form-Item label="编号" prop="code">
-                    <i-Input v-model="formValidateAdd.code" placeholder="请输入编号"></i-Input>
+                    <i-Input v-model="bindModel.code" placeholder="请输入编号"></i-Input>
                 </Form-Item>
             </i-Form>
         </div>
         <div slot="footer">
-            <i-Button type="test" size="large" @click="modalAddCancel" >取消</i-Button>
-            <i-Button type="primary" size="large"  v-show="formModal.isAddShow" :loading="formModal.addOkLoading" @click="modalAddOk" >确定</i-Button>
+            <i-Button type="text" size="large" @click="formModalCancel" >取消</i-Button>
+            <i-Button type="primary" size="large"  v-show="formModal.addButShow"
+                      :loading="formModal.addButLoading" @click="formModalOk" >确定</i-Button>
         </div>
     </Modal>
 
@@ -138,57 +139,8 @@
         var corporationInsert_url=domain+"/corporation/insert?jwt=${requestScope.jwt}";
         var corporationUpdate_url=domain+"/corporation/update?jwt=${requestScope.jwt}";
         var corporationDelete_url=domain+"/corporation/delete?jwt=${requestScope.jwt}";
-        var pageHelper=null;
-
-        new Vue({
-            el: '#app',
-            data: {
-                jwt:"${requestScope.jwt}",
-                butShow:${requestScope.rightBut},
-                formModal:{
-                    title:"",
-                    modalAdd:false,
-                    addOkLoading:false,
-                    isAddStatus:true,
-                    isAddShow:true
-                },
-                formValidateAdd:{
-                    id:0,
-                    name:"",
-                    code:""
-                },
-                ruleValidateAdd:{
-                    name: [
-                        { required: true, message: '名称不能为空', trigger: 'blur' }
-                    ],
-                    code: [
-                        { required: true, message: '编号不能为空', trigger: 'blur' }
-                    ]
-                },
-                pageCroporation:{
-                    showElevator:true,
-                    showTotal:true,
-                    showSizer:true,
-                    placement:"top",
-                    pageSize:10,
-                    pageSizeOpts:[10,20,30,50],
-                    pageNo:1,
-                    totalCount:0,
-                    orderBy:" id desc "
-                },
-                tableCroporation:{
-                    height:200,
-                    pageLoading:true,
-                    showBorder: true,
-                    showStripe: true,
-                    showHeader: true,
-                    highlightRow:true,
-                    showIndex: false,
-                    showCheckbox: false,
-                    fixedHeader: false,
-                    tableSize: 'default',
-                    selectRowIndex:-1,
-                    columnsCorpration:[
+        var pageHelperCroporation=new pageHepler("${ctx}/corporation/pagination?jwt=${requestScope.jwt}",{
+                    columns: [
                         {
                             title: '序号',
                             key: 'id'
@@ -201,52 +153,80 @@
                             title: '编号',
                             key: 'code'
                         }
+                    ]
+            },{orderBy:" id desc "});
+
+        new Vue({
+            el: '#app',
+            data: {
+                jwt:"${requestScope.jwt}",
+                butShow:${requestScope.rightBut},
+                queryModal:{
+
+                },
+                formModal:{
+                    title:"",
+                    modalShow:false,
+                    addButShow:true,
+                    addButLoading:false,
+                    isAddStatus:true
+                },
+                bindModel:{
+                    id:0,
+                    name:"",
+                    code:""
+                },
+                ruleValidate:{
+                    name: [
+                        { required: true, message: '名称不能为空', trigger: 'blur' }
                     ],
-                    dataCorpration:[]
-                }
+                    code: [
+                        { required: true, message: '编号不能为空', trigger: 'blur' }
+                    ]
+                },
+                croporationTable:pageHelperCroporation.ivTable,
+                croporationPage:pageHelperCroporation.ivPage
             },
             created:function(){
-                pageHelper=new pageHepler("${ctx}/corporation/pagination?jwt="+this.jwt,this.tableCroporation,this.pageCroporation);
-                pageHelper.load(this.pageCroporation.pageNo,this.pageCroporation.pageSize,null,this.pageCroporation.orderBy);
+                pageHelperCroporation.load(null);
             },
             mounted:function () {
                 //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条
-                this.tableCroporation.height=$(".my-layout-body").height();
+                pageHelperCroporation.setHeight($(".my-layout-body").height());
             },
             methods:{
                 pageChange(index){
-                    pageHelper.pageIndexChanging(index);
+                    pageHelperCroporation.pageIndexChanging(index);
                 },
                 pageSizeChange(pageSize){
-                    pageHelper.load(1,pageSize,null,this.pageCroporation.orderBy);
+                    pageHelperCroporation.load(null);
                 },
                 tableCroporationRowClick(data,index){
-                    this.tableCroporation.selectRowIndex=index;
+                    pageHelperCroporation.setSelectRowIndex(index);
                 },
                 butSearch(){
 
                 },
                 butAdd(){
-                    this.$refs['formValidateAdd'].resetFields();
-                    this.formModal.modalAdd=true;
+                    this.$refs['bindModel'].resetFields();
+                    this.formModal.modalShow=true;
                     this.formModal.isAddStatus=true;
-                    this.formModal.isAddShow=true;
+                    this.formModal.addButShow=true;
                     this.formModal.title="增加组织结构";
                 },
                 butEdit(){
-                    if(this.tableCroporation.selectRowIndex>-1){
-                        this.$refs['formValidateAdd'].resetFields();
-                        this.formModal.modalAdd=true;
-                        this.formModal.isAddShow=true;
+                    if(pageHelperCroporation.getSelectRowIndex()>-1){
+                        this.$refs['bindModel'].resetFields();
+                        this.formModal.modalShow=true;
+                        this.formModal.addButShow=true;
                         this.formModal.isAddStatus=false;
                         this.formModal.title="修改组织结构";
-                        //获取行记录
-                        let rowData=this.tableCroporation.dataCorpration[this.tableCroporation.selectRowIndex];
+                        let rowData=pageHelperCroporation.getSelectRowData();
                         let vue=this;
                         //遍历属性
                         $.each(rowData,function(key,value){
-                             if(vue.formValidateAdd[key]!=undefined){
-                                 vue.formValidateAdd[key]=value;
+                             if(vue.bindModel[key]!=undefined){
+                                 vue.bindModel[key]=value;
                              }
                         });
                     }
@@ -255,13 +235,13 @@
                     }
                 },
                 butDel(){
-                    if(this.tableCroporation.selectRowIndex>-1){
+                    if(pageHelperCroporation.getSelectRowIndex()>-1){
                         vconfirm(this,"确认删除吗？",()=>{
-                            let rowData= this.tableCroporation.dataCorpration[this.tableCroporation.selectRowIndex];
+                            let rowData=pageHelperCroporation.getSelectRowData();
                             vajaxPost(corporationDelete_url,{id:rowData.id},false,(result)=>{
                                 if(result&&result.success){
-                                    this.tableCroporation.dataCorpration.splice(this.tableCroporation.selectRowIndex,1);
-                                    this.tableCroporation.selectRowIndex=-1;
+                                    pageHelperCroporation.deleteSelectedRow();
+                                    pageHelperCroporation.setSelectRowIndex(-1);
                                     vtoast(this,result.tip);
                                 }
                                 else{
@@ -275,18 +255,18 @@
                     }
                 },
                 butLook(){
-                    if(this.tableCroporation.selectRowIndex>-1){
-                        this.$refs['formValidateAdd'].resetFields();
-                        this.formModal.modalAdd=true;
-                        this.formModal.isAddShow=false;
+                    if(pageHelperCroporation.getSelectRowIndex()>-1){
+                        this.$refs['bindModel'].resetFields();
+                        this.formModal.modalShow=true;
+                        this.formModal.isAddButShow=false;
                         this.formModal.title="组织结构";
                         //获取行记录
-                        let rowData=this.tableCroporation.dataCorpration[this.tableCroporation.selectRowIndex];
+                        let rowData=pageHelperCroporation.getSelectRowData();
                         let vue=this;
                         //遍历属性
                         $.each(rowData,function(key,value){
-                            if(vue.formValidateAdd[key]!=undefined){
-                                vue.formValidateAdd[key]=value;
+                            if(vue.bindModel[key]!=undefined){
+                                vue.bindModel[key]=value;
                             }
                         });
                     }
@@ -300,25 +280,30 @@
                 butRefresh(){
                     window.location.reload();
                 },
-                modalAddCancel(){
-                    this.formModal.modalAdd=false;
-                    this.formModal.addOkLoading=false;
+                formModalCancel(){
+                    this.formModal.modalShow=false;
+                    this.formModal.addButLoading=false;
                 },
-                modalAddOk(){
-                        this.$refs['formValidateAdd'].validate((valid) => {
+                formModalOk(){
+                        this.$refs['bindModel'].validate((valid) => {
                             if (valid) {
                                 let vue=this;
-                                let data=this.formValidateAdd;
                                 let url= this.formModal.isAddStatus?corporationInsert_url:corporationUpdate_url;
+                                let data=this.bindModel;
+
+                                if(this.formModal.isAddStatus&&data["id"]!=undefined){
+                                    data["id"]=null;
+                                }
+
                                 vajaxPost(url,data,true,(result)=>{
                                     if(result&&result.success){
                                         vtoast(vue,result.tip);
-                                        vue.formModal.modalAdd=false;
+                                        vue.formModal.modalShow=false;
                                         if(vue.formModal.isAddStatus){
                                             vue.pageChange(1);
                                         }
                                         else{
-                                            let rowData= vue.tableCroporation.dataCorpration[vue.tableCroporation.selectRowIndex];
+                                            let rowData= pageHelperCroporation.getSelectRowData();
                                             $.each(data,function(key,value){
                                                 if(rowData[key]!=undefined){
                                                     rowData[key]=value;
@@ -330,9 +315,9 @@
                                         valert(vue,result.tip);
                                     }
                                 },()=>{
-                                    vue.formModal.addOkLoading=true;
+                                    vue.formModal.addButLoading=true;
                                 },()=>{
-                                    vue.formModal.addOkLoading=false;
+                                    vue.formModal.addButLoading=false;
                                 });
 
                             } else {

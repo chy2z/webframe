@@ -139,9 +139,11 @@
             display: none;
         }
 
+        /*
         .ivu-col {
             transition: width .2s ease-in-out;
         }
+        */
 
         /* tab选项卡头部和内容的间距  */
         .ivu-tabs-bar {
@@ -165,12 +167,12 @@
             opacity: 1;
         }
 
-        /*左侧菜单选中白色*/
+        /*左侧菜单选中白色
         .ivu-menu-dark.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu), .ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title-active:not(.ivu-menu-submenu) {
             color: #fff;
             border-right: 2px solid #fff;
         }
-
+        */
 
     </style>
 </head>
@@ -429,17 +431,26 @@
                         valert(this,"新的密码和确认密码不一样");
                         return;
                     }
-                    let vue=this;
-                    let data = {oldPwd:this.formValidatePwd.oldPwd,newPwd:this.formValidatePwd.newPwd};
-                    vajaxPost(editPwd_url,data,false,(result)=>{
-                        if(result&&result.success){
-                            vue.modalEditPwd=false;
-                            vtoast(vue,result.tip);
-                        }
-                        else{
-                            valert(vue,result.tip);
+                    var vue=this;
+                    var data = {oldPwd:this.formValidatePwd.oldPwd,newPwd:this.formValidatePwd.newPwd};
+                    $.ajax({
+                        url: editPwd_url,
+                        type: "POST",
+                        data: data,
+                        success: function(data){
+                            if(data&&data.success){
+                                vue.modalEditPwd=false;
+                                vtoast(vue,data.tip);
+                            }
+                            else{
+                                valert(vue,data.tip);
+                            }
+                        },
+                        error: function(res){
+                            alert(res.responseText);
                         }
                     });
+
                 },
                 pwdEnter(){
                     this.unLock();
@@ -449,15 +460,23 @@
                         valert(this,"请输入密码");
                         return;
                     }
-                    let vue=this;
-                    let data = {pwd:$("#ipwd").val()};
-                    vajaxPost(unLock_url,data,false,(result)=>{
-                        if(result&&result.success){
-                            vue.modalLock=false;
-                            vtoast(vue,result.tip);
-                        }
-                        else{
-                            valert(vue,result.tip);
+                    var vue=this;
+                    var data = {pwd:$("#ipwd").val()};
+                    $.ajax({
+                        url: unLock_url,
+                        type: "POST",
+                        data: data,
+                        success: function(data){
+                            if(data&&data.success){
+                                vue.modalLock=false;
+                                vtoast(vue,data.tip);
+                            }
+                            else{
+                                valert(vue,data.tip);
+                            }
+                        },
+                        error: function(res){
+                            alert(res.responseText);
                         }
                     });
                 }

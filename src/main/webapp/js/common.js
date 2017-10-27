@@ -2,8 +2,15 @@
  * 输出日志
  * @param msg
  */
-function log(msg){
-    console.log(msg);
+function log(msg,target){
+    if(!target){
+        console.log(msg);
+    }
+    else{
+        console.log("--------"+target+"--------");
+        console.log(msg);
+        console.log("--------"+target+"--------");
+    }
 }
 
 /**

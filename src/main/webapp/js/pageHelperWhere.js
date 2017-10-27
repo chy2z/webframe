@@ -1,5 +1,5 @@
 ﻿/**
- * 分页生成where组合条件
+ * where条件关系
  * @param _fieldName
  * @param _fieldValue
  * @param _dataType
@@ -27,6 +27,10 @@ function whereRelation(_fieldName,_fieldValue,_dataType,_relationValue,_operate,
    } 
 }
 
+/**
+ * 字段类别
+ * @type {{String: string, Int: string, Decimal: string, Float: string, Datatime: string}}
+ */
 var WhereDataType={
      String : "string",
      Int : "int",
@@ -35,8 +39,11 @@ var WhereDataType={
      Datatime : "datatime"
 }
 
-//whereRelation 数组对象
-function FormatWhere(whereRelationArry)
+/**
+ * 分页生成where查询条件
+ * @param whereRelationArry
+ */
+function pageHelperWhere(whereRelationArry)
 {
     //whereRelation  wr
     this.Like=function(wr){
@@ -75,7 +82,7 @@ function FormatWhere(whereRelationArry)
         }
     }
     
-    this.getWhereSql=function() {
+    this.getWhere=function() {
         var _self = this;
 
         var sb = "";

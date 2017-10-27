@@ -71,8 +71,11 @@
 
   <select id="getCount" resultType="int">
     select count(1) from corporation
-    <if test="where != null">where #{where,jdbcType=VARCHAR}</if>
-    <if test="orderBy != null">order by #{orderBy,jdbcType=VARCHAR}</if>
+    <!-- 1) 对于形如#{variable} 的变量，Mybatis会将其视为字符串值，在变量替换成功后，缺省地给变量值加上引号 -->
+    <!-- 2）对于形如${variable}的变量，Mybatis会将其视作直接变量，即在变量替换成功后，不会再给其加上引号。 -->
+    <!-- 此处用$ 不用 #-->
+    <if test="where != null">where ${where}</if>
+    <if test="orderBy != null">order by ${orderBy}</if>
   </select>
 
   <select id="selectPagination" resultMap="BaseResultMap">

@@ -141,15 +141,16 @@
         <div style="text-align:center">
             <i-Form ref="queryModal.bindModel" :model="queryModal.bindModel" :rules="queryModal.ruleValidate" label-position="left" label-width="50"  >
                 <Form-Item label="名称" prop="name">
-                    <i-Input v-model="queryModal.bindModel.name" placeholder="请输入名称"></i-Input>
+                    <i-Input element-id="qname" v-model="queryModal.bindModel.name" placeholder="请输入名称"></i-Input>
                 </Form-Item>
                 <Form-Item label="编号" prop="code">
-                    <i-Input v-model="queryModal.bindModel.code" placeholder="请输入编号"></i-Input>
+                    <i-Input element-id="qcode" v-model="queryModal.bindModel.code" placeholder="请输入编号"></i-Input>
                 </Form-Item>
             </i-Form>
         </div>
         <div slot="footer">
             <i-Button type="text" size="large" @click="queryModalCancel" >取消</i-Button>
+            <i-Button type="error" size="large" @click="queryModalReset" >重置</i-Button>
             <i-Button type="primary" size="large"  @click="queryModalOk"
                       v-show="queryModal.okButShow"
                       :loading="queryModal.okButLoading" >确定</i-Button>
@@ -314,10 +315,18 @@
                 queryModalCancel(){
                     this.queryModal.modalShow=false;
                 },
+                queryModalReset(){
+                    this.$refs['queryModal.bindModel'].resetFields();
+                },
                 queryModalOk(){
                     this.$refs['queryModal.bindModel'].validate((valid) => {
                         if (valid) {
-
+                                let WR = [];
+                                WR[WR.length] = new whereRelation("name", $("#qname").val(), "string", null, null, true);
+                                WR[WR.length] = new whereRelation("code", $("#qcode").val(), "string", null, null, true);
+                                //alert(new pageHelperWhere(WR).getWhere());
+                                pageHelperCroporation.load(new pageHelperWhere(WR).getWhere());
+                                this.queryModal.modalShow=false;
                         }
                         else{
                             valert(this,'表单验证失败!');

@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 
 
 /**
- * Created by chy on 2017/10/22.
- */
+* @Title: CorporationService
+* @Description: 组织结构业务
+* @author chy
+* @date 2017/10/28 17:17
+*/
 @Service
 public class CorporationService {
 

@@ -11,61 +11,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>
     <link rel="stylesheet" href="../../../css/default.css">
-    <style>
-        html, body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        #app {
-            height: 100%;
-        }
-
-        .my-layout {
-            width: 100%;
-            height: 100%;
-            /* 上下间距 60px */
-            padding: 60px 0;
-            border: 0px solid #d7dde4;
-            border-radius: 4px;
-            overflow:hidden;
-        }
-
-        .my-layout-top{
-            width: 100%;
-            height:60px;
-            /* 向上偏移 60px */
-            margin: -60px 0 0;
-        }
-
-
-        .my-layout-body{
-            width: 100%;
-            /* 占满剩余高度 */
-            height: 100%;
-            background: #eee;
-        }
-
-        .my-layout-bottom{
-            width: 100%;
-            height:60px;
-            /* 向下偏移 60px */
-            margin:0 0 -60px;
-        }
-
-        .modal-title{
-            letter-spacing: 1px;
-            font-size:15px;
-            color:#2b85e4;
-            font-weight:700;
-        }
-
-    </style>
 </head>
 <body>
-<div id="app">
+<div class="myapp" id="app">
     <div class="my-layout">
         <Row id="top" class-name="my-layout-top" justify="end" align="middle" type="flex">
             <i-col span="6"></i-col >
@@ -78,6 +26,7 @@
         <Row class-name="my-layout-body" type="flex">
             <i-col span="24">
                 <i-Table :height="croporationTable.height"
+                         :width="croporationTable.width"
                          :show-header="croporationTable.showHeader"
                          :loading="croporationTable.pageLoading"
                          :stripe="croporationTable.showStripe"

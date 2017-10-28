@@ -11,7 +11,8 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
      * @type {void|*}
      */
     this.ivTable=$.extend({
-        height:200,
+        width:0,
+        height:0,
         pageLoading:true,
         showBorder: true,
         showStripe: true,
@@ -36,7 +37,7 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
         showSizer:true,
         placement:"top",
         pageSize:10,
-        pageSizeOpts:[10,20,30,50],
+        pageSizeOpts:[10,20,30,50,100,200],
         pageNo:1,
         totalCount:0,
         orderBy:null
@@ -188,6 +189,14 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
      */
     this.setHeight=function(h){
         this.ivTable.height=h;
+    }
+
+    /**
+     * 设置宽度
+     * @param w
+     */
+    this.setWidth=function(w){
+        this.ivTable.width=w;
     }
 
 }

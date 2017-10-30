@@ -2,3 +2,4 @@
 <script type="text/javascript" src="${ctx}/js/common.js"></script>
 <script type="text/javascript" src="${ctx}/js/pageHelper.js"></script>
 <script type="text/javascript" src="${ctx}/js/pageHelperWhere.js"></script>
+<script type="text/javascript" src="${ctx}/js/selectHelper.js"></script>

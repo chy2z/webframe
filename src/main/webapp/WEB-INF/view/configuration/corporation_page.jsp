@@ -183,7 +183,7 @@
                     pageHelperCroporation.pageIndexChanging(index);
                 },
                 pageSizeChange(pageSize){
-                    pageHelperCroporation.load(null);
+                    pageHelperCroporation.pageIndexChanging(1);
                 },
                 tableCroporationRowClick(data,index){
                     pageHelperCroporation.setSelectRowIndex(index);

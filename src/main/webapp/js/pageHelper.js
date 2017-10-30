@@ -13,7 +13,7 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
     this.ivTable=$.extend({
         width:0,
         height:0,
-        pageLoading:true,
+        pageLoading:false,
         showBorder: true,
         showStripe: true,
         showHeader: true,
@@ -96,6 +96,8 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
                 var json=$.evalJSON(res);
 
                 my.ivTable.dataTable=json.result;
+
+                my.ivTable.selectRowIndex=-1;
 
                 my.ivPage.pageNo=json.pageNo;
 
@@ -181,6 +183,13 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
      */
     this.deleteSelectedRow=function(){
         this.ivTable.dataTable.splice(this.ivTable.selectRowIndex,1);
+    }
+
+    /**
+     * 清理数据
+     */
+    this.clearDataTable=function () {
+        this.ivTable.dataTable.splice(0,this.ivTable.dataTable.length);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.springmvc.service;
 
 import com.springmvc.mapper.DataDictionaryMapper;
+import com.springmvc.model.DataDictionary;
 import com.springmvc.model.PageHelper;
 import com.springmvc.util.JsonUtil;
 import com.springmvc.util.StringUtil;
@@ -18,6 +19,42 @@ public class DataDictionaryService {
 
     @Autowired
     DataDictionaryMapper ddmap;
+
+    /**
+     * 插入记录
+     * @param m
+     * @return
+     */
+    public boolean insert(DataDictionary m){
+        return ddmap.insertSelective(m)>0;
+    }
+
+    /**
+     * 更新记录
+     * @param m
+     * @return
+     */
+    public boolean update(DataDictionary m){
+        return ddmap.updateByPrimaryKeySelective(m)>0;
+    }
+
+    /**
+     * 删除记录
+     * @param id
+     * @return
+     */
+    public boolean delete(Integer id){
+        return  ddmap.deleteByPrimaryKey(id)>0;
+    }
+
+    /**
+     * 获取记录
+     * @param m
+     * @return
+     */
+    public int childCount(DataDictionary m){
+        return  ddmap.getChildCount("'dkey='"+m.getDkey()+"''",null);
+    }
 
     /**
      * 返回分页数据(字典关键字)

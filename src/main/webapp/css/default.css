@@ -11,6 +11,10 @@ html, body {
     height: 100%;
 }
 
+.my-box {
+    height: 100%;
+}
+
 .my-layout {
     width: 100%;
     height: 100%;

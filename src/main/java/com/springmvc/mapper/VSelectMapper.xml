@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.mapper.VSelectMapper">
+
+  <resultMap id="BaseResultMap" type="com.springmvc.model.iview.VSelect">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+    <result column="label" jdbcType="VARCHAR" property="label" />
+  </resultMap>
+
+  <select id="selectDataDictionaryDkey" resultMap="BaseResultMap">
+    select
+    DISTINCT dkey as value
+    from data_dictionary
+  </select>
+
+</mapper>

@@ -50,7 +50,7 @@
             width: 180px;
             height: 30px;
             font-size: 25px;
-            line-height: 25px;
+            line-height: 30px;
             margin: 25px 0;
             border-radius: 3px;
             text-align: center;

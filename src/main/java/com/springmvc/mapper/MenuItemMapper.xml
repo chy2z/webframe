@@ -13,6 +13,7 @@
     <result column="navigationImage" jdbcType="VARCHAR" property="navigationimage" />
     <result column="url" jdbcType="VARCHAR" property="url" />
   </resultMap>
+
   <sql id="Base_Column_List">
     id, name, parentId, level, but, leaf, lmage, toolImage, navigationImage, url
   </sql>
@@ -35,7 +36,7 @@
   <select id="selectButAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from menu_item where level='-1' and  parentId = #{parentId,jdbcType=VARCHAR}
+    from menu_item where level='-1' and leaf='-1' and  parentId = #{parentId,jdbcType=VARCHAR}
   </select>
 
 
@@ -53,7 +54,7 @@
     m.id, m.name, m.parentId, m.level, m.but, m.leaf, m.lmage, m.toolImage, m.navigationImage, m.url
     from menu_item m, role_menu_item r
     where r.menuItemId=m.id and r.roleName = #{roleName,jdbcType=VARCHAR}
-    and m.level='-1' and  m.parentId= #{parentId,jdbcType=VARCHAR}
+    and m.level='-1' and m.leaf=-1 and  m.parentId= #{parentId,jdbcType=VARCHAR}
   </select>
 
 
@@ -61,6 +62,7 @@
     delete from menu_item
     where id = #{id,jdbcType=VARCHAR}
   </delete>
+
   <insert id="insert" parameterType="com.springmvc.model.MenuItem">
     insert into menu_item (id, name, parentId, 
       level, but, leaf, lmage, 
@@ -71,6 +73,7 @@
       #{toolimage,jdbcType=VARCHAR}, #{navigationimage,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}
       )
   </insert>
+
   <insert id="insertSelective" parameterType="com.springmvc.model.MenuItem">
     insert into menu_item
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -138,6 +141,7 @@
       </if>
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.model.MenuItem">
     update menu_item
     <set>
@@ -171,6 +175,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.springmvc.model.MenuItem">
     update menu_item
     set name = #{name,jdbcType=VARCHAR},
@@ -184,4 +189,5 @@
       url = #{url,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
 </mapper>

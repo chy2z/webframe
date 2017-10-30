@@ -85,6 +85,8 @@ public class LoginControl extends BaseController {
 		map.put("id", user.getId().toString());
 		map.put("loginName", user.getLoginname());
 		map.put("name", user.getName());
+		map.put("depart", user.getDepart().toString());
+		map.put("corporationId", user.getCorporationid().toString());
 		map.put("role", user.getIsadmin());
 		map.put("loginTime", DateUtil.formatDate(new Date()));
 		try {
@@ -194,6 +196,10 @@ public class LoginControl extends BaseController {
 			}
 
 			model.addAttribute("jwt", jwt);
+
+			model.addAttribute("depart", u.getDepart().toString());
+
+			model.addAttribute("corporationId", u.getCorporationid().toString());
 		}
 
 		return menu;

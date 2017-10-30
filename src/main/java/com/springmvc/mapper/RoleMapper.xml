@@ -3,37 +3,41 @@
 <mapper namespace="com.springmvc.mapper.RoleMapper">
   <resultMap id="BaseResultMap" type="com.springmvc.model.Role">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="group" jdbcType="VARCHAR" property="group" />
+    <result column="corporationId" jdbcType="INTEGER" property="corporationid" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="memo" jdbcType="VARCHAR" property="memo" />
   </resultMap>
+
   <sql id="Base_Column_List">
-    id, group, name, memo
+    id, corporationid, name, memo
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from role
     where id = #{id,jdbcType=INTEGER}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from role
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.springmvc.model.Role">
-    insert into role (id, group, name, 
-      memo)
-    values (#{id,jdbcType=INTEGER}, #{group,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+    insert into role (id, corporationid, name,memo)
+    values (#{id,jdbcType=INTEGER}, #{corporationid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
       #{memo,jdbcType=VARCHAR})
   </insert>
+
   <insert id="insertSelective" parameterType="com.springmvc.model.Role">
     insert into role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="group != null">
-        group,
+      <if test="corporationid != null">
+        corporationid,
       </if>
       <if test="name != null">
         name,
@@ -46,8 +50,8 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="group != null">
-        #{group,jdbcType=VARCHAR},
+      <if test="corporationid != null">
+        #{corporationid,jdbcType=INTEGER},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
@@ -57,11 +61,12 @@
       </if>
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.model.Role">
     update role
     <set>
-      <if test="group != null">
-        group = #{group,jdbcType=VARCHAR},
+      <if test="corporationid != null">
+        corporationid = #{corporationid,jdbcType=INTEGER},
       </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
@@ -72,11 +77,39 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.springmvc.model.Role">
     update role
-    set group = #{group,jdbcType=VARCHAR},
+    set corporationid = #{corporationid,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       memo = #{memo,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getCount" resultType="int">
+    select count(1) from role
+    <!-- 1) 对于形如#{variable} 的变量，Mybatis会将其视为字符串值，在变量替换成功后，缺省地给变量值加上引号 -->
+    <!-- 2）对于形如${variable}的变量，Mybatis会将其视作直接变量，即在变量替换成功后，不会再给其加上引号。 -->
+    <!-- 此处用$ 不用 #-->
+    <if test="where != null">where ${where}</if>
+    <if test="orderBy != null">order by ${orderBy}</if>
+  </select>
+
+  <select id="selectPagination" resultMap="BaseResultMap">
+    select
+
+    <include refid="Base_Column_List" />
+
+    from role
+
+    <!-- 1) 对于形如#{variable} 的变量，Mybatis会将其视为字符串值，在变量替换成功后，缺省地给变量值加上引号 -->
+    <!-- 2）对于形如${variable}的变量，Mybatis会将其视作直接变量，即在变量替换成功后，不会再给其加上引号。 -->
+    <!-- 此处用$ 不用 #-->
+    <if test="where != null">where ${where}</if>
+    <if test="orderBy != null">order by ${orderBy}</if>
+
+    limit #{start},#{pageSize}
+
+  </select>
+
 </mapper>

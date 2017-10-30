@@ -36,6 +36,8 @@ public class JwtTokenUtil {
 				.withClaim("id", info.get("id"))
 				.withClaim("loginName", info.get("loginName"))
 				.withClaim("name", info.get("name"))
+				.withClaim("depart", info.get("depart"))
+				.withClaim("corporationId", info.get("corporationId"))
 				.withClaim("role", info.get("role"))
 				.withClaim("loginTime", info.get("loginTime"))
 				.sign(Algorithm.HMAC256(secret));
@@ -55,6 +57,8 @@ public class JwtTokenUtil {
 		logger.info("{}:{}","id",claims.get("id").asString());
 		logger.info("{}:{}","loginName",claims.get("loginName").asString());
 		logger.info("{}:{}","name",claims.get("name").asString());
+		logger.info("{}:{}","depart",claims.get("depart").asString());
+		logger.info("{}:{}","corporationId",claims.get("corporationId").asString());
 		logger.info("{}:{}","role",claims.get("role").asString());
 		logger.info("{}:{}","loginTime",claims.get("loginTime").asString());
 		return claims;

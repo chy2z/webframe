@@ -10,7 +10,7 @@ public class Role {
 
     private Integer id;
 
-    private String group;
+    private Integer corporationid;
 
     private String name;
 
@@ -24,12 +24,12 @@ public class Role {
         this.id = id;
     }
 
-    public String getGroup() {
-        return group;
+    public Integer getCorporationid() {
+        return corporationid;
     }
 
-    public void setGroup(String group) {
-        this.group = group == null ? null : group.trim();
+    public void setCorporationid(Integer corporationid) {
+        this.corporationid = corporationid;
     }
 
     public String getName() {

@@ -92,10 +92,16 @@ function vconfirm(vue,content,okEvent,cancelEvent){
         okText: '确定',
         cancelText: '取消',
         onOk: () => {
-            okEvent&&okEvent();
+            //防止关闭$Modal对话框冲突
+            setTimeout(() => {
+                okEvent&&okEvent();
+            },500);
         },
         onCancel: () => {
-            cancelEvent&&cancelEvent();
+            //防止关闭$Modal对话框冲突
+            setTimeout(() => {
+                cancelEvent&&cancelEvent();
+            },500);
         }
     });
 }

@@ -12,6 +12,7 @@
     select
     DISTINCT dkey as value
     from data_dictionary
+    where display=1
   </select>
 
 </mapper>

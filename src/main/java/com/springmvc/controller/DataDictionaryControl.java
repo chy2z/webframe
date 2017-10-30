@@ -80,13 +80,13 @@ public class DataDictionaryControl {
 
     @ResponseBody
     @RequestMapping(value = "/delete",method = {RequestMethod.POST})
-    public RequestResult delete(DataDictionary c){
+    public RequestResult delete(@RequestBody DataDictionary c){
         RequestResult result=new RequestResult();
         if(c==null){
             result.setFail("没有数据");
         }
         else{
-            if(ddService.childCount(c)>2) {
+            if(ddService.childCount(c)>1) {
                 if (ddService.delete(c.getId())) {
                     result.setSucceed("删除成功", null);
                 } else {

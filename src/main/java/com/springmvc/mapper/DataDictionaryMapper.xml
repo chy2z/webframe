@@ -105,25 +105,33 @@
   </update>
 
   <select id="getParentCount" resultType="int">
-    select count(1) from  (select DISTINCT dkey from data_dictionary )  as data_dictionary
+    select count(1) from (select DISTINCT dkey from data_dictionary
+
     <!-- 1) 对于形如#{variable} 的变量，Mybatis会将其视为字符串值，在变量替换成功后，缺省地给变量值加上引号 -->
     <!-- 2）对于形如${variable}的变量，Mybatis会将其视作直接变量，即在变量替换成功后，不会再给其加上引号。 -->
     <!-- 此处用$ 不用 #-->
-    <if test="where != null">where ${where}</if>
+    <choose>
+      <when test="where != null">where ${where} and display=1</when>
+      <otherwise>where display=1</otherwise>
+    </choose>
+
+    )  as data_dictionary
+
     <if test="orderBy != null">order by ${orderBy}</if>
   </select>
 
   <select id="selectParentPagination" resultMap="BaseResultMap">
     select
-
     DISTINCT dkey
-
     from data_dictionary
 
     <!-- 1) 对于形如#{variable} 的变量，Mybatis会将其视为字符串值，在变量替换成功后，缺省地给变量值加上引号 -->
     <!-- 2）对于形如${variable}的变量，Mybatis会将其视作直接变量，即在变量替换成功后，不会再给其加上引号。 -->
     <!-- 此处用$ 不用 #-->
-    <if test="where != null">where ${where}</if>
+    <choose>
+      <when test="where != null">where ${where} and display=1</when>
+      <otherwise>where display=1</otherwise>
+    </choose>
     <if test="orderBy != null">order by ${orderBy}</if>
 
     limit #{start},#{pageSize}

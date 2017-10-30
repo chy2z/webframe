@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="../../../css/default.css">
 </head>
 <body>
-<div class="myapp" id="app">
+<div class="my-app" id="app">
     <div class="my-layout">
         <Row id="top" class-name="my-layout-top" justify="end" align="middle" type="flex">
             <i-col span="6"></i-col >
@@ -64,7 +64,8 @@
             <span class="modal-title">{{formModal.title}}</span>
         </p>
         <div style="text-align:center">
-            <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate" label-position="left" label-width="50"  >
+            <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate"
+                    label-position="right" label-width="50"  >
                 <Form-Item label="名称" prop="name">
                     <i-Input v-model="formModal.bindModel.name" placeholder="请输入名称"></i-Input>
                 </Form-Item>
@@ -88,7 +89,8 @@
             <span class="modal-title">{{queryModal.title}}</span>
         </p>
         <div style="text-align:center">
-            <i-Form ref="queryModal.bindModel" :model="queryModal.bindModel" :rules="queryModal.ruleValidate" label-position="left" label-width="50"  >
+            <i-Form ref="queryModal.bindModel" :model="queryModal.bindModel" :rules="queryModal.ruleValidate"
+                    label-position="right" label-width="50"  >
                 <Form-Item label="名称" prop="name">
                     <i-Input element-id="qname" v-model="queryModal.bindModel.name" placeholder="请输入名称"></i-Input>
                 </Form-Item>
@@ -292,8 +294,6 @@
                                 let vue=this;
                                 let url= this.formModal.isAddStatus?corporationInsert_url:corporationUpdate_url;
                                 let data=this.formModal.bindModel;
-
-                                log(data);
 
                                 if(this.formModal.isAddStatus&&data["id"]!=undefined){
                                     data["id"]=null;

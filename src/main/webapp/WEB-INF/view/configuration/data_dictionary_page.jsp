@@ -12,20 +12,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>
     <link rel="stylesheet" href="../../../css/default.css">
 </head>
-<style>
-     .my-label {
-        text-align: right;
-        vertical-align: middle;
-        float: left;
-        font-size: 14px;
-        color: #495060;
-        line-height: 1;
-        padding: 10px 12px 10px 0;
-        box-sizing: border-box;
-    }
-</style>
 <body>
-<div class="myapp" id="app">
+<div class="my-app" id="app">
     <Row class-name="my-box" type="flex">
         <i-col span="10">
             <div class="my-layout my-box-left">
@@ -118,18 +106,44 @@
                                   :show-elevator="childPage.showElevator"
                                   :show-total="childPage.showTotal"
                                   :show-sizer="childPage.showSizer"></Page>
-
                         </div>
                     </i-col>
                 </Row>
             </div>
         </i-col>
     </Row>
+
+    <Modal v-model="formModal.modalShow" :mask-closable="false" :styles="{top: '20px'}" :width="500">
+        <p slot="header" style="text-align:center">
+            <Icon size="16" type="compose"></Icon>
+            <span class="modal-title">{{formModal.title}}</span>
+        </p>
+        <div style="text-align:center">
+            <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate"
+                    label-position="right" label-width="70" >
+                <Form-Item label="字典属性" prop="dvalue">
+                    <i-Input v-model="formModal.bindModel.dvalue" placeholder="请输入字典属性"></i-Input>
+                </Form-Item>
+                <Form-Item label="字典备注" prop="dmemo">
+                    <i-Input v-model="formModal.bindModel.dmemo" placeholder="请输入字典备注"></i-Input>
+                </Form-Item>
+            </i-Form>
+        </div>
+        <div slot="footer">
+            <i-Button type="text" size="large" @click="formModalCancel" >取消</i-Button>
+            <i-Button type="primary" size="large"  @click="formModalOk"
+                      v-show="formModal.okButShow"
+                      :loading="formModal.okButLoading" >确定</i-Button>
+        </div>
+    </Modal>
+
 </div>
 </body>
 <script>
     var domain = "${ctx}";
-
+    var dataDictionaryInsert_url="${ctx}/dataDictionary/insert?jwt=${requestScope.jwt}";
+    var dataDictionaryUpdate_url="${ctx}/dataDictionary/update?jwt=${requestScope.jwt}";
+    var dataDictionaryDelete_url="${ctx}/dataDictionary/delete?jwt=${requestScope.jwt}";
     var pageHelperParent = new pageHepler("${ctx}/dataDictionary/pagination/parent?jwt=${requestScope.jwt}", {
         columns: [
             {
@@ -140,6 +154,7 @@
     }, {orderBy: " dkey desc "});
 
     var pageHelperChild = new pageHepler("${ctx}/dataDictionary/pagination/child?jwt=${requestScope.jwt}", {
+        pageSize:50,
         columns: [
             {
                 title: '字典属性',
@@ -160,6 +175,23 @@
         data: {
             jwt: "${requestScope.jwt}",
             butShow:${requestScope.rightBut},
+            formModal:{
+                title:"",
+                modalShow:false,
+                okButShow:true,
+                okButLoading:false,
+                isAddStatus:true,
+                bindModel:{
+                    id:null,
+                    dvalue:"",
+                    dmemo:""
+                },
+                ruleValidate:{
+                    dvalue: [
+                        { required: true, message: '字典属性不能为空', trigger: 'blur' }
+                    ]
+                }
+            },
             parentTable: pageHelperParent.ivTable,
             parentPage: pageHelperParent.ivPage,
             childTable: pageHelperChild.ivTable,
@@ -184,6 +216,52 @@
             butRefresh() {
                 window.location.reload();
             },
+            butAdd(){
+                this.$refs['formModal.bindModel'].resetFields();
+                this.formModal.modalShow=true;
+                this.formModal.isAddStatus=true;
+                this.formModal.okButShow=true;
+                this.formModal.title="增加字典属性";
+            },
+            butEdit(){
+                if(pageHelperChild.getSelectRowIndex()>-1){
+                    this.$refs['formModal.bindModel'].resetFields();
+                    this.formModal.modalShow=true;
+                    this.formModal.okButShow=true;
+                    this.formModal.isAddStatus=false;
+                    this.formModal.title="修改字典属性";
+                    let rowData=pageHelperChild.getSelectRowData();
+                    let vue=this;
+                    $.each(rowData,function(key,value){
+                        if(typeof vue.formModal.bindModel[key]!=undefined){
+                            vue.formModal.bindModel[key]=value;
+                        }
+                    });
+                }
+                else{
+                    valert(this,"请选择一行记录修改");
+                }
+            },
+            butDel(){
+                if(pageHelperChild.getSelectRowIndex()>-1){
+                    vconfirm(this,"确认删除吗？",()=>{
+                        let rowData=pageHelperChild.getSelectRowData();
+                        vajaxPost(dataDictionaryDelete_url,rowData,true,(result)=>{
+                            if(result&&result.success){
+                                pageHelperChild.deleteSelectedRow();
+                                pageHelperChild.setSelectRowIndex(-1);
+                                vtoast(this,result.tip);
+                            }
+                            else{
+                                valert(this,result.tip);
+                            }
+                        });
+                    });
+                }
+                else{
+                    valert(this,"请选择一行记录删除");
+                }
+            },
             parentTableRowClick(data, index) {
                 pageHelperParent.setSelectRowIndex(index);
                 pageHelperChild.load("dkey='" + data.dkey + "'");
@@ -194,8 +272,8 @@
             pageSizeChangeParent(pageSize) {
                 pageHelperParent.pageIndexChanging(1);
             },
-            childTableRowClick() {
-
+            childTableRowClick(data, index) {
+                pageHelperChild.setSelectRowIndex(index);
             },
             pageChangeChild(index) {
                 pageHelperChild.pageIndexChanging(index);
@@ -212,6 +290,49 @@
                    pageHelperParent.load("dkey='"+option+"'");
                    pageHelperChild.load("dkey='" +option + "'");
                }
+            },
+            formModalCancel(){
+                this.formModal.modalShow=false;
+                this.formModal.okButLoading=false;
+            },
+            formModalOk(){
+                this.$refs['formModal.bindModel'].validate((valid) => {
+                    if (valid) {
+                        let vue=this;
+                        let url= this.formModal.isAddStatus?dataDictionaryInsert_url:dataDictionaryUpdate_url;
+                        let data=this.formModal.bindModel;
+                        if(this.formModal.isAddStatus&&data["id"]!=undefined){
+                            data["id"]=null;
+                        }
+                        vajaxPost(url,data,true,(result)=>{
+                            if(result&&result.success){
+                                vtoast(vue,result.tip);
+                                vue.formModal.modalShow=false;
+                                if(vue.formModal.isAddStatus){
+                                    vue.pageChangeChild(1);
+                                }
+                                else{
+                                    let rowData= pageHelperChild.getSelectRowData();
+                                    $.each(data,function(key,value){
+                                        if(rowData[key]!=undefined){
+                                            rowData[key]=value;
+                                        }
+                                    });
+                                }
+                            }
+                            else{
+                                valert(vue,result.tip);
+                            }
+                        },()=>{
+                            vue.formModal.okButLoading=true;
+                        },()=>{
+                            vue.formModal.okButLoading=false;
+                        });
+
+                    } else {
+                        valert(this,'表单验证失败!');
+                    }
+                });
             }
         }
     });

@@ -53,7 +53,7 @@ public class DataDictionaryService {
      * @return
      */
     public int childCount(DataDictionary m){
-        return  ddmap.getChildCount("'dkey='"+m.getDkey()+"''",null);
+        return  ddmap.getChildCount(" dkey='"+m.getDkey()+"' ",null);
     }
 
     /**

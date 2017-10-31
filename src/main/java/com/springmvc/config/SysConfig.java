@@ -8,5 +8,8 @@ package com.springmvc.config;
 */
 public class SysConfig {
 
-    public final static String superAdmin = "超级管理员";
+    /**
+     * 超级管理员
+     */
+    public final static String superAdmin = "-9999";
 }

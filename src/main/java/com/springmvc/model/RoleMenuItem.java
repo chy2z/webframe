@@ -10,7 +10,7 @@ public class RoleMenuItem {
 
     private Integer id;
 
-    private String rolename;
+    private String roleid;
 
     private String menuitemid;
 
@@ -22,12 +22,12 @@ public class RoleMenuItem {
         this.id = id;
     }
 
-    public String getRolename() {
-        return rolename;
+    public String getRoleid() {
+        return roleid;
     }
 
-    public void setRolename(String rolename) {
-        this.rolename = rolename == null ? null : rolename.trim();
+    public void setRoleid(String roleid) {
+        this.roleid = roleid;
     }
 
     public String getMenuitemid() {

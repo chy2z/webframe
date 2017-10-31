@@ -18,4 +18,10 @@ public interface VSelectMapper {
      */
     List<VSelect> selectDataDictionaryDkey();
 
+    /**
+     * 获取所有组织结构
+     * @return
+     */
+    List<VSelect> selectCorporation();
+
 }

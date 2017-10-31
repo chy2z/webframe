@@ -15,4 +15,11 @@
     where display=1
   </select>
 
+  <select id="selectCorporation" resultMap="BaseResultMap">
+    select
+    name as label,
+    id as value
+    from corporation
+  </select>
+
 </mapper>

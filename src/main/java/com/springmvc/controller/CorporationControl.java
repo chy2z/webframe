@@ -3,6 +3,7 @@ package com.springmvc.controller;
 import com.springmvc.model.Corporation;
 import com.springmvc.model.RequestResult;
 import com.springmvc.service.CorporationService;
+import com.springmvc.service.VSelectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +26,21 @@ public class CorporationControl {
 
     @Autowired
     CorporationService cService;
+
+    @Autowired
+    VSelectService vSeService;
+
+    /**
+     * 返回所有组织结构
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/vselect/selectCorporation")
+    public String vselect(HttpServletRequest request, HttpServletResponse response){
+        return  vSeService.toIviewSelectForJson(vSeService.selectCorporation());
+    }
 
     /**
      * 组织结构分页
@@ -93,6 +109,11 @@ public class CorporationControl {
         return  result;
     }
 
+    /**
+     * 删除组织结构
+     * @param id
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/delete",method = {RequestMethod.POST})
     public RequestResult delete(String id){

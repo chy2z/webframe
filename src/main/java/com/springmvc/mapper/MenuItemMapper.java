@@ -24,5 +24,5 @@ public interface MenuItemMapper {
 
     List<MenuItem> selectButAll(String parentId);
 
-    List<MenuItem> selectButByRole(@Param("roleName") String roleName,@Param("parentId")  String parentId);
+    List<MenuItem> selectButByRole(@Param("roleId") String roleName,@Param("parentId")  String parentId);
 }

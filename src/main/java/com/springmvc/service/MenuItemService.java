@@ -34,11 +34,11 @@ public class MenuItemService {
 
     /**
      * 通获取角色获取菜单
-     * @param roleName
+     * @param roleId
      * @return
      */
-    public List<MenuItem> getMenuByRoleName(String roleName){
-        return mimap.selectMenuByRole(roleName);
+    public List<MenuItem> getMenuByRole(String roleId){
+        return mimap.selectMenuByRole(roleId);
     }
 
     /**
@@ -52,12 +52,12 @@ public class MenuItemService {
 
     /**
      * 获取角色页面全部按钮
-     * @param roleName
+     * @param roleId
      * @param parentId
      * @return
      */
-    public List<MenuItem> getBuByRoleName(String roleName,String parentId){
-        return mimap.selectButByRole(roleName,parentId);
+    public List<MenuItem> getBuByRole(String roleId,String parentId){
+        return mimap.selectButByRole(roleId,parentId);
     }
 
 

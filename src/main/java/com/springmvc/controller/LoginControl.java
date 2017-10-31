@@ -3,12 +3,10 @@ package com.springmvc.controller;
 import com.springmvc.base.BaseController;
 import com.springmvc.config.SysConfig;
 import com.springmvc.model.RequestResult;
+import com.springmvc.model.Role;
 import com.springmvc.model.Users;
 import com.springmvc.model.UsersToken;
-import com.springmvc.service.DepartmentService;
-import com.springmvc.service.MenuItemService;
-import com.springmvc.service.UsersService;
-import com.springmvc.service.UsersTokenService;
+import com.springmvc.service.*;
 import com.springmvc.util.DateUtil;
 import com.springmvc.util.JwtTokenUtil;
 import com.springmvc.util.SecurityUtil;
@@ -44,6 +42,9 @@ public class LoginControl extends BaseController {
 
 	@Autowired
 	MenuItemService miService;
+
+	@Autowired
+	RoleService roleService;
 
 	@Autowired
 	DepartmentService departmentService;
@@ -87,7 +88,7 @@ public class LoginControl extends BaseController {
 		map.put("name", user.getName());
 		map.put("depart", user.getDepart().toString());
 		map.put("corporationId", user.getCorporationid().toString());
-		map.put("role", user.getIsadmin());
+		map.put("role", user.getRoleid().toString());
 		map.put("loginTime", DateUtil.formatDate(new Date()));
 		try {
 			token = JwtTokenUtil.createToken(map);
@@ -136,18 +137,22 @@ public class LoginControl extends BaseController {
 
 			Users u= uService.getUsers(ut.getUserid());
 
+			Role role=roleService.getRole(u.getRoleid());
+
 			//是否是超级管理员
-			if(SysConfig.superAdmin.equals(u.getIsadmin())){
+			if(SysConfig.superAdmin.equals(u.getRoleid().toString())){
 				model.addAttribute("menu",miService.toIviewMenuForJson(miService.getMenuAll()));
 			}
 			//不是超级管理员
 			else{
-				model.addAttribute("menu",miService.toIviewMenuForJson(miService.getMenuByRoleName(u.getIsadmin())));
+				model.addAttribute("menu",miService.toIviewMenuForJson(miService.getMenuByRole(role.getId().toString())));
 			}
 
 			model.addAttribute("jwt", jwt);
 
 			model.addAttribute("user", u);
+
+			model.addAttribute("role",role==null?"超级管理员":role.getName());
 
 			model.addAttribute("loginTime",DateUtil.formatDate(ut.getLogintime()));
 
@@ -185,14 +190,14 @@ public class LoginControl extends BaseController {
 		else
 		{
 			//获取用户按钮权限
-
 			Users u= uService.getUsers(ut.getUserid());
+			Role role=roleService.getRole(u.getRoleid());
 
-			if(SysConfig.superAdmin.equals(u.getIsadmin())){
+			if(SysConfig.superAdmin.equals(u.getRoleid().toString())){
 				model.addAttribute("rightBut",miService.toIviewButForJson(miService.getButAll(mid)));
 			}
 			else{
-                model.addAttribute("rightBut",miService.toIviewButForJson(miService.getBuByRoleName(u.getIsadmin(),mid)));
+                model.addAttribute("rightBut",miService.toIviewButForJson(miService.getBuByRole(role.getId().toString(),mid)));
 			}
 
 			model.addAttribute("jwt", jwt);

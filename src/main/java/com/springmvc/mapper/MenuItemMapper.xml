@@ -42,10 +42,10 @@
 
   <!-- 获取角色菜单 -->
   <select id="selectMenuByRole"  parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    m.id, m.name, m.parentId, m.level, m.but, m.leaf, m.lmage, m.toolImage, m.navigationImage, m.url
-    from menu_item m, role_menu_item r
-    where r.menuItemId=m.id and r.roleName = #{roleName,jdbcType=VARCHAR} and m.level!='-1'
+  select
+  m.id, m.name, m.parentId, m.level, m.but, m.leaf, m.lmage, m.toolImage, m.navigationImage, m.url
+  from menu_item m, role_menu_item r
+  where r.menuItemId=m.id and r.roleId = #{roleId,jdbcType=VARCHAR} and m.level!='-1'
   </select>
 
   <!-- 获取角色按钮 -->
@@ -53,10 +53,9 @@
     select
     m.id, m.name, m.parentId, m.level, m.but, m.leaf, m.lmage, m.toolImage, m.navigationImage, m.url
     from menu_item m, role_menu_item r
-    where r.menuItemId=m.id and r.roleName = #{roleName,jdbcType=VARCHAR}
+    where r.menuItemId=m.id and r.roleId = #{roleId,jdbcType=VARCHAR}
     and m.level='-1' and m.leaf=-1 and  m.parentId= #{parentId,jdbcType=VARCHAR}
   </select>
-
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from menu_item

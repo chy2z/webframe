@@ -32,6 +32,14 @@ public class VSelectService {
     }
 
     /**
+     * 获取所有组织结构
+     * @return
+     */
+    public List<VSelect> selectCorporation(){
+        return vSelect.selectCorporation();
+    }
+
+    /**
      * 返回json数据
      * @param options
      * @return

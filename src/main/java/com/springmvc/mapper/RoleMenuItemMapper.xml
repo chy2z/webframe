@@ -3,36 +3,41 @@
 <mapper namespace="com.springmvc.mapper.RoleMenuItemMapper">
   <resultMap id="BaseResultMap" type="com.springmvc.model.RoleMenuItem">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="roleName" jdbcType="VARCHAR" property="rolename" />
+    <result column="roleid" jdbcType="VARCHAR" property="roleid" />
     <result column="menuItemId" jdbcType="VARCHAR" property="menuitemid" />
   </resultMap>
+
   <sql id="Base_Column_List">
-    id, roleName, menuItemId
+    id, roleid, menuItemId
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from role_menu_item
     where id = #{id,jdbcType=INTEGER}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from role_menu_item
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.springmvc.model.RoleMenuItem">
-    insert into role_menu_item (id, roleName, menuItemId
+    insert into role_menu_item (id, roleid, menuItemId
       )
-    values (#{id,jdbcType=INTEGER}, #{rolename,jdbcType=VARCHAR}, #{menuitemid,jdbcType=VARCHAR}
+    values (#{id,jdbcType=INTEGER}, #{roleid,jdbcType=VARCHAR}, #{menuitemid,jdbcType=VARCHAR}
       )
   </insert>
+
   <insert id="insertSelective" parameterType="com.springmvc.model.RoleMenuItem">
     insert into role_menu_item
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="rolename != null">
-        roleName,
+      <if test="roleid != null">
+        roleid,
       </if>
       <if test="menuitemid != null">
         menuItemId,
@@ -42,19 +47,20 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="rolename != null">
-        #{rolename,jdbcType=VARCHAR},
+      <if test="roleid != null">
+        #{roleid,jdbcType=VARCHAR},
       </if>
       <if test="menuitemid != null">
         #{menuitemid,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.model.RoleMenuItem">
     update role_menu_item
     <set>
-      <if test="rolename != null">
-        roleName = #{rolename,jdbcType=VARCHAR},
+      <if test="roleid != null">
+        roleid = #{roleid,jdbcType=VARCHAR},
       </if>
       <if test="menuitemid != null">
         menuItemId = #{menuitemid,jdbcType=VARCHAR},
@@ -62,10 +68,12 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.springmvc.model.RoleMenuItem">
     update role_menu_item
-    set roleName = #{rolename,jdbcType=VARCHAR},
+    set roleid = #{roleid,jdbcType=VARCHAR},
       menuItemId = #{menuitemid,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 </mapper>

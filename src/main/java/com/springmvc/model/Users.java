@@ -24,7 +24,7 @@ public class Users {
 
     private String email;
 
-    private String isadmin;
+    private Integer roleid;
 
     private String state;
 
@@ -96,14 +96,6 @@ public class Users {
         this.email = email == null ? null : email.trim();
     }
 
-    public String getIsadmin() {
-        return isadmin;
-    }
-
-    public void setIsadmin(String isadmin) {
-        this.isadmin = isadmin == null ? null : isadmin.trim();
-    }
-
     public String getState() {
         return state;
     }
@@ -126,5 +118,13 @@ public class Users {
 
     public void setToken(String token) {
         this.token = token == null ? null : token.trim();
+    }
+
+    public Integer getRoleid() {
+        return roleid;
+    }
+
+    public void setRoleid(Integer roleid) {
+        this.roleid = roleid;
     }
 }

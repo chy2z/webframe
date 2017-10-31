@@ -21,6 +21,15 @@ public class RoleService {
     RoleMapper rmap;
 
     /**
+     * 获取用户信息
+     * @param id
+     * @return
+     */
+    public Role getRole(int id) {
+        return rmap.selectByPrimaryKey(id);
+    }
+
+    /**
      * 插入记录
      * @param c
      * @return

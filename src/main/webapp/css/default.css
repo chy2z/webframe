@@ -37,7 +37,7 @@ html, body {
     width: 100%;
     /* 占满剩余高度 */
     height: 100%;
-    background: #eee;
+    background: #fff;
 }
 
 .my-layout-bottom{

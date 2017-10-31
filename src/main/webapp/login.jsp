@@ -10,9 +10,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>  
-<link rel="stylesheet" href="css/login/reveal.css">
-<link rel="stylesheet" href="css/login/moudlelogin.css">
-<link rel="stylesheet" href="css/login/firebugResetStyles.css">
+<link rel="stylesheet" href="css/login/reveal.css?v=${nowDate}">
+<link rel="stylesheet" href="css/login/moudlelogin.css?v=${nowDate}">
+<link rel="stylesheet" href="css/login/firebugResetStyles.css?v=${nowDate}">
 </head>
 <body>
 	<input style="display: none" id="massage" value="">

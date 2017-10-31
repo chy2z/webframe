@@ -61,5 +61,8 @@ function selectHelper(url,ivSelectConfig){
     this.getSelectItem=function () {
         return this.ivSelect.selectItem;
     }
-
+    
+    this.setDisabled=function (status) {
+        this.ivSelect.disabled=status;
+    }
 }

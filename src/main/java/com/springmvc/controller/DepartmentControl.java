@@ -1,9 +1,8 @@
 package com.springmvc.controller;
 
+import com.springmvc.model.Department;
 import com.springmvc.model.RequestResult;
-import com.springmvc.model.Role;
-import com.springmvc.service.RoleService;
-import com.springmvc.service.UsersService;
+import com.springmvc.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,23 +14,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
-* @Title: RoleControl
-* @Description: 角色接口
+* @Title: DepartmentControl
+* @Description:
 * @author chy
-* @date 2017/10/30 15:47
+* @date 2017/10/31 16:30
 */
 @Controller
-@RequestMapping("/role")
-public class RoleControl {
+@RequestMapping("/department")
+public class DepartmentControl {
 
     @Autowired
-    RoleService rService;
-
-    @Autowired
-    UsersService uService;
+    DepartmentService deService;
 
     /**
-     * 角色分页
+     * 部门分页
      * @return
      */
     @ResponseBody
@@ -46,23 +42,23 @@ public class RoleControl {
 
         String orderBy=request.getParameter("orderBy");
 
-        return rService.toPaginationJson(pageNo,pageSize,where,orderBy);
+        return deService.toPaginationJson(pageNo,pageSize,where,orderBy);
     }
 
     /**
-     * 插入角色
+     * 部门组织
      * @param c
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/insert",method = {RequestMethod.POST})
-    public RequestResult insert(@RequestBody Role c){
+    public RequestResult insert(@RequestBody Department c){
         RequestResult result=new RequestResult();
         if(null==c){
             result.setFail("没有数据");
         }
         else{
-            if(rService.insert(c)){
+            if(deService.insert(c)){
                 result.setSucceed("保存成功",null);
             }
             else{
@@ -74,19 +70,19 @@ public class RoleControl {
     }
 
     /**
-     * 修改角色
+     * 部门修改
      * @param c
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/update",method = {RequestMethod.POST})
-    public RequestResult update(@RequestBody Role c){
+    public RequestResult update(@RequestBody Department c){
         RequestResult result=new RequestResult();
         if(null==c){
             result.setFail("没有数据");
         }
         else{
-            if(rService.update(c)){
+            if(deService.update(c)){
                 result.setSucceed("修改成功",null);
             }
             else{
@@ -98,7 +94,7 @@ public class RoleControl {
     }
 
     /**
-     * 删除角色
+     * 部门删除
      * @param id
      * @return
      */
@@ -110,18 +106,13 @@ public class RoleControl {
             result.setFail("没有数据");
         }
         else{
-            if(uService.getCountByRole(Integer.parseInt(id))<=0) {
-                if (rService.delete(Integer.parseInt(id))) {
-                    result.setSucceed("删除成功", null);
-                } else {
-                    result.setFail("没有数据");
-                }
+            if(deService.delete(Integer.parseInt(id))){
+                result.setSucceed("删除成功",null);
             }
             else{
-                result.setFail("此角色有用户在使用,不能删除");
+                result.setFail("没有数据");
             }
         }
         return result;
     }
-
 }

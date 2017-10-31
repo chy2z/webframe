@@ -35,9 +35,7 @@
                         </div>
                     </i-col>
                     <i-col span="14">
-                        <div style="float: right;margin: 0 5px;">
-                            <%@include file="../rightTemplate.jsp" %>
-                        </div>
+
                     </i-col>
                 </Row>
                 <Row class-name="my-layout-body" type="flex">
@@ -80,6 +78,9 @@
                     <i-col span="10">
                     </i-col>
                     <i-col span="14">
+                        <div style="float: right;margin: 0 5px;">
+                            <%@include file="../rightTemplate.jsp" %>
+                        </div>
                     </i-col>
                 </Row>
                 <Row class-name="my-layout-body" type="flex">
@@ -165,7 +166,8 @@
                 },
                 {
                     title: '角色备注',
-                    key: 'memo'
+                    key: 'memo',
+                    width:300
                 }
             ]
         },{orderBy:" id desc "});
@@ -228,7 +230,8 @@
                     //加载角色表格数据
                     pageHelperRole.load("corporationId='"+corporationId+"'");
                     //加载组织机构
-                    selectHelperCorporation.load("id='"+corporationId+"'");
+                    //selectHelperCorporation.load("id='"+corporationId+"'");
+                    selectHelperCorporation.setDisabled(true);
                 }
                 else{
                     //加载角色表格数据
@@ -249,7 +252,12 @@
                     pageHelperUser.load(" roleid='" + data.id + "' ");
                 },
                 selectCorporationChange(option){
-                    pageHelperRole.load("corporationId='"+option+"'");
+                    if(option==""){
+                        pageHelperRole.load(null);
+                    }
+                    else {
+                        pageHelperRole.load("corporationId='" + option + "'");
+                    }
                 },
                 butSearch(){
                     this.queryModal.modalShow=true;

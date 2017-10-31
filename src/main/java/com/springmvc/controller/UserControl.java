@@ -23,7 +23,7 @@ public class UserControl {
     UsersService uService;
 
     /**
-     * 组织结构分页
+     * 用户分页
      * @return
      */
     @ResponseBody

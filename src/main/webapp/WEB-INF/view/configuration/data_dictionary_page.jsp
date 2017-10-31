@@ -18,9 +18,8 @@
         <i-col span="10">
             <div class="my-layout my-box-left">
                 <Row class-name="my-layout-top" justify="end" align="middle" type="flex">
-                    <i-col span="10"></i-col>
                     <i-col span="14">
-                        <div style="float: right;margin: 0 5px;">
+                        <div style="float: left;margin: 0 5px;">
                             <label class="my-label">字典名称：</label>
                             <i-Select  style="width:200px" @on-change="selectDkeyChange"
                                        v-model="selectDkey.selectItem"
@@ -33,6 +32,9 @@
                                           :key="item.value">{{ item.value }}</i-Option>
                             </i-Select>
                         </div>
+                    </i-col>
+                    <i-col span="10">
+
                     </i-col>
                 </Row>
                 <Row class-name="my-layout-body" type="flex">
@@ -213,7 +215,7 @@
             //加载表格字典关键字
             pageHelperParent.load(null);
             //加载下拉选择字典关键字
-            selectHelperDkey.load();
+            selectHelperDkey.load(null);
         },
         methods: {
             butRefresh() {

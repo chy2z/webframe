@@ -16,12 +16,27 @@
 <div class="my-app" id="app">
     <div class="my-layout">
         <Row id="top" class-name="my-layout-top" justify="end" align="middle" type="flex">
-            <i-col span="6"></i-col >
-            <i-col span="18">
+            <i-col span="10">
+                <div style="float: left;margin: 0 5px;">
+                    <label class="my-label">组织机构：</label>
+                    <i-Select  style="width:200px" @on-change="selectCorporationChange"
+                               v-model="selectCorporation.selectItem"
+                               :disabled="selectCorporation.disabled"
+                               :placeholder="selectCorporation.placeholder"
+                               :not-found-text="selectCorporation.notFoundText"
+                               :label-in-value="selectCorporation.labelInValue"
+                               :size="selectCorporation.size" :clearable="selectCorporation.clearable"
+                               :filterable="selectCorporation.filterable">
+                        <i-Option v-for="item in selectCorporation.dataTable" :value="item.value"
+                                  :key="item.value">{{ item.label }}</i-Option>
+                    </i-Select>
+                </div>
+            </i-col >
+            <i-col span="14">
                 <div style="float: right;margin: 0 5px;">
                     <%@include file="../rightTemplate.jsp" %>
                 </div>
-            </i-col >
+            </i-col>
         </Row>
         <Row class-name="my-layout-body" type="flex">
             <i-col span="24">
@@ -35,7 +50,7 @@
                          :size="departmentTable.tableSize"
                          :columns="departmentTable.columns"
                          :data="departmentTable.dataTable"
-                         @on-row-click="tableDepartmentPageRowClick"></i-Table>
+                         @on-row-click="tableDepartmentRowClick"></i-Table>
             </i-col>
         </Row>
         <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
@@ -69,8 +84,17 @@
                 <Form-Item label="名称" prop="name">
                     <i-Input v-model="formModal.bindModel.name" placeholder="请输入名称"></i-Input>
                 </Form-Item>
-                <Form-Item label="编号" prop="code">
-                    <i-Input v-model="formModal.bindModel.code" placeholder="请输入编号"></i-Input>
+                <Form-Item label="电话" prop="phone">
+                    <i-Input v-model="formModal.bindModel.phone" placeholder="请输入电话"></i-Input>
+                </Form-Item>
+                <Form-Item label="领导" prop="leader">
+                    <i-Input v-model="formModal.bindModel.leader" placeholder="请输入领导"></i-Input>
+                </Form-Item>
+                <Form-Item label="地址" prop="address">
+                    <i-Input v-model="formModal.bindModel.address" placeholder="请输入地址"></i-Input>
+                </Form-Item>
+                <Form-Item label="备注" prop="memo">
+                    <i-Input v-model="formModal.bindModel.memo" placeholder="请输入备注"></i-Input>
                 </Form-Item>
             </i-Form>
         </div>
@@ -89,9 +113,13 @@
 <script>
     window.onload=function() {
         var domain="${ctx}";
+        var nomanage=${requestScope.nomanage};
+        var corporationId="${requestScope.corporationId}";
         var departmentInsert_url=domain+"/department/insert?jwt=${requestScope.jwt}";
         var departmentUpdate_url=domain+"/department/update?jwt=${requestScope.jwt}";
         var departmentDelete_url=domain+"/department/delete?jwt=${requestScope.jwt}";
+        var corporation_Select_url="${ctx}/corporation/vselect/selectCorporation?jwt=${requestScope.jwt}";
+
         var pageHelperDepartment=new pageHepler("${ctx}/department/pagination?jwt=${requestScope.jwt}",{
             columns: [
                 {
@@ -99,7 +127,7 @@
                     key: 'id'
                 },
                 {
-                    title: '姓名',
+                    title: '名称',
                     key: 'name'
                 },
                 {
@@ -121,6 +149,8 @@
             ]
         },{orderBy:" id desc "});
 
+        var selectHelperCorporation=new selectHelper(corporation_Select_url,{});
+
         new Vue({
             el: '#app',
             data: {
@@ -134,18 +164,29 @@
                     isAddStatus:true,
                     bindModel:{
                         id:null,
+                        corporationid:null,
                         name:"",
-                        code:""
+                        phone:"",
+                        leader:"",
+                        address:"",
+                        memo:""
                     },
                     ruleValidate:{
                         name: [
                             { required: true, message: '名称不能为空', trigger: 'blur' }
                         ],
-                        code: [
-                            { required: true, message: '编号不能为空', trigger: 'blur' }
+                        phone: [
+                            {required: true, validator:(rule, value, callback)=>{
+                                if (value === '') {
+                                    callback(new Error('手机号码不能为空'));
+                                } else {
+                                    callback();
+                                }
+                            }, trigger: 'blur' }
                         ]
                     }
                 },
+                selectCorporation:selectHelperCorporation.ivSelect,
                 departmentTable:pageHelperDepartment.ivTable,
                 departmentPage:pageHelperDepartment.ivPage
             },
@@ -155,8 +196,20 @@
             mounted:function () {
                 //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条
                 pageHelperDepartment.setHeight($(".my-layout-body").height());
-                //表格加载数据
-                pageHelperDepartment.load(null);
+                //权限控制
+                if(nomanage) {
+                    //表格加载数据
+                    pageHelperDepartment.load("corporationId='"+corporationId+"'");
+                    //加载组织机构
+                    //selectHelperCorporation.load("id='"+corporationId+"'");
+                    selectHelperCorporation.setDisabled(true);
+                }
+                else{
+                    //表格加载数据
+                    pageHelperDepartment.load(null);
+                    //加载组织机构
+                    selectHelperCorporation.load(null);
+                }
             },
             methods:{
                 pageChangeDepartment(index){
@@ -168,15 +221,25 @@
                 tableDepartmentRowClick(data,index){
                     pageHelperDepartment.setSelectRowIndex(index);
                 },
-                butSearch(){
-                    this.queryModal.modalShow=true;
+                selectCorporationChange(option){
+                    if(option=="") {
+                        pageHelperDepartment.load(null);
+                    }
+                    else{
+                        pageHelperDepartment.load("corporationId='" + option + "'");
+                    }
                 },
                 butAdd(){
-                    this.$refs['formModal.bindModel'].resetFields();
-                    this.formModal.modalShow=true;
-                    this.formModal.isAddStatus=true;
-                    this.formModal.okButShow=true;
-                    this.formModal.title="增加部门";
+                    if(selectHelperCorporation.getSelectItem()) {
+                        this.$refs['formModal.bindModel'].resetFields();
+                        this.formModal.modalShow = true;
+                        this.formModal.isAddStatus = true;
+                        this.formModal.okButShow = true;
+                        this.formModal.title = "增加部门";
+                    }
+                    else{
+                        valert(this,"请选择组织结构");
+                    }
                 },
                 butEdit(){
                     if(pageHelperDepartment.getSelectRowIndex()>-1){
@@ -254,6 +317,7 @@
 
                             if(this.formModal.isAddStatus){
                                 data["id"]=null;
+                                data["corporationid"]=selectHelperCorporation.getSelectItem();
                             }
 
                             vajaxPost(url,data,true,(result)=>{
@@ -261,10 +325,10 @@
                                     vtoast(vue,result.tip);
                                     vue.formModal.modalShow=false;
                                     if(vue.formModal.isAddStatus){
-                                        vue.pageChange(1);
+                                        pageHelperDepartment.pageIndexChanging(1);
                                     }
                                     else{
-                                        let rowData= pageHelperCroporation.getSelectRowData();
+                                        let rowData= pageHelperDepartment.getSelectRowData();
                                         $.each(data,function(key,value){
                                             if(rowData[key]!=undefined){
                                                 rowData[key]=value;

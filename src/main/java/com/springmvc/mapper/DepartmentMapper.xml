@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springmvc.mapper.DepartmentMapper">
+
   <resultMap id="BaseResultMap" type="com.springmvc.model.Department">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="corporationId" jdbcType="INTEGER" property="corporationid" />
@@ -10,19 +11,23 @@
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="memo" jdbcType="VARCHAR" property="memo" />
   </resultMap>
+
   <sql id="Base_Column_List">
     id, corporationId, name, phone, leader, address, memo
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from department
     where id = #{id,jdbcType=INTEGER}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from department
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.springmvc.model.Department">
     insert into department (id, corporationId, name, 
       phone, leader, address, 
@@ -31,6 +36,7 @@
       #{phone,jdbcType=VARCHAR}, #{leader,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{memo,jdbcType=VARCHAR})
   </insert>
+
   <insert id="insertSelective" parameterType="com.springmvc.model.Department">
     insert into department
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -80,6 +86,7 @@
       </if>
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.model.Department">
     update department
     <set>
@@ -104,6 +111,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.springmvc.model.Department">
     update department
     set corporationId = #{corporationid,jdbcType=INTEGER},
@@ -114,4 +122,32 @@
       memo = #{memo,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getCount" resultType="int">
+    select count(1) from department
+    <!-- 1) 对于形如#{variable} 的变量，Mybatis会将其视为字符串值，在变量替换成功后，缺省地给变量值加上引号 -->
+    <!-- 2）对于形如${variable}的变量，Mybatis会将其视作直接变量，即在变量替换成功后，不会再给其加上引号。 -->
+    <!-- 此处用$ 不用 #-->
+    <if test="where != null">where ${where}</if>
+    <if test="orderBy != null">order by ${orderBy}</if>
+  </select>
+
+  <select id="selectPagination" resultMap="BaseResultMap">
+    select
+
+    <include refid="Base_Column_List" />
+
+    from department
+
+    <!-- 1) 对于形如#{variable} 的变量，Mybatis会将其视为字符串值，在变量替换成功后，缺省地给变量值加上引号 -->
+    <!-- 2）对于形如${variable}的变量，Mybatis会将其视作直接变量，即在变量替换成功后，不会再给其加上引号。 -->
+    <!-- 此处用$ 不用 #-->
+    <if test="where != null">where ${where}</if>
+    <if test="orderBy != null">order by ${orderBy}</if>
+
+    limit #{start},#{pageSize}
+
+  </select>
+
+
 </mapper>

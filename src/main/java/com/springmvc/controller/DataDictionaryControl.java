@@ -31,7 +31,7 @@ public class DataDictionaryControl {
     VSelectService vSeService;
 
     /**
-     * 插入数据字典
+     * 数据字典插入
      * @param c
      * @return
      */
@@ -55,7 +55,7 @@ public class DataDictionaryControl {
     }
 
     /**
-     * 修改
+     * 数据字典修改
      * @param c
      * @return
      */
@@ -78,6 +78,11 @@ public class DataDictionaryControl {
         return  result;
     }
 
+    /**
+     * 数据字典删除
+     * @param c
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/delete",method = {RequestMethod.POST})
     public RequestResult delete(@RequestBody DataDictionary c){
@@ -114,7 +119,7 @@ public class DataDictionaryControl {
     }
 
     /**
-     * 组织结构分页(字典关键字)
+     * 分页(字典关键字)
      * @return
      */
     @ResponseBody
@@ -133,7 +138,7 @@ public class DataDictionaryControl {
     }
 
     /**
-     * 组织结构分页(字典属性)
+     * 分页(字典属性)
      * @return
      */
     @ResponseBody

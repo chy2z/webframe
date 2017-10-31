@@ -295,7 +295,7 @@
                                 let url= this.formModal.isAddStatus?corporationInsert_url:corporationUpdate_url;
                                 let data=this.formModal.bindModel;
 
-                                if(this.formModal.isAddStatus&&data["id"]!=undefined){
+                                if(this.formModal.isAddStatus){
                                     data["id"]=null;
                                 }
 

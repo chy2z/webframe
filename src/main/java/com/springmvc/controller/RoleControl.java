@@ -3,6 +3,7 @@ package com.springmvc.controller;
 import com.springmvc.model.RequestResult;
 import com.springmvc.model.Role;
 import com.springmvc.service.RoleService;
+import com.springmvc.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +26,9 @@ public class RoleControl {
 
     @Autowired
     RoleService rService;
+
+    @Autowired
+    UsersService uService;
 
     /**
      * 组织结构分页
@@ -101,11 +105,15 @@ public class RoleControl {
             result.setFail("没有数据");
         }
         else{
-            if(rService.delete(Integer.parseInt(id))){
-                result.setSucceed("删除成功",null);
+            if(uService.getCountByRole(Integer.parseInt(id))<=0) {
+                if (rService.delete(Integer.parseInt(id))) {
+                    result.setSucceed("删除成功", null);
+                } else {
+                    result.setFail("没有数据");
+                }
             }
             else{
-                result.setFail("没有数据");
+                result.setFail("此角色有用户在使用,不能删除");
             }
         }
         return result;

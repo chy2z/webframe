@@ -17,7 +17,7 @@
     <Row class-name="my-box" type="flex">
         <i-col span="10">
             <div class="my-layout my-box-left">
-                <Row id="top" class-name="my-layout-top" justify="end" align="middle" type="flex">
+                <Row class-name="my-layout-top" justify="end" align="middle" type="flex">
                     <i-col span="10"></i-col>
                     <i-col span="14">
                         <div style="float: right;margin: 0 5px;">
@@ -36,6 +36,7 @@
                     </i-col>
                 </Row>
                 <Row class-name="my-layout-body" type="flex">
+                    <i-col span="24">
                     <i-Table :height="parentTable.height"
                              :width="parentTable.width"
                              :show-header="parentTable.showHeader"
@@ -47,6 +48,7 @@
                              :columns="parentTable.columns"
                              :data="parentTable.dataTable"
                              @on-row-click="parentTableRowClick"></i-Table>
+                    </i-col>
                 </Row>
                 <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
                     <i-col span="1"></i-col>
@@ -70,7 +72,7 @@
         </i-col>
         <i-col span="14">
             <div class="my-layout my-box-right">
-                <Row id="top" class-name="my-layout-top" justify="end" align="middle" type="flex">
+                <Row class-name="my-layout-top" justify="end" align="middle" type="flex">
                     <i-col span="10"></i-col>
                     <i-col span="14">
                         <div style="float: right;margin: 0 5px;">
@@ -79,6 +81,7 @@
                     </i-col>
                 </Row>
                 <Row class-name="my-layout-body" type="flex">
+                    <i-col span="24">
                     <i-Table :height="childTable.height"
                              :width="childTable.width"
                              :show-header="childTable.showHeader"
@@ -90,7 +93,7 @@
                              :columns="childTable.columns"
                              :data="childTable.dataTable"
                              @on-row-click="childTableRowClick"></i-Table>
-
+                    </i-col>
                 </Row>
                 <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
                     <i-col span="1"></i-col>
@@ -154,7 +157,6 @@
     }, {orderBy: " dkey desc "});
 
     var pageHelperChild = new pageHepler("${ctx}/dataDictionary/pagination/child?jwt=${requestScope.jwt}", {
-        pageSize:50,
         columns: [
             {
                 title: '字典属性',
@@ -163,10 +165,10 @@
             {
                 title: '字典备注',
                 key: 'dmemo',
-                width: 400
+                width:300
             }
         ]
-    }, {orderBy: " id desc "});
+    }, {pageSize:20,orderBy: " id desc "});
 
     var selectHelperDkey=new selectHelper("${ctx}/dataDictionary/vselect/selectDataDictionaryDkey?jwt=${requestScope.jwt}",{});
 
@@ -183,6 +185,7 @@
                 isAddStatus:true,
                 bindModel:{
                     id:null,
+                    dkey:null,
                     dvalue:"",
                     dmemo:""
                 },
@@ -202,8 +205,8 @@
         },
         mounted: function () {
             //设置表格宽度(左右布局有bug必须设置宽度)
-            pageHelperParent.setWidth($(".my-box-left .my-layout-body").width());
-            pageHelperChild.setWidth($(".my-box-right .my-layout-body").width());
+            //pageHelperParent.setWidth($(".my-box-left .my-layout-body").width());
+            //pageHelperChild.setWidth($(".my-box-right .my-layout-body").width());
             //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条
             pageHelperParent.setHeight($(".my-box-left .my-layout-body").height());
             pageHelperChild.setHeight($(".my-box-right .my-layout-body").height());
@@ -301,8 +304,9 @@
                         let vue=this;
                         let url= this.formModal.isAddStatus?dataDictionaryInsert_url:dataDictionaryUpdate_url;
                         let data=this.formModal.bindModel;
-                        if(this.formModal.isAddStatus&&data["id"]!=undefined){
+                        if(this.formModal.isAddStatus){
                             data["id"]=null;
+                            data["dkey"]=pageHelperParent.getSelectRowData().dkey;
                         }
                         vajaxPost(url,data,true,(result)=>{
                             if(result&&result.success){

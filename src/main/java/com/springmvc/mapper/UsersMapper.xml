@@ -189,6 +189,12 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <!-- 根据角色获取用户数 -->
+  <select id="getUsersCountByRole" parameterType="java.lang.Integer" resultType="int">
+    select count(1) from users
+    where roleId = #{roleId,jdbcType=INTEGER}
+  </select>
+
   <select id="getCount" resultType="int">
     select count(1) from users
     <!-- 1) 对于形如#{variable} 的变量，Mybatis会将其视为字符串值，在变量替换成功后，缺省地给变量值加上引号 -->

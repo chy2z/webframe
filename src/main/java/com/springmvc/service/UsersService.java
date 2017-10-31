@@ -40,6 +40,15 @@ public class UsersService {
 	}
 
 	/**
+	 * 获取用户数量
+	 * @param roleid
+	 * @return
+	 */
+	public int getCountByRole(int roleid){
+		return  umap.getUsersCountByRole(roleid);
+	}
+
+	/**
 	 * 更新用户信息
 	 * 
 	 * @param u

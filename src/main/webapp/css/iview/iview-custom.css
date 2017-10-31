@@ -26,6 +26,22 @@
     font-weight: bold;
 }
 
+/*修改model对话框标题默认字体*/
+.ivu-modal-confirm-head-title {
+    display: inline-block;
+    font-size: 16px;
+    color: #1c2438;
+    font-weight: 700;
+}
 
+/*修改model对话框提示内容默认字体 */
+.ivu-modal-confirm-body {
+    margin-top: 6px;
+    padding-left: 48px;
+    padding-top: 18px;
+    font-size: 14px;
+    color: #495060;
+    position: relative;
+}
 
 

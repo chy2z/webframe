@@ -27,7 +27,7 @@ function selectHelper(url,ivSelectConfig){
         loadingText:"加载中"
     },ivSelectConfig);
 
-    this.load=function () {
+    this.load=function (where) {
         let my=this;
         //加载静态数据
         if(!url){
@@ -38,7 +38,7 @@ function selectHelper(url,ivSelectConfig){
             $.ajax({
                 url: url,
                 type: "POST",
-                data: {},
+                data: {where:where},
                 beforeSend:function(){
                     my.ivSelect.loading=true;
                 },
@@ -50,31 +50,16 @@ function selectHelper(url,ivSelectConfig){
                     var json=$.evalJSON(res);
 
                     my.ivSelect.dataTable=json;
-
-                    /*
-                    my.ivSelect.dataTable=[
-                        {
-                            value: 'beijing',
-                            label: null,
-                            id:0
-                        },
-                        {
-                            value: 'shanghai',
-                            label: null,
-                            id:0
-                        }
-                    ];
-
-                    log(my.ivSelect.dataTable);
-                    */
-
-                    my.ivSelect.selectItem=null;
                 },
                 error: function(res){
                     alert(res.responseText);
                 }
             });
         }
+    }
+
+    this.getSelectItem=function () {
+        return this.ivSelect.selectItem;
     }
 
 }

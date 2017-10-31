@@ -194,9 +194,11 @@ public class LoginControl extends BaseController {
 			Role role=roleService.getRole(u.getRoleid());
 
 			if(SysConfig.superAdmin.equals(u.getRoleid().toString())){
+				model.addAttribute("nomanage",false);
 				model.addAttribute("rightBut",miService.toIviewButForJson(miService.getButAll(mid)));
 			}
 			else{
+				model.addAttribute("nomanage", true);
                 model.addAttribute("rightBut",miService.toIviewButForJson(miService.getBuByRole(role.getId().toString(),mid)));
 			}
 

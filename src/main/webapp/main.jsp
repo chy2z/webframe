@@ -201,7 +201,7 @@
                             <Menu-Item name="3-3"><Icon type="trophy"></Icon><Tooltip placement="top" content="职位">${requestScope.user.office}</Tooltip></Menu-Item>
                             <Menu-Item name="3-4"><Icon type="ios-telephone"></Icon><Tooltip placement="top" content="电话">${requestScope.user.phone}</Tooltip></Menu-Item>
                             <Menu-Item name="3-5"><Icon type="email"></Icon><Tooltip placement="top" content="邮件">${requestScope.user.email}</Tooltip></Menu-Item>
-                            <Menu-Item name="3-6"><Icon type="ribbon-b"></Icon><Tooltip placement="top" content="角色">${requestScope.user.isadmin}</Tooltip></Menu-Item>
+                            <Menu-Item name="3-6"><Icon type="ribbon-b"></Icon><Tooltip placement="top" content="角色">${requestScope.role}</Tooltip></Menu-Item>
                         </Menu-Group>
                         <Menu-Group title="其他信息">
                             <Menu-Item name="3-7"><Icon type="ios-clock"></Icon><Tooltip placement="top" content="登录时间">${requestScope.loginTime}</Tooltip></Menu-Item>
@@ -323,7 +323,6 @@
 </div>
 </body>
 <script>
-    window.onload=function(){
         var domain="${ctx}";
         var unLock_url=domain+"/login/unLock/${requestScope.jwt}";
         var editPwd_url=domain+"/login/editPwd/${requestScope.jwt}";
@@ -361,6 +360,7 @@
                 }
             },
             created:function(){
+                vSpin(this);
                 document.querySelector("#mainframe").src="${ctx}/index.jsp";
             },
             computed: {
@@ -477,6 +477,6 @@
                 }
             }
         });
-    }
+
 </script>
 </html>

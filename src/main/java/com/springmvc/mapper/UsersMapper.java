@@ -26,6 +26,8 @@ public interface UsersMapper {
 
     int updateByPrimaryKey(Users record);
 
+    int getUsersCountByRole(Integer roleId);
+
     Users selectByNameAndPwd(@Param("loginName") String loginName,@Param("password") String password);
 
     /**

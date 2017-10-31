@@ -27,6 +27,20 @@ function log(msg,target){
 }
 
 /**
+ * 整页加载 等待效果
+ * @param delayedClosing
+ */
+function vSpin(vue,delayedClosing){
+    vue.$Spin.show();
+    if(!delayedClosing){
+           delayedClosing=2000;
+    }
+    setTimeout(() => {
+        vue.$Spin.hide();
+    }, delayedClosing);
+}
+
+/**
  * alert提示框
  * alert(this,"请输入查询条件");
  * @param vue

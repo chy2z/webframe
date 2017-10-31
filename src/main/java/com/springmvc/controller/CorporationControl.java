@@ -39,7 +39,8 @@ public class CorporationControl {
     @ResponseBody
     @RequestMapping("/vselect/selectCorporation")
     public String vselect(HttpServletRequest request, HttpServletResponse response){
-        return  vSeService.toIviewSelectForJson(vSeService.selectCorporation());
+        String where=request.getParameter("where");
+        return  vSeService.toIviewSelectForJson(vSeService.selectCorporation(where));
     }
 
     /**

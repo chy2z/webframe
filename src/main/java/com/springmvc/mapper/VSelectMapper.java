@@ -1,6 +1,7 @@
 package com.springmvc.mapper;
 
 import com.springmvc.model.iview.VSelect;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,6 +23,6 @@ public interface VSelectMapper {
      * 获取所有组织结构
      * @return
      */
-    List<VSelect> selectCorporation();
+    List<VSelect> selectCorporation(@Param("where") String where);
 
 }

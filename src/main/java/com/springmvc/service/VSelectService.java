@@ -4,6 +4,7 @@ import com.springmvc.mapper.VSelectMapper;
 import com.springmvc.model.MenuItem;
 import com.springmvc.model.iview.VSelect;
 import com.springmvc.util.JsonUtil;
+import com.springmvc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +36,8 @@ public class VSelectService {
      * 获取所有组织结构
      * @return
      */
-    public List<VSelect> selectCorporation(){
-        return vSelect.selectCorporation();
+    public List<VSelect> selectCorporation(String where){
+        return vSelect.selectCorporation(StringUtil.NullOrString(where));
     }
 
     /**

@@ -3,6 +3,7 @@ package com.springmvc.controller;
 import com.springmvc.model.Department;
 import com.springmvc.model.RequestResult;
 import com.springmvc.service.DepartmentService;
+import com.springmvc.service.VSelectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +26,22 @@ public class DepartmentControl {
 
     @Autowired
     DepartmentService deService;
+
+    @Autowired
+    VSelectService vSeService;
+
+    /**
+     * 返回所有组织结构
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/vselect/selectDepartment")
+    public String vselect(HttpServletRequest request, HttpServletResponse response){
+        String where=request.getParameter("where");
+        return  vSeService.toIviewSelectForJson(vSeService.selectDepartment(where));
+    }
 
     /**
      * 部门分页

@@ -49,6 +49,25 @@ public class VSelectService {
     }
 
     /**
+     * 获取所有部门
+     * @param where
+     * @return
+     */
+    public List<VSelect> selectDepartment(String where){
+        return vSelect.selectDepartment(StringUtil.NullOrString(where));
+    }
+
+    /**
+     * 获取所有角色
+     * @param where
+     * @return
+     */
+    public List<VSelect> selectRole(String where){
+        return vSelect.selectRole(StringUtil.NullOrString(where));
+    }
+
+
+    /**
      * 返回json数据
      * @param options
      * @return

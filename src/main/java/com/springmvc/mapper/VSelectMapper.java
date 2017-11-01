@@ -31,4 +31,16 @@ public interface VSelectMapper {
      */
     List<VSelect> selectCorporation(@Param("where") String where);
 
+    /**
+     * 获取角色
+     * @param where
+     * @return
+     */
+    List<VSelect> selectRole(@Param("where") String where);
+
+    /**
+     * 返回部门
+     * @return
+     */
+    List<VSelect> selectDepartment(@Param("where") String where);
 }

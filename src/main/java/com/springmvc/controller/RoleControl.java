@@ -4,6 +4,7 @@ import com.springmvc.model.RequestResult;
 import com.springmvc.model.Role;
 import com.springmvc.service.RoleService;
 import com.springmvc.service.UsersService;
+import com.springmvc.service.VSelectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,22 @@ public class RoleControl {
 
     @Autowired
     UsersService uService;
+
+    @Autowired
+    VSelectService vSeService;
+
+    /**
+     * 返回所有角色
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/vselect/selectRole")
+    public String vselect(HttpServletRequest request, HttpServletResponse response){
+        String where=request.getParameter("where");
+        return  vSeService.toIviewSelectForJson(vSeService.selectRole(where));
+    }
 
     /**
      * 角色分页

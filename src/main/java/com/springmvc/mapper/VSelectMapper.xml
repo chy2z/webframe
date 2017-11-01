@@ -30,4 +30,20 @@
     <if test="where != null">where ${where}</if>
   </select>
 
+  <select id="selectDepartment" resultMap="BaseResultMap">
+    select
+    name as label,
+    id as value
+    from Department
+    <if test="where != null">where ${where}</if>
+  </select>
+
+  <select id="selectRole" resultMap="BaseResultMap">
+    select
+    name as label,
+    id as value
+    from Role
+    <if test="where != null">where ${where}</if>
+  </select>
+
 </mapper>

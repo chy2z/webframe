@@ -1,5 +1,6 @@
 package com.springmvc.service;
 
+import com.springmvc.model.Department;
 import com.springmvc.model.PageHelper;
 import com.springmvc.util.JsonUtil;
 import com.springmvc.util.StringUtil;
@@ -49,14 +50,33 @@ public class UsersService {
 	}
 
 	/**
+	 * 插入记录
+	 * @param c
+	 * @return
+	 */
+	public boolean insert(Users c) {
+		return umap.insertSelective(c) > 0;
+	}
+
+	/**
 	 * 更新用户信息
 	 * 
 	 * @param u
 	 * @return
 	 */
-	public boolean updateUsers(Users u) {
+	public boolean update(Users u) {
 		return umap.updateByPrimaryKey(u) > 0;
 	}
+
+	/**
+	 * 删除记录
+	 * @param id
+	 * @return
+	 */
+	public boolean delete(Integer id) {
+		return umap.deleteByPrimaryKey(id) > 0;
+	}
+
 
 	/**
 	 * 返回分页数据

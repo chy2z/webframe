@@ -25,7 +25,7 @@
   <select id="selectCorporation" resultMap="BaseResultMap">
     select
     name as label,
-    id as value
+    id as id
     from corporation
     <if test="where != null">where ${where}</if>
   </select>
@@ -33,7 +33,7 @@
   <select id="selectDepartment" resultMap="BaseResultMap">
     select
     name as label,
-    id as value
+    id as id
     from Department
     <if test="where != null">where ${where}</if>
   </select>
@@ -41,7 +41,7 @@
   <select id="selectRole" resultMap="BaseResultMap">
     select
     name as label,
-    id as value
+    id as id
     from Role
     <if test="where != null">where ${where}</if>
   </select>

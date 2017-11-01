@@ -63,7 +63,7 @@ public class DepartmentControl {
     }
 
     /**
-     * 部门组织
+     * 部门插入
      * @param c
      * @return
      */

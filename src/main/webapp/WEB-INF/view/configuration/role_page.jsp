@@ -28,8 +28,8 @@
                                        :label-in-value="selectCorporation.labelInValue"
                                        :size="selectCorporation.size" :clearable="selectCorporation.clearable"
                                        :filterable="selectCorporation.filterable">
-                                <i-Option v-for="item in selectCorporation.dataTable" :value="item.value"
-                                          :key="item.value">{{ item.label }}</i-Option>
+                                <i-Option v-for="item in selectCorporation.dataTable" :value="item.id"
+                                          :key="item.id">{{ item.label }}</i-Option>
                             </i-Select>
                         </div>
                     </i-col>

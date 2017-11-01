@@ -275,7 +275,7 @@ public class LoginControl extends BaseController {
 
 				user.setPassword(SecurityUtil.MD5_16(newPwd));
 
-				uService.updateUsers(user);
+				uService.update(user);
 
 				result.setSucceed("修改密码成功",null);
 			}

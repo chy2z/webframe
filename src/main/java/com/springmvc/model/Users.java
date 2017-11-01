@@ -42,7 +42,6 @@ public class Users {
 
     private String corporationName;
 
-
     public Integer getId() {
         return id;
     }

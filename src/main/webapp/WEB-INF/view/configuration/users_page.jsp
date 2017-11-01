@@ -12,6 +12,462 @@
     <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>
 </head>
 <body>
+<div class="my-app" id="app">
+    <div class="my-layout">
+        <Row id="top" class-name="my-layout-top" justify="end" align="middle" type="flex">
+            <i-col span="10">
+                <div style="float: left;margin: 0 5px;">
+                    <label class="my-label">组织机构：</label>
+                    <i-Select  style="width:200px" @on-change="selectCorporationChange"
+                               v-model="selectCorporation.selectItem"
+                               :disabled="selectCorporation.disabled"
+                               :placeholder="selectCorporation.placeholder"
+                               :not-found-text="selectCorporation.notFoundText"
+                               :label-in-value="selectCorporation.labelInValue"
+                               :size="selectCorporation.size" :clearable="selectCorporation.clearable"
+                               :filterable="selectCorporation.filterable">
+                        <i-Option v-for="item in selectCorporation.dataTable" :value="item.id"
+                                  :key="item.id">{{ item.label }}</i-Option>
+                    </i-Select>
+                </div>
+            </i-col >
+            <i-col span="14">
+                <div style="float: right;margin: 0 5px;">
+                    <%@include file="../rightTemplate.jsp" %>
+                </div>
+            </i-col>
+        </Row>
+        <Row class-name="my-layout-body" type="flex">
+            <i-col span="24">
+                <i-Table :height="departmentTable.height"
+                         :width="departmentTable.width"
+                         :show-header="departmentTable.showHeader"
+                         :loading="departmentTable.pageLoading"
+                         :stripe="departmentTable.showStripe"
+                         :border="departmentTable.showBorder"
+                         :highlight-row="departmentTable.highlightRow"
+                         :size="departmentTable.tableSize"
+                         :columns="departmentTable.columns"
+                         :data="departmentTable.dataTable"
+                         @on-row-click="tableDepartmentRowClick"></i-Table>
+            </i-col>
+        </Row>
+        <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
+            <i-col  span="6"></i-col >
+            <i-col  span="18">
+                <div style="float: right;margin: 0 5px;">
+                    <Page @on-change="pageChangeDepartment" @on-page-size-change="pageSizeChangeDepartment"
+                          :page-size="departmentPage.pageSize"
+                          :page-size-opts="departmentPage.pageSizeOpts"
+                          :placement="departmentPage.placement"
+                          :current:="departmentPage.pageNo"
+                          :total="departmentPage.totalCount"
+                          :show-elevator="departmentPage.showElevator"
+                          :show-total="departmentPage.showTotal"
+                          :show-sizer="departmentPage.showSizer"></Page>
+                </div>
+            </i-col >
 
+        </Row>
+    </div>
+
+
+    <Modal v-model="formModal.modalShow" :mask-closable="false" :styles="{top: '20px'}" :width="500">
+        <p slot="header" style="text-align:center">
+            <Icon size="16" type="compose"></Icon>
+            <span class="modal-title">{{formModal.title}}</span>
+        </p>
+        <div>
+            <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate"
+                    label-position="right" label-width="70"  >
+                <Form-Item label="登录名称" prop="loginname">
+                    <i-Input v-model="formModal.bindModel.loginname" placeholder="请输入登录名称"></i-Input>
+                </Form-Item>
+                <Form-Item label="登录密码" prop="password">
+                    <i-Input v-model="formModal.bindModel.password" placeholder="请输入登录密码"></i-Input>
+                </Form-Item>
+                <Form-Item label="姓名" prop="name">
+                    <i-Input v-model="formModal.bindModel.name" placeholder="请输入名称"></i-Input>
+                </Form-Item>
+                <Form-Item label="电话" prop="phone">
+                    <i-Input v-model="formModal.bindModel.phone" placeholder="请输入电话"></i-Input>
+                </Form-Item>
+                <Form-Item label="邮箱" prop="email">
+                    <i-Input v-model="formModal.bindModel.email" placeholder="请输入邮箱"></i-Input>
+                </Form-Item>
+                <Form-Item label="角色" prop="roleid">
+                    <i-Select
+                            v-model="formModal.bindModel.roleid"
+                            :disabled="selectRole.disabled"
+                            :placeholder="selectRole.placeholder"
+                            :not-found-text="selectRole.notFoundText"
+                            :label-in-value="selectRole.labelInValue"
+                            :size="selectRole.size"
+                            :clearable="selectRole.clearable"
+                            :filterable="selectRole.filterable">
+                        <i-Option v-for="item in selectRole.dataTable" :value="item.id"
+                                  :key="item.id">{{ item.label }}</i-Option>
+                    </i-Select>
+                </Form-Item>
+                <Form-Item label="部门" prop="departid">
+                    <i-Select
+                            v-model="formModal.bindModel.departid"
+                            :disabled="selectDepart.disabled"
+                            :placeholder="selectDepart.placeholder"
+                            :not-found-text="selectDepart.notFoundText"
+                            :label-in-value="selectDepart.labelInValue"
+                            :size="selectDepart.size" :clearable="selectDepart.clearable"
+                            :filterable="selectDepart.filterable">
+                        <i-Option v-for="item in selectDepart.dataTable" :value="item.id"
+                                  :key="item.id">{{ item.label }}</i-Option>
+                    </i-Select>
+                </Form-Item>
+                <Form-Item label="职位" prop="office">
+                    <i-Select
+                               v-model="formModal.bindModel.office"
+                               :disabled="selectOffice.disabled"
+                               :placeholder="selectOffice.placeholder"
+                               :not-found-text="selectOffice.notFoundText"
+                               :label-in-value="selectOffice.labelInValue"
+                               :size="selectOffice.size" :clearable="selectOffice.clearable"
+                               :filterable="selectOffice.filterable">
+                        <i-Option v-for="item in selectOffice.dataTable" :value="item.value"
+                                  :key="item.value">{{ item.value }}</i-Option>
+                    </i-Select>
+                </Form-Item>
+                <Form-Item label="状态" prop="state">
+                    <i-Select
+                               v-model="formModal.bindModel.state"
+                               :disabled="selectState.disabled"
+                               :placeholder="selectState.placeholder"
+                               :not-found-text="selectState.notFoundText"
+                               :label-in-value="selectState.labelInValue"
+                               :size="selectState.size" :clearable="selectState.clearable"
+                               :filterable="selectState.filterable">
+                        <i-Option v-for="item in selectState.dataTable" :value="item.value"
+                                  :key="item.value">{{ item.value }}</i-Option>
+                    </i-Select>
+                </Form-Item>
+            </i-Form>
+        </div>
+        <div slot="footer">
+            <Dropdown placement="top" @on-click="formModalDropdownClick">
+                <i-Button type="text" size="large" @click="formModalCancel">
+                    取消
+                    <Icon type="arrow-down-b"></Icon>
+                </i-Button>
+                <Dropdown-Menu slot="list">
+                    <Dropdown-Item name="reset">重置</Dropdown-Item>
+                    <Dropdown-Item name="refresh" divided>刷新</Dropdown-Item>
+                </Dropdown-Menu>
+            </Dropdown>
+            <i-Button type="primary" size="large"  @click="formModalOk"
+                      v-show="formModal.okButShow"
+                      :loading="formModal.okButLoading" >确定</i-Button>
+        </div>
+    </Modal>
+
+
+
+</div>
 </body>
+<script>
+    window.onload=function() {
+        var domain="${ctx}";
+        var nomanage=${requestScope.nomanage};
+        var corporationId="${requestScope.corporationId}";
+        var usersInsert_url=domain+"/users/insert?jwt=${requestScope.jwt}";
+        var usersUpdate_url=domain+"/users/update?jwt=${requestScope.jwt}";
+        var usersDelete_url=domain+"/users/delete?jwt=${requestScope.jwt}";
+        var corporation_Select_url="${ctx}/corporation/vselect/selectCorporation?jwt=${requestScope.jwt}";
+        var dataDictionary_Select_url="${ctx}/dataDictionary/vselect/selectDataDictionaryValue?jwt=${requestScope.jwt}";
+        var department_Select_url="${ctx}/department/vselect/selectDepartment?jwt=${requestScope.jwt}";
+        var role_Select_url="${ctx}/role/vselect/selectRole?jwt=${requestScope.jwt}";
+
+        var pageHelperUsers=new pageHepler("${ctx}/users/pagination?jwt=${requestScope.jwt}",{
+            columns: [
+                {
+                    title: '序号',
+                    key: 'id'
+                },
+                {
+                    title: '登录名称',
+                    key: 'loginname'
+                },
+                {
+                    title: '姓名',
+                    key: 'name'
+                },
+                {
+                    title: '电话',
+                    key: 'phone'
+                },
+                {
+                    title: '邮件',
+                    key: 'email'
+                },
+                {
+                    title: '职位',
+                    key: 'office'
+                },
+                {
+                    title: '状态',
+                    key: 'state'
+                },
+                {
+                    title: '部门',
+                    key: 'departName'
+                },
+                {
+                    title: '角色',
+                    key: 'roleName'
+                },
+                {
+                    title: '组织',
+                    key: 'corporationName'
+                }
+            ]
+        },{orderBy:" u.id desc "});
+
+        var selectHelperCorporation=new selectHelper(corporation_Select_url,{});
+
+        var selectHelperDictOffice=new selectHelper(dataDictionary_Select_url,{selectItem:"未绑定",clearable:false});
+
+        var selectHelperDictState=new selectHelper(dataDictionary_Select_url,{selectItem:"未绑定",clearable:false});
+
+        var selectHelperDepartment= new selectHelper(department_Select_url,{selectItem:"未绑定",clearable:false});
+
+        var selectHelperRole=new selectHelper(role_Select_url,{selectItem:"未绑定",clearable:false});
+
+        new Vue({
+            el: '#app',
+            data: {
+                jwt:"${requestScope.jwt}",
+                butShow:${requestScope.rightBut},
+                formModal:{
+                    title:"",
+                    modalShow:false,
+                    okButShow:true,
+                    okButLoading:false,
+                    isAddStatus:true,
+                    bindModel:{
+                        id:null,
+                        corporationid:null,
+                        departid:null,
+                        roleid:null,
+                        loginname:"",
+                        password:"",
+                        name:"",
+                        phone:"",
+                        email:"",
+                        state:"",
+                        office:""
+                    },
+                    ruleValidate:{
+                        name: [
+                            { required: true, message: '名称不能为空', trigger: 'blur' }
+                        ],
+                        loginname: [
+                            { required: true, message: '登录名称不能为空', trigger: 'blur' }
+                        ],
+                        password: [
+                            { required: true, message: '密码名称不能为空', trigger: 'blur' }
+                        ],
+                        state: [
+                            { required: true, message: '状态不能为空', trigger: 'blur' }
+                        ],
+                        office: [
+                            { required: true, message: '职位不能为空', trigger: 'blur' }
+                        ],
+                        departid: [
+                            { required: true, message: '部门不能为空', trigger: 'blur' }
+                        ]
+                    }
+                },
+                selectRole:selectHelperRole.ivSelect,
+                selectDepart:selectHelperDepartment.ivSelect,
+                selectOffice:selectHelperDictOffice.ivSelect,
+                selectState:selectHelperDictState.ivSelect,
+                selectCorporation:selectHelperCorporation.ivSelect,
+                departmentTable:pageHelperUsers.ivTable,
+                departmentPage:pageHelperUsers.ivPage
+            },
+            created:function(){
+
+            },
+            mounted:function () {
+                //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条
+                pageHelperUsers.setHeight($(".my-layout-body").height());
+                //权限控制
+                if(nomanage) {
+                    //表格加载数据
+                    pageHelperUsers.load("u.corporationId='"+corporationId+"'");
+                    //加载组织机构
+                    //selectHelperCorporation.load("id='"+corporationId+"'");
+                    selectHelperCorporation.setDisabled(true);
+                }
+                else{
+                    //表格加载数据
+                    pageHelperUsers.load(null);
+                    //加载组织机构
+                    selectHelperCorporation.load(null);
+                }
+                //加载字典数据
+                selectHelperDictOffice.load("dkey='用户职位'");
+                selectHelperDictState.load("dkey='用户状态'");
+            },
+            methods:{
+                pageChangeDepartment(index){
+                    pageHelperUsers.pageIndexChanging(index);
+                },
+                pageSizeChangeDepartment(pageSize){
+                    pageHelperUsers.pageIndexChanging(1);
+                },
+                tableDepartmentRowClick(data,index){
+                    pageHelperUsers.setSelectRowIndex(index);
+                },
+                selectCorporationChange(option){
+                    if(option=="") {
+                        pageHelperUsers.load(null);
+                    }
+                    else{
+                        pageHelperUsers.load("u.corporationId='" + option + "'");
+                        selectHelperDepartment.load("corporationId='" + option + "'");
+                        selectHelperRole.load("corporationId='" + option + "'");
+                    }
+                },
+                butAdd(){
+                    if(selectHelperCorporation.getSelectItem()) {
+                        this.$refs['formModal.bindModel'].resetFields();
+                        this.formModal.modalShow = true;
+                        this.formModal.isAddStatus = true;
+                        this.formModal.okButShow = true;
+                        this.formModal.title = "增加用户";
+                    }
+                    else{
+                        valert(this,"请选择组织结构");
+                    }
+                },
+                butEdit(){
+                    if(pageHelperUsers.getSelectRowIndex()>-1){
+                        this.$refs['formModal.bindModel'].resetFields();
+                        this.formModal.modalShow=true;
+                        this.formModal.okButShow=true;
+                        this.formModal.isAddStatus=false;
+                        this.formModal.title="修改用户";
+                        let rowData=pageHelperUsers.getSelectRowData();
+                        let vue=this;
+                        $.each(rowData,function(key,value){
+                            if(typeof vue.formModal.bindModel[key]!=undefined){
+                                vue.formModal.bindModel[key]=value;
+                            }
+                        });
+                    }
+                    else{
+                        valert(this,"请选择一行记录修改");
+                    }
+                },
+                butDel(){
+                    if(pageHelperUsers.getSelectRowIndex()>-1){
+                        vconfirm(this,"确认删除吗？",()=>{
+                            let rowData=pageHelperUsers.getSelectRowData();
+                            vajaxPost(usersDelete_url,{id:rowData.id},false,(result)=>{
+                                if(result&&result.success){
+                                    pageHelperUsers.deleteSelectedRow();
+                                    pageHelperUsers.setSelectRowIndex(-1);
+                                    vtoast(this,result.tip);
+                                }
+                                else{
+                                    valert(this,result.tip);
+                                }
+                            });
+                        });
+                    }
+                    else{
+                        valert(this,"请选择一行记录删除");
+                    }
+                },
+                butLook(){
+                    if(pageHelperUsers.getSelectRowIndex()>-1){
+                        this.$refs['formModal.bindModel'].resetFields();
+                        this.formModal.modalShow=true;
+                        this.formModal.okButShow=false;
+                        this.formModal.title="用户信息";
+                        let rowData=pageHelperUsers.getSelectRowData();
+                        let vue=this;
+                        $.each(rowData,function(key,value){
+                            if(vue.formModal.bindModel[key]!=undefined){
+                                vue.formModal.bindModel[key]=value;
+                            }
+                        });
+                    }
+                    else{
+                        valert(this,"请选择一行记录修改");
+                    }
+                },
+                butExport(){
+
+                },
+                butRefresh(){
+                    window.location.reload();
+                },
+                formModalDropdownClick(name){
+                    if(name=="reset"){
+                        this.$refs['formModal.bindModel'].resetFields();
+                    }
+                    else if(name=="refresh"){
+                        selectHelperDepartment.reload();
+                        selectHelperRole.reload();
+                    }
+                },
+                formModalCancel(){
+                    this.formModal.modalShow=false;
+                    this.formModal.okButLoading=false;
+                },
+                formModalOk(){
+                    this.$refs['formModal.bindModel'].validate((valid) => {
+                        if (valid) {
+                            let vue=this;
+                            let url= this.formModal.isAddStatus?usersInsert_url:usersUpdate_url;
+                            let data=this.formModal.bindModel;
+
+                            if(this.formModal.isAddStatus){
+                                data["id"]=null;
+                                data["corporationid"]=selectHelperCorporation.getSelectItem();
+                            }
+
+                            vajaxPost(url,data,true,(result)=>{
+                                if(result&&result.success){
+                                    vtoast(vue,result.tip);
+                                    vue.formModal.modalShow=false;
+                                    if(vue.formModal.isAddStatus){
+                                        pageHelperUsers.pageIndexChanging(1);
+                                    }
+                                    else{
+                                        let rowData= pageHelperUsers.getSelectRowData();
+                                        $.each(data,function(key,value){
+                                            if(rowData[key]!=undefined){
+                                                rowData[key]=value;
+                                            }
+                                        });
+                                    }
+                                }
+                                else{
+                                    valert(vue,result.tip);
+                                }
+                            },()=>{
+                                vue.formModal.okButLoading=true;
+                            },()=>{
+                                vue.formModal.okButLoading=false;
+                            });
+
+                        } else {
+                            valert(this,'表单验证失败!');
+                        }
+                    });
+                }
+            }
+        });
+    }
+</script>
 </html>

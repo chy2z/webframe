@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springmvc.mapper.UsersMapper">
+
   <resultMap id="BaseResultMap" type="com.springmvc.model.Users">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="loginName" jdbcType="VARCHAR" property="loginname" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="depart" jdbcType="INTEGER" property="depart" />
+    <result column="departId" jdbcType="INTEGER" property="departid" />
     <result column="office" jdbcType="VARCHAR" property="office" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
@@ -16,8 +17,27 @@
     <result column="token" jdbcType="VARCHAR" property="token" />
   </resultMap>
 
+  <resultMap id="JoinResultMap" type="com.springmvc.model.Users">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="loginName" jdbcType="VARCHAR" property="loginname" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="departId" jdbcType="INTEGER" property="departid" />
+    <result column="office" jdbcType="VARCHAR" property="office" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="roleId" jdbcType="INTEGER" property="roleid" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="corporationId" jdbcType="INTEGER" property="corporationid" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
+    <!-- 增加级联属性 -->
+    <result column="departName" jdbcType="VARCHAR" property="departName" />
+    <result column="roleName" jdbcType="VARCHAR" property="roleName" />
+    <result column="corporationName" jdbcType="VARCHAR" property="corporationName" />
+  </resultMap>
+
   <sql id="Base_Column_List">
-    id, loginName, name, password, depart, office, phone, email, roleId, state, corporationId,
+    id, loginName, name, password, departId, office, phone, email, roleId, state, corporationId,
     token
   </sql>
 
@@ -42,12 +62,12 @@
 
   <insert id="insert" parameterType="com.springmvc.model.Users">
     insert into users (id, loginName, name, 
-      password, depart, office, 
+      password, departId, office,
       phone, email, roleId,
       state, corporationId, token
       )
     values (#{id,jdbcType=INTEGER}, #{loginname,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{depart,jdbcType=INTEGER}, #{office,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{departid,jdbcType=INTEGER}, #{office,jdbcType=VARCHAR},
       #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER},
       #{state,jdbcType=VARCHAR}, #{corporationid,jdbcType=INTEGER}, #{token,jdbcType=VARCHAR}
       )
@@ -68,8 +88,8 @@
       <if test="password != null">
         password,
       </if>
-      <if test="depart != null">
-        depart,
+      <if test="departid != null">
+        departId,
       </if>
       <if test="office != null">
         office,
@@ -80,7 +100,7 @@
       <if test="email != null">
         email,
       </if>
-      <if test="roleId != null">
+      <if test="roleid != null">
         roleId,
       </if>
       <if test="state != null">
@@ -106,8 +126,8 @@
       <if test="password != null">
         #{password,jdbcType=VARCHAR},
       </if>
-      <if test="depart != null">
-        #{depart,jdbcType=INTEGER},
+      <if test="departid != null">
+        #{departid,jdbcType=INTEGER},
       </if>
       <if test="office != null">
         #{office,jdbcType=VARCHAR},
@@ -118,7 +138,7 @@
       <if test="email != null">
         #{email,jdbcType=VARCHAR},
       </if>
-      <if test="roleId != null">
+      <if test="roleid != null">
         #{roleId,jdbcType=INTEGER},
       </if>
       <if test="state != null">
@@ -145,8 +165,8 @@
       <if test="password != null">
         password = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="depart != null">
-        depart = #{depart,jdbcType=INTEGER},
+      <if test="departid != null">
+        departId = #{departid,jdbcType=INTEGER},
       </if>
       <if test="office != null">
         office = #{office,jdbcType=VARCHAR},
@@ -157,8 +177,8 @@
       <if test="email != null">
         email = #{email,jdbcType=VARCHAR},
       </if>
-      <if test="roleId != null">
-        roleId = #{roleId,jdbcType=INTEGER},
+      <if test="roleid != null">
+        roleId = #{roleid,jdbcType=INTEGER},
       </if>
       <if test="state != null">
         state = #{state,jdbcType=VARCHAR},
@@ -178,11 +198,11 @@
     set loginName = #{loginname,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
-      depart = #{depart,jdbcType=INTEGER},
+      departId = #{departid,jdbcType=INTEGER},
       office = #{office,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
-      roleId = #{roleId,jdbcType=INTEGER},
+      roleId = #{roleid,jdbcType=INTEGER},
       state = #{state,jdbcType=VARCHAR},
       corporationId = #{corporationid,jdbcType=INTEGER},
       token = #{token,jdbcType=VARCHAR}
@@ -196,7 +216,14 @@
   </select>
 
   <select id="getCount" resultType="int">
-    select count(1) from users
+    select count(1) from users u
+
+    JOIN role r on u.roleId =r.id
+
+    JOIN department d on u.departId=d.id
+
+    JOIN corporation c on u.corporationId=c.id
+
     <!-- 1) 对于形如#{variable} 的变量，Mybatis会将其视为字符串值，在变量替换成功后，缺省地给变量值加上引号 -->
     <!-- 2）对于形如${variable}的变量，Mybatis会将其视作直接变量，即在变量替换成功后，不会再给其加上引号。 -->
     <!-- 此处用$ 不用 #-->
@@ -204,12 +231,20 @@
     <if test="orderBy != null">order by ${orderBy}</if>
   </select>
 
-  <select id="selectPagination" resultMap="BaseResultMap">
+  <select id="selectPagination" resultMap="JoinResultMap">
     select
 
-    <include refid="Base_Column_List" />
+    u.id, u.loginName, u.name, u.password, u.departId, u.office, u.phone, u.email, u.roleId, u.state, u.corporationId,u.token,
 
-    from users
+    r.name as roleName,d.name as departName,c.name as corporationName
+
+    from users u
+
+    JOIN role r on u.roleId =r.id
+
+    JOIN department d on u.departId=d.id
+
+    JOIN corporation c on u.corporationId=c.id
 
     <!-- 1) 对于形如#{variable} 的变量，Mybatis会将其视为字符串值，在变量替换成功后，缺省地给变量值加上引号 -->
     <!-- 2）对于形如${variable}的变量，Mybatis会将其视作直接变量，即在变量替换成功后，不会再给其加上引号。 -->

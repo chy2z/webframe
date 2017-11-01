@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 * @date 2017/10/30 17:10
 */
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserControl {
 
     @Autowired

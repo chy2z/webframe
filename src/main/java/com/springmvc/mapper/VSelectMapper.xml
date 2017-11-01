@@ -15,6 +15,13 @@
     where display=1
   </select>
 
+  <select id="selectDataDictionaryValue" resultMap="BaseResultMap">
+    select
+    dvalue as value
+    from data_dictionary
+    <if test="where != null">where ${where}</if>
+  </select>
+
   <select id="selectCorporation" resultMap="BaseResultMap">
     select
     name as label,

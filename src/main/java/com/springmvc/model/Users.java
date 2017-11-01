@@ -16,7 +16,7 @@ public class Users {
 
     private String password;
 
-    private Integer depart;
+    private Integer departid;
 
     private String office;
 
@@ -31,6 +31,17 @@ public class Users {
     private Integer corporationid;
 
     private String token;
+
+    private String img;
+
+    //===========关联属性==================
+
+    private String departName;
+
+    private String roleName;
+
+    private String corporationName;
+
 
     public Integer getId() {
         return id;
@@ -64,12 +75,12 @@ public class Users {
         this.password = password == null ? null : password.trim();
     }
 
-    public Integer getDepart() {
-        return depart;
+    public Integer getDepartid() {
+        return departid;
     }
 
-    public void setDepart(Integer depart) {
-        this.depart = depart;
+    public void setDepartid(Integer depart) {
+        this.departid = depart;
     }
 
     public String getOffice() {
@@ -126,5 +137,37 @@ public class Users {
 
     public void setRoleid(Integer roleid) {
         this.roleid = roleid;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public String getDepartName() {
+        return departName;
+    }
+
+    public void setDepartName(String departName) {
+        this.departName = departName;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public String getCorporationName() {
+        return corporationName;
+    }
+
+    public void setCorporationName(String corporationName) {
+        this.corporationName = corporationName;
     }
 }

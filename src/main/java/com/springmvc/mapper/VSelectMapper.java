@@ -20,6 +20,12 @@ public interface VSelectMapper {
     List<VSelect> selectDataDictionaryDkey();
 
     /**
+     * 返回字典属性
+     * @return
+     */
+    List<VSelect> selectDataDictionaryValue(@Param("where") String where);
+
+    /**
      * 获取所有组织结构
      * @return
      */

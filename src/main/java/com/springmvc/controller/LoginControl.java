@@ -86,7 +86,7 @@ public class LoginControl extends BaseController {
 		map.put("id", user.getId().toString());
 		map.put("loginName", user.getLoginname());
 		map.put("name", user.getName());
-		map.put("depart", user.getDepart().toString());
+		map.put("depart", user.getDepartid().toString());
 		map.put("corporationId", user.getCorporationid().toString());
 		map.put("role", user.getRoleid().toString());
 		map.put("loginTime", DateUtil.formatDate(new Date()));
@@ -156,7 +156,7 @@ public class LoginControl extends BaseController {
 
 			model.addAttribute("loginTime",DateUtil.formatDate(ut.getLogintime()));
 
-			model.addAttribute("depart",departmentService.getDepart(u.getDepart()).getName());
+			model.addAttribute("depart",departmentService.getDepart(u.getDepartid()).getName());
 		}
 
 		return "forward:../../main.jsp";
@@ -204,7 +204,7 @@ public class LoginControl extends BaseController {
 
 			model.addAttribute("jwt", jwt);
 
-			model.addAttribute("depart", u.getDepart().toString());
+			model.addAttribute("depart", u.getDepartid().toString());
 
 			model.addAttribute("corporationId", u.getCorporationid().toString());
 		}

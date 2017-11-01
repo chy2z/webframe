@@ -33,6 +33,14 @@ public class VSelectService {
     }
 
     /**
+     * 获取所有字典属性
+     * @return
+     */
+    public List<VSelect> selectDataDictionaryValue(String where){
+        return vSelect.selectDataDictionaryValue(StringUtil.NullOrString(where));
+    }
+
+    /**
      * 获取所有组织结构
      * @return
      */

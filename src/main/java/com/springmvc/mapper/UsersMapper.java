@@ -1,6 +1,5 @@
 package com.springmvc.mapper;
 
-import com.springmvc.model.Corporation;
 import com.springmvc.model.Users;
 import org.apache.ibatis.annotations.Param;
 
@@ -46,7 +45,7 @@ public interface UsersMapper {
      * @param pageSize
      * @return
      */
-    List<Corporation> selectPagination(@Param("where") String where,
+    List<Users> selectPagination(@Param("where") String where,
                                        @Param("orderBy") String orderBy,
                                        @Param("start") Integer start,
                                        @Param("pageSize") Integer pageSize

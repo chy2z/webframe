@@ -119,6 +119,19 @@ public class DataDictionaryControl {
     }
 
     /**
+     * 返回字典属性
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/vselect/selectDataDictionaryValue")
+    public String vselectValue(HttpServletRequest request, HttpServletResponse response){
+        String where=request.getParameter("where");
+        return  vSeService.toIviewSelectForJson(vSeService.selectDataDictionaryValue(where));
+    }
+
+    /**
      * 分页(字典关键字)
      * @return
      */

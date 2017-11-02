@@ -15,7 +15,7 @@ function selectHelper(url,ivSelectConfig){
         clearable:true,
         filterable:true,
         disabled:false,
-        labelInValue:false,
+        labelInValue:true,
         //数据源
         dataTable:null,
         //是否使用远程搜索

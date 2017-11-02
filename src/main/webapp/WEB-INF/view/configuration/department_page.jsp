@@ -221,11 +221,11 @@
                     pageHelperDepartment.setSelectRowIndex(index);
                 },
                 selectCorporationChange(option){
-                    if(option=="") {
+                    if(option==null||option.value=="") {
                         pageHelperDepartment.load(null);
                     }
                     else{
-                        pageHelperDepartment.load("corporationId='" + option + "'");
+                        pageHelperDepartment.load("corporationId='" + option.value + "'");
                     }
                 },
                 butAdd(){
@@ -329,7 +329,7 @@
                                     else{
                                         let rowData= pageHelperDepartment.getSelectRowData();
                                         $.each(data,function(key,value){
-                                            if(rowData[key]!=undefined){
+                                            if(typeof rowData[key]!=undefined){
                                                 rowData[key]=value;
                                             }
                                         });

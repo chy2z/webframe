@@ -171,7 +171,7 @@
             ]
         },{orderBy:" id desc "});
 
-        var pageHelperUser=new pageHepler("${ctx}/user/pagination?jwt=${requestScope.jwt}",{
+        var pageHelperUser=new pageHepler("${ctx}/users/pagination?jwt=${requestScope.jwt}",{
             columns: [
                 {
                     title: '用户姓名',
@@ -183,7 +183,7 @@
                     width:300
                 }
             ]
-        },{pageSize:50,orderBy:" id desc "});
+        },{pageSize:50,orderBy:" u.id desc "});
 
         var selectHelperCorporation=new selectHelper(corporation_Select_url,{});
 
@@ -229,7 +229,8 @@
                     //加载角色表格数据
                     pageHelperRole.load("corporationId='"+corporationId+"'");
                     //加载组织机构
-                    //selectHelperCorporation.load("id='"+corporationId+"'");
+                    selectHelperCorporation.load("id='"+corporationId+"'");
+                    selectHelperCorporation.setSelectItem(parseInt(corporationId));
                     selectHelperCorporation.setDisabled(true);
                 }
                 else{
@@ -251,11 +252,11 @@
                     pageHelperUser.load(" roleid='" + data.id + "' ");
                 },
                 selectCorporationChange(option){
-                    if(option==""){
+                    if(option==null||option.value==""){
                         pageHelperRole.load(null);
                     }
                     else {
-                        pageHelperRole.load("corporationId='" + option + "'");
+                        pageHelperRole.load("corporationId='" + option.value + "'");
                     }
                 },
                 butSearch(){
@@ -336,12 +337,12 @@
                                     vtoast(vue,result.tip);
                                     vue.formModal.modalShow=false;
                                     if(vue.formModal.isAddStatus){
-                                        vue.pageChangeRole(1);
+                                        pageHelperRole.pageIndexChanging(1);
                                     }
                                     else{
                                         let rowData= pageHelperRole.getSelectRowData();
                                         $.each(data,function(key,value){
-                                            if(rowData[key]!=undefined){
+                                            if(typeof rowData[key]!=undefined){
                                                 rowData[key]=value;
                                             }
                                         });

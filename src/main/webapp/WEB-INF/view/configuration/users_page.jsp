@@ -96,7 +96,7 @@
                     <i-Input v-model="formModal.bindModel.email" placeholder="请输入邮箱"></i-Input>
                 </Form-Item>
                 <Form-Item label="角色" prop="roleid">
-                    <i-Select
+                    <i-Select @on-change="selectRoleChange"
                             v-model="formModal.bindModel.roleid"
                             :disabled="selectRole.disabled"
                             :placeholder="selectRole.placeholder"
@@ -110,13 +110,14 @@
                     </i-Select>
                 </Form-Item>
                 <Form-Item label="部门" prop="departid">
-                    <i-Select
+                    <i-Select  @on-change="selectDepartChange"
                             v-model="formModal.bindModel.departid"
                             :disabled="selectDepart.disabled"
                             :placeholder="selectDepart.placeholder"
                             :not-found-text="selectDepart.notFoundText"
                             :label-in-value="selectDepart.labelInValue"
-                            :size="selectDepart.size" :clearable="selectDepart.clearable"
+                            :size="selectDepart.size"
+                            :clearable="selectDepart.clearable"
                             :filterable="selectDepart.filterable">
                         <i-Option v-for="item in selectDepart.dataTable" :value="item.id"
                                   :key="item.id">{{ item.label }}</i-Option>
@@ -149,6 +150,7 @@
                     </i-Select>
                 </Form-Item>
             </i-Form>
+            <Spin size="large" fix v-if="formModal.spinShow"></Spin>
         </div>
         <div slot="footer">
             <Dropdown placement="top" @on-click="formModalDropdownClick">
@@ -237,7 +239,7 @@
 
         var selectHelperDepartment= new selectHelper(department_Select_url,{selectItem:"未绑定",clearable:false});
 
-        var selectHelperRole=new selectHelper(role_Select_url,{selectItem:"未绑定",clearable:false});
+        var selectHelperRole=new selectHelper(role_Select_url,{selectItem:"未绑定"});
 
         new Vue({
             el: '#app',
@@ -246,22 +248,25 @@
                 butShow:${requestScope.rightBut},
                 formModal:{
                     title:"",
+                    spinShow:false,
                     modalShow:false,
                     okButShow:true,
                     okButLoading:false,
                     isAddStatus:true,
                     bindModel:{
-                        id:null,
-                        corporationid:null,
-                        departid:null,
-                        roleid:null,
+                        id:undefined,
+                        corporationid:undefined,
+                        departid:undefined,
+                        roleid:undefined,
                         loginname:"",
                         password:"",
                         name:"",
                         phone:"",
                         email:"",
                         state:"",
-                        office:""
+                        office:"",
+                        roleName:"",
+                        departName:""
                     },
                     ruleValidate:{
                         name: [
@@ -280,7 +285,7 @@
                             { required: true, message: '职位不能为空', trigger: 'blur' }
                         ],
                         departid: [
-                            { required: true, message: '部门不能为空', trigger: 'blur' }
+                            { type:'number', required: true, message: '部门不能为空', trigger: 'blur' }
                         ]
                     }
                 },
@@ -302,8 +307,12 @@
                 if(nomanage) {
                     //表格加载数据
                     pageHelperUsers.load("u.corporationId='"+corporationId+"'");
+                    selectHelperDepartment.load("corporationId='" + corporationId + "'");
+                    selectHelperRole.load("corporationId='" + corporationId + "'");
+
                     //加载组织机构
-                    //selectHelperCorporation.load("id='"+corporationId+"'");
+                    selectHelperCorporation.load("id="+corporationId+"");
+                    selectHelperCorporation.setSelectItem(parseInt(corporationId));
                     selectHelperCorporation.setDisabled(true);
                 }
                 else{
@@ -327,14 +336,20 @@
                     pageHelperUsers.setSelectRowIndex(index);
                 },
                 selectCorporationChange(option){
-                    if(option=="") {
+                    if(option==null||option.value=="") {
                         pageHelperUsers.load(null);
                     }
                     else{
-                        pageHelperUsers.load("u.corporationId='" + option + "'");
-                        selectHelperDepartment.load("corporationId='" + option + "'");
-                        selectHelperRole.load("corporationId='" + option + "'");
+                        pageHelperUsers.load("u.corporationId='" + option.value + "'");
+                        selectHelperDepartment.load("corporationId='" + option.value + "'");
+                        selectHelperRole.load("corporationId='" + option.value + "'");
                     }
+                },
+                selectDepartChange(option){
+                    this.formModal.bindModel.departName=option.label;
+                },
+                selectRoleChange(option){
+                    this.formModal.bindModel.roleName=option.label;
                 },
                 butAdd(){
                     if(selectHelperCorporation.getSelectItem()) {
@@ -349,22 +364,32 @@
                     }
                 },
                 butEdit(){
-                    if(pageHelperUsers.getSelectRowIndex()>-1){
-                        this.$refs['formModal.bindModel'].resetFields();
-                        this.formModal.modalShow=true;
-                        this.formModal.okButShow=true;
-                        this.formModal.isAddStatus=false;
-                        this.formModal.title="修改用户";
-                        let rowData=pageHelperUsers.getSelectRowData();
-                        let vue=this;
-                        $.each(rowData,function(key,value){
-                            if(typeof vue.formModal.bindModel[key]!=undefined){
-                                vue.formModal.bindModel[key]=value;
-                            }
-                        });
+                    if(selectHelperCorporation.getSelectItem()) {
+                        if (pageHelperUsers.getSelectRowIndex() > -1) {
+                            this.$refs['formModal.bindModel'].resetFields();
+                            this.formModal.modalShow = true;
+                            this.formModal.okButShow = true;
+                            this.formModal.isAddStatus = false;
+                            this.formModal.spinShow=true;
+                            this.formModal.title = "修改用户";
+                            let rowData = pageHelperUsers.getSelectRowData();
+                            let vue = this;
+                            //延迟500毫秒,等待resetFields执行完毕。
+                            setTimeout(() => {
+                                $.each(rowData, function (key, value) {
+                                    if (typeof vue.formModal.bindModel[key] != undefined) {
+                                        vue.formModal.bindModel[key] = value;
+                                    }
+                                });
+                                vue.formModal.spinShow=false;
+                            },500);
+                        }
+                        else {
+                            valert(this, "请选择一行记录修改");
+                        }
                     }
                     else{
-                        valert(this,"请选择一行记录修改");
+                        valert(this,"请选择组织结构");
                     }
                 },
                 butDel(){
@@ -392,14 +417,19 @@
                         this.$refs['formModal.bindModel'].resetFields();
                         this.formModal.modalShow=true;
                         this.formModal.okButShow=false;
+                        this.formModal.spinShow=true;
                         this.formModal.title="用户信息";
                         let rowData=pageHelperUsers.getSelectRowData();
                         let vue=this;
-                        $.each(rowData,function(key,value){
-                            if(vue.formModal.bindModel[key]!=undefined){
-                                vue.formModal.bindModel[key]=value;
-                            }
-                        });
+                        //延迟500毫秒,等待resetFields执行完毕。
+                        setTimeout(() => {
+                            $.each(rowData, function (key, value) {
+                                if (typeof vue.formModal.bindModel[key] != undefined) {
+                                    vue.formModal.bindModel[key] = value;
+                                }
+                            });
+                            vue.formModal.spinShow=false;
+                        },500);
                     }
                     else{
                         valert(this,"请选择一行记录修改");
@@ -420,7 +450,7 @@
                         selectHelperRole.reload();
                     }
                 },
-                formModalCancel(){
+                formModalCancel(){ alert("");
                     this.formModal.modalShow=false;
                     this.formModal.okButLoading=false;
                 },
@@ -444,12 +474,18 @@
                                         pageHelperUsers.pageIndexChanging(1);
                                     }
                                     else{
+
+                                        log(data);
+
                                         let rowData= pageHelperUsers.getSelectRowData();
                                         $.each(data,function(key,value){
-                                            if(rowData[key]!=undefined){
+                                            if(typeof rowData[key]!=undefined){
                                                 rowData[key]=value;
                                             }
                                         });
+
+
+                                        log(rowData);
                                     }
                                 }
                                 else{

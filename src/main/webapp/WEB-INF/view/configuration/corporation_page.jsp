@@ -274,7 +274,6 @@
                                 let WR = [];
                                 WR[WR.length] = new whereRelation("name", $("#qname").val(), "string", null, null, true);
                                 WR[WR.length] = new whereRelation("code", $("#qcode").val(), "string", null, null, true);
-                                //alert(new pageHelperWhere(WR).getWhere());
                                 pageHelperCroporation.load(new pageHelperWhere(WR).getWhere());
                                 this.queryModal.modalShow=false;
                         }
@@ -303,12 +302,12 @@
                                         vtoast(vue,result.tip);
                                         vue.formModal.modalShow=false;
                                         if(vue.formModal.isAddStatus){
-                                            vue.pageChange(1);
+                                            pageHelperCroporation.pageIndexChanging(1);
                                         }
                                         else{
                                             let rowData= pageHelperCroporation.getSelectRowData();
                                             $.each(data,function(key,value){
-                                                if(rowData[key]!=undefined){
+                                                if(typeof rowData[key]!=undefined){
                                                     rowData[key]=value;
                                                 }
                                             });

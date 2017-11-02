@@ -27,6 +27,13 @@ function log(msg,target){
 }
 
 /**
+ * 延迟加载
+ */
+function delay(fun,delayedClosing){
+    setTimeout(fun,delayedClosing);
+}
+
+/**
  * 整页加载 等待效果
  * @param delayedClosing
  */

@@ -11,6 +11,7 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
      * @type {void|*}
      */
     this.ivTable=$.extend({
+        elementid:null,
         width:0,
         height:0,
         pageLoading:false,
@@ -68,6 +69,12 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
     this.mOrderBy=null;
 
     /**
+     * 当前选中行
+     * @type {null}
+     */
+    this.currentRow=null;
+
+    /**
      * 负责初始化 默认加载第一页，此时where条件可以改变
      * @param pageNo
      * @param pageSize
@@ -81,6 +88,7 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
         this.mOrderBy=this.ivPage.orderBy;
         let my=this;
         let data = {pageNo:this.mpageNo,pageSize:this.mPageSize,where:this.mWhere,orderBy:this.mOrderBy};
+        this.setSelectRowIndex(-1);
         $.ajax({
             url: url,
             type: "POST",
@@ -119,6 +127,7 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
         this.mpageNo=pageNo;
         let my=this;
         let data = {pageNo:this.mpageNo,pageSize:this.mPageSize,where:this.mWhere,orderBy:this.mOrderBy};
+        this.setSelectRowIndex(-1);
         $.ajax({
             url: url,
             type: "POST",
@@ -151,6 +160,20 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
      */
     this.setSelectRowIndex=function(index){
         this.ivTable.selectRowIndex=index;
+    }
+
+    /**
+     * 设置高亮行
+     */
+    this.setHighlightRow=function(){
+        for(let index in this.ivTable.dataTable){
+            if(index!=this.ivTable.selectRowIndex){
+                Vue.set(this.ivTable.dataTable[index],"_highlight",false);
+            }
+            else{
+                Vue.set(this.ivTable.dataTable[index],"_highlight",true);
+            }
+        }
     }
 
     /**

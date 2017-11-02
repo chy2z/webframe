@@ -39,38 +39,37 @@
         </Row>
         <Row class-name="my-layout-body" type="flex">
             <i-col span="24">
-                <i-Table :height="departmentTable.height"
-                         :width="departmentTable.width"
-                         :show-header="departmentTable.showHeader"
-                         :loading="departmentTable.pageLoading"
-                         :stripe="departmentTable.showStripe"
-                         :border="departmentTable.showBorder"
-                         :highlight-row="departmentTable.highlightRow"
-                         :size="departmentTable.tableSize"
-                         :columns="departmentTable.columns"
-                         :data="departmentTable.dataTable"
-                         @on-row-click="tableDepartmentRowClick"></i-Table>
+                <i-Table id="usersTable" :height="usersTable.height"
+                         :width="usersTable.width"
+                         :show-header="usersTable.showHeader"
+                         :loading="usersTable.pageLoading"
+                         :stripe="usersTable.showStripe"
+                         :border="usersTable.showBorder"
+                         :highlight-row="usersTable.highlightRow"
+                         :size="usersTable.tableSize"
+                         :columns="usersTable.columns"
+                         :data="usersTable.dataTable"
+                         @on-row-click="tableUsersRowClick"></i-Table>
             </i-col>
         </Row>
         <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
             <i-col  span="6"></i-col >
             <i-col  span="18">
                 <div style="float: right;margin: 0 5px;">
-                    <Page @on-change="pageChangeDepartment" @on-page-size-change="pageSizeChangeDepartment"
-                          :page-size="departmentPage.pageSize"
-                          :page-size-opts="departmentPage.pageSizeOpts"
-                          :placement="departmentPage.placement"
-                          :current:="departmentPage.pageNo"
-                          :total="departmentPage.totalCount"
-                          :show-elevator="departmentPage.showElevator"
-                          :show-total="departmentPage.showTotal"
-                          :show-sizer="departmentPage.showSizer"></Page>
+                    <Page @on-change="pageChangeUsers" @on-page-size-change="pageSizeChangeUsers"
+                          :page-size="usersPage.pageSize"
+                          :page-size-opts="usersPage.pageSizeOpts"
+                          :placement="usersPage.placement"
+                          :current:="usersPage.pageNo"
+                          :total="usersPage.totalCount"
+                          :show-elevator="usersPage.showElevator"
+                          :show-total="usersPage.showTotal"
+                          :show-sizer="usersPage.showSizer"></Page>
                 </div>
             </i-col >
 
         </Row>
     </div>
-
 
     <Modal v-model="formModal.modalShow" :mask-closable="false" :styles="{top: '20px'}" :width="500">
         <p slot="header" style="text-align:center">
@@ -169,8 +168,6 @@
         </div>
     </Modal>
 
-
-
 </div>
 </body>
 <script>
@@ -187,6 +184,7 @@
         var role_Select_url="${ctx}/role/vselect/selectRole?jwt=${requestScope.jwt}";
 
         var pageHelperUsers=new pageHepler("${ctx}/users/pagination?jwt=${requestScope.jwt}",{
+            elementid:"usersTable",
             columns: [
                 {
                     title: '序号',
@@ -294,8 +292,8 @@
                 selectOffice:selectHelperDictOffice.ivSelect,
                 selectState:selectHelperDictState.ivSelect,
                 selectCorporation:selectHelperCorporation.ivSelect,
-                departmentTable:pageHelperUsers.ivTable,
-                departmentPage:pageHelperUsers.ivPage
+                usersTable:pageHelperUsers.ivTable,
+                usersPage:pageHelperUsers.ivPage
             },
             created:function(){
 
@@ -326,13 +324,13 @@
                 selectHelperDictState.load("dkey='用户状态'");
             },
             methods:{
-                pageChangeDepartment(index){
+                pageChangeUsers(index){
                     pageHelperUsers.pageIndexChanging(index);
                 },
-                pageSizeChangeDepartment(pageSize){
+                pageSizeChangeUsers(pageSize){
                     pageHelperUsers.pageIndexChanging(1);
                 },
-                tableDepartmentRowClick(data,index){
+                tableUsersRowClick(data,index){
                     pageHelperUsers.setSelectRowIndex(index);
                 },
                 selectCorporationChange(option){
@@ -465,6 +463,9 @@
                                 data["id"]=null;
                                 data["corporationid"]=selectHelperCorporation.getSelectItem();
                             }
+                            else{
+                                if(data["roleid"]=="")  data["roleid"]=0;
+                            }
 
                             vajaxPost(url,data,true,(result)=>{
                                 if(result&&result.success){
@@ -474,18 +475,13 @@
                                         pageHelperUsers.pageIndexChanging(1);
                                     }
                                     else{
-
-                                        log(data);
-
                                         let rowData= pageHelperUsers.getSelectRowData();
                                         $.each(data,function(key,value){
                                             if(typeof rowData[key]!=undefined){
                                                 rowData[key]=value;
                                             }
                                         });
-
-
-                                        log(rowData);
+                                        pageHelperUsers.setHighlightRow();
                                     }
                                 }
                                 else{

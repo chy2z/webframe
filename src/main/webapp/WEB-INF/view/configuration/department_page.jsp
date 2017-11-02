@@ -333,6 +333,7 @@
                                                 rowData[key]=value;
                                             }
                                         });
+                                        pageHelperDepartment.setHighlightRow();
                                     }
                                 }
                                 else{

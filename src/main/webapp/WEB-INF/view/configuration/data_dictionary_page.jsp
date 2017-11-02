@@ -314,7 +314,7 @@
                                 vtoast(vue,result.tip);
                                 vue.formModal.modalShow=false;
                                 if(vue.formModal.isAddStatus){
-                                    vue.pageChangeChild(1);
+                                    pageHelperChild.pageIndexChanging(1);
                                 }
                                 else{
                                     let rowData= pageHelperChild.getSelectRowData();
@@ -323,6 +323,7 @@
                                             rowData[key]=value;
                                         }
                                     });
+                                    pageHelperChild.setHighlightRow();
                                 }
                             }
                             else{

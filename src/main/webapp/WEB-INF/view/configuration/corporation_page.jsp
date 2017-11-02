@@ -311,6 +311,7 @@
                                                     rowData[key]=value;
                                                 }
                                             });
+                                            pageHelperCroporation.setHighlightRow();
                                         }
                                     }
                                     else{

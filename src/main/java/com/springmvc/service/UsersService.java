@@ -1,5 +1,6 @@
 package com.springmvc.service;
 
+import com.springmvc.config.SysConfig;
 import com.springmvc.model.Department;
 import com.springmvc.model.PageHelper;
 import com.springmvc.util.JsonUtil;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.springmvc.mapper.UsersMapper;
 import com.springmvc.model.Users;
+
+import javax.swing.text.rtf.RTFEditorKit;
 
 /**
 * @Title: UsersService
@@ -20,6 +23,7 @@ public class UsersService {
 
 	@Autowired
 	private UsersMapper umap;
+
 
 	/**
 	 * 获取用户信息
@@ -65,7 +69,7 @@ public class UsersService {
 	 * @return
 	 */
 	public boolean update(Users u) {
-		return umap.updateByPrimaryKey(u) > 0;
+		return umap.updateByPrimaryKeySelective(u) > 0;
 	}
 
 	/**

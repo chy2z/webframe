@@ -11,5 +11,14 @@ public class SysConfig {
     /**
      * 超级管理员
      */
-    public final static String superAdmin = "-9999";
+    private static final String superAdmin = "-9999";
+
+    /**
+     * 是否是超级管理员
+     * @param roleid
+     * @return
+     */
+    public static boolean isSuperAdmin(String roleid) {
+        return SysConfig.superAdmin.equals(roleid);
+    }
 }

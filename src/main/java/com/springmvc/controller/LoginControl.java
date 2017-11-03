@@ -140,7 +140,7 @@ public class LoginControl extends BaseController {
 			Role role=roleService.getRole(u.getRoleid());
 
 			//是否是超级管理员
-			if(SysConfig.superAdmin.equals(u.getRoleid().toString())){
+			if(SysConfig.isSuperAdmin(u.getRoleid().toString())){
 				model.addAttribute("menu",miService.toIviewMenuForJson(miService.getMenuAll()));
 			}
 			//不是超级管理员
@@ -193,7 +193,7 @@ public class LoginControl extends BaseController {
 			Users u= uService.getUsers(ut.getUserid());
 			Role role=roleService.getRole(u.getRoleid());
 
-			if(SysConfig.superAdmin.equals(u.getRoleid().toString())){
+			if(SysConfig.isSuperAdmin(u.getRoleid().toString())){
 				model.addAttribute("nomanage",false);
 				model.addAttribute("rightBut",miService.toIviewButForJson(miService.getButAll(mid)));
 			}

@@ -10,6 +10,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>
+    <link rel="stylesheet" href="${ctx}/css/lock/unlock.css">
     <style>
         html, body {
             width: 100%;
@@ -178,6 +179,17 @@
 </head>
 <body>
 <div id="app">
+    <!-- lock动画 -->
+    <div class="lock-screen-back" id="lock_screen_back"></div>
+    <!-- lock组件 -->
+    <div class="lockmain" :class="{'lockmain-hide': hideText}">
+        <div style="width: 100%;height: 100%;background: #667aa6">
+            <div class="unlock-con">
+                <unlock :show-unlock="showUnlock" @on-unlock="unlockScreen"></unlock>
+            </div>
+        </div>
+    </div>
+    <!-- top -->
     <div class="head">
         <div class="head-content">
             <div class="head-logo-left-logo">
@@ -189,6 +201,22 @@
                     <Menu-Item name="toggleMenu">
                         <Icon type="arrow-swap"></Icon>
                         折叠菜单
+                    </Menu-Item>
+                    <Menu-Item name="fullscreen">
+                        <Icon type="arrow-expand"></Icon>
+                        系统全屏
+                    </Menu-Item>
+                    <Menu-Item name="editPwd">
+                        <Icon type="key"></Icon>
+                        修改密码
+                    </Menu-Item>
+                    <Menu-Item name="lockSystem">
+                        <Icon type="locked"></Icon>
+                        系统锁屏
+                    </Menu-Item>
+                    <Menu-Item name="logOut">
+                        <Icon type="power"></Icon>
+                        退出系统
                     </Menu-Item>
                     <Submenu name="userinfo">
                         <template slot="title">
@@ -207,32 +235,7 @@
                             <Menu-Item name="3-7"><Icon type="ios-clock"></Icon><Tooltip placement="top" content="登录时间">${requestScope.loginTime}</Tooltip></Menu-Item>
                         </Menu-Group>
                     </Submenu>
-                    <Menu-Item name="editPwd">
-                        <Icon type="key"></Icon>
-                        修改密码
-                    </Menu-Item>
-                    <Menu-Item name="lockSystem">
-                        <Icon type="locked"></Icon>
-                        系统锁屏
-                    </Menu-Item>
-                    <Menu-Item name="logOut">
-                        <Icon type="power"></Icon>
-                        退出系统
-                    </Menu-Item>
                 </i-Menu>
-
-                <Modal v-model="modalLock" :closable="false" :mask-closable="false" :styles="{top: '250px'}" width="360">
-                    <p slot="header" style="color:#f60;text-align:center">
-                        <Icon type="information-circled"></Icon>
-                        <span>系统锁定</span>
-                    </p>
-                    <div style="text-align:center">
-                        <p><i-Input  @on-enter="pwdEnter" element-id="ipwd" autocomplete="off" maxlength="25" type="password" size="large" icon="unlocked" placeholder="请输入密码解锁......" style="width: 300px"></i-Input></p>
-                    </div>
-                    <div slot="footer">
-                        <i-Button type="error" size="large" long  @click="unLock">确定</i-Button>
-                    </div>
-                </Modal>
 
                 <Modal v-model="formModal.modalShow" :closable="false" :mask-closable="false" :styles="{top: '250px'}" width="400">
                     <p slot="header" style="color:#f60;text-align:center">
@@ -263,12 +266,10 @@
                         <i-Button type="error" size="large"   @click="modalEditPwdOk">确定</i-Button>
                     </div>
                 </Modal>
-
-
             </div>
         </div>
     </div>
-
+    <!-- body -->
     <div class="layout" :class="{'layout-hide-text': spanLeft < 3}">
         <Row class-name="layout-menu" type="flex">
             <i-col :span="spanLeft" class="layout-menu-left">
@@ -326,13 +327,102 @@
         var domain="${ctx}";
         var unLock_url=domain+"/login/unLock/${requestScope.jwt}";
         var editPwd_url=domain+"/login/editPwd/${requestScope.jwt}";
+
+        // 注册锁屏组件
+        Vue.component('unlock', {
+            name: 'Unlock',
+            template: `
+             <transition name="show-unlock">
+             <div class="unlock-body-con" v-if="showUnlock" @keydown.enter="handleUnlock">
+                <div @click="handleClickAvator" class="unlock-avator-con" :style="{marginLeft: avatorLeft}">
+                    <img class="unlock-avator-img" :src="avatorPath">
+                    <div  class="unlock-avator-cover">
+                        <span><Icon type="unlocked" :size="30"></Icon></span>
+                        <p>解锁</p>
+                    </div>
+                </div>
+                <div class="unlock-avator-under-back" :style="{marginLeft: avatorLeft}"></div>
+                <div class="unlock-input-con">
+                    <div class="unlock-input-overflow-con">
+                        <div class="unlock-overflow-body" :style="{right: inputLeft}">
+                            <input ref="inputEle"  @on-keyup="unlockKeyup" autocomplete="off" maxlength="25" v-model="password" class="unlock-input" type="password" placeholder="密码同登录密码" />
+                            <button ref="unlockBtn" @mousedown="unlockMousedown" @mouseup="unlockMouseup" @click="handleUnlock" class="unlock-btn"><Icon color="white" type="key"></Icon></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="unlock-locking-tip-con">已锁定</div>
+            </div>
+        </transition>
+         `,
+            data () {
+                return {
+                    avatorLeft: '0px',
+                    inputLeft: '400px',
+                    password: ''
+                };
+            },
+            props: {
+                showUnlock: {
+                    type: Boolean,
+                    default: false
+                }
+            },
+            computed: {
+                avatorPath () {
+                    return localStorage.avatorImgPath;
+                }
+            },
+            methods: {
+                handleClickAvator () {
+                    this.avatorLeft = '-180px';
+                    this.inputLeft = '0px';
+                    this.$refs.inputEle.focus();
+                },
+                unlockKeyup(){
+                  this.handleUnlock();
+                },
+                handleUnlock () {
+                    if(this.password==""){
+                        this.$Message.error('请输入密码');
+                        return;
+                    }
+                    if(this.password.length<6){
+                        this.$Message.error('密码长度不够6位');
+                        return;
+                    }
+                    let data = {pwd:this.password};
+                    vajaxPost(unLock_url,data,false,(result)=>{
+                        if(result&&result.success){
+                            this.avatorLeft = '0px';
+                            this.inputLeft = '400px';
+                            this.password = '';
+                            this.$emit('on-unlock');
+                            this.$Message.error(result.tip);
+                        }
+                        else{
+                            this.$Message.error(result.tip);
+                        }
+                    });
+                },
+                unlockMousedown () {
+                    this.$refs.unlockBtn.className = 'unlock-btn click-unlock-btn';
+                },
+                unlockMouseup () {
+                    this.$refs.unlockBtn.className = 'unlock-btn';
+                }
+            }
+        });
+
         new Vue({
             el: '#app',
             data:{
                 jwt:"${requestScope.jwt}",
                 menus:${requestScope.menu},
+                showUnlock: false,
+                lockScreenSize: 0,
+                hideText:true,
+                isFullScreen:false,
                 tabSelected:"mainframe",
-                modalLock:false,
                 spanLeft: 3,
                 spanRight: 21,
                 tabItems:[],
@@ -362,6 +452,26 @@
             created:function(){
                 vSpin(this);
                 document.querySelector("#mainframe").src="${ctx}/index.jsp";
+                localStorage.avatorImgPath="${ctx}/images/lock.jpg";
+            },
+            mounted () {
+                // 锁屏相关
+                let lockScreenBack = document.getElementById('lock_screen_back');
+                let x = document.body.clientWidth;
+                let y = document.body.clientHeight;
+                let r = Math.sqrt(x * x + y * y);
+                let size = parseInt(r);
+                this.lockScreenSize = size;
+                window.addEventListener('resize', () => {
+                    let x = document.body.clientWidth;
+                    let y = document.body.clientHeight;
+                    let r = Math.sqrt(x * x + y * y);
+                    let size = parseInt(r);
+                    this.lockScreenSize = size;
+                    lockScreenBack.style.transition = 'all 0s';
+                    lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';
+                });
+                lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';
             },
             computed: {
                 iconSize () {
@@ -369,6 +479,25 @@
                 }
             },
             methods: {
+                unlockScreen () {
+                    let lockScreenBack = document.getElementById('lock_screen_back');
+                    this.showUnlock = false;
+                    this.hideText=true;
+                    lockScreenBack.style.zIndex = -1;
+                    lockScreenBack.style.boxShadow = '0 0 0 0 #667aa6 inset';
+                },
+                lockScreen () {
+                    let lockScreenBack = document.getElementById('lock_screen_back');
+                    lockScreenBack.style.transition = 'all 3s';
+                    lockScreenBack.style.zIndex = 10000;
+                    lockScreenBack.style.boxShadow = '0 0 0 ' + this.lockScreenSize + 'px #667aa6 inset';
+                    this.showUnlock = true;
+                    setTimeout(() => {
+                        this.hideText=false;
+                        lockScreenBack.style.transition = 'all 0s';
+                        lockScreenBack.style.zIndex = -1;
+                    }, 800);
+                },
                 menuItemClick(name){
                     let title=$("#"+name).text();
                     let url="${ctx}/login/menu/"+this.jwt+"?menu="+$("#"+name).attr("url")+"&mid="+name;
@@ -415,7 +544,7 @@
                     }
                     //锁屏
                     else if(name=="lockSystem"){
-                        this.modalLock=true;
+                        this.lockScreen();
                     }
                     //退出登录
                     else if(name=="logOut"){
@@ -425,6 +554,31 @@
                     else if(name=="editPwd"){
                         this.formModal.modalShow=true;
                         this.$refs['formModal.bindModel'].resetFields();
+                    }
+                    else if(name=="fullscreen"){
+                        let main = document.body;
+                        if (this.isFullScreen) {
+                            if (document.exitFullscreen) {
+                                document.exitFullscreen();
+                            } else if (document.mozCancelFullScreen) {
+                                document.mozCancelFullScreen();
+                            } else if (document.webkitCancelFullScreen) {
+                                document.webkitCancelFullScreen();
+                            } else if (document.msExitFullscreen) {
+                                document.msExitFullscreen();
+                            }
+                        } else {
+                            if (main.requestFullscreen) {
+                                main.requestFullscreen();
+                            } else if (main.mozRequestFullScreen) {
+                                main.mozRequestFullScreen();
+                            } else if (main.webkitRequestFullScreen) {
+                                main.webkitRequestFullScreen();
+                            } else if (main.msRequestFullscreen) {
+                                main.msRequestFullscreen();
+                            }
+                        }
+                        this.isFullScreen = !this.isFullScreen;
                     }
                     else{
 
@@ -453,25 +607,6 @@
                         }
                         else{
                             valert(this,'表单验证失败!');
-                        }
-                    });
-                },
-                pwdEnter(){
-                    this.unLock();
-                },
-                unLock(){
-                    if($("#ipwd").val()==""){
-                        valert(this,"请输入密码");
-                        return;
-                    }
-                    let data = { pwd:$("#ipwd").val() };
-                    vajaxPost(unLock_url,data,false,(result)=>{
-                        if(result&&result.success){
-                            this.modalLock=false;
-                            vtoast(this,result.tip);
-                        }
-                        else{
-                            valert(this,result.tip);
                         }
                     });
                 }

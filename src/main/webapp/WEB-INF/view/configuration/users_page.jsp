@@ -188,7 +188,8 @@
             columns: [
                 {
                     title: '序号',
-                    key: 'id'
+                    key: 'id',
+                    width:100
                 },
                 {
                     title: '登录名称',
@@ -200,11 +201,13 @@
                 },
                 {
                     title: '电话',
-                    key: 'phone'
+                    key: 'phone',
+                    width:200
                 },
                 {
                     title: '邮件',
-                    key: 'email'
+                    key: 'email',
+                    width:200
                 },
                 {
                     title: '职位',
@@ -224,7 +227,8 @@
                 },
                 {
                     title: '组织',
-                    key: 'corporationName'
+                    key: 'corporationName',
+                    width:300
                 }
             ]
         },{orderBy:" u.id desc "});
@@ -274,7 +278,8 @@
                             { required: true, message: '登录名称不能为空', trigger: 'blur' }
                         ],
                         password: [
-                            { required: true, message: '密码名称不能为空', trigger: 'blur' }
+                            { required: true, message: '密码名称不能为空', trigger: 'blur' },
+                            { type: 'string', min: 6, message: '密码长度不能少于6', trigger: 'blur' }
                         ],
                         state: [
                             { required: true, message: '状态不能为空', trigger: 'blur' }

@@ -102,7 +102,7 @@
 		    var validateLogon_url=domain+"/login/validateLogon";
             var mainFrame_url=domain+"/login/mainFrame/";
 
-			var listArr = [ "images/login/1.jpg", "images/login/2.jpg", "images/login/3.jpg", "images/login/4.jpg", "images/login/5.jpg", "images/login/6.jpg", "images/login/7.jpg"];
+			var listArr = [ "images/login/1.jpg", "images/login/2.jpg", "images/login/3.jpg", "images/login/4.jpg", "images/login/5.jpg", "images/login/6.jpg", "images/login/7.jpg","images/login/1.jpg"];
 			$(".ModuleLogin-bg").backstretch(listArr, {
 				fade : 1000,
 				duration : 5000

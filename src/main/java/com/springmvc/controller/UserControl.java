@@ -1,8 +1,10 @@
 package com.springmvc.controller;
 
+import com.springmvc.config.SysConfig;
 import com.springmvc.model.RequestResult;
 import com.springmvc.model.Users;
 import com.springmvc.service.UsersService;
+import com.springmvc.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,6 +60,9 @@ public class UserControl {
             result.setFail("没有数据");
         }
         else{
+            //密码进行加密
+            c.setPassword(SecurityUtil.MD5_16(c.getPassword()));
+
             if(uService.insert(c)){
                 result.setSucceed("保存成功",null);
             }
@@ -82,11 +87,22 @@ public class UserControl {
             result.setFail("没有数据");
         }
         else{
-            if(uService.update(c)){
-                result.setSucceed("修改成功",null);
+            Users u= uService.getUsers(c.getId());
+            if(!SysConfig.isSuperAdmin(u.getRoleid()==null?"":u.getRoleid().toString())) {
+
+                //如果密码和原来的不一样，说明密码修改了
+                if(!u.getPassword().equals(c.getPassword())){
+                    c.setPassword(SecurityUtil.MD5_16(c.getPassword()));
+                }
+
+                if (uService.update(c)) {
+                    result.setSucceed("修改成功", null);
+                } else {
+                    result.setFail("没有数据");
+                }
             }
             else{
-                result.setFail("没有数据");
+                result.setFail("超级管理员信息不能修改");
             }
         }
 
@@ -106,11 +122,16 @@ public class UserControl {
             result.setFail("没有数据");
         }
         else{
-            if(uService.delete(Integer.parseInt(id))){
-                result.setSucceed("删除成功",null);
+            Users u= uService.getUsers(Integer.parseInt(id));
+            if(!SysConfig.isSuperAdmin(u.getRoleid()==null?"":u.getRoleid().toString())) {
+                if (uService.delete(Integer.parseInt(id))) {
+                    result.setSucceed("删除成功", null);
+                } else {
+                    result.setFail("没有数据");
+                }
             }
             else{
-                result.setFail("没有数据");
+                result.setFail("超级管理员信息不能删除");
             }
         }
         return result;

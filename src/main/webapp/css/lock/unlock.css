@@ -158,12 +158,12 @@
   background: #2b85e4 !important;
 }
 .unlock-body-con .unlock-locking-tip-con {
-  width: 100px;
+  width: 200px;
   height: 30px;
   text-align: center;
   position: absolute;
   left: 50%;
-  margin-left: -50px;
+  margin-left: -100px;
   bottom: -80px;
   color: white;
   font-size: 18px;

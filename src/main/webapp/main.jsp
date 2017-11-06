@@ -185,7 +185,8 @@
     <div class="lockmain" :class="{'lockmain-hide': hideText}">
         <div style="width: 100%;height: 100%;background: #667aa6">
             <div class="unlock-con">
-                <unlock :show-unlock="showUnlock" @on-unlock="unlockScreen"></unlock>
+                <!-- camelCase (驼峰式命名) prop 需要转换为相对应的 kebab-case  -->
+                <unlock :show-unlock="showUnlock" :tip-lock="tipLock" @on-unlock="unlockScreen"></unlock>
             </div>
         </div>
     </div>
@@ -350,7 +351,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="unlock-locking-tip-con">已锁定</div>
+                <div class="unlock-locking-tip-con">{{ tipLock }} 已锁定</div>
             </div>
         </transition>
          `,
@@ -365,6 +366,10 @@
                 showUnlock: {
                     type: Boolean,
                     default: false
+                },
+                tipLock: {
+                    type: String,
+                    default: ""
                 }
             },
             computed: {
@@ -419,6 +424,7 @@
                 jwt:"${requestScope.jwt}",
                 menus:${requestScope.menu},
                 showUnlock: false,
+                tipLock:"系统",
                 lockScreenSize: 0,
                 hideText:true,
                 isFullScreen:false,

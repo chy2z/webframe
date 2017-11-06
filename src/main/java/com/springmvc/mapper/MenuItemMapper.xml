@@ -12,6 +12,7 @@
     <result column="toolImage" jdbcType="VARCHAR" property="toolimage" />
     <result column="navigationImage" jdbcType="VARCHAR" property="navigationimage" />
     <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="selected" jdbcType="VARCHAR" property="selected" />
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -39,7 +40,6 @@
     from menu_item where level='-1' and leaf='-1' and  parentId = #{parentId,jdbcType=VARCHAR}
   </select>
 
-
   <!-- 获取角色菜单 -->
   <select id="selectMenuByRole"  parameterType="java.lang.String" resultMap="BaseResultMap">
   select
@@ -56,6 +56,17 @@
     where r.menuItemId=m.id and r.roleId = #{roleId,jdbcType=VARCHAR}
     and m.level='-1' and m.leaf=-1 and  m.parentId= #{parentId,jdbcType=VARCHAR}
   </select>
+
+  <!-- 获取权限 -->
+  <select id="selectRightsAll" resultMap="BaseResultMap">
+  select
+  m.id, m.name, m.parentId, m.level, m.but, m.leaf, m.lmage, m.toolImage,
+  m.navigationImage, m.url, IFNULL(r.roleId,0) as selected
+  from menu_item m left JOIN role_menu_item r
+  on r.menuItemId=m.id and r.roleId = #{roleId,jdbcType=VARCHAR}
+  order by id
+  </select>
+
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from menu_item

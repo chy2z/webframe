@@ -16,7 +16,7 @@
     <div class="my-layout">
         <Row id="top" class-name="my-layout-top" justify="end" align="middle" type="flex">
             <i-col span="10">
-                <div style="float: left;margin: 0 5px;">
+                <div class="float-left">
                     <label class="my-label">组织机构：</label>
                     <i-Select  style="width:200px" @on-change="selectCorporationChange"
                                v-model="selectCorporation.selectItem"
@@ -32,7 +32,7 @@
                 </div>
             </i-col >
             <i-col span="14">
-                <div style="float: right;margin: 0 5px;">
+                <div class="float-right">
                     <%@include file="../rightTemplate.jsp" %>
                 </div>
             </i-col>
@@ -55,7 +55,7 @@
         <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
             <i-col  span="6"></i-col >
             <i-col  span="18">
-                <div style="float: right;margin: 0 5px;">
+                <div class="float-right">
                     <Page @on-change="pageChangeDepartment" @on-page-size-change="pageSizeChangeDepartment"
                           :page-size="departmentPage.pageSize"
                           :page-size-opts="departmentPage.pageSizeOpts"
@@ -75,7 +75,7 @@
     <Modal v-model="formModal.modalShow" :mask-closable="false" :styles="{top: '20px'}" :width="500">
         <p slot="header" style="text-align:center">
             <Icon size="16" type="compose"></Icon>
-            <span class="modal-title">{{formModal.title}}</span>
+            <span class="my-modal-title">{{formModal.title}}</span>
         </p>
         <div style="text-align:center">
             <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate"

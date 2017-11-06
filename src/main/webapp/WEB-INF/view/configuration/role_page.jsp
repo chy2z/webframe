@@ -18,7 +18,7 @@
             <div class="my-layout my-box-left">
                 <Row class-name="my-layout-top" justify="end" align="middle" type="flex">
                     <i-col span="10">
-                        <div style="float: left;margin: 0 5px;">
+                        <div class="float-left">
                             <label class="my-label">组织机构：</label>
                             <i-Select  style="width:200px" @on-change="selectCorporationChange"
                                        v-model="selectCorporation.selectItem"
@@ -38,7 +38,7 @@
                     </i-col>
                 </Row>
                 <Row class-name="my-layout-body" type="flex">
-                    <i-col span="24">
+                    <i-col class-name="col-left" span="24">
                         <i-Table :height="roleTable.height"
                                  :width="roleTable.width"
                                  :show-header="roleTable.showHeader"
@@ -55,7 +55,7 @@
                 <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
                     <i-col span="6"></i-col>
                     <i-col span="18">
-                        <div style="float: right;margin: 0 5px;">
+                        <div class="float-right">
                             <Page @on-change="pageChangeRole" @on-page-size-change="pageSizeChangeRole"
                                   :page-size="rolePage.pageSize"
                                   :page-size-opts="rolePage.pageSizeOpts"
@@ -77,13 +77,13 @@
                     <i-col span="10">
                     </i-col>
                     <i-col span="14">
-                        <div style="float: right;margin: 0 5px;">
+                        <div class="float-right">
                             <%@include file="../rightTemplate.jsp" %>
                         </div>
                     </i-col>
                 </Row>
                 <Row class-name="my-layout-body" type="flex">
-                    <i-col span="24">
+                    <i-col class-name="col-right" span="24">
                         <i-Table :height="userTable.height"
                                  :width="userTable.width"
                                  :show-header="userTable.showHeader"
@@ -94,13 +94,14 @@
                                  :size="userTable.tableSize"
                                  :columns="userTable.columns"
                                  :data="userTable.dataTable"
-                                 ></i-Table>
+                                 >
+                        </i-Table>
                     </i-col>
                 </Row>
                 <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
                     <i-col span="6"></i-col>
                     <i-col span="18">
-                        <div style="float: right;margin: 0 5px;">
+                        <div class="float-right">
                             <Page
                                   :page-size="userPage.pageSize"
                                   :page-size-opts="userPage.pageSizeOpts"
@@ -121,7 +122,7 @@
     <Modal v-model="formModal.modalShow" :mask-closable="false" :styles="{top: '20px'}" :width="500">
         <p slot="header" style="text-align:center">
             <Icon size="16" type="compose"></Icon>
-            <span class="modal-title">{{formModal.title}}</span>
+            <span class="my-modal-title">{{formModal.title}}</span>
         </p>
         <div style="text-align:center">
             <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate"

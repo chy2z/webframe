@@ -18,7 +18,7 @@
             <div class="my-layout my-box-left">
                 <Row class-name="my-layout-top" justify="end" align="middle" type="flex">
                     <i-col span="14">
-                        <div style="float: left;margin: 0 5px;">
+                        <div class="float-left">
                             <label class="my-label">字典名称：</label>
                             <i-Select  style="width:200px" @on-change="selectDkeyChange"
                                        v-model="selectDkey.selectItem"
@@ -54,7 +54,7 @@
                 <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
                     <i-col span="1"></i-col>
                     <i-col span="23">
-                        <div style="float: right;margin: 0 5px;">
+                        <div class="float-right">
                             <Page @on-change="pageChangeParent"
                                   @on-page-size-change="pageSizeChangeParent"
                                   :page-size="parentPage.pageSize"
@@ -76,7 +76,7 @@
                 <Row class-name="my-layout-top" justify="end" align="middle" type="flex">
                     <i-col span="10"></i-col>
                     <i-col span="14">
-                        <div style="float: right;margin: 0 5px;">
+                        <div class="float-right">
                             <%@include file="../rightTemplate.jsp" %>
                         </div>
                     </i-col>
@@ -99,7 +99,7 @@
                 <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
                     <i-col span="1"></i-col>
                     <i-col span="23">
-                        <div style="float: right;margin: 0 5px;">
+                        <div class="float-right">
                             <Page @on-change="pageChangeChild"
                                   @on-page-size-change="pageSizeChangeChild"
                                   :page-size="childPage.pageSize"
@@ -120,7 +120,7 @@
     <Modal v-model="formModal.modalShow" :mask-closable="false" :styles="{top: '20px'}" :width="500">
         <p slot="header" style="text-align:center">
             <Icon size="16" type="compose"></Icon>
-            <span class="modal-title">{{formModal.title}}</span>
+            <span class="my-modal-title">{{formModal.title}}</span>
         </p>
         <div style="text-align:center">
             <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate"

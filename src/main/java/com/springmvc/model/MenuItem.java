@@ -28,6 +28,11 @@ public class MenuItem {
 
     private String url;
 
+    /**
+     * 用于权限分配
+     */
+    private String selected;
+
     public String getId() {
         return id;
     }
@@ -106,5 +111,13 @@ public class MenuItem {
 
     public void setUrl(String url) {
         this.url = url == null ? null : url.trim();
+    }
+
+    public String getSelected() {
+        return selected;
+    }
+
+    public void setSelected(String selected) {
+        this.selected = selected;
     }
 }

@@ -199,7 +199,7 @@ public class LoginControl extends BaseController {
 			}
 			else{
 				model.addAttribute("nomanage", true);
-                model.addAttribute("rightBut",miService.toIviewButForJson(miService.getBuByRole(role.getId().toString(),mid)));
+                model.addAttribute("rightBut",miService.toIviewButForJson(miService.getButByRole(role.getId().toString(),mid)));
 			}
 
 			model.addAttribute("jwt", jwt);

@@ -17,6 +17,10 @@ public class VTree {
 
     @Getter
     @Setter
+    private String name;
+
+    @Getter
+    @Setter
     private String title;
 
     @Getter
@@ -25,5 +29,9 @@ public class VTree {
 
     @Getter
     @Setter
-    List<VTree> children;
+    private boolean checked;
+
+    @Getter
+    @Setter
+    private List<VTree> children;
 }

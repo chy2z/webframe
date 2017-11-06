@@ -10,6 +10,31 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>
+    <style>
+        /* 实现card body 高度100% */
+        .my-layout-body .ivu-card{
+            height: 100%;
+            padding: 51px 0 0;
+        }
+
+        /* 实现card body 高度100% */
+        .my-layout-body .ivu-card .ivu-card-head{
+            margin: -51px 0 0;
+        }
+
+        /* 实现card body 高度100% */
+        .my-layout-body .ivu-card .ivu-card-body{
+            height: 100%;
+            overflow: auto;
+        }
+
+        .my-layout-body .ivu-card .ivu-card-head {
+            border-bottom: 1px solid #e9eaec;
+            padding: 14px 16px;
+            line-height: 1;
+            background-color: #eaf4fe;
+        }
+    </style>
 </head>
 <body>
 <div class="my-app" id="app">
@@ -18,7 +43,7 @@
             <div class="my-layout my-box-left">
                 <Row class-name="my-layout-top" justify="end" align="middle" type="flex">
                     <i-col span="10">
-                        <div style="float: left;margin: 0 5px;">
+                        <div class="float-left">
                             <label class="my-label">组织机构：</label>
                             <i-Select  style="width:200px" @on-change="selectCorporationChange"
                                        v-model="selectCorporation.selectItem"
@@ -33,8 +58,8 @@
                             </i-Select>
                         </div>
                     </i-col>
-                    <i-col span="8">
-                        <div style="float: left;margin: 0 5px;">
+                    <i-col span="10">
+                        <div class="float-left">
                             <label class="my-label">角色：</label>
                             <i-Select  style="width:200px" @on-change="selectRoleChange"
                                        v-model="selectRole.selectItem"
@@ -49,28 +74,25 @@
                             </i-Select>
                         </div>
                     </i-col>
-                    <i-col span="6">
+                    <i-col span="4">
 
                     </i-col>
                 </Row>
                 <Row class-name="my-layout-body" type="flex">
-                    <i-col span="24">
+                    <i-col class-name="col-left" span="24">
                         <Card>
-                            <p slot="title">标准卡片</p>
-                            <p>卡片内容</p>
-                            <p>卡片内容</p>
-                            <p>卡片内容</p>
+                            <p slot="title">分配权限</p>
+                            <div class="tree-box">
+                                <Tree :data="dataLeft" show-checkbox multiple></Tree>
+                                <Spin size="large" fix v-if="spinLeftShow"></Spin>
+                            </div>
                         </Card>
                     </i-col>
                 </Row>
-                <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
+               <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
                     <i-col span="6"></i-col>
                     <i-col span="18">
-                        <div style="float: right;margin: 0 5px;">
-
-                        </div>
                     </i-col>
-
                 </Row>
             </div>
         </i-col>
@@ -80,29 +102,23 @@
                     <i-col span="10">
                     </i-col>
                     <i-col span="14">
-                        <div style="float: right;margin: 0 5px;">
+                        <div class="float-right">
                             <%@include file="../rightTemplate.jsp" %>
                         </div>
                     </i-col>
                 </Row>
                 <Row class-name="my-layout-body" type="flex">
-                    <i-col span="24">
+                    <i-col class-name="col-right" span="24">
                         <Card>
-                            <p slot="title">标准卡片</p>
-                            <p>卡片内容</p>
-                            <p>卡片内容</p>
-                            <p>卡片内容</p>
+                            <p slot="title">已有权限</p>
+                            <Tree :data="dataRight" show-checkbox multiple></Tree>
                         </Card>
                     </i-col>
                 </Row>
                 <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
                     <i-col span="6"></i-col>
                     <i-col span="18">
-                        <div style="float: right;margin: 0 5px;">
-
-                        </div>
                     </i-col>
-
                 </Row>
             </div>
         </i-col>
@@ -116,6 +132,7 @@
     var corporationId="${requestScope.corporationId}";
     var role_Select_url="${ctx}/role/vselect/selectRole?jwt=${requestScope.jwt}";
     var corporation_Select_url="${ctx}/corporation/vselect/selectCorporation?jwt=${requestScope.jwt}";
+    var rights_all_url="${ctx}/right/all?jwt=${requestScope.jwt}";
 
     var selectHelperCorporation=new selectHelper(corporation_Select_url,{});
 
@@ -126,11 +143,14 @@
         data: {
             jwt:"${requestScope.jwt}",
             butShow:${requestScope.rightBut},
+            spinLeftShow:false,
+            spinRightShow:false,
             selectCorporation:selectHelperCorporation.ivSelect,
-            selectRole:selectHelperRole.ivSelect
+            selectRole:selectHelperRole.ivSelect,
+            dataRight:[],
+            dataLeft:[]
         },
         created:function(){
-
         },
         mounted:function () {
             //权限控制
@@ -156,7 +176,17 @@
                 }
             },
             selectRoleChange(option){
-
+                if(option&&option.value!="") {
+                    vajaxPost(rights_all_url, {roleId: option.value}, false, (res) => {
+                        log(res);
+                        var json = $.evalJSON(res);
+                        this.dataLeft = json;
+                    }, () => {
+                        this.spinLeftShow = true;
+                    }, () => {
+                        this.spinLeftShow = false;
+                    });
+                }
             },
             butSave(){
 

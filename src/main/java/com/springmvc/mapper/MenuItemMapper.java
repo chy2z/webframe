@@ -18,11 +18,33 @@ public interface MenuItemMapper {
 
     int updateByPrimaryKey(MenuItem record);
 
+    /**
+     * 获取超级管理员菜单
+     * @return
+     */
     List<MenuItem> selectMenuAll();
 
+    /**
+     * 获取角色菜单
+     * @return
+     */
     List<MenuItem> selectMenuByRole(String roleName);
 
+    /**
+     * 获取超级管理员按钮
+     * @return
+     */
     List<MenuItem> selectButAll(String parentId);
 
-    List<MenuItem> selectButByRole(@Param("roleId") String roleName,@Param("parentId")  String parentId);
+    /**
+     * 获取角色按钮
+     * @return
+     */
+    List<MenuItem> selectButByRole(@Param("roleId") String roleId,@Param("parentId")  String parentId);
+
+    /**
+     * 获取全部权限
+     * @return
+     */
+    List<MenuItem> selectRightsAll(@Param("roleId") String roleId);
 }

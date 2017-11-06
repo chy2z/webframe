@@ -144,7 +144,6 @@
 </div>
 </body>
 <script>
-    window.onload=function() {
         var domain="${ctx}";
         var nomanage=${requestScope.nomanage};
         var corporationId="${requestScope.corporationId}";
@@ -365,6 +364,6 @@
                 }
             }
         });
-    }
+
 </script>
 </html>

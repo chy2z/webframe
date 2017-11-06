@@ -15,6 +15,9 @@
     <template v-if="butShow.butLook">
         <i-Button type="primary" @click="butLook()" v-show="butShow.butLook" icon="ios-glasses">查看</i-Button>
     </template>
+    <template v-if="butShow.butSave">
+        <i-Button type="primary" @click="butSave()" v-show="butShow.butSave" icon="plus">保存</i-Button>
+    </template>
     <template v-if="butShow.butExport">
         <i-Button type="primary" @click="butExport()" v-show="butShow.butExport" icon="arrow-down-c">导出</i-Button>
     </template>

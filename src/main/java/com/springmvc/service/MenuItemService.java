@@ -70,6 +70,15 @@ public class MenuItemService {
         return  mimap.selectRightsAll(roleId);
     }
 
+    /**
+     * 获取拥有权限数据
+     * @return
+     */
+    public List<MenuItem> getRigthsOwn(String roleId){
+        return  mimap.selectRightsOwn(roleId);
+    }
+
+
 
     /**
      * 转换菜单 javascript json 数据
@@ -156,7 +165,7 @@ public class MenuItemService {
      * @param listMenuItem
      * @return
      */
-    public String toIviewTreeForJson(List<MenuItem> listMenuItem) {
+    public String toIviewTreeForJson(List<MenuItem> listMenuItem,boolean expand) {
         List<VTree> tree = new ArrayList<VTree>();
 
         VTree menu1=null;
@@ -177,9 +186,10 @@ public class MenuItemService {
                     menu1 = new VTree();
                     //有下级节点
                     menu1.setExpand(true);
-                    menu1.setName("m"+mi.getId());
+                    menu1.setNodeKey("m"+mi.getId());
                     menu1.setTitle(mi.getName());
                     menu1.setChecked(false);
+                    menu1.setPath(mi.getId());
                     menu1.setChildren(new ArrayList<VTree>());
                     tree.add(menu1);
                 }
@@ -187,10 +197,11 @@ public class MenuItemService {
                 else if ("1".equals(mi.getLevel())) {
                     menu2 = new VTree();
                     //有下级节点
-                    menu2.setExpand(false);
-                    menu2.setName("m"+mi.getId());
+                    menu2.setExpand(expand);
+                    menu2.setNodeKey("m"+mi.getId());
                     menu2.setTitle(mi.getName());
                     menu2.setChecked(false);
+                    menu2.setPath(menu1.getPath()+"/"+mi.getId());
                     menu2.setChildren(new ArrayList<VTree>());
                     menu1.getChildren().add(menu2);
                 }
@@ -198,15 +209,17 @@ public class MenuItemService {
                 else if ("2".equals(mi.getLevel())) {
                     menu3 = new VTree();
                     //无下级节点
-                    menu3.setExpand(false);
-                    menu3.setName("m"+mi.getId());
+                    menu3.setExpand(expand);
+                    menu3.setNodeKey("m"+mi.getId());
                     menu3.setTitle(mi.getName());
                     menu3.setChecked(false);
                     menu3.setChildren(new ArrayList<VTree>());
                     if(menu2!=null) {
+                        menu3.setPath(menu2.getPath()+"/"+mi.getId());
                         menu2.getChildren().add(menu3);
                     }
                     else {
+                        menu3.setPath(menu1.getPath()+"/"+mi.getId());
                         menu1.getChildren().add(menu3);
                     }
                 }
@@ -214,8 +227,8 @@ public class MenuItemService {
                 else if ("-1".equals(mi.getLevel())) {
                     menu4 = new VTree();
                     //有下级节点
-                    menu4.setExpand(false);
-                    menu4.setName("m"+mi.getId());
+                    menu4.setExpand(expand);
+                    menu4.setNodeKey("m"+mi.getId());
                     menu4.setTitle(mi.getName());
                     if(!mi.getSelected().equals("0")){
                         menu4.setChecked(true);
@@ -223,6 +236,7 @@ public class MenuItemService {
                     else{
                         menu4.setChecked(false);
                     }
+                    menu4.setPath(menu3.getPath()+"/"+mi.getId());
                     menu4.setChildren(new ArrayList<VTree>());
                     menu3.getChildren().add(menu4);
                 }

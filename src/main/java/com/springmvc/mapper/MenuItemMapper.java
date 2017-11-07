@@ -47,4 +47,10 @@ public interface MenuItemMapper {
      * @return
      */
     List<MenuItem> selectRightsAll(@Param("roleId") String roleId);
+
+    /**
+     * 获取拥有权限
+     * @return
+     */
+    List<MenuItem> selectRightsOwn(@Param("roleId") String roleId);
 }

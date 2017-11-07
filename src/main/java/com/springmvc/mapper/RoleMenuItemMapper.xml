@@ -76,4 +76,17 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <delete id="deleteByRoleId" parameterType="java.lang.Integer">
+    delete from role_menu_item
+    where RoleId = #{RoleId,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into role_menu_item(roleid, menuItemId)
+    values
+    <foreach collection="list" item="item" index="index" separator="," >
+      (#{item.roleid},#{item.menuitemid})
+    </foreach>
+  </insert>
+
 </mapper>

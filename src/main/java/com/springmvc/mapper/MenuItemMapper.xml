@@ -67,6 +67,16 @@
   order by id
   </select>
 
+  <!-- 获取拥有的权限 -->
+  <select id="selectRightsOwn" resultMap="BaseResultMap">
+    select
+    m.id, m.name, m.parentId, m.level, m.but, m.leaf, m.lmage, m.toolImage,
+    m.navigationImage, m.url, IFNULL(r.roleId,0) as selected
+    from menu_item m JOIN role_menu_item r
+    on r.menuItemId=m.id and r.roleId = #{roleId,jdbcType=VARCHAR}
+    order by id
+  </select>
+
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from menu_item

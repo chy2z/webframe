@@ -83,7 +83,7 @@
                         <Card>
                             <p slot="title">分配权限</p>
                             <div class="tree-box">
-                                <Tree :data="dataLeft" show-checkbox multiple></Tree>
+                                <Tree ref="rightsTree" :data="dataLeft" show-checkbox multiple></Tree>
                                 <Spin size="large" fix v-if="spinLeftShow"></Spin>
                             </div>
                         </Card>
@@ -111,7 +111,8 @@
                     <i-col class-name="col-right" span="24">
                         <Card>
                             <p slot="title">已有权限</p>
-                            <Tree :data="dataRight" show-checkbox multiple></Tree>
+                            <Tree :data="dataRight"  multiple></Tree>
+                            <Spin size="large" fix v-if="spinRightShow"></Spin>
                         </Card>
                     </i-col>
                 </Row>
@@ -133,6 +134,8 @@
     var role_Select_url="${ctx}/role/vselect/selectRole?jwt=${requestScope.jwt}";
     var corporation_Select_url="${ctx}/corporation/vselect/selectCorporation?jwt=${requestScope.jwt}";
     var rights_all_url="${ctx}/right/all?jwt=${requestScope.jwt}";
+    var rights_own_url="${ctx}/right/own?jwt=${requestScope.jwt}";
+    var rights_save_url="${ctx}/right/save?jwt=${requestScope.jwt}";
 
     var selectHelperCorporation=new selectHelper(corporation_Select_url,{});
 
@@ -178,18 +181,47 @@
             selectRoleChange(option){
                 if(option&&option.value!="") {
                     vajaxPost(rights_all_url, {roleId: option.value}, false, (res) => {
-                        log(res);
                         var json = $.evalJSON(res);
                         this.dataLeft = json;
                     }, () => {
                         this.spinLeftShow = true;
                     }, () => {
-                        this.spinLeftShow = false;
+                        setTimeout(()=>{
+                            this.spinLeftShow = false;
+                        },1000);
+                    });
+
+                    vajaxPost(rights_own_url, {roleId: option.value}, false, (res) => {
+                        var json = $.evalJSON(res);
+                        this.dataRight = json;
+                    }, () => {
+                        this.spinRightShow = true;
+                    }, () => {
+                        setTimeout(()=>{
+                            this.spinRightShow = false;
+                        },1000);
                     });
                 }
             },
             butSave(){
-
+                let nodes= this.$refs["rightsTree"].getCheckedNodes();
+                log(nodes);
+                if(nodes.length>0) {
+                    vajaxPost(rights_save_url + "&roleId=" + this.selectRole.selectItem, nodes, true, (res) => {
+                        log(res);
+                    }, () => {
+                        this.spinLeftShow = true;
+                        this.spinRightShow = true;
+                    }, () => {
+                        setTimeout(() => {
+                            this.spinLeftShow = false;
+                            this.spinRightShow = false;
+                        }, 1000);
+                    });
+                }
+                else{
+                    valert(this,"请分配权限");
+                }
             },
             butRefresh(){
                 window.location.reload();

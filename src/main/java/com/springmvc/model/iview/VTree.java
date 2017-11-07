@@ -17,7 +17,7 @@ public class VTree {
 
     @Getter
     @Setter
-    private String name;
+    private String nodeKey;
 
     @Getter
     @Setter
@@ -30,6 +30,10 @@ public class VTree {
     @Getter
     @Setter
     private boolean checked;
+
+    @Getter
+    @Setter
+    private String path;
 
     @Getter
     @Setter

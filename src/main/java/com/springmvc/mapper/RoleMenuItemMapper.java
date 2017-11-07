@@ -2,6 +2,8 @@ package com.springmvc.mapper;
 
 import com.springmvc.model.RoleMenuItem;
 
+import java.util.List;
+
 public interface RoleMenuItemMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,18 @@ public interface RoleMenuItemMapper {
     int updateByPrimaryKeySelective(RoleMenuItem record);
 
     int updateByPrimaryKey(RoleMenuItem record);
+
+    /**
+     * 根据角色删除
+     * @param RoidId
+     * @return
+     */
+    int deleteByRoidId(String  RoidId);
+
+    /**
+     * 批量插入
+     * @param list
+     * @return
+     */
+    int insertBatch(List<RoleMenuItem> list);
 }

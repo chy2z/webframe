@@ -26,14 +26,14 @@
     where id = #{id,jdbcType=VARCHAR}
   </select>
 
-  <!-- 获取全部菜单 -->
+  <!-- 获取全部菜单(超级管理员) -->
   <select id="selectMenuAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from menu_item where level!='-1'
   </select>
 
-  <!-- 获取全部按钮 -->
+  <!-- 获取全部按钮(超级管理员) -->
   <select id="selectButAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -45,7 +45,7 @@
   select
   m.id, m.name, m.parentId, m.level, m.but, m.leaf, m.lmage, m.toolImage, m.navigationImage, m.url
   from menu_item m, role_menu_item r
-  where r.menuItemId=m.id and r.roleId = #{roleId,jdbcType=VARCHAR} and m.level!='-1'
+  where r.menuItemId=m.id and r.roleId = #{roleId,jdbcType=VARCHAR} and m.level!='-1' and m.display=1
   </select>
 
   <!-- 获取角色按钮 -->
@@ -54,10 +54,10 @@
     m.id, m.name, m.parentId, m.level, m.but, m.leaf, m.lmage, m.toolImage, m.navigationImage, m.url
     from menu_item m, role_menu_item r
     where r.menuItemId=m.id and r.roleId = #{roleId,jdbcType=VARCHAR}
-    and m.level='-1' and m.leaf=-1 and  m.parentId= #{parentId,jdbcType=VARCHAR}
+    and m.level='-1' and m.leaf=-1 and m.display=1 and  m.parentId= #{parentId,jdbcType=VARCHAR}
   </select>
 
-  <!-- 获取权限 -->
+  <!-- 获取全部权限 -->
   <select id="selectRightsAll" resultMap="BaseResultMap">
   select
   m.id, m.name, m.parentId, m.level, m.but, m.leaf, m.lmage, m.toolImage,
@@ -76,7 +76,6 @@
     on r.menuItemId=m.id and r.roleId = #{roleId,jdbcType=VARCHAR}
     order by id
   </select>
-
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from menu_item

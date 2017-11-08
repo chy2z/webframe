@@ -200,7 +200,8 @@
                     //表格加载数据
                     pageHelperDepartment.load("corporationId='"+corporationId+"'");
                     //加载组织机构
-                    //selectHelperCorporation.load("id='"+corporationId+"'");
+                    selectHelperCorporation.load("id='"+corporationId+"'");
+                    selectHelperCorporation.setSelectItem(parseInt(corporationId));
                     selectHelperCorporation.setDisabled(true);
                 }
                 else{

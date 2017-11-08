@@ -112,6 +112,8 @@
 <script>
     window.onload=function() {
         var domain="${ctx}";
+        var nomanage=${requestScope.nomanage};
+        var corporationId="${requestScope.corporationId}";
         var corporationInsert_url=domain+"/corporation/insert?jwt=${requestScope.jwt}";
         var corporationUpdate_url=domain+"/corporation/update?jwt=${requestScope.jwt}";
         var corporationDelete_url=domain+"/corporation/delete?jwt=${requestScope.jwt}";
@@ -173,11 +175,17 @@
                 croporationPage:pageHelperCroporation.ivPage
             },
             created:function(){
-                pageHelperCroporation.load(null);
             },
             mounted:function () {
                 //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条
                 pageHelperCroporation.setHeight($(".my-layout-body").height());
+                //权限控制
+                if(nomanage){
+                    pageHelperCroporation.load("id="+corporationId+"");
+                }
+                else {
+                    pageHelperCroporation.load(null);
+                }
             },
             methods:{
                 pageChange(index){

@@ -22,7 +22,7 @@ public interface RoleMenuItemMapper {
      * @param RoidId
      * @return
      */
-    int deleteByRoidId(String  RoidId);
+    int deleteByRoleId(String  RoidId);
 
     /**
      * 批量插入

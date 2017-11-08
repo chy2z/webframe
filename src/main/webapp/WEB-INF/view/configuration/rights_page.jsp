@@ -170,6 +170,32 @@
             }
         },
         methods:{
+            all_right(roleId){
+                //加载所有菜单
+                vajaxPost(rights_all_url, {roleId: roleId }, false, (res) => {
+                    var json = $.evalJSON(res);
+                    this.dataLeft = json;
+                }, () => {
+                    this.spinLeftShow = true;
+                }, () => {
+                    setTimeout(()=>{
+                        this.spinLeftShow = false;
+                    },1000);
+                });
+            },
+            own_right(roleId){
+                //加载分配菜单
+                vajaxPost(rights_own_url, {roleId: roleId }, false, (res) => {
+                    var json = $.evalJSON(res);
+                    this.dataRight = json;
+                }, () => {
+                    this.spinRightShow = true;
+                }, () => {
+                    setTimeout(()=>{
+                        this.spinRightShow = false;
+                    },1000);
+                });
+            },
             selectCorporationChange(option){
                 if(option==null||option.value==""){
                     selectHelperRole.load(null);
@@ -180,35 +206,22 @@
             },
             selectRoleChange(option){
                 if(option&&option.value!="") {
-                    vajaxPost(rights_all_url, {roleId: option.value}, false, (res) => {
-                        var json = $.evalJSON(res);
-                        this.dataLeft = json;
-                    }, () => {
-                        this.spinLeftShow = true;
-                    }, () => {
-                        setTimeout(()=>{
-                            this.spinLeftShow = false;
-                        },1000);
-                    });
-
-                    vajaxPost(rights_own_url, {roleId: option.value}, false, (res) => {
-                        var json = $.evalJSON(res);
-                        this.dataRight = json;
-                    }, () => {
-                        this.spinRightShow = true;
-                    }, () => {
-                        setTimeout(()=>{
-                            this.spinRightShow = false;
-                        },1000);
-                    });
+                    this.all_right(option.value);
+                    this.own_right(option.value);
                 }
             },
             butSave(){
                 let nodes= this.$refs["rightsTree"].getCheckedNodes();
-                log(nodes);
                 if(nodes.length>0) {
-                    vajaxPost(rights_save_url + "&roleId=" + this.selectRole.selectItem, nodes, true, (res) => {
-                        log(res);
+                    vajaxPost(rights_save_url + "&roleId=" + this.selectRole.selectItem, nodes, true, (result) => {
+                        if(result&&result.success) {
+                            vtoast(this, result.tip);
+                            //重新加载分配的权限
+                            this.own_right(this.selectRole.selectItem);
+                        }
+                        else{
+                            valert(this,result.tip);
+                        }
                     }, () => {
                         this.spinLeftShow = true;
                         this.spinRightShow = true;

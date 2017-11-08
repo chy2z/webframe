@@ -77,7 +77,7 @@
 
         /* 兼容获取浏览器，下拉菜单宽度不够 */
         .head-right-menu .ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown{
-            width: 200px;
+            width: auto;
             max-height: none;
         }
 
@@ -199,10 +199,24 @@
             <div class="head-logo-left-title">后台管理系统</div>
             <div class="head-right-menu">
                 <i-Menu @on-select="headMenuItemClick" width="auto" mode="horizontal" theme="primary" active-name="userinfo">
-                    <Menu-Item name="toggleMenu">
-                        <Icon type="arrow-swap"></Icon>
-                        折叠菜单
-                    </Menu-Item>
+                     <Submenu name="menuOperate">
+                        <template slot="title">
+                            <Icon type="android-menu"></Icon>
+                            菜单管理
+                        </template>
+                         <Menu-Item name="toggleMenu">
+                             <Icon type="arrow-swap"></Icon>
+                             折叠菜单
+                         </Menu-Item>
+                         <Menu-Item name="closeMenu">
+                             <Icon type="close"></Icon>
+                             关闭菜单
+                         </Menu-Item>
+                         <Menu-Item name="refreshHome">
+                             <Icon type="refresh"></Icon>
+                             刷新首页
+                         </Menu-Item>
+                    </Submenu>
                     <Menu-Item name="fullscreen">
                         <Icon type="arrow-expand"></Icon>
                         系统全屏
@@ -224,7 +238,7 @@
                             <Icon type="person"></Icon>
                             用户信息
                         </template>
-                        <Menu-Group title="基本信息">
+                        <Menu-Group title="个人信息">
                             <Menu-Item name="3-1"><Icon type="card"></Icon><Tooltip placement="top" content="姓名">${requestScope.user.name}</Tooltip></Menu-Item>
                             <Menu-Item name="3-2"><Icon type="ios-flag"></Icon><Tooltip placement="top" content="部门">${requestScope.depart}</Tooltip></Menu-Item>
                             <Menu-Item name="3-3"><Icon type="trophy"></Icon><Tooltip placement="top" content="职位">${requestScope.user.office}</Tooltip></Menu-Item>
@@ -232,7 +246,7 @@
                             <Menu-Item name="3-5"><Icon type="email"></Icon><Tooltip placement="top" content="邮件">${requestScope.user.email}</Tooltip></Menu-Item>
                             <Menu-Item name="3-6"><Icon type="ribbon-b"></Icon><Tooltip placement="top" content="角色">${requestScope.role}</Tooltip></Menu-Item>
                         </Menu-Group>
-                        <Menu-Group title="其他信息">
+                        <Menu-Group title="登录信息">
                             <Menu-Item name="3-7"><Icon type="ios-clock"></Icon><Tooltip placement="top" content="登录时间">${requestScope.loginTime}</Tooltip></Menu-Item>
                         </Menu-Group>
                     </Submenu>
@@ -402,7 +416,7 @@
                             this.inputLeft = '400px';
                             this.password = '';
                             this.$emit('on-unlock');
-                            this.$Message.error(result.tip);
+                            this.$Message.info(result.tip);
                         }
                         else{
                             this.$Message.error(result.tip);
@@ -547,6 +561,14 @@
                             this.spanLeft = 3;
                             this.spanRight = 21;
                         }
+                    }
+                    //关闭菜单
+                    else if(name=="closeMenu"){
+                        this.tabItems=[];
+                    }
+                    //刷新首页
+                    else if(name=="refreshHome"){
+                        document.querySelector("#mainframe").contentWindow.location.reload(true);
                     }
                     //锁屏
                     else if(name=="lockSystem"){

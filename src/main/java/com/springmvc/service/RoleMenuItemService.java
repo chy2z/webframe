@@ -49,7 +49,7 @@ public class RoleMenuItemService {
             }
         }
 
-        rmimap.deleteByRoidId(roleId);
+        rmimap.deleteByRoleId(roleId);
 
         return rmimap.insertBatch(rmls) > 0;
     }

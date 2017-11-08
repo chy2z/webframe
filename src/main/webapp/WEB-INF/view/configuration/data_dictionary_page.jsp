@@ -37,7 +37,7 @@
                     </i-col>
                 </Row>
                 <Row class-name="my-layout-body" type="flex">
-                    <i-col span="24">
+                    <i-col class-name="col-left" span="24">
                     <i-Table :height="parentTable.height"
                              :width="parentTable.width"
                              :show-header="parentTable.showHeader"
@@ -82,7 +82,7 @@
                     </i-col>
                 </Row>
                 <Row class-name="my-layout-body" type="flex">
-                    <i-col span="24">
+                    <i-col class-name="col-right" span="24">
                     <i-Table :height="childTable.height"
                              :width="childTable.width"
                              :show-header="childTable.showHeader"

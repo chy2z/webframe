@@ -120,7 +120,7 @@ public class MenuItemService {
                     menu2.setChilds(new ArrayList<VMenu>());
                     menu1.getChilds().add(menu2);
                 }
-                //第三级菜单
+                //第二级的子节点第三级菜单
                 else if ("2".equals(mi.getLevel())) {
                     menu3 = new VMenu();
                     //无下级节点
@@ -132,9 +132,17 @@ public class MenuItemService {
                     if(menu2!=null) {
                         menu2.getChilds().add(menu3);
                     }
-                    else {
-                        menu1.getChilds().add(menu3);
-                    }
+                }
+                //第一级的子节点第三级菜单
+                else if ("3".equals(mi.getLevel())) {
+                    menu3 = new VMenu();
+                    //无下级节点
+                    menu3.setLeaf(false);
+                    menu3.setName("m"+mi.getId());
+                    menu3.setTitle(mi.getName());
+                    menu3.setUrl(mi.getUrl());
+                    menu3.setIcon(mi.getLmage());
+                    menu1.getChilds().add(menu3);
                 }
             }
         }
@@ -205,7 +213,7 @@ public class MenuItemService {
                     menu2.setChildren(new ArrayList<VTree>());
                     menu1.getChildren().add(menu2);
                 }
-                //第三级菜单
+                //第二级的子节点第三级菜单
                 else if ("2".equals(mi.getLevel())) {
                     menu3 = new VTree();
                     //无下级节点
@@ -218,10 +226,18 @@ public class MenuItemService {
                         menu3.setPath(menu2.getPath()+"/"+mi.getId());
                         menu2.getChildren().add(menu3);
                     }
-                    else {
-                        menu3.setPath(menu1.getPath()+"/"+mi.getId());
-                        menu1.getChildren().add(menu3);
-                    }
+                }
+                //第一级的子节点第三级菜单
+                else if ("3".equals(mi.getLevel())) {
+                    menu3 = new VTree();
+                    //无下级节点
+                    menu3.setExpand(expand);
+                    menu3.setNodeKey("m"+mi.getId());
+                    menu3.setTitle(mi.getName());
+                    menu3.setChecked(false);
+                    menu3.setChildren(new ArrayList<VTree>());
+                    menu3.setPath(menu1.getPath()+"/"+mi.getId());
+                    menu1.getChildren().add(menu3);
                 }
                 //第四级菜单
                 else if ("-1".equals(mi.getLevel())) {

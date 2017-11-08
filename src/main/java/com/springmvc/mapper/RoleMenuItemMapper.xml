@@ -76,7 +76,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <delete id="deleteByRoleId" parameterType="java.lang.Integer">
+  <delete id="deleteByRoleId" parameterType="java.lang.String">
     delete from role_menu_item
     where RoleId = #{RoleId,jdbcType=VARCHAR}
   </delete>

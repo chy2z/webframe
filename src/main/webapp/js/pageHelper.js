@@ -231,4 +231,11 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
         this.ivTable.width=w;
     }
 
+    /**
+     * 导出数据
+     * @param corporationExport_url
+     */
+    this.export=function (corporationExport_url) {
+        window.open(corporationExport_url + '&where=' + encodeURIComponent(this.mWhere));
+    }
 }

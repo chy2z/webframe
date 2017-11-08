@@ -6,25 +6,30 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="code" jdbcType="VARCHAR" property="code" />
   </resultMap>
+
   <sql id="Base_Column_List">
     id, name, code
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from corporation
     where id = #{id,jdbcType=INTEGER}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from corporation
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.springmvc.model.Corporation">
     insert into corporation (id, name, code
       )
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}
       )
   </insert>
+
   <insert id="insertSelective" parameterType="com.springmvc.model.Corporation">
     insert into corporation
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -50,6 +55,7 @@
       </if>
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.model.Corporation">
     update corporation
     <set>
@@ -62,6 +68,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.springmvc.model.Corporation">
     update corporation
     set name = #{name,jdbcType=VARCHAR},
@@ -94,5 +101,18 @@
     limit #{start},#{pageSize}
 
   </select>
+
+  <select id="exportForExcel" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from corporation
+    <!-- 1) 对于形如#{variable} 的变量，Mybatis会将其视为字符串值，在变量替换成功后，缺省地给变量值加上引号 -->
+    <!-- 2）对于形如${variable}的变量，Mybatis会将其视作直接变量，即在变量替换成功后，不会再给其加上引号。 -->
+    <!-- 此处用$ 不用 #-->
+    <if test="where != null">where ${where}</if>
+
+    order by id desc
+  </select>
+
 
 </mapper>

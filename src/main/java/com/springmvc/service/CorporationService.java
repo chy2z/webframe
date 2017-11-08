@@ -8,6 +8,8 @@ import com.springmvc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 /**
 * @Title: CorporationService
@@ -20,6 +22,8 @@ public class CorporationService {
 
     @Autowired
     CorporationMapper cmap;
+
+
 
     /**
      * 插入记录
@@ -47,6 +51,15 @@ public class CorporationService {
      */
     public boolean delete(Integer id) {
         return cmap.deleteByPrimaryKey(id) > 0;
+    }
+
+    /**
+     * 导出数据
+     * @param where
+     * @return
+     */
+    public List<Corporation> exportForExcel(String where){
+        return cmap.exportForExcel(where);
     }
 
     /**

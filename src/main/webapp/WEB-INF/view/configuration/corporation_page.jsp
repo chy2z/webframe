@@ -114,6 +114,7 @@
         var domain="${ctx}";
         var nomanage=${requestScope.nomanage};
         var corporationId="${requestScope.corporationId}";
+        var corporationExport_url=domain+"/export/exportCorporation?jwt=${requestScope.jwt}";
         var corporationInsert_url=domain+"/corporation/insert?jwt=${requestScope.jwt}";
         var corporationUpdate_url=domain+"/corporation/update?jwt=${requestScope.jwt}";
         var corporationDelete_url=domain+"/corporation/delete?jwt=${requestScope.jwt}";
@@ -265,7 +266,7 @@
                     }
                 },
                 butExport(){
-
+                    pageHelperCroporation.export(corporationExport_url);
                 },
                 butRefresh(){
                     window.location.reload();

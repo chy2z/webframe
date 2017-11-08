@@ -18,6 +18,8 @@ public interface CorporationMapper {
 
     int updateByPrimaryKey(Corporation record);
 
+    List<Corporation> exportForExcel(@Param("where") String where);
+
     /**
      * 根据条件获取记录数
      * @param where

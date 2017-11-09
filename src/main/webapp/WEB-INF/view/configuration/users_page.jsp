@@ -175,6 +175,7 @@
         var domain="${ctx}";
         var nomanage=${requestScope.nomanage};
         var corporationId="${requestScope.corporationId}";
+        var usersExport_url=domain+"/export/exportUsers?jwt=${requestScope.jwt}";
         var usersInsert_url=domain+"/users/insert?jwt=${requestScope.jwt}";
         var usersUpdate_url=domain+"/users/update?jwt=${requestScope.jwt}";
         var usersDelete_url=domain+"/users/delete?jwt=${requestScope.jwt}";
@@ -439,7 +440,7 @@
                     }
                 },
                 butExport(){
-
+                    pageHelperUsers.export(usersExport_url,this);
                 },
                 butRefresh(){
                     window.location.reload();

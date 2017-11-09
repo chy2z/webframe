@@ -125,7 +125,7 @@
                             key: 'id'
                         },
                         {
-                            title: '姓名',
+                            title: '名称',
                             key: 'name'
                         },
                         {
@@ -266,7 +266,7 @@
                     }
                 },
                 butExport(){
-                    pageHelperCroporation.export(corporationExport_url);
+                    pageHelperCroporation.export(corporationExport_url,this);
                 },
                 butRefresh(){
                     window.location.reload();

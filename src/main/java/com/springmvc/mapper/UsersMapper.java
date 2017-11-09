@@ -29,6 +29,8 @@ public interface UsersMapper {
 
     Users selectByNameAndPwd(@Param("loginName") String loginName,@Param("password") String password);
 
+    List<Users> exportForExcel(@Param("where") String where);
+
     /**
      * 根据条件获取记录数
      * @param where

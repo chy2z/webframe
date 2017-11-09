@@ -1,7 +1,11 @@
 package com.springmvc.controller;
 
 import com.springmvc.model.Corporation;
+import com.springmvc.model.Department;
+import com.springmvc.model.Users;
 import com.springmvc.service.CorporationService;
+import com.springmvc.service.DepartmentService;
+import com.springmvc.service.UsersService;
 import com.springmvc.util.ExportExcelUtil;
 import com.springmvc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
 * @Title: ExportControl
@@ -23,6 +29,12 @@ public class ExportControl {
 
     @Autowired
     CorporationService corpService;
+
+    @Autowired
+    DepartmentService departmentService;
+
+    @Autowired
+    UsersService usersService;
 
     /**
      * 导出组织机构数据
@@ -38,8 +50,40 @@ public class ExportControl {
         String where=request.getParameter("where");
         ExportExcelUtil<Corporation> export= new ExportExcelUtil<Corporation>();
         String[] headers = { "序号", "名称", "编号"};
-        String fileName = "组织管理";
+        String fileName = "组织机构";
         export.exportExcel(headers,corpService.exportForExcel(StringUtil.NullOrString(where)),fileName,response);
+    }
+
+    /**
+     * 导出部门数据
+     * @param request
+     * @param response
+     */
+    @RequestMapping("/exportDepartment")
+    public void exportDepartment(HttpServletRequest request, HttpServletResponse response) {
+        String where=request.getParameter("where");
+        ExportExcelUtil<Department> export= new ExportExcelUtil<Department>();
+        String[] headers = { "序号", "名称", "电话","领导","地址","备注"};
+        String fileName = "部门";
+        export.exportExcel(headers,departmentService.exportForExcel(StringUtil.NullOrString(where)),fileName,response);
+    }
+
+    /**
+     * 导出用户数据
+     * @param request
+     * @param response
+     */
+    @RequestMapping("/exportUsers")
+    public void exportUsers(HttpServletRequest request, HttpServletResponse response) {
+        String where=request.getParameter("where");
+        ExportExcelUtil<Users> export= new ExportExcelUtil<Users>();
+        Map headers = new LinkedHashMap();
+        headers.put("序号","id");
+        headers.put("登录名称","loginname");
+        headers.put("名称","name");
+        headers.put("密码","password");
+        String fileName = "用户信息";
+        export.exportExcel(headers,usersService.exportForExcel(StringUtil.NullOrString(where)),fileName,response);
     }
 
 }

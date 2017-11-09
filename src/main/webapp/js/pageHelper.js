@@ -235,7 +235,15 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
      * 导出数据
      * @param corporationExport_url
      */
-    this.export=function (corporationExport_url) {
-        window.open(corporationExport_url + '&where=' + encodeURIComponent(this.mWhere));
+    this.export=function (export_url,vue) {
+        if(this.ivPage.totalCount==0){
+            valert(vue,"无数据");
+        }
+        else if(this.ivPage.totalCount>30000){
+            valert(vue,"数据量超过30000，请分批导出");
+        }
+        else{
+            window.open(export_url + '&where=' + encodeURIComponent(this.mWhere));
+        }
     }
 }

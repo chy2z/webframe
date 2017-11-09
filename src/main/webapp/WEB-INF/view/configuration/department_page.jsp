@@ -114,6 +114,7 @@
         var domain="${ctx}";
         var nomanage=${requestScope.nomanage};
         var corporationId="${requestScope.corporationId}";
+        var departmentExport_url=domain+"/export/exportDepartment?jwt=${requestScope.jwt}";
         var departmentInsert_url=domain+"/department/insert?jwt=${requestScope.jwt}";
         var departmentUpdate_url=domain+"/department/update?jwt=${requestScope.jwt}";
         var departmentDelete_url=domain+"/department/delete?jwt=${requestScope.jwt}";
@@ -299,7 +300,7 @@
                     }
                 },
                 butExport(){
-
+                    pageHelperDepartment.export(departmentExport_url,this);
                 },
                 butRefresh(){
                     window.location.reload();

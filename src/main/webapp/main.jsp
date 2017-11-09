@@ -492,6 +492,11 @@
                     lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';
                 });
                 lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';
+
+                //解决浏览器刷新锁屏消失
+                if(localStorage.islock==1){
+                    this.lockScreen();
+                }
             },
             computed: {
                 iconSize () {
@@ -500,6 +505,9 @@
             },
             methods: {
                 unlockScreen () {
+
+                    localStorage.islock=0;
+
                     let lockScreenBack = document.getElementById('lock_screen_back');
                     this.showUnlock = false;
                     this.hideText=true;
@@ -507,6 +515,9 @@
                     lockScreenBack.style.boxShadow = '0 0 0 0 #667aa6 inset';
                 },
                 lockScreen () {
+
+                    localStorage.islock=1;
+
                     let lockScreenBack = document.getElementById('lock_screen_back');
                     lockScreenBack.style.transition = 'all 3s';
                     lockScreenBack.style.zIndex = 10000;

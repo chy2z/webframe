@@ -11,6 +11,7 @@ import com.springmvc.mapper.UsersMapper;
 import com.springmvc.model.Users;
 
 import javax.swing.text.rtf.RTFEditorKit;
+import java.util.List;
 
 /**
 * @Title: UsersService
@@ -81,6 +82,14 @@ public class UsersService {
 		return umap.deleteByPrimaryKey(id) > 0;
 	}
 
+	/**
+	 * 导出数据
+	 * @param where
+	 * @return
+	 */
+	public List<Users> exportForExcel(String where){
+		return  umap.exportForExcel(where);
+	}
 
 	/**
 	 * 返回分页数据

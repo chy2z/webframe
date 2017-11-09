@@ -8,6 +8,8 @@ import com.springmvc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
 * @Title: DepartmentService
 * @Description: 部门业务层
@@ -47,6 +49,15 @@ public class DepartmentService {
         return dmap.updateByPrimaryKeySelective(c) > 0;
     }
 
+
+    /**
+     * 导出数据
+     * @param where
+     * @return
+     */
+    public List<Department> exportForExcel(String where){
+        return  dmap.exportForExcel(where);
+    }
 
     /**
      * 删除记录

@@ -14,12 +14,26 @@ public class StringUtil {
      * @param str
      * @return
      */
-    public static String NullOrString(String str){
+    public static String nullOrString(String str){
         if(str.equals("")||str.toUpperCase().equals("NULL")) {
             return null;
         }
         else {
             return str;
+        }
+    }
+
+    /**
+     * 判断是否是空白字符串
+     * @param str
+     * @return
+     */
+    public static boolean isNotBlank(String str){
+        if(str==null||str.equals("")) {
+            return false;
+        }
+        else {
+            return true;
         }
     }
 

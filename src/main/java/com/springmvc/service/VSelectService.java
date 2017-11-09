@@ -1,16 +1,13 @@
 package com.springmvc.service;
 
 import com.springmvc.mapper.VSelectMapper;
-import com.springmvc.model.MenuItem;
 import com.springmvc.model.iview.VSelect;
 import com.springmvc.util.JsonUtil;
 import com.springmvc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
 * @Title: VSelectService
@@ -37,7 +34,7 @@ public class VSelectService {
      * @return
      */
     public List<VSelect> selectDataDictionaryValue(String where){
-        return vSelect.selectDataDictionaryValue(StringUtil.NullOrString(where));
+        return vSelect.selectDataDictionaryValue(StringUtil.nullOrString(where));
     }
 
     /**
@@ -45,7 +42,7 @@ public class VSelectService {
      * @return
      */
     public List<VSelect> selectCorporation(String where){
-        return vSelect.selectCorporation(StringUtil.NullOrString(where));
+        return vSelect.selectCorporation(StringUtil.nullOrString(where));
     }
 
     /**
@@ -54,7 +51,7 @@ public class VSelectService {
      * @return
      */
     public List<VSelect> selectDepartment(String where){
-        return vSelect.selectDepartment(StringUtil.NullOrString(where));
+        return vSelect.selectDepartment(StringUtil.nullOrString(where));
     }
 
     /**
@@ -63,7 +60,7 @@ public class VSelectService {
      * @return
      */
     public List<VSelect> selectRole(String where){
-        return vSelect.selectRole(StringUtil.NullOrString(where));
+        return vSelect.selectRole(StringUtil.nullOrString(where));
     }
 
 

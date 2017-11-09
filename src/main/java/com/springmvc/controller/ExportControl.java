@@ -51,7 +51,7 @@ public class ExportControl {
         ExportExcelUtil<Corporation> export= new ExportExcelUtil<Corporation>();
         String[] headers = { "序号", "名称", "编号"};
         String fileName = "组织机构";
-        export.exportExcel(headers,corpService.exportForExcel(StringUtil.NullOrString(where)),fileName,response);
+        export.exportExcel(headers,corpService.exportForExcel(StringUtil.nullOrString(where)),fileName,response);
     }
 
     /**
@@ -65,7 +65,7 @@ public class ExportControl {
         ExportExcelUtil<Department> export= new ExportExcelUtil<Department>();
         String[] headers = { "序号", "名称", "电话","领导","地址","备注"};
         String fileName = "部门";
-        export.exportExcel(headers,departmentService.exportForExcel(StringUtil.NullOrString(where)),fileName,response);
+        export.exportExcel(headers,departmentService.exportForExcel(StringUtil.nullOrString(where)),fileName,response);
     }
 
     /**
@@ -83,7 +83,7 @@ public class ExportControl {
         headers.put("名称","name");
         headers.put("密码","password");
         String fileName = "用户信息";
-        export.exportExcel(headers,usersService.exportForExcel(StringUtil.NullOrString(where)),fileName,response);
+        export.exportExcel(headers,usersService.exportForExcel(StringUtil.nullOrString(where)),fileName,response);
     }
 
 }

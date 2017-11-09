@@ -78,9 +78,9 @@ public class CorporationService {
 
         ph.setPageSize(pageSize);
 
-        ph.setWhere(StringUtil.NullOrString(where));
+        ph.setWhere(StringUtil.nullOrString(where));
 
-        ph.setOrderBy(StringUtil.NullOrString(orderBy));
+        ph.setOrderBy(StringUtil.nullOrString(orderBy));
 
         ph.setTotalCount(cmap.getCount(ph.getWhere(),ph.getOrderBy()));
 

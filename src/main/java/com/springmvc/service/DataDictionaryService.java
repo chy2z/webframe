@@ -72,9 +72,9 @@ public class DataDictionaryService {
 
         ph.setPageSize(pageSize);
 
-        ph.setWhere(StringUtil.NullOrString(where));
+        ph.setWhere(StringUtil.nullOrString(where));
 
-        ph.setOrderBy(StringUtil.NullOrString(orderBy));
+        ph.setOrderBy(StringUtil.nullOrString(orderBy));
 
         ph.setTotalCount(ddmap.getParentCount(ph.getWhere(),ph.getOrderBy()));
 
@@ -114,9 +114,9 @@ public class DataDictionaryService {
 
         ph.setPageSize(pageSize);
 
-        ph.setWhere(StringUtil.NullOrString(where));
+        ph.setWhere(StringUtil.nullOrString(where));
 
-        ph.setOrderBy(StringUtil.NullOrString(orderBy));
+        ph.setOrderBy(StringUtil.nullOrString(orderBy));
 
         ph.setTotalCount(ddmap.getChildCount(ph.getWhere(),ph.getOrderBy()));
 

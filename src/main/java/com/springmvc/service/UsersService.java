@@ -1,7 +1,5 @@
 package com.springmvc.service;
 
-import com.springmvc.config.SysConfig;
-import com.springmvc.model.Department;
 import com.springmvc.model.PageHelper;
 import com.springmvc.util.JsonUtil;
 import com.springmvc.util.StringUtil;
@@ -10,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.springmvc.mapper.UsersMapper;
 import com.springmvc.model.Users;
 
-import javax.swing.text.rtf.RTFEditorKit;
 import java.util.List;
 
 /**
@@ -107,9 +104,9 @@ public class UsersService {
 
 		ph.setPageSize(pageSize);
 
-		ph.setWhere(StringUtil.NullOrString(where));
+		ph.setWhere(StringUtil.nullOrString(where));
 
-		ph.setOrderBy(StringUtil.NullOrString(orderBy));
+		ph.setOrderBy(StringUtil.nullOrString(orderBy));
 
 		ph.setTotalCount(umap.getCount(ph.getWhere(),ph.getOrderBy()));
 

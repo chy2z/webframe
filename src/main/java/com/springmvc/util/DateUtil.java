@@ -4,10 +4,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class DateUtil {
 
@@ -35,20 +32,9 @@ public class DateUtil {
 		return format.format(date);
 	}
 
-	/**
-	 * 当前日期转换为字符串.格式:yyyy-MM-dd
-	 * 
-	 * @param date
-	 *            日期.
-	 * @return 日期的字符串.
-	 */
-	public static String formatDateWithoutSecond(Date date) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		return format.format(date);
-	}
 
 	/**
-	 * 当前日期.
+	 * 当前 Timestamp
 	 * 
 	 * @return
 	 */
@@ -56,19 +42,6 @@ public class DateUtil {
 		return new Timestamp(System.currentTimeMillis());
 	}
 
-	/**
-	 * 相隔天数
-	 * 
-	 * @return
-	 */
-	public static boolean getTimeOut(Date createdDate, Date endDate) {
-		Calendar createdCalendar = Calendar.getInstance();
-		Calendar endCalendar = Calendar.getInstance();
-		createdCalendar.setTime(createdDate);
-		endCalendar.setTime(endDate);
-		createdCalendar.add(Calendar.YEAR, 1);
-		return endCalendar.before(createdCalendar);
-	}
 
 	/**
 	 * 判断白天黑夜
@@ -95,51 +68,6 @@ public class DateUtil {
 	}
 
 	/**
-	 * 当前日期转换为字符串.格式:yyyy年MM月dd日 HH时mm分ss秒
-	 * 
-	 * @param date
-	 *            日期.
-	 * @return 日期的字符串.
-	 * @throws ParseException
-	 */
-	public static String formatTimeCH(Date date) {
-		DateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒");
-		return format.format(date);
-	}
-
-	/**
-	 * 将字符串转换为Date类型
-	 */
-	public static Date formatToDate(String time) {
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		Date date = null;
-		try {
-			date = format.parse(time);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return date;
-	}
-
-	public static String getDayString(Date date) {
-		return new SimpleDateFormat("yyyy-MM-dd").format(date);
-	}
-
-	public static Date HfStrToDate(String str) {
-		Calendar current = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		Date date = null;
-		try {
-			date = sdf.parse(str);
-			current.setTime(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-		return date;
-	}
-
-	/**
 	 * 时间段比大小
 	 * @param firstTime
 	 * @param secondTime
@@ -161,50 +89,17 @@ public class DateUtil {
 		return 0;
 	}
 
-	/**
-	 * 判断是否混合收费
-	 */
-	public static int judgeNd(String beginTime, String endTime, String beginTimee, String endTimee) {
-		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-		SimpleDateFormat format3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Calendar ca1 = Calendar.getInstance();
-		Calendar ca2 = Calendar.getInstance();
-		Calendar calendar = Calendar.getInstance();
-		Calendar calendar2 = Calendar.getInstance();
-		Calendar calendar3 = Calendar.getInstance();
-		Calendar calendar4 = Calendar.getInstance();
-		long timeMinutes = 15 * 60 * 60 * 1000;
-		long timeTwoMinutes = 9 * 60 * 60 * 1000;
-		try {
-			ca1.setTime(format3.parse(beginTime));
-			ca2.setTime(format3.parse(endTime));
-			calendar.setTime(format.parse(beginTime.split(" ")[1]));
-			calendar2.setTime(format.parse(endTime.split(" ")[1]));
-			calendar3.setTime(format.parse(beginTimee));
-			calendar4.setTime(format.parse(endTimee));
-			System.err.println(ca2.getTimeInMillis());
-			System.err.println(ca1.getTimeInMillis());
-			System.err.println(ca2.getTimeInMillis() - ca1.getTimeInMillis());
-			if (calendar.compareTo(calendar3) > 0 && calendar2.compareTo(calendar4) < 0 && ca2.getTimeInMillis() - ca1.getTimeInMillis() <= timeTwoMinutes) {
-				return 0;
-			}
-			if (calendar.compareTo(calendar4) > 0 && ca2.getTimeInMillis() - ca1.getTimeInMillis() <= timeMinutes) {
-				return 1;
-			}
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return 3;
-	}
 
 	/**
-	 * 将字符串转换为Date类型 yyyy-MM-dd HH:mm:ss
+	 * 将字符串转换为Date类型
+	 * @param dateTime
+	 * @return
 	 */
-	public static Date formatToDateM(String time) {
+	public static Date stringToDate(String dateTime) {
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = null;
 		try {
-			date = format.parse(time);
+			date = format.parse(dateTime);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -212,63 +107,10 @@ public class DateUtil {
 	}
 
 	/**
-	 * 相隔天数判断
-	 * 
-	 * @param bDate
-	 * @param eDate
-	 * @param limitDay
-	 * @return
-	 */
-	public static boolean xjday(Date bDate, Date eDate, int minDay, int maxDay) {
-		// long l = (eDate.getTime()-bDate.getTime())/1000;
-		return ((eDate.getTime() - bDate.getTime()) / 1000 >= (minDay * 24 * 60 * 60) && (eDate.getTime() - bDate.getTime()) / 1000 <= (maxDay * 24 * 60 * 60));
-	}
-
-	/**
-	 * 相隔小时判断
-	 * 
-	 * @param bDate
-	 * @param eDate
-	 * @param limitHour
-	 * @return
-	 */
-	public static boolean xjhour(Date bDate, Date eDate, int minHour, int maxHour) {
-		// long l = (eDate.getTime()-bDate.getTime())/1000;
-		return ((eDate.getTime() - bDate.getTime()) / 1000 >= (minHour * 60 * 60) && (eDate.getTime() - bDate.getTime()) / 1000 <= (maxHour * 60 * 60));
-	}
-
-	/**
-	 * 判断是否能整除小时
-	 * 
-	 * @param bDate
-	 * @param eDate
-	 * @param limitHour
-	 * @return
-	 */
-	public static boolean divideHour(Date bDate, Date eDate) {
-		// long l = (eDate.getTime()-bDate.getTime())/1000;
-		return ((eDate.getTime() - bDate.getTime()) / 1000) % (60 * 60) != 0;
-	}
-
-	/**
-	 * 判断是否能整除天
-	 * 
-	 * @param bDate
-	 * @param eDate
-	 * @param limitHour
-	 * @return
-	 */
-	public static boolean divideDay(Date bDate, Date eDate) {
-		// long l = (eDate.getTime()-bDate.getTime())/1000;
-		return ((eDate.getTime() - bDate.getTime()) / 1000) % (24 * 60 * 60) != 0;
-	}
-
-	/**
 	 * 相差几个秒
 	 * 
 	 * @param bDate
 	 * @param eDate
-	 * @param limitHour
 	 * @return
 	 */
 	public static int computerDivideSecond(Date bDate, Date eDate) {
@@ -280,7 +122,6 @@ public class DateUtil {
 	 * 
 	 * @param bDate
 	 * @param eDate
-	 * @param limitHour
 	 * @return
 	 */
 	public static int computerDivideMinute(Date bDate, Date eDate) {
@@ -292,7 +133,6 @@ public class DateUtil {
 	 * 
 	 * @param bDate
 	 * @param eDate
-	 * @param limitHour
 	 * @return
 	 */
 	public static int computerDivideHour(Date bDate, Date eDate) {
@@ -304,33 +144,9 @@ public class DateUtil {
 	 * 
 	 * @param bDate
 	 * @param eDate
-	 * @param limitHour
 	 * @return
 	 */
 	public static int computerDivideDay(Date bDate, Date eDate) {
 		return (int) (((eDate.getTime() - bDate.getTime()) / 1000) / (24 * 60 * 60));
 	}
-
-	public static Map<String, Integer> timea(Date bDate, Date eDate) {
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		Integer day = (int) (((bDate.getTime() - eDate.getTime()) / 1000) / (24 * 60 * 60));
-		Integer hour = (int) (((bDate.getTime() - eDate.getTime()) / 1000) / (60 * 60)) - (day * 24);
-		Integer min = (int) (((bDate.getTime() - eDate.getTime()) / 1000) / (60) - (day * 24 * 60) - (hour * 60));
-		Integer sec = (int) (((bDate.getTime() - eDate.getTime()) / 1000) / (60) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (min * 60));
-		map.put("day", day);
-		map.put("hour", hour);
-		map.put("min", min);
-		map.put("sec", sec);
-		System.err.println(day + "天");
-		System.err.println(hour + "小时");
-		System.err.println(min + "分钟");
-		System.err.println(sec + "秒");
-		return map;
-	}
-
-	public static String formatDateWithoutDay(Date date) {
-		SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-		return format.format(date);
-	}
-
 }

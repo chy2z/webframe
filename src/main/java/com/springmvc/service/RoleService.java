@@ -73,9 +73,9 @@ public class RoleService {
 
         ph.setPageSize(pageSize);
 
-        ph.setWhere(StringUtil.NullOrString(where));
+        ph.setWhere(StringUtil.nullOrString(where));
 
-        ph.setOrderBy(StringUtil.NullOrString(orderBy));
+        ph.setOrderBy(StringUtil.nullOrString(orderBy));
 
         ph.setTotalCount(rmap.getCount(ph.getWhere(),ph.getOrderBy()));
 

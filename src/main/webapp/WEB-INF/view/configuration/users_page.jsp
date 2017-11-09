@@ -15,7 +15,7 @@
 <div class="my-app" id="app">
     <div class="my-layout">
         <Row id="top" class-name="my-layout-top" justify="end" align="middle" type="flex">
-            <i-col span="10">
+            <i-col span="6">
                 <div class="float-left">
                     <label class="my-label">组织机构：</label>
                     <i-Select  style="width:200px" @on-change="selectCorporationChange"
@@ -30,8 +30,24 @@
                                   :key="item.id">{{ item.label }}</i-Option>
                     </i-Select>
                 </div>
-            </i-col >
-            <i-col span="14">
+            </i-col>
+            <i-col span="6">
+                <div class="float-left">
+                    <label class="my-label">部门：</label>
+                    <i-Select  style="width:200px" @on-change="selectQueryDepartChange"
+                               v-model="selectQueryDepart.selectItem"
+                               :disabled="selectQueryDepart.disabled"
+                               :placeholder="selectQueryDepart.placeholder"
+                               :not-found-text="selectQueryDepart.notFoundText"
+                               :label-in-value="selectQueryDepart.labelInValue"
+                               :size="selectQueryDepart.size" :clearable="selectQueryDepart.clearable"
+                               :filterable="selectQueryDepart.filterable">
+                        <i-Option v-for="item in selectQueryDepart.dataTable" :value="item.id"
+                                  :key="item.id">{{ item.label }}</i-Option>
+                    </i-Select>
+                </div>
+            </i-col>
+            <i-col span="12">
                 <div class="float-right">
                     <%@include file="../rightTemplate.jsp" %>
                 </div>
@@ -53,7 +69,7 @@
             </i-col>
         </Row>
         <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
-            <i-col  span="6"></i-col >
+            <i-col  span="6"></i-col>
             <i-col  span="18">
                 <div class="float-right">
                     <Page @on-change="pageChangeUsers" @on-page-size-change="pageSizeChangeUsers"
@@ -66,8 +82,7 @@
                           :show-total="usersPage.showTotal"
                           :show-sizer="usersPage.showSizer"></Page>
                 </div>
-            </i-col >
-
+            </i-col>
         </Row>
     </div>
 
@@ -236,6 +251,8 @@
 
         var selectHelperCorporation=new selectHelper(corporation_Select_url,{});
 
+        var selectHelperQueryDepartment= new selectHelper(department_Select_url,{});
+
         var selectHelperDictOffice=new selectHelper(dataDictionary_Select_url,{selectItem:"未绑定",clearable:false});
 
         var selectHelperDictState=new selectHelper(dataDictionary_Select_url,{selectItem:"未绑定",clearable:false});
@@ -297,6 +314,7 @@
                 selectDepart:selectHelperDepartment.ivSelect,
                 selectOffice:selectHelperDictOffice.ivSelect,
                 selectState:selectHelperDictState.ivSelect,
+                selectQueryDepart:selectHelperQueryDepartment.ivSelect,
                 selectCorporation:selectHelperCorporation.ivSelect,
                 usersTable:pageHelperUsers.ivTable,
                 usersPage:pageHelperUsers.ivPage
@@ -313,6 +331,7 @@
                     pageHelperUsers.load("u.corporationId='"+corporationId+"'");
                     selectHelperDepartment.load("corporationId='" + corporationId + "'");
                     selectHelperRole.load("corporationId='" + corporationId + "'");
+                    selectHelperQueryDepartment.load("corporationId='" + corporationId + "'");
 
                     //加载组织机构
                     selectHelperCorporation.load("id="+corporationId+"");
@@ -347,6 +366,15 @@
                         pageHelperUsers.load("u.corporationId='" + option.value + "'");
                         selectHelperDepartment.load("corporationId='" + option.value + "'");
                         selectHelperRole.load("corporationId='" + option.value + "'");
+                        selectHelperQueryDepartment.load("corporationId='" + option.value + "'");
+                    }
+                },
+                selectQueryDepartChange(option){
+                    if(option==null||option.value=="") {
+                        pageHelperUsers.load("u.corporationId='" + selectHelperCorporation.getSelectItem() + "'");
+                    }
+                    else{
+                        pageHelperUsers.load("u.corporationId='" + selectHelperCorporation.getSelectItem() + "' and u.departId='"+option.value+"'");
                     }
                 },
                 selectDepartChange(option){

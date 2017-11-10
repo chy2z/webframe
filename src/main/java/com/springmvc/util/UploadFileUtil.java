@@ -31,7 +31,8 @@ public class UploadFileUtil {
         String dir = sc.getRealPath(filePath);
         String fileName = file.getOriginalFilename();
         String extendName = ".png";
-        if (StringUtil.isNotBlank(fileName)) {
+        //剪切上传没有扩展名，默认是png
+        if (StringUtil.isNotBlank(fileName)&&fileName.contains(".")) {
             extendName = fileName.substring(fileName.lastIndexOf("."));
         }
         String newFileName = UUID.randomUUID() + extendName;

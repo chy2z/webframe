@@ -1,10 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <title>400</title>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="../js/iview/vue.min.js"></script>
+    <link rel="stylesheet" href="../css/iview/iview.css">
+    <link rel="stylesheet" href="../css/iview/iview-custom.css">
+    <script type="text/javascript" src="../js/iview/iview.min.js"></script>
+    <link rel="stylesheet" href="../css/error/error-page.css">
+    <link rel="stylesheet" href="../css/error/400.css">
 </head>
 <body>
-400
+<div id="app" class="error-page">
+    <Row class="error-page-box" type="flex" justify="center" align="middle">
+        <i-Col span="10">
+            <Card>
+                <Row>
+                    <div class="error-page-show">
+                        <div class="error400">
+                            <div class="error400-body-con">
+                                <div class="error400-body-con-title">
+                                    4<span class="error400-0-span"><Icon type="social-freebsd-devil"></Icon></span><span
+                                        class="error400-0-span"><Icon type="social-freebsd-devil"></Icon></span>
+                                </div>
+                                <p class="error400-body-con-message">Oops! the server is wrong</p>
+                                <div class="error400-btn-con">
+                                    <i-Button type="text" @click="goHome" style="width: 200px;" type="text">返回登录
+                                    </i-Button>
+                                    <i-Button type="text" @click="backPage" style="width: 200px;margin-left: 40px;">
+                                        后退上页
+                                    </i-Button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Row>
+            </Card>
+        </i-Col>
+    </Row>
+</div>
 </body>
+<script>
+    new Vue({
+        el: '#app',
+        data: {},
+        methods: {
+            backPage() {
+                window.history.back();
+            },
+            goHome() {
+                window.location.href = "../login.jsp";
+            }
+        }
+    });
+</script>
 </html>

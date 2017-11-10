@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>404</title>
+    <title>401</title>
     <meta charset="UTF-8">
     <script type="text/javascript" src="../js/iview/vue.min.js"></script>
     <link rel="stylesheet" href="../css/iview/iview.css">
     <link rel="stylesheet" href="../css/iview/iview-custom.css">
     <script type="text/javascript" src="../js/iview/iview.min.js"></script>
     <link rel="stylesheet" href="../css/error/error-page.css">
-    <link rel="stylesheet" href="../css/error/404.css">
+    <link rel="stylesheet" href="../css/error/401.css">
 </head>
 <body>
 <div id="app" class="error-page">
@@ -17,16 +17,18 @@
             <Card>
                 <Row>
                     <div class="error-page-show">
-                        <div class="error404">
-                            <div class="error404-body-con">
-                                <div class="error404-body-con-title">4<span><Icon
-                                        type="ios-navigate-outline"></Icon></span>4
-                                </div>
-                                <p class="error404-body-con-message">YOU&nbsp;&nbsp;LOOK&nbsp;&nbsp;LOST</p>
-                                <div class="error404-btn-con">
+                        <div class="error401">
+                            <div class="error401-body-con">
+                                <div class="error401-body-con-title">4<span class="error401-0-span"><Icon
+                                        type="android-lock"></Icon></span><span class="error401-key-span"><Icon
+                                        type="key"></Icon></span></div>
+                                <p class="error401-body-con-message">You don't have permission</p>
+                                <div class="error401-btn-con">
                                     <i-Button type="text" @click="goHome" style="width: 200px;" type="text">返回登录
                                     </i-Button>
-                                    <i-Button type="text" @click="backPage"  style="width: 200px;margin-left: 40px;" >后退上页</i-Button>
+                                    <i-Button type="text" @click="backPage" style="width: 200px;margin-left: 40px;">
+                                        后退上页
+                                    </i-Button>
                                 </div>
                             </div>
                         </div>
@@ -46,7 +48,7 @@
                 window.history.back();
             },
             goHome() {
-               window.location.href="../login.jsp";
+                window.location.href = "../login.jsp";
             }
         }
     });

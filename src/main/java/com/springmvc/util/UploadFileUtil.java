@@ -16,7 +16,7 @@ import java.util.UUID;
 */
 public class UploadFileUtil {
 
-    private static String uploadFile = "/upload/image/";
+    private static String uploadFile = "/fileUpload/image/";
 
     /**
      * 复制文件

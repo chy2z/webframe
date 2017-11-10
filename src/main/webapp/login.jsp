@@ -92,7 +92,7 @@
 		<a class="close-reveal-modal">&#215;</a>
 	</div>
 
-	<script type="text/javascript" src="js/login/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/login/jquery.reveal.js"></script>
 	<script type="text/javascript" src="js/login/jquery.backstretch.js"></script>
 	<script type="text/javascript" src="js/common.js"></script>

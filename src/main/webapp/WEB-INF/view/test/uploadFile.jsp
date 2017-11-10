@@ -10,7 +10,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>
-    <link rel="stylesheet" href="${ctx}/css/lock/unlock.css">
     <style>
         .radiusContent {
             border: 1px solid #eee;

@@ -15,6 +15,7 @@
     <result column="state" jdbcType="VARCHAR" property="state" />
     <result column="corporationId" jdbcType="INTEGER" property="corporationid" />
     <result column="token" jdbcType="VARCHAR" property="token" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
   </resultMap>
 
   <resultMap id="JoinResultMap" type="com.springmvc.model.Users">
@@ -30,6 +31,7 @@
     <result column="state" jdbcType="VARCHAR" property="state" />
     <result column="corporationId" jdbcType="INTEGER" property="corporationid" />
     <result column="token" jdbcType="VARCHAR" property="token" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
     <!-- 增加级联属性 -->
     <result column="departName" jdbcType="VARCHAR" property="departName" />
     <result column="roleName" jdbcType="VARCHAR" property="roleName" />
@@ -38,7 +40,7 @@
 
   <sql id="Base_Column_List">
     id, loginName, name, password, departId, office, phone, email, roleId, state, corporationId,
-    token
+    token,img
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -234,7 +236,7 @@
   <select id="selectPagination" resultMap="JoinResultMap">
     select
 
-    u.id, u.loginName, u.name, u.password, u.departId, u.office, u.phone, u.email, u.roleId, u.state, u.corporationId,u.token,
+    u.id, u.loginName, u.name, u.password, u.departId, u.office, u.phone, u.email, u.roleId, u.state, u.corporationId,u.token,u.img,
 
     r.name as roleName,d.name as departName,c.name as corporationName
 

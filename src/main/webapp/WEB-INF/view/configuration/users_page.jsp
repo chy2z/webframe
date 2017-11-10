@@ -10,6 +10,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>
+    <style>
+        .outer { width: 100%; height: 70px;padding: 5px 0 0;
+            box-sizing: border-box ;  background-color:#00ffffff;}
+        .outer img { height: 60px;  width: 100%; }
+    </style>
 </head>
 <body>
 <div class="my-app" id="app">
@@ -183,6 +188,11 @@
         </div>
     </Modal>
 
+    <Modal v-model="headImg.showHeadImage">
+        <p slot="header">图片查看</p>
+        <img :src="headImg.url" alt="" v-if="headImg.showHeadImage" style="width: 100%;">
+    </Modal>
+
 </div>
 </body>
 <script>
@@ -243,8 +253,30 @@
                 },
                 {
                     title: '组织',
-                    key: 'corporationName',
-                    width:300
+                    key: 'corporationName'
+                },
+                {
+                    title: '头像',
+                    key: 'img',
+                    width:100,
+                    render: (h, params) => {
+                        return h("div",{
+                            attrs:{
+                                class:'outer'
+                            },
+                            on: {
+                                click: () => {
+                                    vueUser.showHeadImg(domain+"/"+params.row.img);
+                                }
+                            }
+                        },[
+                            h('img',{
+                                attrs:{
+                                    src:domain+"/"+params.row.img
+                                }
+                            })
+                        ]);
+                    }
                 }
             ]
         },{orderBy:" u.id desc "});
@@ -261,11 +293,15 @@
 
         var selectHelperRole=new selectHelper(role_Select_url,{selectItem:"未绑定"});
 
-        new Vue({
+        var vueUser=new Vue({
             el: '#app',
             data: {
                 jwt:"${requestScope.jwt}",
                 butShow:${requestScope.rightBut},
+                headImg:{
+                    showHeadImage:false,
+                    url:""
+                },
                 formModal:{
                     title:"",
                     spinShow:false,
@@ -307,6 +343,19 @@
                         ],
                         departid: [
                             { type:'number', required: true, message: '部门不能为空', trigger: 'blur' }
+                        ],
+                        phone: [
+                            {required: true, validator:(rule, value, callback)=>{
+                                if (value === '') {
+                                    callback(new Error('手机号码不能为空'));
+                                }
+                                else if(!validatePhone(value)){
+                                    callback(new Error('手机号码不正确'));
+                                }
+                                else {
+                                    callback();
+                                }
+                            }, trigger: 'blur' }
                         ]
                     }
                 },
@@ -349,6 +398,10 @@
                 selectHelperDictState.load("dkey='用户状态'");
             },
             methods:{
+                showHeadImg(url){
+                    this.headImg.showHeadImage=true;
+                    this.headImg.url=url;
+                },
                 pageChangeUsers(index){
                     pageHelperUsers.pageIndexChanging(index);
                 },

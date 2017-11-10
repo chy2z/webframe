@@ -179,7 +179,11 @@
                             {required: true, validator:(rule, value, callback)=>{
                                 if (value === '') {
                                     callback(new Error('手机号码不能为空'));
-                                } else {
+                                }
+                                else if(!validatePhone(value)){
+                                    callback(new Error('手机号码不正确'));
+                                }
+                                else {
                                     callback();
                                 }
                             }, trigger: 'blur' }

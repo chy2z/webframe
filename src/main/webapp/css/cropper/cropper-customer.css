@@ -1,0 +1,83 @@
+@CHARSET "UTF-8";
+
+.cropper-left {
+    padding: 0 5px;
+    position: relative;
+}
+
+.preview-right {
+    padding: 0 5px;
+    position: relative;
+    overflow: hidden;
+    transition: height .2s ease-in-out;
+}
+
+.center-split {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    border: 1px dashed #eee;
+}
+
+.image-editor{
+    width: 100%;
+    height: 100%;
+}
+
+.image-editor .cropper {
+    box-sizing: border-box;
+    border: 1px solid #c3c3c3;
+    width: 100%;
+    height: 100%;
+}
+.image-editor .cropper img {
+    max-height: 100%;
+}
+.image-editor .fileinput {
+    display: none;
+}
+.image-editor .filelabel {
+    display: block;
+    padding: 6px 15px;
+    background: #2d8cf0;
+    display: inline-block;
+    border: 1px solid #2d8cf0;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    transition: all .2s;
+}
+.image-editor .filelabel:hover {
+    background: #5cadff;
+    border: 1px solid #5cadff;
+    transition: all .2s;
+}
+.image-editor-con {
+    height: 300px;
+}
+
+.image-editor-con-preview-con {
+    box-sizing: border-box;
+    border: 1px solid #ebebeb;
+    width: 100%;
+    height: 100%;
+}
+
+.image-editor-con-preview-con #preview1 {
+    top:0;bottom:0;right:0;left:0;
+    margin:auto;
+    width: 60%;
+    height: 60%;
+    overflow: hidden;
+    position: absolute;
+    background: #BBE8F2;
+}
+
+.image-editor-con-btn-con{
+    text-align: center;
+    margin-top: 15px;
+}

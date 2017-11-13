@@ -4,6 +4,7 @@
 <%@ include file="../../../taglib/import_iview.jsp"%>
 <%@ include file="../../../taglib/import_jquery.jsp"%>
 <%@ include file="../../../taglib/import_common.jsp"%>
+<%@ include file="../../../taglib/import_corpper.jsp"%>
 <html>
 <head>
     <title>用户管理</title>
@@ -13,7 +14,9 @@
     <style>
         .outer { width: 100%; height: 70px;padding: 5px 0 0;
             box-sizing: border-box ;  background-color:#00ffffff;}
+
         .outer img { height: 60px;  width: 100%; }
+
     </style>
 </head>
 <body>
@@ -189,8 +192,38 @@
     </Modal>
 
     <Modal v-model="headImg.showHeadImage">
-        <p slot="header">图片查看</p>
+        <p slot="header">头像查看</p>
         <img :src="headImg.url" alt="" v-if="headImg.showHeadImage" style="width: 100%;">
+    </Modal>
+
+    <Modal v-model="headImg.showUpload" :mask-closable="false" :styles="{top: '20px'}" :width="800">
+        <p slot="header">头像上传</p>
+        <Row class="margin-top-10 image-editor" type="flex" justify="center" align="middle">
+            <i-Col span="23">
+                    <Row>
+                        <i-Col span="12" class="image-editor-con cropper-left">
+                            <div class="cropper">
+                                <img id="cropimg1" src="../../images/lock.jpg" alt="">
+                            </div>
+                        </i-Col>
+                        <div class="center-split"></div>
+                        <i-Col span="12" class="image-editor-con preview-right">
+                            <div class="image-editor-con-preview-con">
+                                <div id="preview1"></div>
+                            </div>
+                        </i-Col>
+                    </Row>
+                    <Row type="flex" justify="center" align="middle">
+                        <i-Col span="12">
+                            <div class="image-editor-con-btn-con">
+                                <input type="file" accept="image/png, image/jpeg, image/gif, image/jpg" @change="handleFileChange" id="fileinput1" class="fileinput" />
+                                <label class="filelabel" for="fileinput1"><Icon type="image"></Icon>&nbsp;选择图片</label>
+                                <span><i-Button @click="handleUpload" type="primary" icon="crop">上传</i-Button></span>
+                            </div>
+                        </i-Col>
+                    </Row>
+            </i-Col>
+        </Row>
     </Modal>
 
 </div>
@@ -266,13 +299,13 @@
                             },
                             on: {
                                 click: () => {
-                                    vueUser.showHeadImg(domain+"/"+params.row.img);
+                                    vueUser.showHeadImg(domain+"/"+(!params.row.img?'images/lock.jpg':params.row.img));
                                 }
                             }
                         },[
                             h('img',{
                                 attrs:{
-                                    src:domain+"/"+params.row.img
+                                    src:domain+"/"+(!params.row.img?'images/lock.jpg':params.row.img)
                                 }
                             })
                         ]);
@@ -300,8 +333,10 @@
                 butShow:${requestScope.rightBut},
                 headImg:{
                     showHeadImage:false,
+                    showUpload:false,
                     url:""
                 },
+                cropper1: null,
                 formModal:{
                     title:"",
                     spinShow:false,
@@ -398,6 +433,40 @@
                 selectHelperDictState.load("dkey='用户状态'");
             },
             methods:{
+                handleFileChange (e) {
+                    let file = e.target.files[0];
+                    let reader = new FileReader();
+                    reader.onload = () => {
+                        this.cropper1.replace(reader.result);
+                        reader.onload = null;
+                    };
+                    reader.readAsDataURL(file);
+                },
+                handleUpload(){
+                    var vue=this;
+                    // Upload cropped image to server if the browser supports `HTMLCanvasElement.toBlob`
+                    this.cropper1.getCroppedCanvas().toBlob(function (blob) {
+                        var formData = new FormData();
+                        formData.append('upload', blob);
+                        formData.append('useid',pageHelperUsers.getSelectRowData().id);
+                        $.ajax('${ctx}/upload/headImageUpload', {
+                            method: "POST",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function (res) {
+                                vtoast(vue,res.tip);
+                                vue.headImg.showUpload=false;
+                                vue.headImg.showHeadImage=true;
+                                vue.headImg.url=domain+"/"+res.data.url;
+                                pageHelperUsers.getSelectRowData().img=domain+"/"+res.data.url;
+                            },
+                            error: function () {
+                                console.log('Upload error');
+                            }
+                        });
+                    });
+                },
                 showHeadImg(url){
                     this.headImg.showHeadImage=true;
                     this.headImg.url=url;
@@ -445,7 +514,7 @@
                         this.formModal.title = "增加用户";
                     }
                     else{
-                        valert(this,"请选择组织结构");
+                        valert(this,"请选择组织机构");
                     }
                 },
                 butEdit(){
@@ -474,7 +543,7 @@
                         }
                     }
                     else{
-                        valert(this,"请选择组织结构");
+                        valert(this,"请选择组织机构");
                     }
                 },
                 butDel(){
@@ -520,6 +589,32 @@
                         valert(this,"请选择一行记录修改");
                     }
                 },
+                butUploadHead(){
+                    if(selectHelperCorporation.getSelectItem()) {
+                        if (pageHelperUsers.getSelectRowIndex() > -1) {
+                            this.headImg.showUpload=true;
+                            if(!this.cropper1) {
+                                //在初始化裁减前不能隐藏
+                                this.cropper1 = new Cropper(document.getElementById('cropimg1'), {
+                                    aspectRatio: 1 / 1,
+                                    dragMode: 'move',
+                                    preview: '#preview1',
+                                    restore: false,
+                                    center: false,
+                                    highlight: false,
+                                    cropBoxMovable: true,
+                                    toggleDragModeOnDblclick: false
+                                });
+                            }
+                        }
+                        else {
+                            valert(this, "请选择一行记录修改");
+                        }
+                    }
+                    else{
+                        valert(this,"请选择组织机构");
+                    }
+                },
                 butExport(){
                     pageHelperUsers.export(usersExport_url,this);
                 },
@@ -535,7 +630,7 @@
                         selectHelperRole.reload();
                     }
                 },
-                formModalCancel(){ alert("");
+                formModalCancel(){
                     this.formModal.modalShow=false;
                     this.formModal.okButLoading=false;
                 },

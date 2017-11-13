@@ -62,19 +62,6 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="com.springmvc.model.Users">
-    insert into users (id, loginName, name, 
-      password, departId, office,
-      phone, email, roleId,
-      state, corporationId, token
-      )
-    values (#{id,jdbcType=INTEGER}, #{loginname,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{departid,jdbcType=INTEGER}, #{office,jdbcType=VARCHAR},
-      #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER},
-      #{state,jdbcType=VARCHAR}, #{corporationid,jdbcType=INTEGER}, #{token,jdbcType=VARCHAR}
-      )
-  </insert>
-
   <insert id="insertSelective" parameterType="com.springmvc.model.Users">
     insert into users
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -191,25 +178,13 @@
       <if test="token != null">
         token = #{token,jdbcType=VARCHAR},
       </if>
+      <if test="img != null">
+        img = #{img,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.model.Users">
-    update users
-    set loginName = #{loginname,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      departId = #{departid,jdbcType=INTEGER},
-      office = #{office,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      roleId = #{roleid,jdbcType=INTEGER},
-      state = #{state,jdbcType=VARCHAR},
-      corporationId = #{corporationid,jdbcType=INTEGER},
-      token = #{token,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
 
   <!-- 根据角色获取用户数 -->
   <select id="getUsersCountByRole" parameterType="java.lang.Integer" resultType="int">

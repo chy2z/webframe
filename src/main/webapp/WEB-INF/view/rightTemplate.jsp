@@ -12,6 +12,9 @@
     <template v-if="butShow.butDel">
         <i-Button type="primary" @click="butDel()" v-show="butShow.butDel" icon="close">删除</i-Button>
     </template>
+    <template v-if="butShow.butUploadHead">
+    <i-Button type="primary" @click="butUploadHead()" v-show="butShow.butUploadHead" icon="upload">上传头像</i-Button>
+    </template>
     <template v-if="butShow.butLook">
         <i-Button type="primary" @click="butLook()" v-show="butShow.butLook" icon="ios-glasses">查看</i-Button>
     </template>

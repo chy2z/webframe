@@ -16,7 +16,7 @@ import java.util.UUID;
 */
 public class UploadFileUtil {
 
-    private static String uploadFile = "/fileUpload/image/";
+    private static String uploadFile = "fileUpload/image/";
 
     /**
      * 复制文件
@@ -31,6 +31,7 @@ public class UploadFileUtil {
         String dir = sc.getRealPath(filePath);
         String fileName = file.getOriginalFilename();
         String extendName = ".png";
+        String fileUrl="";
         //剪切上传没有扩展名，默认是png
         if (StringUtil.isNotBlank(fileName)&&fileName.contains(".")) {
             extendName = fileName.substring(fileName.lastIndexOf("."));
@@ -43,10 +44,11 @@ public class UploadFileUtil {
         }
         try {
             file.transferTo(targetFile);
+            fileUrl = filePath + newFileName;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String fileUrl = filePath + newFileName;
+
         return fileUrl;
     }
 }

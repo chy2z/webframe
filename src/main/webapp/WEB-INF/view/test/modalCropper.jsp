@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="../../taglib/taglibs.jsp" %>
-<%@ include file="../../taglib/import_iview.jsp" %>
-<%@ include file="../../taglib/import_jquery.jsp" %>
-<%@ include file="../../taglib/import_common.jsp" %>
-<%@ include file="../../taglib/import_corpper.jsp"%>
+<%@ include file="../../../taglib/taglibs.jsp" %>
+<%@ include file="../../../taglib/import_iview.jsp" %>
+<%@ include file="../../../taglib/import_jquery.jsp" %>
+<%@ include file="../../../taglib/import_common.jsp" %>
+<%@ include file="../../../taglib/import_corpper.jsp"%>
 <html>
 <head>
     <title>文件上传测试</title>

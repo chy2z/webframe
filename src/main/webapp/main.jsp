@@ -26,13 +26,12 @@
         .head {
             height: 80px;
             box-shadow: 0 1px 1px rgba(0,0,0,0.2);
-            /*background-color: #2b85e4;*/
             background-color:#2d8cf0;
         }
 
         .head-content{
             height:100%;
-            width: 90%;
+            width: 95%;
             margin: 0 auto;
         }
 
@@ -56,6 +55,12 @@
             border-radius: 3px;
             text-align: center;
             color:#fff;
+        }
+
+        .head-right-avatar {
+            float: right;
+            height:100%;
+            margin: 20px 0;
         }
 
         /* 头部右侧菜单的高度 */
@@ -175,6 +180,8 @@
         }
         */
 
+
+
     </style>
 </head>
 <body>
@@ -197,6 +204,9 @@
                 <img src="../../images/logo.png" >
             </div>
             <div class="head-logo-left-title">后台管理系统</div>
+            <div class="head-right-avatar">
+                <Avatar icon="person" size="large" src="https://i.loli.net/2017/08/21/599a521472424.jpg" />
+            </div>
             <div class="head-right-menu">
                 <i-Menu @on-select="headMenuItemClick" width="auto" mode="horizontal" theme="primary" active-name="userinfo">
                      <Submenu name="menuOperate">
@@ -251,7 +261,6 @@
                         </Menu-Group>
                     </Submenu>
                 </i-Menu>
-
                 <Modal v-model="formModal.modalShow" :closable="false" :mask-closable="false" :styles="{top: '250px'}" width="400">
                     <p slot="header" style="color:#f60;text-align:center">
                         <Icon type="information-circled"></Icon>

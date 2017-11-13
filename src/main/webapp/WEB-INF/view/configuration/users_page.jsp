@@ -218,12 +218,15 @@
                             <div class="image-editor-con-btn-con">
                                 <input type="file" accept="image/png, image/jpeg, image/gif, image/jpg" @change="handleFileChange" id="fileinput1" class="fileinput" />
                                 <label class="filelabel" for="fileinput1"><Icon type="image"></Icon>&nbsp;选择图片</label>
-                                <span><i-Button @click="handleUpload" type="primary" icon="crop">上传</i-Button></span>
+                                <span><i-Button @click="handleUpload" type="primary" icon="upload">上传</i-Button></span>
                             </div>
                         </i-Col>
                     </Row>
             </i-Col>
         </Row>
+        <div slot="footer">
+            <i-Button  @click="headImg.showUpload=false" type="text" size="large">取消</i-Button>
+        </div>
     </Modal>
 
 </div>
@@ -459,7 +462,8 @@
                                 vue.headImg.showUpload=false;
                                 vue.headImg.showHeadImage=true;
                                 vue.headImg.url=domain+"/"+res.data.url;
-                                pageHelperUsers.getSelectRowData().img=domain+"/"+res.data.url;
+                                //render中已经有domain
+                                pageHelperUsers.getSelectRowData().img=res.data.url;
                             },
                             error: function () {
                                 console.log('Upload error');
@@ -594,17 +598,19 @@
                         if (pageHelperUsers.getSelectRowIndex() > -1) {
                             this.headImg.showUpload=true;
                             if(!this.cropper1) {
-                                //在初始化裁减前不能隐藏
-                                this.cropper1 = new Cropper(document.getElementById('cropimg1'), {
-                                    aspectRatio: 1 / 1,
-                                    dragMode: 'move',
-                                    preview: '#preview1',
-                                    restore: false,
-                                    center: false,
-                                    highlight: false,
-                                    cropBoxMovable: true,
-                                    toggleDragModeOnDblclick: false
-                                });
+                                setTimeout(() => {
+                                    //在初始化裁减前不能隐藏modal
+                                    this.cropper1 = new Cropper(document.getElementById('cropimg1'), {
+                                        aspectRatio: 1 / 1,
+                                        dragMode: 'move',
+                                        preview: '#preview1',
+                                        restore: false,
+                                        center: false,
+                                        highlight: false,
+                                        cropBoxMovable: true,
+                                        toggleDragModeOnDblclick: false
+                                    });
+                                },200);
                             }
                         }
                         else {

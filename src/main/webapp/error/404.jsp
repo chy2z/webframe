@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="../taglib/taglibs.jsp" %>
+<%@ include file="../taglib/import_iview.jsp" %>
+<html>
 <head>
     <title>404</title>
     <meta charset="UTF-8">
-    <script type="text/javascript" src="/js/iview/vue.min.js"></script>
-    <link rel="stylesheet" href="/css/iview/iview.css">
-    <link rel="stylesheet" href="/css/iview/iview-custom.css">
-    <script type="text/javascript" src="/js/iview/iview@2.6.min.js"></script>
-    <link rel="stylesheet" href="/css/error/error-page.css">
-    <link rel="stylesheet" href="/css/error/404.css">
+    <link rel="stylesheet" href="${ctx}/css/error/error-page.css">
+    <link rel="stylesheet" href="${ctx}/css/error/404.css">
 </head>
 <body>
 <div id="app" class="error-page">
@@ -46,7 +45,7 @@
                 window.history.back();
             },
             goHome() {
-               window.location.href="../login.jsp";
+               window.location.href="${ctx}/login.jsp";
             }
         }
     });

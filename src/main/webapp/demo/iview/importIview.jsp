@@ -2,5 +2,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <script type="text/javascript" src="${ctx}/js/iview/vue.min.js"></script>
-<link rel="stylesheet" href="${ctx}/css/iview/iview.css">
-<script type="text/javascript" src="${ctx}/js/iview/iview.min.js"></script>
+<link rel="stylesheet" href="${ctx}/css/iview/iview@2.6.css">
+<script type="text/javascript" src="${ctx}/js/iview/iview@2.6.min.js"></script>

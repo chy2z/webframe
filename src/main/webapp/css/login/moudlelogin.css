@@ -31,6 +31,17 @@ html,body,h1,h2,h3,h4,h5,h6{font-family:"Helvetica Neue", Helvetica, Arial, "Mic
 .ModuleLogin-main .tVerification .tChangeBtn { cursor:pointer; float:right;vertical-align:middle; display:block;line-height:54px;}
 .ModuleLogin-main input[type="text"]:focus,.ModuleLogin-main input[type="password"]:focus,.ModuleLogin-main textarea:focus{outline:none;}
 
+.ModuleLogin-main input {
+	border: 1px solid #ebebeb;
+	transition: all .2s ease-in-out;
+}
+
+.ModuleLogin-main input:hover {
+	border: 1px solid #2b85e4;
+	transition: all .2s ease-in-out;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
 .ModuleLogin-main .tUserImg{ background:url(../../images/login/tIcon-user.png) 0 0 no-repeat; height:20px; padding-left:20px; position:absolute; left:10px; top:16px;}
 .ModuleLogin-main .tPasswordImg{background:url(../../images/login/tIcon-password.png) 0 0 no-repeat; height:20px; padding-left:20px; position:absolute; left:10px; top:16px;}
 

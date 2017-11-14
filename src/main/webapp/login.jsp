@@ -36,10 +36,10 @@
 								<div class="ModuleLogin-logo">&nbsp;</div>
 								<div class="ModuleLogin-main">
 
-									<div class="tMainWrap" style="">
+									<div class="tMainWrap">
 										<p class="tUserWrap">
 											<i class="tUserImg"></i>
-											<input name="username" id="txtUser" class="tUser" placeholder="用户名" value="admins" type="text" >
+											<input  name="username" id="txtUser" class="tUser" placeholder="用户名" value="admins" type="text" >
 											<span class="tUserExt"></span>
 										</p>
 

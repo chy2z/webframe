@@ -196,7 +196,7 @@
         <img :src="headImg.url" alt="" v-if="headImg.showHeadImage" style="width: 100%;">
     </Modal>
 
-    <Modal v-model="headImg.showUpload" :mask-closable="false" :styles="{top: '20px'}" :width="800">
+    <Modal v-model="headImg.showUpload"  :mask-closable="false" :styles="{top: '20px'}" :width="800">
         <p slot="header">头像上传</p>
         <Row class="margin-top-10 image-editor" type="flex" justify="center" align="middle">
             <i-Col span="23">

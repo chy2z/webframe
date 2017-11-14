@@ -256,9 +256,6 @@
                             <Menu-Item name="3-5"><Icon type="email"></Icon><Tooltip placement="top" content="邮件">${requestScope.user.email}</Tooltip></Menu-Item>
                             <Menu-Item name="3-6"><Icon type="ribbon-b"></Icon><Tooltip placement="top" content="角色">${requestScope.role}</Tooltip></Menu-Item>
                         </Menu-Group>
-                        <Menu-Group title="登录信息">
-                            <Menu-Item name="3-7"><Icon type="ios-clock"></Icon><Tooltip placement="top" content="登录时间">${requestScope.loginTime}</Tooltip></Menu-Item>
-                        </Menu-Group>
                     </Submenu>
                 </i-Menu>
                 <Modal v-model="formModal.modalShow" :closable="false" :mask-closable="false" :styles="{top: '250px'}" width="400">

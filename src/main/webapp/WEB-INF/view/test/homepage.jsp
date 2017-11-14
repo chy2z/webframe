@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="taglib/taglibs.jsp" %>
-<%@ include file="taglib/import_iview.jsp" %>
-<%@ include file="taglib/import_jquery.jsp" %>
-<%@ include file="taglib/import_common.jsp" %>
+<%@ include file="../../../taglib/taglibs.jsp" %>
+<%@ include file="../../../taglib/import_iview.jsp" %>
+<%@ include file="../../../taglib/import_jquery.jsp" %>
+<%@ include file="../../../taglib/import_common.jsp" %>
 <html>
 <head>
     <title>首页</title>
@@ -19,7 +19,6 @@
             width: 100%;
             height: 100%;
             padding: 10px 10px;
-            overflow: auto;
         }
 
         .user-infor {
@@ -98,55 +97,55 @@
     <div class="home-main">
         <Row>
             <i-Col span="8">
-                <Row>
-                    <Card>
-                        <Row type="flex" class="user-infor">
-                            <i-Col span="8">
-                                <Row class-name="made-child-con-middle" type="flex" align="middle">
-                                    <img class="avator-img" src="../../images/lock.jpg"/>
-                                </Row>
-                            </i-Col>
-                            <i-Col span="16" style="padding-left:6px;">
-                                <Row class-name="made-child-con-middle" type="flex" align="middle">
-                                    <div>
-                                        <b class="card-user-infor-name">Admin</b>
-                                        <p>超级管理员</p>
-                                    </div>
-                                </Row>
-                            </i-Col>
-                        </Row>
-                        <div class="line-gray"></div>
-                        <Row class="margin-top-8">
-                            <i-Col span="8">
-                                <p class="notwrap">上次登录时间:</p>
-                            </i-Col>
-                            <i-Col span="16" class="padding-left-8">
-                                2017.09.12 13:32:20
-                            </i-Col>
-                        </Row>
-                        <Row class="margin-top-8">
-                            <i-Col span="8">
-                                <p class="notwrap">上次登录地点:</p>
-                            </i-Col>
-                            <i-Col span="16" class="padding-left-8">
-                                安徽</i-Col>
-                        </Row>
-                    </Card>
-                </Row>
-                <Row class="margin-top-10">
-                    <Card>
-                        <p slot="title" class="card-title">
-                            <Icon type="android-checkbox-outline"></Icon>
-                            待办事项
-                        </p>
-                        <a type="text" slot="extra">
-                            <Icon type="plus-round"></Icon>
-                        </a>
-                        <div class="to-do-list-con">
+            <Row>
+                <Card>
+                    <Row type="flex" class="user-infor">
+                        <i-Col span="8">
+                            <Row class-name="made-child-con-middle" type="flex" align="middle">
+                                <img class="avator-img" src="../../images/lock.jpg"/>
+                            </Row>
+                        </i-Col>
+                        <i-Col span="16" style="padding-left:6px;">
+                            <Row class-name="made-child-con-middle" type="flex" align="middle">
+                                <div>
+                                    <b class="card-user-infor-name">Admin</b>
+                                    <p>super admin</p>
+                                </div>
+                            </Row>
+                        </i-Col>
+                    </Row>
+                    <div class="line-gray"></div>
+                    <Row class="margin-top-8">
+                        <i-Col span="8">
+                            <p class="notwrap">上次登录时间:</p>
+                        </i-Col>
+                        <i-Col span="16" class="padding-left-8">
+                            2017.09.12-13:32:20
+                        </i-Col>
+                    </Row>
+                    <Row class="margin-top-8">
+                        <i-Col span="8">
+                            <p class="notwrap">上次登录地点:</p>
+                        </i-Col>
+                        <i-Col span="16" class="padding-left-8">
+                            北京</i-Col>
+                    </Row>
+                </Card>
+            </Row>
+            <Row class="margin-top-10">
+                <Card>
+                    <p slot="title" class="card-title">
+                        <Icon type="android-checkbox-outline"></Icon>
+                        待办事项
+                    </p>
+                    <a type="text" slot="extra">
+                        <Icon type="plus-round"></Icon>
+                    </a>
+                    <div class="to-do-list-con">
 
-                        </div>
-                    </Card>
-                </Row>
+                    </div>
+                </Card>
+            </Row>
             </i-Col>
             <i-Col span="16" class-name="padding-left-10">
                 <Row>
@@ -234,7 +233,7 @@
                             </div>
                         </Card>
                     </i-Col>
-                </Row>
+               </Row>
                 <Row class="margin-top-10">
                     <Card :padding="0">
                         <p slot="title" class="card-title">

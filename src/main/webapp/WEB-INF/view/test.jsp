@@ -4,6 +4,7 @@
 <%@ include file="../../taglib/import_iview.jsp" %>
 <%@ include file="../../taglib/import_jquery.jsp" %>
 <%@ include file="../../taglib/import_common.jsp" %>
+<%@ include file="../../taglib/import_echarts.jsp" %>
 <html>
 <head>
     <title>首页</title>
@@ -238,7 +239,7 @@
                     <Card :padding="0">
                         <p slot="title" class="card-title">
                             <Icon type="map"></Icon>
-                            今日服务调用地理分布
+                            服务调用地理分布
                         </p>
                         <div class="map-con">
                             <Col span="10">
@@ -260,7 +261,7 @@
                         <Icon type="android-map"></Icon>
                         上周每日来访量统计
                     </p>
-                    <div class="data-source-row">
+                    <div id="chart1" class="data-source-row">
 
                     </div>
                 </Card>
@@ -308,8 +309,55 @@
         data: {},
         methods: {},
         mounted() {
+            var chart1 = echarts.init(document.getElementById('chart1'), 'shine');
 
+            chart1.setOption({
+                title: {
+                    text: '',
+                    subtext: ''
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['2011年', '2012年'],
+                    bottom: 5
+                },
+                grid: {
+                    top:'5%',
+                    left: '3%',
+                    right: '4%',
+                    bottom: '20%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'value',
+                    boundaryGap: [0, 0.01]
+                },
+                yAxis: {
+                    type: 'category',
+                    data: ['巴西','印尼','美国','印度','中国','总人口(万)']
+                },
+                series: [
+                    {
+                        name: '2011年',
+                        type: 'bar',
+                        data: [18203, 23489, 29034, 104970, 131744, 630230]
+                    },
+                    {
+                        name: '2012年',
+                        type: 'bar',
+                        data: [19325, 23438, 31000, 121594, 134141, 681807]
+                    }
+                ]
+            });
         }
     });
+
+
+
 </script>
 </html>

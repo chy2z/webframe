@@ -180,8 +180,6 @@
         }
         */
 
-
-
     </style>
 </head>
 <body>
@@ -205,7 +203,7 @@
             </div>
             <div class="head-logo-left-title">后台管理系统</div>
             <div class="head-right-avatar">
-                <Avatar icon="person" size="large" src="https://i.loli.net/2017/08/21/599a521472424.jpg" />
+                <Avatar icon="person" size="large" :src="avatorPath" />
             </div>
             <div class="head-right-menu">
                 <i-Menu @on-select="headMenuItemClick" width="auto" mode="horizontal" theme="primary" active-name="userinfo">
@@ -478,7 +476,7 @@
             created:function(){
                 vSpin(this);
                 document.querySelector("#mainframe").src="${ctx}/login/index/${requestScope.jwt}";
-                localStorage.avatorImgPath="${ctx}/images/lock.jpg";
+                localStorage.avatorImgPath="${ctx}/${requestScope.user.img}";
             },
             mounted () {
                 // 锁屏相关
@@ -507,6 +505,9 @@
             computed: {
                 iconSize () {
                     return this.spanLeft === 3 ? 10 : 24;
+                },
+                avatorPath () {
+                    return localStorage.avatorImgPath;
                 }
             },
             methods: {

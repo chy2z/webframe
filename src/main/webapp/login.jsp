@@ -122,7 +122,7 @@
 					$("#myModal").reveal("{data-animation:'none'}");
                 }
                 else{
-                    var data = {uname:name,upwd:pwd };
+                    var data = $.extend({uname:name,upwd:pwd},client.data);
                     $.ajax({
                         url: validateLogon_url,
                         type: "POST",
@@ -145,4 +145,14 @@
 		});
 	</script>
 </body>
+<script type="text/javascript">
+	var client={};
+    $.get("http://freegeoip.net/json/",function(data){
+        $.get("${ctx}/login/queryIp?ip="+ data.ip, function(result){
+            var ipinfo=decodeUnicode(result.data);
+            client=eval("("+ipinfo+")");
+            log(client);
+        });
+    });
+</script>
 </html>

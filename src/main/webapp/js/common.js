@@ -12,6 +12,14 @@ String.prototype.RTrim = function(){
 }
 
 /**
+ * Unicode转换成中文
+ * @param str
+ */
+function decodeUnicode(str) {
+    return unescape(str.replace(/\\u/g, "%u"));
+}
+
+/**
  * 验证手机号码
  * @param phone
  * @returns {boolean}

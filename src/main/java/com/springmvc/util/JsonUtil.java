@@ -14,9 +14,6 @@ import java.text.SimpleDateFormat;
 */
 public class JsonUtil {
 
-	/// <summary>
-    /// 日志记录
-    /// </summary>
 	public static final Logger logger = LoggerFactory.getLogger(JsonUtil.class);
 	
 	public static ObjectMapper objectmapper= new ObjectMapper();

@@ -11,6 +11,12 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+* @Title: JwtTokenUtil
+* @Description: jwt操作类
+* @author chy
+* @date 2017/11/17 9:33
+*/
 public class JwtTokenUtil {
 
 	protected static Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);

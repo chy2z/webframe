@@ -67,8 +67,12 @@
             height: 100%;
         }
 
-        .map-incon div{
-            width:100%;
+        .map-incon-left{
+            height: 100%;
+            margin: 12px 0 0 11px;
+        }
+
+        .map-incon-right{
             height: 100%;
         }
 
@@ -250,12 +254,12 @@
                         </p>
                         <div class="map-con">
                             <i-Col span="10" class="map-incon">
-                                <div id="mapdata" >
-
+                                <div class="map-incon-left" id="mapdata">
+                                    <i-Table :height="tableHeight" :columns="columns" :data="cityData"></i-Table>
                                 </div>
                             </i-Col>
                             <i-Col span="14" class="map-incon">
-                                <div id="chinaMap">
+                                <div class="map-incon-right" id="chinaMap">
                                  
                                 </div>
                             </i-Col>
@@ -326,7 +330,7 @@
                 <Card>
                     <p slot="title" class="card-title">
                         <Icon type="ios-pulse-strong"></Icon>
-                        饼形图
+                        仪表盘
                     </p>
                     <div id="chart7" class="bar-chart-con">
 
@@ -337,7 +341,7 @@
                 <Card>
                     <p slot="title" class="card-title">
                         <Icon type="android-wifi"></Icon>
-                        饼形图
+                         折线图
                     </p>
                     <div id="chart8" class="bar-chart-con">
 
@@ -349,9 +353,62 @@
 </div>
 </body>
 <script>
+    var cityData=[
+        {name: '海门', value: 45},
+        {name: '鄂尔多斯', value: 34},
+        {name: '招远', value: 47},
+        {name: '舟山', value: 22},
+        {name: '齐齐哈尔', value: 74},
+        {name: '广州', value: 138},
+        {name: '盐城', value: 15},
+        {name: '北京', value: 250},
+        {name: '深圳', value: 141},
+        {name: '赤峰', value: 16},
+        {name: '青岛', value: 89},
+        {name: '乳山', value: 18},
+        {name: '金昌', value: 34},
+        {name: '泉州', value: 21},
+        {name: '莱西', value: 66},
+        {name: '日照', value: 45},
+        {name: '胶南', value: 23},
+        {name: '南通', value: 54},
+        {name: '拉萨', value: 22},
+        {name: '云浮', value: 78},
+        {name: '梅州', value: 23},
+        {name: '文登', value: 78},
+        {name: '上海', value: 218},
+        {name: '乌鲁木齐', value: 54},
+        {name: '枣庄', value: 84},
+        {name: '杭州', value: 64},
+        {name: '淄博', value: 85},
+        {name: '鞍山', value: 186},
+        {name: '溧阳', value: 86},
+        {name: '库尔勒', value: 200},
+        {name: '安阳', value: 90},
+        {name: '开封', value: 90},
+        {name: '济南', value: 100},
+        {name: '德阳', value: 93},
+        {name: '温州', value: 195},
+        {name: '九江', value: 96}
+    ];
+
     new Vue({
         el: '#app',
-        data: {},
+        data: {
+            tableHeight:281,
+            cityData:cityData,
+            columns: [
+                {
+                    title: '城市',
+                    key: 'name'
+                },
+                {
+                    title: '流量(k)',
+                    key: 'value',
+                    sortable: true
+                }
+            ]
+        },
         methods: {},
         mounted() {
             CreateMap();
@@ -359,6 +416,11 @@
             CreateChart2();
             CreateChart3();
             CreateChart5();
+            CreateChart6();
+            CreateChart7();
+            CreateChart8();
+
+            $.ajax("http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip=112.26.51.68")
         }
     });
 
@@ -403,45 +465,6 @@
             '九江':[115.97,29.71]
         };
 
-        var cityData=[
-            {name: '海门', value: 45},
-            {name: '鄂尔多斯', value: 34},
-            {name: '招远', value: 47},
-            {name: '舟山', value: 22},
-            {name: '齐齐哈尔', value: 74},
-            {name: '广州', value: 138},
-            {name: '盐城', value: 15},
-            {name: '北京', value: 250},
-            {name: '深圳', value: 141},
-            {name: '赤峰', value: 16},
-            {name: '青岛', value: 89},
-            {name: '乳山', value: 18},
-            {name: '金昌', value: 34},
-            {name: '泉州', value: 21},
-            {name: '莱西', value: 66},
-            {name: '日照', value: 45},
-            {name: '胶南', value: 23},
-            {name: '南通', value: 54},
-            {name: '拉萨', value: 22},
-            {name: '云浮', value: 78},
-            {name: '梅州', value: 23},
-            {name: '文登', value: 78},
-            {name: '上海', value: 218},
-            {name: '乌鲁木齐', value: 54},
-            {name: '枣庄', value: 84},
-            {name: '杭州', value: 64},
-            {name: '淄博', value: 85},
-            {name: '鞍山', value: 186},
-            {name: '溧阳', value: 86},
-            {name: '库尔勒', value: 200},
-            {name: '安阳', value: 90},
-            {name: '开封', value: 90},
-            {name: '济南', value: 100},
-            {name: '德阳', value: 93},
-            {name: '温州', value: 195},
-            {name: '九江', value: 96}
-        ];
-
         var convertData = function (data) {
             let res = [];
             let len = data.length;
@@ -458,6 +481,7 @@
         };
 
         var map = echarts.init(document.getElementById('chinaMap'));
+
         map.setOption({
             backgroundColor: '#FFF',
             visualMap: {
@@ -588,8 +612,12 @@
                     type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                 }
             },
+            legend: {
+                data: ['直接访问', '间接访问'],
+                top: 2
+            },
             grid: {
-                top:'3%',
+                top:'15%',
                 left: '3%',
                 right: '3%',
                 bottom: '1%',
@@ -613,8 +641,14 @@
                 {
                     name:'直接访问',
                     type:'bar',
-                    barWidth: '60%',
+                    //barWidth: '50%',
                     data:[10, 52, 200, 334, 390, 330, 220]
+                },
+                {
+                    name:'间接访问',
+                    type:'bar',
+                    //barWidth: '50%',
+                    data:[20, 62, 150, 300, 360, 300, 160]
                 }
             ]
         });
@@ -733,6 +767,7 @@
                 }
             },
             legend: {
+                //orient: 'vertical',
                 data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
             },
             toolbox: {
@@ -808,5 +843,149 @@
         });
     }
 
+    function CreateChart6(){
+        var chart6 = echarts.init(document.getElementById('chart6'), 'shine');
+        chart6.setOption({
+            title : {
+                text: '',
+                subtext: '',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                //orient: 'vertical',
+                //left: 'left',
+                //data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+            },
+            series : [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius : '90%',
+                    center: ['50%', '50%'],
+                    data:[
+                        {value:335, name:'直接访问'},
+                        {value:310, name:'邮件营销'},
+                        {value:234, name:'联盟广告'},
+                        {value:135, name:'视频广告'},
+                        {value:1548, name:'搜索引擎'}
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        });
+
+        window.addEventListener('resize', function () {
+            chart6.resize();
+        });
+    }
+
+    function CreateChart7(){
+        var chart7 = echarts.init(document.getElementById('chart7'), 'shine');
+
+        var option={
+            tooltip : {
+                formatter: "{a} <br/>{b} : {c}%"
+            },
+            toolbox: {
+                feature: {
+                    //restore: {},
+                    //saveAsImage: {}
+                }
+            },
+            series: [
+                {
+                    name: '业务指标',
+                    type: 'gauge',
+                    radius : '90%',
+                    detail: {formatter:'{value}%'},
+                    data: [{value: 80, name: '完成率'}]
+                }
+            ]
+        };
+
+        chart7.setOption(option);
+
+        window.addEventListener('resize', function () {
+            chart7.resize();
+        });
+
+        setInterval(function () {
+            option.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;
+            chart7.setOption(option, true);
+        },2000);
+    }
+
+    function CreateChart8() {
+        var chart8 = echarts.init(document.getElementById('chart8'), 'shine');
+        chart8.setOption({
+            tooltip: {
+                trigger: 'none',
+                axisPointer: {
+                    type: 'cross'
+                }
+            },
+            legend: {
+                data:['2016年 降水量']
+            },
+            grid: {
+                top:'15%',
+                left: '3%',
+                right: '3%',
+                bottom: '1%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    axisTick: {
+                        alignWithLabel: true
+                    },
+                    axisLine: {
+                        onZero: false,
+                        lineStyle: {
+                            color:'#5793f3'
+                        }
+                    },
+                    axisPointer: {
+                        label: {
+                            formatter: function (params) {
+                                return '降水量  ' + params.value
+                                    + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
+                            }
+                        }
+                    },
+                    data: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name:'2016年 降水量',
+                    type:'line',
+                    smooth: true,
+                    data: [3.9, 5.9, 11.1, 18.7, 48.3, 69.2, 231.6, 46.6, 55.4, 18.4, 10.3, 0.7]
+                }
+            ]
+        });
+
+        window.addEventListener('resize', function () {
+            chart8.resize();
+        });
+    }
+    
 </script>
 </html>

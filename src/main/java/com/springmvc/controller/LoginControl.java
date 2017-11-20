@@ -7,6 +7,7 @@ import com.springmvc.model.Role;
 import com.springmvc.model.Users;
 import com.springmvc.model.UsersToken;
 import com.springmvc.service.*;
+import com.springmvc.util.ClientUtil;
 import com.springmvc.util.DateUtil;
 import com.springmvc.util.JwtTokenUtil;
 import com.springmvc.util.SecurityUtil;
@@ -58,6 +59,31 @@ public class LoginControl extends BaseController {
 		return "test";
 	}
 
+
+	/**
+	 * 查询ip信息
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/queryIp",method = {RequestMethod.GET})
+	public RequestResult queryIp(String ip,HttpServletRequest request, HttpServletResponse response) {
+		RequestResult result=new RequestResult();
+		try {
+			String info=ClientUtil.queryIp(ip);
+			if(info!=null){
+				result.setSucceed("获取成功",info);
+			}
+			else{
+				result.setFail("获取ip信息出错");
+			}
+		}
+		catch (Exception ex){
+			result.setFail("获取ip信息出错");
+		}
+
+		return result;
+	}
+
 	/**
 	 * 获取token
 	 * @param request
@@ -70,6 +96,10 @@ public class LoginControl extends BaseController {
 		RequestResult result=new RequestResult();
 		String uName = (String) request.getParameter("uname");
 		String uPwd = (String) request.getParameter("upwd");
+		String ip=(String) request.getParameter("ip");
+		String country=(String) request.getParameter("country");
+		String region=(String) request.getParameter("region");
+		String city=(String) request.getParameter("city");
 		String token = "";
 		//System.out.println("账户：" + uName);
 		//System.out.println("密码:" + uPwd);

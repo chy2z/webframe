@@ -6,6 +6,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+* @Title: DateUtil
+* @Description: 日期操作类
+* @author chy
+* @date 2017/11/17 9:31
+*/
 public class DateUtil {
 
 	/**

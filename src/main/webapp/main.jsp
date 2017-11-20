@@ -477,7 +477,7 @@
             },
             created:function(){
                 vSpin(this);
-                document.querySelector("#mainframe").src="${ctx}/index.jsp";
+                document.querySelector("#mainframe").src="${ctx}/login/index/${requestScope.jwt}";
                 localStorage.avatorImgPath="${ctx}/images/lock.jpg";
             },
             mounted () {
@@ -585,6 +585,7 @@
                     }
                     //刷新首页
                     else if(name=="refreshHome"){
+                        vSpin(this);
                         document.querySelector("#mainframe").contentWindow.location.reload(true);
                     }
                     //锁屏

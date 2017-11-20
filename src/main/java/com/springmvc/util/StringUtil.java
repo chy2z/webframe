@@ -24,7 +24,20 @@ public class StringUtil {
     }
 
     /**
-     * 判断是否是空白字符串
+     * 字符串  "" or 字符串
+     * @param str
+     * @return
+     */
+    public static String emptyOrString(String str) {
+        if (null == str || str.equals("") || str.toUpperCase().equals("NULL")) {
+            return "";
+        } else {
+            return str;
+        }
+    }
+
+    /**
+     * 判断是非空字符串
      * @param str
      * @return
      */

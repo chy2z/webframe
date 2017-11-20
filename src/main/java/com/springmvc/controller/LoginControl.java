@@ -51,11 +51,46 @@ public class LoginControl extends BaseController {
 	 * 测试
 	 * @return
 	 */
-	@RequestMapping("/index")
-	public String index() {
-		return "test";
+	@RequestMapping("/test/{path}")
+	public String test(@PathVariable("path") String path) {
+		return path;
 	}
 
+	/**
+	 * 首页
+	 * @return
+	 */
+	@RequestMapping("/index/{jwt}")
+	public String index(@PathVariable("jwt") String jwt, Model model) {
+		UsersToken ut= utService.getUsersToken(jwt);
+		if(ut==null){
+			return "redirect:../../login.jsp";
+		}
+		else {
+			Users u= uService.getUsers(ut.getUserid());
+
+			UsersLoginLog currentLog= usersLoginLogService.selectLast(ut.getUserid());
+			UsersLoginLog preLog= usersLoginLogService.getUsersLoginLog(currentLog.getLastid());
+
+			model.addAttribute("loginDate",DateUtil.formatDate(currentLog.getCreatedate()));
+			model.addAttribute("geo",StringUtil.emptyOrString(currentLog.getProvince())+StringUtil.emptyOrString(currentLog.getCity()));
+
+			if(preLog!=null) {
+				model.addAttribute("loginDateLast", DateUtil.formatDate(preLog.getCreatedate()));
+				model.addAttribute("geoLast", StringUtil.emptyOrString(preLog.getProvince())+StringUtil.emptyOrString(preLog.getCity()));
+			}
+			else{
+				model.addAttribute("loginDateLast", "--");
+				model.addAttribute("geoLast", "--");
+			}
+
+			model.addAttribute("headImg",u.getImg());
+			model.addAttribute("name",u.getName());
+			model.addAttribute("loginName",u.getLoginname());
+
+			return "forward:../../index.jsp";
+		}
+	}
 
 	/**
 	 * 查询ip信息
@@ -141,14 +176,7 @@ public class LoginControl extends BaseController {
 			utService.update(ut);
 		}
 
-		UsersLoginLog ulog=new UsersLoginLog();
-		ulog.setUsesid(user.getId());
-		ulog.setCountry(country);
-		ulog.setProvince(region);
-		ulog.setCity(city);
-		ulog.setCreatedate(new Date());
-		ulog.setResult("登录成功");
-		usersLoginLogService.insert(ulog);
+        usersLoginLogService.saveLogin(user.getId(),ip,country,region,city);
 
 		result.setSucceed("登录成功",ut.getMd5token());
 

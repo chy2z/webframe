@@ -2,15 +2,9 @@ package com.springmvc.controller;
 
 import com.springmvc.base.BaseController;
 import com.springmvc.config.SysConfig;
-import com.springmvc.model.RequestResult;
-import com.springmvc.model.Role;
-import com.springmvc.model.Users;
-import com.springmvc.model.UsersToken;
+import com.springmvc.model.*;
 import com.springmvc.service.*;
-import com.springmvc.util.ClientUtil;
-import com.springmvc.util.DateUtil;
-import com.springmvc.util.JwtTokenUtil;
-import com.springmvc.util.SecurityUtil;
+import com.springmvc.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,6 +43,9 @@ public class LoginControl extends BaseController {
 
 	@Autowired
 	DepartmentService departmentService;
+
+	@Autowired
+	UsersLoginLogService usersLoginLogService;
 
 	/**
 	 * 测试
@@ -143,6 +140,15 @@ public class LoginControl extends BaseController {
 		else{
 			utService.update(ut);
 		}
+
+		UsersLoginLog ulog=new UsersLoginLog();
+		ulog.setUsesid(user.getId());
+		ulog.setCountry(country);
+		ulog.setProvince(region);
+		ulog.setCity(city);
+		ulog.setCreatedate(new Date());
+		ulog.setResult("登录成功");
+		usersLoginLogService.insert(ulog);
 
 		result.setSucceed("登录成功",ut.getMd5token());
 

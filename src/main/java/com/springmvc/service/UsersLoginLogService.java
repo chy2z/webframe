@@ -3,6 +3,7 @@ package com.springmvc.service;
 import com.springmvc.mapper.UsersLoginLogMapper;
 import com.springmvc.model.UsersLoginLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
 * @Title: UsersLoginLogService
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 * @author chy
 * @date 2017/11/20 9:55
 */
+@Service
 public class UsersLoginLogService {
 
   @Autowired

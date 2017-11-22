@@ -331,9 +331,11 @@
             CreateChart2();
             CreateChart3();
             CreateChart5();
-            CreateChart6();
-            CreateChart7();
-            CreateChart8();
+            //CreateChart6();
+            //CreateChart7();
+            //CreateChart8();
+
+
         }
     });
 
@@ -466,8 +468,10 @@
     }
 
     function CreateChart1(){
+        let url="${ctx}/chart/getLoginLogLastNYears/horizontal?jwt=${requestScope.jwt}";
         var chart1 = echarts.init(document.getElementById('chart1'), 'shine');
-        chart1.setOption({
+        let option={
+            //color: ['#3398DB','#A4EE61'],
             title: {
                 text: '',
                 subtext: ''
@@ -478,8 +482,9 @@
                     type: 'shadow'
                 }
             },
+            //替换
             legend: {
-                data: ['2011年（万）', '2012年（万）'],
+                data: ['2011年（万）'],
                 top: 2
             },
             grid: {
@@ -493,38 +498,46 @@
                 type: 'value',
                 boundaryGap: [0, 0.01]
             },
+            //替换
             yAxis: {
                 type: 'category',
-                data: ['巴西','印尼','美国','印度','中国','总人口']
+                data: ['项目1','项目2']
             },
+            //替换
             series: [
                 {
                     name: '2011年（万）',
                     type: 'bar',
-                    data: [18203, 23489, 29034, 104970, 131744, 630230]
-                },
-                {
-                    name: '2012年（万）',
-                    type: 'bar',
-                    data: [19325, 23438, 31000, 121594, 134141, 681807]
+                    data: [18203, 23489]
                 }
             ]
+        };
+
+        vajaxPost(url,{num:2},false,(result)=>{
+            let opt=eval("("+result+")");
+            option.legend=opt.legend;
+            option.yAxis=opt.yAxis;
+            option.series=opt.series;
+            chart1.setOption(option);
         });
+
         window.addEventListener('resize', function () {
             chart1.resize();
         });
     }
 
     function CreateChart2(){
+        let url="${ctx}/chart/getLoginLogLastNYears/vertical?jwt=${requestScope.jwt}";
         var chart2 = echarts.init(document.getElementById('chart2'), 'shine');
-        chart2.setOption({
-            color: ['#3398DB'],
+        let option={
+            //color: ['#3398DB','#A4EE61'],
             tooltip : {
                 trigger: 'axis',
                 axisPointer : {            // 坐标轴指示器，坐标轴触发有效
                     type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                 }
             },
+            //替换
             legend: {
                 data: ['直接访问', '间接访问'],
                 top: 2
@@ -536,13 +549,11 @@
                 bottom: '1%',
                 containLabel: true
             },
+            //替换
             xAxis : [
                 {
                     type : 'category',
-                    data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                    axisTick: {
-                        alignWithLabel: true
-                    }
+                    data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
                 }
             ],
             yAxis : [
@@ -550,21 +561,29 @@
                     type : 'value'
                 }
             ],
+            //替换
             series : [
                 {
                     name:'直接访问',
                     type:'bar',
-                    //barWidth: '50%',
                     data:[10, 52, 200, 334, 390, 330, 220]
                 },
                 {
                     name:'间接访问',
                     type:'bar',
-                    //barWidth: '50%',
                     data:[20, 62, 150, 300, 360, 300, 160]
                 }
             ]
+        };
+
+        vajaxPost(url,{num:2},false,(result)=>{
+            let opt=eval("("+result+")");
+            option.legend=opt.legend;
+            option.xAxis=opt.xAxis;
+            option.series=opt.series;
+            chart2.setOption(option);
         });
+
         window.addEventListener('resize', function () {
             chart2.resize();
         });
@@ -572,15 +591,18 @@
 
     function CreateChart3(){
         var chart3 = echarts.init(document.getElementById('chart3'), 'shine');
-        chart3.setOption( {
+        let url="${ctx}/chart/getLoginLogLastNYears/stack?jwt=${requestScope.jwt}";
+        let option= {
+            //color: ['#3398DB','#A4EE61'],
             tooltip : {
                 trigger: 'axis',
                 axisPointer : {            // 坐标轴指示器，坐标轴触发有效
                     type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                 }
             },
+            //替换
             legend: {
-                data: ['直接访问', '邮件营销','联盟广告','视频广告','搜索引擎']
+                data: ['直接访问']
             },
             grid: {
                 top:'15%',
@@ -592,10 +614,12 @@
             xAxis:  {
                 type: 'value'
             },
+            //替换
             yAxis: {
                 type: 'category',
                 data: ['周一','周二','周三','周四','周五','周六','周日']
             },
+            //替换
             series: [
                 {
                     name: '直接访问',
@@ -608,57 +632,18 @@
                         }
                     },
                     data: [320, 302, 301, 334, 390, 330, 320]
-                },
-                {
-                    name: '邮件营销',
-                    type: 'bar',
-                    stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
-                    },
-                    data: [120, 132, 101, 134, 90, 230, 210]
-                },
-                {
-                    name: '联盟广告',
-                    type: 'bar',
-                    stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
-                    },
-                    data: [220, 182, 191, 234, 290, 330, 310]
-                },
-                {
-                    name: '视频广告',
-                    type: 'bar',
-                    stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
-                    },
-                    data: [150, 212, 201, 154, 190, 330, 410]
-                },
-                {
-                    name: '搜索引擎',
-                    type: 'bar',
-                    stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
-                    },
-                    data: [820, 832, 901, 934, 1290, 1330, 1320]
                 }
             ]
+        };
+
+        vajaxPost(url,{num:2},false,(result)=>{
+            let opt=eval("("+result+")");
+            option.legend=opt.legend;
+            option.yAxis=opt.yAxis;
+            option.series=opt.series;
+            chart3.setOption(option);
         });
+
         window.addEventListener('resize', function () {
             chart3.resize();
         });
@@ -666,6 +651,7 @@
 
     function CreateChart5(){
         var chart5 = echarts.init(document.getElementById('chart5'), 'shine');
+        let url="${ctx}/chart/getLoginLogLastNYears/lineStack?jwt=${requestScope.jwt}";
         chart5.setOption({
             title: {
                 text: ''
@@ -680,8 +666,7 @@
                 }
             },
             legend: {
-                //orient: 'vertical',
-                data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+                data:['邮件营销','联盟广告']
             },
             toolbox: {
                 feature: {
@@ -721,33 +706,6 @@
                     stack: '总量',
                     areaStyle: {normal: {}},
                     data:[220, 182, 191, 234, 290, 330, 310]
-                },
-                {
-                    name:'视频广告',
-                    type:'line',
-                    stack: '总量',
-                    areaStyle: {normal: {}},
-                    data:[150, 232, 201, 154, 190, 330, 410]
-                },
-                {
-                    name:'直接访问',
-                    type:'line',
-                    stack: '总量',
-                    areaStyle: {normal: {}},
-                    data:[320, 332, 301, 334, 390, 330, 320]
-                },
-                {
-                    name:'搜索引擎',
-                    type:'line',
-                    stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'top'
-                        }
-                    },
-                    areaStyle: {normal: {}},
-                    data:[820, 932, 901, 934, 1290, 1330, 1320]
                 }
             ]
         });

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.mapper.EChartMapper">
+
+    <!-- 查询某个用户最近几年的登录统计 -->
+  <select id="getLoginLogLastNYears" resultType="java.util.Map">
+   select date_format(createDate, '%Y') as legend, city as yAxis,count(1) as data from users_login_log
+
+   where usersId=${usersId} and  date_format(createDate, '%Y')>(date_format(now(), '%Y')-${num})
+
+   group by date_format(createDate, '%Y'), city
+  </select>
+
+</mapper>

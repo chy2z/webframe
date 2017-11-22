@@ -1,0 +1,8 @@
+
+-- 分组求和
+
+select date_format(createDate, '%Y') as yAxis, city as yAxis,count(1) as data,CONCAT(date_format(createDate, '%Y'),'#',city) from users_login_log
+
+where usersId=1 and  date_format(createDate, '%Y')>(date_format(now(), '%Y')-2)
+
+group by date_format(createDate, '%Y'), city

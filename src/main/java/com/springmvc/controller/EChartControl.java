@@ -75,5 +75,18 @@ public class EChartControl {
     }
 
 
+    @ResponseBody
+    @RequestMapping("/getLoginLogLastNYears/lineStack")
+    public String getLoginLogLastNYearsLineStack(HttpServletRequest request, HttpServletResponse response){
+
+        String jwt=request.getParameter("jwt");
+
+        String num=request.getParameter("num");
+
+        UsersToken ut= utService.getUsersToken(jwt);
+
+        return  chartService.getLoginLogLastNYearsLineStack(ut.getUserid(),Integer.parseInt(num));
+    }
+
 
 }

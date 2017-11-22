@@ -652,7 +652,7 @@
     function CreateChart5(){
         var chart5 = echarts.init(document.getElementById('chart5'), 'shine');
         let url="${ctx}/chart/getLoginLogLastNYears/lineStack?jwt=${requestScope.jwt}";
-        chart5.setOption({
+        let option={
             title: {
                 text: ''
             },
@@ -708,6 +708,13 @@
                     data:[220, 182, 191, 234, 290, 330, 310]
                 }
             ]
+        };
+        vajaxPost(url,{num:2},false,(result)=>{
+            let opt=eval("("+result+")");
+            option.legend=opt.legend;
+            option.xAxis=opt.xAxis;
+            option.series=opt.series;
+            chart5.setOption(option);
         });
         window.addEventListener('resize', function () {
             chart5.resize();

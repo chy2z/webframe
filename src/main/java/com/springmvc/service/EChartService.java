@@ -290,4 +290,91 @@ public class EChartService {
         return option.toJson();
     }
 
+
+    /**
+     * 查询某个用户最近几年的登录统计
+     *
+     * line 堆叠图
+     *
+     * @param usersId
+     * @param num
+     */
+    public String getLoginLogLastNYearsLineStack(int usersId,int num){
+
+        List<Map<String,Object>> list= eChartMapper.getLoginLogLastNYears(usersId,num);
+
+        List<String> legend=new ArrayList<>();
+
+        List<String> xAxis=new ArrayList<>();
+
+        Map<String,Integer> data = new HashMap<>();
+
+        String mLegend=null;
+
+        String mYAxis=null;
+
+        //遍历数据行
+        for (Map<String,Object> map :list) {
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                if(entry.getKey().equals("legend")) {
+                    mLegend=entry.getValue().toString();
+                    if(!legend.contains(mLegend)) {
+                        legend.add(mLegend);
+                    }
+                }
+                else if(entry.getKey().equals("yAxis")) {
+                    mYAxis=entry.getValue().toString();
+                    if(!xAxis.contains(mYAxis)) {
+                        xAxis.add(mYAxis);
+                    }
+                }
+            }
+
+            data.put(mLegend+mYAxis,Integer.parseInt(map.get("data").toString()));
+        }
+
+        List<Series> seriesList=new ArrayList<>();
+
+        //填充数据，补全0
+        for(String l :legend){
+            mLegend=l;
+            Bar bar=new Bar();
+            bar.setName(mLegend);
+            bar.setData(new ArrayList<Integer>());
+
+            ItemStyle itemStyle= new ItemStyle();
+            Normal normal=new Normal();
+            normal.setShow(true);
+            normal.setPosition(Position.top);
+            itemStyle.setNormal(normal);
+            bar.setLabel(itemStyle);
+
+
+            for(String y :xAxis){
+                mYAxis=y;
+                if(null==data.get(mLegend+mYAxis)){
+                    data.put(mLegend+mYAxis,0);
+                }
+                bar.getData().add(Integer.parseInt(data.get(mLegend+mYAxis).toString()));
+            }
+            seriesList.add(bar);
+        }
+
+        Legend legendOption=new Legend();
+        legendOption.setData(legend);
+        legendOption.setTop(2);
+
+        List<Axis> xAxisOption=new ArrayList<>();
+        CategoryAxis categoryAxis=new CategoryAxis();
+        categoryAxis.setData(xAxis);
+        xAxisOption.add(categoryAxis);
+
+        Option option=new Option();
+        option.setLegend(legendOption);
+        option.setXAxis(xAxisOption);
+        option.setSeries(seriesList);
+
+        return option.toJson();
+
+    }
 }

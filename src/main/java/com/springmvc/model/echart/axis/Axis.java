@@ -99,6 +99,8 @@ public abstract class Axis<T> extends AbstractData<T> implements Component {
     private Boolean inverse;
     /**
      * 坐标轴两边留白策略，类目轴和非类目轴的设置和表现不一样
+     * true:两边留白
+     * false:两边不留白
      */
     private Object boundaryGap;
     /**

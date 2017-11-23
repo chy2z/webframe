@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Data接口 - 添加数据
- *
- * @author liuzh
- */
+* @Title: AbstractData
+* @Description: Data接口 - 添加数据
+* @author chy
+* @date 2017/11/23 22:41
+*/
 @Getter
 @Setter
 public abstract class AbstractData<T> implements Data<T>, java.io.Serializable {

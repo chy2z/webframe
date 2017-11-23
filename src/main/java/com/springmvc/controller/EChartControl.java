@@ -35,7 +35,7 @@ public class EChartControl {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getLoginLogLastNYears/horizontal")
+    @RequestMapping("/getLoginLogLastNYears/bar/horizontal")
     public String getLoginLogLastNYearsH(HttpServletRequest request, HttpServletResponse response){
 
         String jwt=request.getParameter("jwt");
@@ -48,7 +48,7 @@ public class EChartControl {
     }
 
     @ResponseBody
-    @RequestMapping("/getLoginLogLastNYears/vertical")
+    @RequestMapping("/getLoginLogLastNYears/bar/vertical")
     public String getLoginLogLastNYearsV(HttpServletRequest request, HttpServletResponse response){
 
         String jwt=request.getParameter("jwt");
@@ -62,7 +62,7 @@ public class EChartControl {
 
 
     @ResponseBody
-    @RequestMapping("/getLoginLogLastNYears/stack")
+    @RequestMapping("/getLoginLogLastNYears/bar/stack")
     public String getLoginLogLastNYearsStack(HttpServletRequest request, HttpServletResponse response){
 
         String jwt=request.getParameter("jwt");
@@ -76,7 +76,7 @@ public class EChartControl {
 
 
     @ResponseBody
-    @RequestMapping("/getLoginLogLastNYears/lineStack")
+    @RequestMapping("/getLoginLogLastNYears/line/stack")
     public String getLoginLogLastNYearsLineStack(HttpServletRequest request, HttpServletResponse response){
 
         String jwt=request.getParameter("jwt");

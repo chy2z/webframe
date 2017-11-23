@@ -7,7 +7,9 @@ import com.springmvc.model.echart.axis.Axis;
 import com.springmvc.model.echart.axis.CategoryAxis;
 import com.springmvc.model.echart.code.Position;
 import com.springmvc.model.echart.series.Bar;
+import com.springmvc.model.echart.series.Line;
 import com.springmvc.model.echart.series.Series;
+import com.springmvc.model.echart.style.AreaStyle;
 import com.springmvc.model.echart.style.ItemStyle;
 import com.springmvc.model.echart.style.itemstyle.Normal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +42,11 @@ public class EChartService {
      */
    public String getLoginLogLastNYearsH(int usersId,int num){
 
-       List<Map<String,Object>> list= eChartMapper.getLoginLogLastNYears(usersId,num);
+       List<Map<String,Object>> list= eChartMapper.getLoginLogLastNYearsForYear(usersId,num);
 
        List<String> legend=new ArrayList<>();
 
-       List<String> yAxis=new ArrayList<>();
+       List<String> axis=new ArrayList<>();
 
        Map<String,Integer> data = new HashMap<>();
 
@@ -61,10 +63,10 @@ public class EChartService {
                        legend.add(mLegend);
                    }
                }
-               else if(entry.getKey().equals("yAxis")) {
+               else if(entry.getKey().equals("axis")) {
                    mYAxis=entry.getValue().toString();
-                   if(!yAxis.contains(mYAxis)) {
-                       yAxis.add(mYAxis);
+                   if(!axis.contains(mYAxis)) {
+                       axis.add(mYAxis);
                    }
                }
            }
@@ -89,7 +91,7 @@ public class EChartService {
            bar.setLabel(itemStyle);
 
 
-           for(String y :yAxis){
+           for(String y :axis){
                mYAxis=y;
                if(null==data.get(mLegend+mYAxis)){
                    data.put(mLegend+mYAxis,0);
@@ -107,7 +109,7 @@ public class EChartService {
        //轴
        List<Axis> yAxisOption=new ArrayList<>();
        CategoryAxis categoryAxis=new CategoryAxis();
-       categoryAxis.setData(yAxis);
+       categoryAxis.setData(axis);
        yAxisOption.add(categoryAxis);
 
        //生成配置项
@@ -129,11 +131,11 @@ public class EChartService {
      */
    public String getLoginLogLastNYearsV(int usersId,int num){
 
-        List<Map<String,Object>> list= eChartMapper.getLoginLogLastNYears(usersId,num);
+        List<Map<String,Object>> list= eChartMapper.getLoginLogLastNYearsForYear(usersId,num);
 
         List<String> legend=new ArrayList<>();
 
-        List<String> xAxis=new ArrayList<>();
+        List<String> axis=new ArrayList<>();
 
         Map<String,Integer> data = new HashMap<>();
 
@@ -150,10 +152,10 @@ public class EChartService {
                        legend.add(mLegend);
                    }
                }
-               else if(entry.getKey().equals("yAxis")) {
+               else if(entry.getKey().equals("axis")) {
                    mYAxis=entry.getValue().toString();
-                   if(!xAxis.contains(mYAxis)) {
-                       xAxis.add(mYAxis);
+                   if(!axis.contains(mYAxis)) {
+                       axis.add(mYAxis);
                    }
                }
            }
@@ -178,7 +180,7 @@ public class EChartService {
             bar.setLabel(itemStyle);
 
 
-            for(String y :xAxis){
+            for(String y :axis){
                 mYAxis=y;
                 if(null==data.get(mLegend+mYAxis)){
                     data.put(mLegend+mYAxis,0);
@@ -194,7 +196,7 @@ public class EChartService {
 
         List<Axis> xAxisOption=new ArrayList<>();
         CategoryAxis categoryAxis=new CategoryAxis();
-        categoryAxis.setData(xAxis);
+        categoryAxis.setData(axis);
         xAxisOption.add(categoryAxis);
 
         Option option=new Option();
@@ -216,11 +218,11 @@ public class EChartService {
      */
     public String getLoginLogLastNYearsStack(int usersId,int num){
 
-        List<Map<String,Object>> list= eChartMapper.getLoginLogLastNYears(usersId,num);
+        List<Map<String,Object>> list= eChartMapper.getLoginLogLastNYearsForYear(usersId,num);
 
         List<String> legend=new ArrayList<>();
 
-        List<String> yAxis=new ArrayList<>();
+        List<String> axis=new ArrayList<>();
 
         Map<String,Integer> data = new HashMap<>();
 
@@ -237,10 +239,10 @@ public class EChartService {
                         legend.add(mLegend);
                     }
                 }
-                else if(entry.getKey().equals("yAxis")) {
+                else if(entry.getKey().equals("axis")) {
                     mYAxis=entry.getValue().toString();
-                    if(!yAxis.contains(mYAxis)) {
-                        yAxis.add(mYAxis);
+                    if(!axis.contains(mYAxis)) {
+                        axis.add(mYAxis);
                     }
                 }
             }
@@ -257,13 +259,14 @@ public class EChartService {
             bar.setName(mLegend);
             bar.setStack("总量");
             bar.setData(new ArrayList<Integer>());
+
             ItemStyle itemStyle= new ItemStyle();
             Normal normal=new Normal();
             normal.setShow(true);
             normal.setPosition(Position.insideRight);
             itemStyle.setNormal(normal);
             bar.setLabel(itemStyle);
-            for(String y :yAxis){
+            for(String y :axis){
                 mYAxis=y;
                 if(null==data.get(mLegend+mYAxis)){
                     data.put(mLegend+mYAxis,0);
@@ -279,7 +282,7 @@ public class EChartService {
 
         List<Axis> yAxisOption=new ArrayList<>();
         CategoryAxis categoryAxis=new CategoryAxis();
-        categoryAxis.setData(yAxis);
+        categoryAxis.setData(axis);
         yAxisOption.add(categoryAxis);
 
         Option option=new Option();
@@ -301,11 +304,11 @@ public class EChartService {
      */
     public String getLoginLogLastNYearsLineStack(int usersId,int num){
 
-        List<Map<String,Object>> list= eChartMapper.getLoginLogLastNYears(usersId,num);
+        List<Map<String,Object>> list= eChartMapper.getLoginLogLastNYearsForCity(usersId,num);
 
         List<String> legend=new ArrayList<>();
 
-        List<String> xAxis=new ArrayList<>();
+        List<String> axis=new ArrayList<>();
 
         Map<String,Integer> data = new HashMap<>();
 
@@ -322,10 +325,10 @@ public class EChartService {
                         legend.add(mLegend);
                     }
                 }
-                else if(entry.getKey().equals("yAxis")) {
+                else if(entry.getKey().equals("axis")) {
                     mYAxis=entry.getValue().toString();
-                    if(!xAxis.contains(mYAxis)) {
-                        xAxis.add(mYAxis);
+                    if(!axis.contains(mYAxis)) {
+                        axis.add(mYAxis);
                     }
                 }
             }
@@ -338,26 +341,33 @@ public class EChartService {
         //填充数据，补全0
         for(String l :legend){
             mLegend=l;
-            Bar bar=new Bar();
-            bar.setName(mLegend);
-            bar.setData(new ArrayList<Integer>());
+            Line line=new Line();
+            line.setName(mLegend);
+            line.setStack("总量");
+            line.setData(new ArrayList<Integer>());
 
+            //设置填充样式
+            AreaStyle areaStyle =new AreaStyle();
+            areaStyle.setNormal(new Normal());
+            line.setAreaStyle(areaStyle);
+
+            //显示数据标签
             ItemStyle itemStyle= new ItemStyle();
             Normal normal=new Normal();
             normal.setShow(true);
             normal.setPosition(Position.top);
             itemStyle.setNormal(normal);
-            bar.setLabel(itemStyle);
+            line.setLabel(itemStyle);
 
-
-            for(String y :xAxis){
+            for(String y :axis){
                 mYAxis=y;
                 if(null==data.get(mLegend+mYAxis)){
                     data.put(mLegend+mYAxis,0);
                 }
-                bar.getData().add(Integer.parseInt(data.get(mLegend+mYAxis).toString()));
+                line.getData().add(Integer.parseInt(data.get(mLegend+mYAxis).toString()));
             }
-            seriesList.add(bar);
+
+            seriesList.add(line);
         }
 
         Legend legendOption=new Legend();
@@ -366,7 +376,8 @@ public class EChartService {
 
         List<Axis> xAxisOption=new ArrayList<>();
         CategoryAxis categoryAxis=new CategoryAxis();
-        categoryAxis.setData(xAxis);
+        categoryAxis.setData(axis);
+        categoryAxis.setBoundaryGap(true);
         xAxisOption.add(categoryAxis);
 
         Option option=new Option();

@@ -1,5 +1,7 @@
 package com.springmvc.model.echart;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.springmvc.model.echart.code.Position;
 import com.springmvc.model.echart.style.TextStyle;
 import lombok.Getter;
@@ -8,12 +10,15 @@ import lombok.Setter;
 import java.io.Serializable;
 
 /**
- * Description: Label
- *
- * @author liuzh
- */
+* @Title: AbstractLabel
+* @Description: Label
+* @author chy
+* @date 2017/11/23 22:36
+*/
 @Getter
 @Setter
+@JsonAutoDetect(fieldVisibility=JsonAutoDetect.Visibility.ANY, getterVisibility=JsonAutoDetect.Visibility.NONE)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public abstract class AbstractLabel<T> implements Serializable {
 
     private static final long serialVersionUID = -6908403517815789999L;

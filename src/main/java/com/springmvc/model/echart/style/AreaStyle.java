@@ -1,5 +1,9 @@
 package com.springmvc.model.echart.style;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.springmvc.model.echart.style.itemstyle.Normal;
+
 import java.io.Serializable;
 
 /**
@@ -8,6 +12,8 @@ import java.io.Serializable;
 * @author chy
 * @date 2017/11/22 15:10
 */
+@JsonAutoDetect(fieldVisibility=JsonAutoDetect.Visibility.ANY, getterVisibility=JsonAutoDetect.Visibility.NONE)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AreaStyle implements Serializable {
 
     private static final long serialVersionUID = -6547716731700677234L;
@@ -16,6 +22,12 @@ public class AreaStyle implements Serializable {
      * 颜色
      */
     private Object color;
+
+    /**
+     * 默认样式
+     */
+    private Normal normal;
+
     /**
      * 填充样式，目前仅支持'default'(实填充)
      */
@@ -93,5 +105,21 @@ public class AreaStyle implements Serializable {
      */
     public void setType(Object type) {
         this.type = type;
+    }
+
+    /**
+     * 获取实填充样式
+     * @return
+     */
+    public Normal getNormal() {
+        return normal;
+    }
+
+    /**
+     * 填充样式实填充
+     * @return
+     */
+    public void setNormal(Normal normal) {
+        this.normal = normal;
     }
 }

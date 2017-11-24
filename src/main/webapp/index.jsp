@@ -11,6 +11,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>
+    <script type="text/javascript" src="${ctx}/js/echarts/geoMap.js?v=${requestScope.jwt}"></script>
     <script type="text/javascript" src="${ctx}/js/echarts/china.js?v=${requestScope.jwt}"></script>
     <link rel="stylesheet" href="${ctx}/css/index/index.css?v=${requestScope.jwt}">
 </head>
@@ -326,7 +327,7 @@
         },
         methods: {},
         mounted() {
-            CreateMap();
+            CreateCityMap();
             CreateChart1();
             CreateChart2();
             CreateChart3();
@@ -337,64 +338,8 @@
         }
     });
 
-    function CreateMap() {
-
-        var geoData={
-            '海门': [121.15, 31.89],
-            '鄂尔多斯': [109.781327, 39.608266],
-            '招远': [120.38, 37.35],
-            '舟山': [122.207216, 29.985295],
-            '齐齐哈尔': [123.97, 47.33],
-            '广州': [113.23, 23.16],
-            '盐城': [120.13, 33.38],
-            '赤峰': [118.87, 42.28],
-            '深圳': [114.07, 22.62],
-            '青岛': [120.33, 36.07],
-            '北京': [116.46, 39.92],
-            '乳山': [121.52, 36.89],
-            '金昌': [102.188043, 38.520089],
-            '泉州': [118.58, 24.93],
-            '莱西': [120.53, 36.86],
-            '日照': [119.46, 35.42],
-            '胶南': [119.97, 35.88],
-            '南通': [121.05, 32.08],
-            '拉萨': [91.11, 29.97],
-            '云浮': [112.02, 22.93],
-            '梅州': [116.1, 24.55],
-            '文登': [122.05, 37.2],
-            '上海': [121.48, 31.22],
-            '乌鲁木齐':[87.68,43.77],
-            '枣庄':[117.57,34.86],
-            '杭州':[120.19,30.26],
-            '淄博':[118.05,36.78],
-            '鞍山':[122.85,41.12],
-            '溧阳':[119.48,31.43],
-            '库尔勒':[86.06,41.68],
-            '安阳':[114.35,36.1],
-            '开封':[114.35,34.79],
-            '济南':[117,36.65],
-            '德阳':[104.37,31.13],
-            '温州':[120.65,28.01],
-            '九江':[115.97,29.71]
-        };
-
-        var convertData = function (data) {
-            let res = [];
-            let len = data.length;
-            for (var i = 0; i < len; i++) {
-                var geoCoord = geoData[data[i].name];
-                if (geoCoord) {
-                    res.push({
-                        name: data[i].name,
-                        value: geoCoord.concat(data[i].value)
-                    });
-                }
-            }
-            return res;
-        };
-
+    function CreateCityMap() {
         var map = echarts.init(document.getElementById('chinaMap'));
-
         map.setOption({
             backgroundColor: '#FFF',
             visualMap: {

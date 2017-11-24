@@ -122,6 +122,7 @@ public abstract class Style<T> implements Serializable {
     private Double opacity;
     /**
      * 标签内容格式器，支持字符串模板和回调函数两种形式
+     * pie 模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。
      */
     private String formatter;
     /**

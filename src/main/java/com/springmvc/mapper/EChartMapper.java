@@ -17,12 +17,19 @@ public interface EChartMapper {
      * 查询某个用户最近几年的登录统计
      * @return
      */
-    public List<Map<String,Object>> getLoginLogLastNYearsForYear(@Param("usersId") int usersId, @Param("num") int num);
+    public List<Map<String,Object>> getLoginLogLastNYearsForYearCity(@Param("usersId") int usersId, @Param("num") int num);
 
 
     /**
      * 查询某个用户最近几年的登录统计
      * @return
      */
+    public List<Map<String,Object>> getLoginLogLastNYearsForCityYear(@Param("usersId") int usersId, @Param("num") int num);
+
+    /**
+     * 查询某个用户最近几年的登录统计
+     * @return
+     */
     public List<Map<String,Object>> getLoginLogLastNYearsForCity(@Param("usersId") int usersId, @Param("num") int num);
+
 }

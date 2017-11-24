@@ -5,10 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 柱形图
- *
- * @author liuzh
- */
+* @Title: Bar
+* @Description: 柱形图
+* @author chy
+* @date 2017/11/23 22:50
+*/
 @Getter
 @Setter
 public class Bar extends Series<Bar> {

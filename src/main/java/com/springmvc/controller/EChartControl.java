@@ -88,5 +88,43 @@ public class EChartControl {
         return  chartService.getLoginLogLastNYearsLineStack(ut.getUserid(),Integer.parseInt(num));
     }
 
+    @ResponseBody
+    @RequestMapping("/getLoginLogLastNYears/line")
+    public String getLoginLogLastNYearsLine(HttpServletRequest request, HttpServletResponse response){
+
+        String jwt=request.getParameter("jwt");
+
+        String num=request.getParameter("num");
+
+        UsersToken ut= utService.getUsersToken(jwt);
+
+        return  chartService.getLoginLogLastNYearsLine(ut.getUserid(),Integer.parseInt(num));
+    }
+
+    @ResponseBody
+    @RequestMapping("/getLoginLogLastNYears/pie")
+    public String getLoginLogLastNYearsPie(HttpServletRequest request, HttpServletResponse response){
+
+        String jwt=request.getParameter("jwt");
+
+        String num=request.getParameter("num");
+
+        UsersToken ut= utService.getUsersToken(jwt);
+
+        return  chartService.getLoginLogLastNYearsPie(ut.getUserid(),Integer.parseInt(num));
+    }
+
+    @ResponseBody
+    @RequestMapping("/getLoginLogLastNYears/gauge")
+    public String getLoginLogLastNYearsGauge(HttpServletRequest request, HttpServletResponse response){
+
+        String jwt=request.getParameter("jwt");
+
+        String num=request.getParameter("num");
+
+        UsersToken ut= utService.getUsersToken(jwt);
+
+        return  chartService.getLoginLogLastNYearsGauge(ut.getUserid(),Integer.parseInt(num));
+    }
 
 }

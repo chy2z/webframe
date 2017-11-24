@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.springmvc.model.echart.AbstractData;
 import com.springmvc.model.echart.Chart;
+import com.springmvc.model.echart.Label;
 import com.springmvc.model.echart.code.SeriesType;
 import com.springmvc.model.echart.style.ItemStyle;
 import lombok.Getter;
@@ -37,5 +38,7 @@ public class Series<T> extends AbstractData<T> implements Chart {
      * 在 ECharts 3 中为了让整个配置项结构更扁平合理，label被拿出来跟 itemStyle 平级，
      * 并且跟 itemStyle 一样拥有 normal, emphasis 两个状态
      */
-    private ItemStyle label;
+    private ItemStyle itemStyle;
+
+    private Label label;
 }

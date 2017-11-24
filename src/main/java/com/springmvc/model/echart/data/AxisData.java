@@ -1,6 +1,8 @@
 package com.springmvc.model.echart.data;
 
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.springmvc.model.echart.style.TextStyle;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +16,8 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
+@JsonAutoDetect(fieldVisibility=JsonAutoDetect.Visibility.ANY, getterVisibility=JsonAutoDetect.Visibility.NONE)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AxisData implements Serializable {
 
     private static final long serialVersionUID = -6515942952591477027L;

@@ -331,11 +331,9 @@
             CreateChart2();
             CreateChart3();
             CreateChart5();
-            //CreateChart6();
-            //CreateChart7();
-            //CreateChart8();
-
-
+            CreateChart6();
+            CreateChart7();
+            CreateChart8();
         }
     });
 
@@ -468,10 +466,9 @@
     }
 
     function CreateChart1(){
-        let url="${ctx}/chart/getLoginLogLastNYears/horizontal?jwt=${requestScope.jwt}";
+        let url="${ctx}/chart/getLoginLogLastNYears/bar/horizontal?jwt=${requestScope.jwt}";
         var chart1 = echarts.init(document.getElementById('chart1'), 'shine');
         let option={
-            //color: ['#3398DB','#A4EE61'],
             title: {
                 text: '',
                 subtext: ''
@@ -508,7 +505,17 @@
                 {
                     name: '2011年（万）',
                     type: 'bar',
-                    data: [18203, 23489]
+                    data: [{value:0,label: {
+                        normal: {
+                            show: false,
+                            position: 'insideRight'
+                        }
+                    }},{value:23489,label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    }}]
                 }
             ]
         };
@@ -527,10 +534,9 @@
     }
 
     function CreateChart2(){
-        let url="${ctx}/chart/getLoginLogLastNYears/vertical?jwt=${requestScope.jwt}";
+        let url="${ctx}/chart/getLoginLogLastNYears/bar/vertical?jwt=${requestScope.jwt}";
         var chart2 = echarts.init(document.getElementById('chart2'), 'shine');
         let option={
-            //color: ['#3398DB','#A4EE61'],
             tooltip : {
                 trigger: 'axis',
                 axisPointer : {            // 坐标轴指示器，坐标轴触发有效
@@ -591,9 +597,8 @@
 
     function CreateChart3(){
         var chart3 = echarts.init(document.getElementById('chart3'), 'shine');
-        let url="${ctx}/chart/getLoginLogLastNYears/stack?jwt=${requestScope.jwt}";
+        let url="${ctx}/chart/getLoginLogLastNYears/bar/stack?jwt=${requestScope.jwt}";
         let option= {
-            //color: ['#3398DB','#A4EE61'],
             tooltip : {
                 trigger: 'axis',
                 axisPointer : {            // 坐标轴指示器，坐标轴触发有效
@@ -651,7 +656,7 @@
 
     function CreateChart5(){
         var chart5 = echarts.init(document.getElementById('chart5'), 'shine');
-        let url="${ctx}/chart/getLoginLogLastNYears/lineStack?jwt=${requestScope.jwt}";
+        let url="${ctx}/chart/getLoginLogLastNYears/line/stack?jwt=${requestScope.jwt}";
         let option={
             title: {
                 text: ''
@@ -723,7 +728,8 @@
 
     function CreateChart6(){
         var chart6 = echarts.init(document.getElementById('chart6'), 'shine');
-        chart6.setOption({
+        let url="${ctx}/chart/getLoginLogLastNYears/pie?jwt=${requestScope.jwt}";
+        var option={
             title : {
                 text: '',
                 subtext: '',
@@ -734,9 +740,10 @@
                 formatter: "{a} <br/>{b} : {c} ({d}%)"
             },
             legend: {
-                //orient: 'vertical',
-                //left: 'left',
-                //data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+                orient: 'vertical',
+                left: 'left',
+                show:false,
+                data: ['直接访问','邮件营销']
             },
             series : [
                 {
@@ -747,9 +754,6 @@
                     data:[
                         {value:335, name:'直接访问'},
                         {value:310, name:'邮件营销'},
-                        {value:234, name:'联盟广告'},
-                        {value:135, name:'视频广告'},
-                        {value:1548, name:'搜索引擎'}
                     ],
                     itemStyle: {
                         emphasis: {
@@ -760,8 +764,14 @@
                     }
                 }
             ]
+        };
+        vajaxPost(url,{num:2},false,(result)=>{
+            let opt=eval("("+result+")");
+            option.legend=opt.legend;
+            option.xAxis=opt.xAxis;
+            option.series=opt.series;
+            chart6.setOption(option);
         });
-
         window.addEventListener('resize', function () {
             chart6.resize();
         });
@@ -769,16 +779,10 @@
 
     function CreateChart7(){
         var chart7 = echarts.init(document.getElementById('chart7'), 'shine');
-
+        let url="${ctx}/chart/getLoginLogLastNYears/gauge?jwt=${requestScope.jwt}";
         var option={
             tooltip : {
                 formatter: "{a} <br/>{b} : {c}%"
-            },
-            toolbox: {
-                feature: {
-                    //restore: {},
-                    //saveAsImage: {}
-                }
             },
             series: [
                 {
@@ -791,29 +795,29 @@
             ]
         };
 
-        chart7.setOption(option);
+        vajaxPost(url,{num:2},false,(result)=>{
+            let opt=eval("("+result+")");
+            option.series=opt.series;
+            chart7.setOption(option);
+        });
 
         window.addEventListener('resize', function () {
             chart7.resize();
         });
-
-        setInterval(function () {
-            option.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;
-            chart7.setOption(option, true);
-        },2000);
     }
 
     function CreateChart8() {
         var chart8 = echarts.init(document.getElementById('chart8'), 'shine');
-        chart8.setOption({
+        let url="${ctx}/chart/getLoginLogLastNYears/line?jwt=${requestScope.jwt}";
+        let option={
             tooltip: {
-                trigger: 'none',
+                trigger: 'axis',
                 axisPointer: {
                     type: 'cross'
                 }
             },
             legend: {
-                data:['2016年 降水量']
+                data:['2016年']
             },
             grid: {
                 top:'15%',
@@ -825,24 +829,7 @@
             xAxis: [
                 {
                     type: 'category',
-                    axisTick: {
-                        alignWithLabel: true
-                    },
-                    axisLine: {
-                        onZero: false,
-                        lineStyle: {
-                            color:'#5793f3'
-                        }
-                    },
-                    axisPointer: {
-                        label: {
-                            formatter: function (params) {
-                                return '降水量  ' + params.value
-                                    + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
-                            }
-                        }
-                    },
-                    data: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                    data: ["1", "2", "3", "4"]
                 }
             ],
             yAxis: [
@@ -852,12 +839,20 @@
             ],
             series: [
                 {
-                    name:'2016年 降水量',
+                    name:'2016年',
                     type:'line',
                     smooth: true,
-                    data: [3.9, 5.9, 11.1, 18.7, 48.3, 69.2, 231.6, 46.6, 55.4, 18.4, 10.3, 0.7]
+                    data: [3.9, 5.9, 11.1, 18.7]
                 }
             ]
+        };
+
+        vajaxPost(url,{num:2},false,(result)=>{
+            let opt=eval("("+result+")");
+            option.legend=opt.legend;
+            option.xAxis=opt.xAxis;
+            option.series=opt.series;
+            chart8.setOption(option);
         });
 
         window.addEventListener('resize', function () {

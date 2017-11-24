@@ -3,6 +3,8 @@ package com.springmvc.model.echart.axis;
 
 import com.springmvc.model.echart.code.AxisType;
 
+import java.util.List;
+
 /**
 * @Title: CategoryAxis
 * @Description:类目轴
@@ -16,6 +18,14 @@ public class CategoryAxis extends Axis<CategoryAxis> {
      */
     public CategoryAxis() {
         this.type(AxisType.category);
+    }
+
+    /**
+     * 构造函数
+     */
+    public CategoryAxis(List data) {
+        this.type(AxisType.category);
+        this.setData(data);
     }
 
 }

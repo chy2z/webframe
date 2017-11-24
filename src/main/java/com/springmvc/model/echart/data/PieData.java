@@ -24,6 +24,12 @@
 
 package com.springmvc.model.echart.data;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.springmvc.model.echart.Label;
+import com.springmvc.model.echart.LabelLine;
+import com.springmvc.model.echart.Tooltip;
+import com.springmvc.model.echart.style.ItemStyle;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,12 +43,20 @@ import java.io.Serializable;
 */
 @Getter
 @Setter
+@JsonAutoDetect(fieldVisibility=JsonAutoDetect.Visibility.ANY, getterVisibility=JsonAutoDetect.Visibility.NONE)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class PieData implements Serializable {
 
     private static final long serialVersionUID = -2573889018261931162L;
 
     private Object value;
     private String name;
+    private Boolean selected;
+    private ItemStyle itemStyle;
+    private Label label;
+    private LabelLine labelLine;
+    private Tooltip tooltip;
+
 
     /**
      * 构造函数,参数:name,value

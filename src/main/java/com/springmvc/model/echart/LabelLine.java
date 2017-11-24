@@ -1,6 +1,9 @@
 package com.springmvc.model.echart;
 
-import com.springmvc.model.echart.style.LineStyle;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.springmvc.model.echart.style.itemstyle.Emphasis;
+import com.springmvc.model.echart.style.itemstyle.Normal;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,78 +17,18 @@ import java.io.Serializable;
 */
 @Getter
 @Setter
+@JsonAutoDetect(fieldVisibility=JsonAutoDetect.Visibility.ANY, getterVisibility=JsonAutoDetect.Visibility.NONE)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class LabelLine implements Serializable {
 
     private static final long serialVersionUID = 3359589478018844177L;
 
     /**
-     * 饼图标签视觉引导线显示策略，可选为：true（显示） | false（隐藏）
+     * normal属性
      */
-    private Boolean show;
+    private Normal normal;
     /**
-     * 线长 ，从外圆边缘起计算，可为负值
+     * emphasis属性
      */
-    private Integer length;
-    /**
-     * 线条样式，详见lineStyle
-     *
-     * @see com.springmvc.model.echart.style.LineStyle
-     */
-    private LineStyle lineStyle;
-
-    /**
-     * 获取show值
-     */
-    public Boolean show() {
-        return this.show;
-    }
-
-    /**
-     * 设置show值
-     *
-     * @param show
-     */
-    public LabelLine show(Boolean show) {
-        this.show = show;
-        return this;
-    }
-
-    /**
-     * 获取length值
-     */
-    public Integer length() {
-        return this.length;
-    }
-
-    /**
-     * 设置length值
-     *
-     * @param length
-     */
-    public LabelLine length(Integer length) {
-        this.length = length;
-        return this;
-    }
-
-    /**
-     * 线条样式，详见lineStyle
-     *
-     * @see com.springmvc.model.echart.style.LineStyle
-     */
-    public LineStyle lineStyle() {
-        if (this.lineStyle == null) {
-            this.lineStyle = new LineStyle();
-        }
-        return this.lineStyle;
-    }
-
-    /**
-     * 设置style值
-     *
-     * @param style
-     */
-    public LabelLine lineStyle(LineStyle style) {
-        this.lineStyle = style;
-        return this;
-    }
+    private Emphasis emphasis;
 }

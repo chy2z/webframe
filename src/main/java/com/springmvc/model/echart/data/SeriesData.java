@@ -1,6 +1,8 @@
 package com.springmvc.model.echart.data;
 
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.springmvc.model.echart.Tooltip;
 import com.springmvc.model.echart.style.ItemStyle;
 import lombok.Getter;
@@ -8,9 +10,16 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
-
+/**
+* @Title: SeriesData
+* @Description:  系列列表
+* @author chy
+* @date 2017/11/23 23:22
+*/
 @Getter
 @Setter
+@JsonAutoDetect(fieldVisibility=JsonAutoDetect.Visibility.ANY, getterVisibility=JsonAutoDetect.Visibility.NONE)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class SeriesData implements Serializable {
 
     private static final long serialVersionUID = -3295595963653443202L;

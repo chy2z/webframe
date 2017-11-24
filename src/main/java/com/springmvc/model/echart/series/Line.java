@@ -7,9 +7,6 @@ import com.springmvc.model.echart.style.AreaStyle;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * @author liuzh
- */
 @Getter
 @Setter
 public class Line extends Series<Line> {

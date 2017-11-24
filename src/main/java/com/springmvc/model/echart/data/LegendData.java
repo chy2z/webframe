@@ -1,5 +1,7 @@
 package com.springmvc.model.echart.data;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.springmvc.model.echart.style.TextStyle;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,12 +10,14 @@ import java.io.Serializable;
 
 /**
 * @Title: LegendData
-* @Description:LegendData
+* @Description: 图例组件
 * @author chy
 * @date 2017/11/22 14:44
 */
 @Getter
 @Setter
+@JsonAutoDetect(fieldVisibility=JsonAutoDetect.Visibility.ANY, getterVisibility=JsonAutoDetect.Visibility.NONE)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class LegendData implements Serializable {
 
     private static final long serialVersionUID = 7218201600361155091L;

@@ -1,26 +1,45 @@
 package com.springmvc.model.echart.data;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.springmvc.model.echart.Label;
+import com.springmvc.model.echart.Tooltip;
+import com.springmvc.model.echart.style.ItemStyle;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
 * @Title: LineData
-* @Description: LineData
+* @Description: 折线
 * @author chy
 * @date 2017/11/23 22:29
 */
 @Getter
 @Setter
-public class LineData extends BasicData<LineData> {
-    /**
-     * 可以通过valueIndex:0指定为横轴特殊点
-     */
-    private Integer valueIndex;
+@JsonAutoDetect(fieldVisibility=JsonAutoDetect.Visibility.ANY, getterVisibility=JsonAutoDetect.Visibility.NONE)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class LineData  {
+    private String name;
+    private Object value;
+    private Object symbol;
+    private Object symbolSize;
+    private ItemStyle itemStyle;
+    private Label label;
+    private Tooltip tooltip;
 
     /**
      * 构造函数
      */
     public LineData() {
+    }
+
+    /**
+     * 构造函数,参数:value
+     *
+     * @param value
+     */
+    public LineData(Object value) {
+        this.value = value;
     }
 
     /**
@@ -30,7 +49,8 @@ public class LineData extends BasicData<LineData> {
      * @param value
      */
     public LineData(String name, Object value) {
-        super(name, value);
+        this.name = name;
+        this.value = value;
     }
 
     /**
@@ -41,7 +61,9 @@ public class LineData extends BasicData<LineData> {
      * @param symbolSize
      */
     public LineData(String name, Object symbol, Object symbolSize) {
-        super(name, symbol, symbolSize);
+        this.name = name;
+        this.symbol=symbol;
+        this.symbolSize=symbolSize;
     }
 
     /**
@@ -51,7 +73,8 @@ public class LineData extends BasicData<LineData> {
      * @param symbol
      */
     public LineData(Object value, Object symbol) {
-        super(value, symbol);
+        this.value = value;
+        this.symbol=symbol;
     }
 
     /**
@@ -62,23 +85,8 @@ public class LineData extends BasicData<LineData> {
      * @param symbolSize
      */
     public LineData(Object value, Object symbol, Object symbolSize) {
-        super(value, symbol, symbolSize);
-    }
-
-    /**
-     * 获取valueIndex值
-     */
-    public Integer valueIndex() {
-        return this.valueIndex;
-    }
-
-    /**
-     * 设置valueIndex值
-     *
-     * @param valueIndex
-     */
-    public LineData valueIndex(Integer valueIndex) {
-        this.valueIndex = valueIndex;
-        return this;
+        this.value = value;
+        this.symbol=symbol;
+        this.symbolSize=symbolSize;
     }
 }

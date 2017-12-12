@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 
 /**
@@ -112,5 +113,58 @@ public class UploadControl {
         }
 
         return  result;
+    }
+
+    /**
+     * CKeditor 上传
+     * @param file
+     * @param useid
+     * @param request
+     * @param model
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/ckEditorImageUpload")
+    public void ckEditorImageUpload(
+            @RequestParam(value = "upload", required = false) MultipartFile file,
+            @RequestParam(value = "useid", required = false) String useid,
+            HttpServletRequest request, ModelMap model,
+            HttpServletResponse response) throws IOException {
+
+        //获取CKEditor提交的很重要的一个参数，回调设置图片路径
+        String callback = request.getParameter("CKEditorFuncNum");
+
+        //图片完整路径
+        String imgUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+
+        RequestResult result=new RequestResult();
+
+        String fileUrl = UploadFileUtil.copyFile(file, request);
+
+        if(StringUtil.isNotBlank(fileUrl)) {
+
+            HashMap<String, Object> data = new HashMap<>();
+
+            data.put("url", fileUrl);
+
+            data.put("fileName", file.getOriginalFilename());
+
+            result.setSucceed("上传成功", data);
+        }
+        else{
+            result.setFail("上传失败");
+        }
+
+        imgUrl=imgUrl+"/"+fileUrl;
+
+        PrintWriter out = response.getWriter();
+        out = response.getWriter();
+        out.println("<script type=\"text/javascript\">");
+        out.println("window.parent.CKEDITOR.tools.callFunction("
+                + callback
+                + ",'"
+                + imgUrl+ "','')");
+        out.println("</script>");
     }
 }

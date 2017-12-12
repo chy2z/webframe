@@ -9,6 +9,11 @@ package com.springmvc.config;
 public class SysConfig {
 
     /**
+     * 版本号
+     */
+    public static final String version="1.0.0";
+
+    /**
      * 超级管理员
      */
     private static final String superAdmin = "-9999";

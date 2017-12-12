@@ -12,6 +12,21 @@ String.prototype.RTrim = function(){
 }
 
 /**
+ * 存储授权信息
+ * @param v
+ */
+function vSetAuthenticationStorage(v) {
+    sessionStorage.setItem("jwt",v);
+}
+
+/**
+ * 获取授权信息
+ */
+function vGetAuthenticationStorage() {
+    return sessionStorage.getItem("jwt");
+}
+
+/**
  * Unicode转换成中文
  * @param str
  */

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ include file="taglib/taglibs.jsp"%>
+<%@ include file="taglib/authentication.jsp"%>
 <%@ include file="taglib/import_iview.jsp"%>
 <%@ include file="taglib/import_jquery.jsp"%>
 <%@ include file="taglib/import_common.jsp"%>
@@ -595,7 +596,7 @@
                     }
                     //退出登录
                     else if(name=="logOut"){
-                        window.location.href="${ctx}/login.jsp";
+                        outLogin();
                     }
                     //编辑密码
                     else if(name=="editPwd"){

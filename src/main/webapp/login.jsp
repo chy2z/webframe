@@ -129,6 +129,7 @@
                         data: data,
                         success: function(data){
 							if(data&&data.success){
+                                vSetAuthenticationStorage(data.data);
                                 window.location.href=mainFrame_url+data.data;
 							}
 							else{

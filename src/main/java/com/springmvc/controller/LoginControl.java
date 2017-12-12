@@ -212,6 +212,8 @@ public class LoginControl extends BaseController {
 				model.addAttribute("menu",miService.toIviewMenuForJson(miService.getMenuByRole(role.getId().toString())));
 			}
 
+			model.addAttribute("version", SysConfig.version);
+
 			model.addAttribute("jwt", jwt);
 
 			model.addAttribute("user", u);
@@ -265,6 +267,8 @@ public class LoginControl extends BaseController {
 				model.addAttribute("nomanage", true);
                 model.addAttribute("rightBut",miService.toIviewButForJson(miService.getButByRole(role.getId().toString(),mid)));
 			}
+
+			model.addAttribute("version", SysConfig.version);
 
 			model.addAttribute("jwt", jwt);
 

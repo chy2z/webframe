@@ -18,20 +18,7 @@
     <result column="img" jdbcType="VARCHAR" property="img" />
   </resultMap>
 
-  <resultMap id="JoinResultMap" type="com.springmvc.model.Users">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="loginName" jdbcType="VARCHAR" property="loginname" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="departId" jdbcType="INTEGER" property="departid" />
-    <result column="office" jdbcType="VARCHAR" property="office" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="roleId" jdbcType="INTEGER" property="roleid" />
-    <result column="state" jdbcType="VARCHAR" property="state" />
-    <result column="corporationId" jdbcType="INTEGER" property="corporationid" />
-    <result column="token" jdbcType="VARCHAR" property="token" />
-    <result column="img" jdbcType="VARCHAR" property="img" />
+  <resultMap extends="BaseResultMap" id="JoinResultMap" type="com.springmvc.model.Users">
     <!-- 增加级联属性 -->
     <result column="departName" jdbcType="VARCHAR" property="departName" />
     <result column="roleName" jdbcType="VARCHAR" property="roleName" />

@@ -19,6 +19,14 @@ public class SysNotice {
 
     private String content;
 
+    //===========关联属性==================
+
+    private String departName;
+
+    private String userName;
+
+    private String corporationName;
+
     public Integer getId() {
         return id;
     }
@@ -57,5 +65,29 @@ public class SysNotice {
 
     public void setContent(String content) {
         this.content = content == null ? null : content.trim();
+    }
+
+    public String getDepartName() {
+        return departName;
+    }
+
+    public void setDepartName(String departName) {
+        this.departName = departName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getCorporationName() {
+        return corporationName;
+    }
+
+    public void setCorporationName(String corporationName) {
+        this.corporationName = corporationName;
     }
 }

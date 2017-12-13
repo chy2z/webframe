@@ -13,6 +13,13 @@
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
 
+  <resultMap extends="ResultMapWithBLOBs" id="JoinResultMap" type="com.springmvc.model.SysNotice">
+    <!-- 增加级联属性 -->
+    <result column="departName" jdbcType="VARCHAR" property="departName" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="corporationName" jdbcType="VARCHAR" property="corporationName" />
+  </resultMap>
+
   <sql id="Base_Column_List">
     id, customerId, title, createTime
   </sql>
@@ -104,10 +111,10 @@
     <if test="orderBy != null">order by ${orderBy}</if>
   </select>
 
-  <select id="selectPagination" resultMap="BaseResultMap">
+  <select id="selectPagination" resultMap="JoinResultMap">
     select s.id,s.customerId,s.title,s.content,s.createTime,
 
-    u.name as name,d.name as departName,c.name as corporationName
+    u.name as userName,d.name as departName,c.name as corporationName
 
     from sys_notice  s
 

@@ -39,32 +39,32 @@
         </Row>
         <Row class-name="my-layout-body" type="flex">
             <i-col span="24">
-                <i-Table :height="departmentTable.height"
-                         :width="departmentTable.width"
-                         :show-header="departmentTable.showHeader"
-                         :loading="departmentTable.pageLoading"
-                         :stripe="departmentTable.showStripe"
-                         :border="departmentTable.showBorder"
-                         :highlight-row="departmentTable.highlightRow"
-                         :size="departmentTable.tableSize"
-                         :columns="departmentTable.columns"
-                         :data="departmentTable.dataTable"
-                         @on-row-click="tableDepartmentRowClick"></i-Table>
+                <i-Table :height="noticeTable.height"
+                         :width="noticeTable.width"
+                         :show-header="noticeTable.showHeader"
+                         :loading="noticeTable.pageLoading"
+                         :stripe="noticeTable.showStripe"
+                         :border="noticeTable.showBorder"
+                         :highlight-row="noticeTable.highlightRow"
+                         :size="noticeTable.tableSize"
+                         :columns="noticeTable.columns"
+                         :data="noticeTable.dataTable"
+                         @on-row-click="tableNoticeRowClick"></i-Table>
             </i-col>
         </Row>
         <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
             <i-col  span="6"></i-col >
             <i-col  span="18">
                 <div class="float-right">
-                    <Page @on-change="pageChangeDepartment" @on-page-size-change="pageSizeChangeDepartment"
-                          :page-size="departmentPage.pageSize"
-                          :page-size-opts="departmentPage.pageSizeOpts"
-                          :placement="departmentPage.placement"
-                          :current:="departmentPage.pageNo"
-                          :total="departmentPage.totalCount"
-                          :show-elevator="departmentPage.showElevator"
-                          :show-total="departmentPage.showTotal"
-                          :show-sizer="departmentPage.showSizer"></Page>
+                    <Page @on-change="pageChangeNotice" @on-page-size-change="pageSizeChangeNotice"
+                          :page-size="noticePage.pageSize"
+                          :page-size-opts="noticePage.pageSizeOpts"
+                          :placement="noticePage.placement"
+                          :current:="noticePage.pageNo"
+                          :total="noticePage.totalCount"
+                          :show-elevator="noticePage.showElevator"
+                          :show-total="noticePage.showTotal"
+                          :show-sizer="noticePage.showSizer"></Page>
                 </div>
             </i-col >
 
@@ -77,10 +77,9 @@
         var domain="${ctx}";
         var nomanage=${requestScope.nomanage};
         var corporationId="${requestScope.corporationId}";
-        var noticeDelete_url=domain+"/notice/delete?jwt=${requestScope.jwt}";
+        var noticeDelete_url=domain+"/sysNotice/delete?jwt=${requestScope.jwt}";
         var corporation_Select_url="${ctx}/corporation/vselect/selectCorporation?jwt=${requestScope.jwt}";
-
-        var pageHelperNotice=new pageHepler("${ctx}/nocice/pagination?jwt=${requestScope.jwt}",{
+        var pageHelperNotice=new pageHepler("${ctx}/sysNotice/pagination?jwt=${requestScope.jwt}",{
             columns: [
                 {
                     title: '序号',
@@ -88,18 +87,26 @@
                 },
                 {
                     title: '发布人',
-                    key: 'name'
+                    key: 'userName'
+                },
+                {
+                    title: '部门',
+                    key: 'departName'
                 },
                 {
                     title: '标题',
                     key: 'title'
                 },
                 {
-                    title: '时间',
-                    key: 'createTime'
+                    title: '发布时间',
+                    key: 'createtime'
+                    //render: function (h, params) {
+                    //    return h('div',
+                    //        new Date(this.row.createtime).Format('yyyy-MM-dd'));
+                    //}
                 }
             ]
-        },{orderBy:" id desc "});
+        },{orderBy:" s.id desc "});
 
         var selectHelperCorporation=new selectHelper(corporation_Select_url,{});
 
@@ -121,7 +128,7 @@
                 //权限控制
                 if(nomanage) {
                     //表格加载数据
-                    pageHelperNotice.load("corporationId='"+corporationId+"'");
+                    pageHelperNotice.load("u.corporationId='"+corporationId+"'");
                     //加载组织机构
                     selectHelperCorporation.load("id='"+corporationId+"'");
                     selectHelperCorporation.setSelectItem(parseInt(corporationId));
@@ -149,7 +156,7 @@
                         pageHelperNotice.load(null);
                     }
                     else{
-                        pageHelperNotice.load("corporationId='" + option.value + "'");
+                        pageHelperNotice.load("u.corporationId='" + option.value + "'");
                     }
                 },
                 butAdd(){

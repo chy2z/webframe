@@ -2,13 +2,15 @@ package com.springmvc.controller;
 
 import com.springmvc.model.RequestResult;
 import com.springmvc.model.SysNotice;
+import com.springmvc.model.Users;
+import com.springmvc.model.UsersToken;
 import com.springmvc.service.SysNoticeService;
+import com.springmvc.service.UsersService;
+import com.springmvc.service.UsersTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +27,36 @@ public class SysNoticeControl {
 
    @Autowired
    SysNoticeService sysNoticeService;
+
+    @Autowired
+    UsersService uService;
+
+    @Autowired
+    UsersTokenService utService;
+
+    /**
+     * 路径跳转
+     * @return
+     */
+    @RequestMapping("/path/{page}")
+    public String toPage(@PathVariable("page") String page,HttpServletRequest request,Model model) {
+        String jwt = (String) request.getParameter("jwt");
+        UsersToken ut= utService.getUsersToken(jwt);
+        if (page.equals("add")) {
+            Users u= uService.getUsers(ut.getUserid());
+            model.addAttribute("user", u);
+            return "notice/sys_notice_add_page";
+        }
+        else if(page.equals("update")){
+            return "notice/sys_notice_update_page";
+        }
+        else if(page.equals("look")){
+            return "notice/sys_notice_look_page";
+        }
+        else {
+            return "notice/sys_notice_page";
+        }
+    }
 
     /**
      * 分页

@@ -7,6 +7,10 @@ html, body {
     padding: 0;
 }
 
+.fil-height{
+    height: 100%;
+}
+
 .my-app {
     width:100%;
     height: 100%;
@@ -27,6 +31,16 @@ html, body {
     border: 0px solid #d7dde4;
     border-radius: 4px;
     overflow:hidden;
+}
+
+.my-layout-clear-top {
+    /*下间距 60px */
+    padding: 0 0 60px;
+}
+
+.my-layout-clear-top-10 {
+    /*上10px下间距 60px */
+    padding: 10px 0 60px;
 }
 
 .my-layout-top{

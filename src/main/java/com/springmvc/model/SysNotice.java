@@ -11,7 +11,7 @@ import java.util.Date;
 public class SysNotice {
     private Integer id;
 
-    private Integer customerid;
+    private Integer userid;
 
     private String title;
 
@@ -35,12 +35,12 @@ public class SysNotice {
         this.id = id;
     }
 
-    public Integer getCustomerid() {
-        return customerid;
+    public Integer getUserid() {
+        return userid;
     }
 
-    public void setCustomerid(Integer customerid) {
-        this.customerid = customerid;
+    public void setUserid(Integer userid) {
+        this.userid = userid;
     }
 
     public String getTitle() {

@@ -78,6 +78,9 @@
         var nomanage=${requestScope.nomanage};
         var corporationId="${requestScope.corporationId}";
         var noticeDelete_url=domain+"/sysNotice/delete?jwt=${requestScope.jwt}";
+        var noticeAdd_url=domain+"/sysNotice/path/add?jwt=${requestScope.jwt}";
+        var noticeUpdate_url=domain+"/sysNotice/path/update?jwt=${requestScope.jwt}";
+        var noticeLook_url=domain+"/sysNotice/path/look?jwt=${requestScope.jwt}";
         var corporation_Select_url="${ctx}/corporation/vselect/selectCorporation?jwt=${requestScope.jwt}";
         var pageHelperNotice=new pageHepler("${ctx}/sysNotice/pagination?jwt=${requestScope.jwt}",{
             columns: [
@@ -160,7 +163,7 @@
                     }
                 },
                 butAdd(){
-
+                    window.location.href=noticeAdd_url;
                 },
                 butEdit(){
 

@@ -27,6 +27,24 @@ function vGetAuthenticationStorage() {
 }
 
 /**
+ * 全局窗体显示
+ * @param action
+ * @param url
+ * @param title
+ */
+function vPopWindowShow(action,url,title){
+    window.parent.popShow(action,url,title);
+}
+
+/**
+ * 全局窗体关闭
+ * @param result
+ */
+function vPopWindowsColse(result){
+    window.parent.popClose(result);
+}
+
+/**
  * Unicode转换成中文
  * @param str
  */
@@ -89,6 +107,16 @@ function vSpin(vue,delayedClosing){
  *
  */
 function valert(vue,content,title,type) {
+
+    /**
+     * vue 默认子页面弹出
+     */
+
+    /**
+     * 改成在main页面弹出
+     */
+    vue=window.parent.mainVue||vue;
+
     title=title||"信息提示";
     if(!type) {
         vue.$Modal.warning({
@@ -139,6 +167,15 @@ function valert(vue,content,title,type) {
  * @param content
  */
 function vconfirm(vue,content,okEvent,cancelEvent){
+    /**
+     * vue 默认子页面弹出
+     */
+
+    /**
+     * 改成在main页面弹出
+     */
+    vue=window.parent.mainVue||vue;
+
     vue.$Modal.confirm({
         title: '确认提示框',
         content: content,
@@ -168,6 +205,15 @@ function vconfirm(vue,content,okEvent,cancelEvent){
  * @param duration
  */
 function vtoast(vue,content,type,duration){
+    /**
+     * vue 默认子页面弹出
+     */
+
+    /**
+     * 改成在main页面弹出
+     */
+    vue=window.parent.mainVue||vue;
+
     duration=duration||4;
     if(!type) {
         vue.$Message.info({

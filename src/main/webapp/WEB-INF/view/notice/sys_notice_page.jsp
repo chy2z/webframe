@@ -73,7 +73,6 @@
 </div>
 </body>
 <script>
-    window.onload=function() {
         var domain="${ctx}";
         var nomanage=${requestScope.nomanage};
         var corporationId="${requestScope.corporationId}";
@@ -163,10 +162,15 @@
                     }
                 },
                 butAdd(){
-                    window.location.href=noticeAdd_url;
+                    vPopWindowShow("action_add",noticeAdd_url,"系统通知增加");
                 },
                 butEdit(){
-
+                    if(pageHelperNotice.getSelectRowIndex()>-1){
+                        vPopWindowShow("action_update",noticeUpdate_url,"系统通知修改");
+                    }
+                    else{
+                        valert(this,"请选择一行记录修改");
+                    }
                 },
                 butDel(){
                     if(pageHelperNotice.getSelectRowIndex()>-1){
@@ -190,7 +194,7 @@
                 },
                 butLook(){
                     if(pageHelperNotice.getSelectRowIndex()>-1){
-
+                        vPopWindowShow("action_look",noticeLook_url,"系统通知修改");
                     }
                     else{
                         valert(this,"请选择一行记录修改");
@@ -201,6 +205,15 @@
                 }
             }
         });
-    }
+
+        /**
+         * 全局弹出窗体回调
+         * @param action
+         * @param parameter
+         */
+        function popupsCallBack(action,parameter){
+             log(action);
+             log(parameter);
+        }
 </script>
 </html>

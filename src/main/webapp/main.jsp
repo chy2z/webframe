@@ -146,12 +146,6 @@
             display: none;
         }
 
-        /*
-        .ivu-col {
-            transition: width .2s ease-in-out;
-        }
-        */
-
         /* tab选项卡头部和内容的间距  */
         .ivu-tabs-bar {
             border-bottom: 1px solid #dddee1;
@@ -180,6 +174,25 @@
             border-right: 2px solid #fff;
         }
         */
+
+        /*全局对话框样式垂直剧中*/
+        .vertical-center-modal{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /*全局对话框样式垂直剧中*/
+        .vertical-center-modal .ivu-modal{
+            top: 0;
+        }
+
+        /*全局对话框去除内边距*/
+        .vertical-center-modal .ivu-modal-body {
+            padding: 0px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
 
     </style>
 </head>
@@ -341,6 +354,21 @@
             </i-col>
         </Row>
     </div>
+
+    <!-- 全局model -->
+    <Modal v-model="popupsModal.modalShow" :closable="true" :mask-closable="false" class-name="vertical-center-modal"  :width="popupsModal.width">
+        <p slot="header" style="color:#f60;text-align:center">
+            <Icon type="information-circled"></Icon>
+            <span>{{popupsModal.title}}</span>
+        </p>
+        <div style="text-align:center;width: 100%;height:800px;">
+            <iframe id="popupsframe" frameborder="0" scrolling="yes"
+                    style="border: 0px; height: 100%; width: 100%;"></iframe>
+        </div>
+        <div slot="footer">
+        </div>
+    </Modal>
+
 </div>
 </body>
 <script>
@@ -437,7 +465,7 @@
             }
         });
 
-        new Vue({
+        var mainVue=new Vue({
             el: '#app',
             data:{
                 jwt:"${requestScope.jwt}",
@@ -451,6 +479,14 @@
                 spanLeft: 3,
                 spanRight: 21,
                 tabItems:[],
+                popupsModal:{
+                    modalShow:false,
+                    width:'90%',
+                    title:"全局对话框",
+                    style:{
+                        top: '100px'
+                    }
+                },
                 formModal:{
                     modalShow:false,
                     bindModel:{
@@ -657,9 +693,39 @@
                             valert(this,'表单验证失败!');
                         }
                     });
+                },
+                popupsShow(title){
+                    this.popupsModal.modalShow=true;
+                    this.popupsModal.title=title;
+                },
+                popupsHide(){
+                    this.popupsModal.modalShow=false;
                 }
             }
         });
 
+        /**
+         * 全局框体显示
+         */
+        function popShow(action,url,title){alert(url.indexOf("?"))
+            if(url.indexOf("?")!=-1) {
+                url += "&version=" + Math.random();
+            }
+            else {
+                url += "?version=" + Math.random();
+            }
+            localStorage.setItem("popAction",action);
+            document.querySelector("#popupsframe").src=url;
+            mainVue.popupsShow(title);
+        }
+
+        /**
+         * 全局框体关闭
+         */
+        function popClose(parameter){
+            mainVue.popupsHide();
+            //调用子窗体的回调函数
+            document.getElementById(mainVue.tabSelected).contentWindow.popupsCallBack(localStorage.getItem("popAction"),parameter);
+        }
 </script>
 </html>

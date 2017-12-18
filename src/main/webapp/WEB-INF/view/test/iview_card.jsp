@@ -52,7 +52,7 @@
         <Row class-name="my-layout-body" justify="center"  type="flex">
             <i-col span="23">
                 <Card>
-                    <p slot="title">通知内容</p>
+                    <p slot="title">系 统 通 知 新 增</p>
                     <div class="fil-height">
                     <textarea id="contect_text" name="content" style="width: 100%;height: 100%;padding: 0;border: 0;margin: 0;" class="ckeditor"></textarea>
                     </div>
@@ -62,7 +62,7 @@
         <Row class-name="my-layout-bottom" justify="center" align="middle" type="flex">
             <i-col  span="23">
                 <div class="float-right">
-                    <i-Button type="ghost" @click="butBack()" v-show="backBut" icon="arrow-left-c">返回</i-Button>
+                    <i-Button type="ghost" @click="butBack()" icon="arrow-left-c">返回</i-Button>
                     <i-Button type="success" @click="butRefresh()" icon="refresh">刷新</i-Button>
                     <i-Button type="primary" @click="butSave()" icon="checkmark">保存</i-Button>
                 </div>
@@ -77,7 +77,6 @@
     new Vue({
         el: '#app',
         data: {
-            backBut:false,
             spinLeftShow:false,
             userid:${requestScope.user.id},
             title:""
@@ -120,8 +119,7 @@
                         vtoast(this, result.tip);
                         this.title="";
                         CKEDITOR.instances.contect_text.setData("");
-                        //立即关闭增加窗口
-                        vPopWindowsColse();
+                        this.butBack();
                     },()=>{
                         this.spinLeftShow=true;
                     },()=>{

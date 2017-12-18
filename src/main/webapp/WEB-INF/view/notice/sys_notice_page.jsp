@@ -166,7 +166,8 @@
                 },
                 butEdit(){
                     if(pageHelperNotice.getSelectRowIndex()>-1){
-                        vPopWindowShow("action_update",noticeUpdate_url,"系统通知修改");
+                        let rowData=pageHelperNotice.getSelectRowData();
+                        vPopWindowShow("action_update",noticeUpdate_url+"&id="+rowData.id,"系统通知修改");
                     }
                     else{
                         valert(this,"请选择一行记录修改");
@@ -194,7 +195,8 @@
                 },
                 butLook(){
                     if(pageHelperNotice.getSelectRowIndex()>-1){
-                        vPopWindowShow("action_look",noticeLook_url,"系统通知修改");
+                        let rowData=pageHelperNotice.getSelectRowData();
+                        vPopWindowShow("action_look",noticeLook_url+"&id="+rowData.id,"系统通知查看");
                     }
                     else{
                         valert(this,"请选择一行记录修改");

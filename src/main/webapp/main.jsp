@@ -357,11 +357,11 @@
 
     <!-- 全局model -->
     <Modal v-model="popupsModal.modalShow" :closable="true" :mask-closable="false" class-name="vertical-center-modal"  :width="popupsModal.width">
-        <p slot="header" style="color:#464c5b;text-align:center">
-            <Icon type="edit"></Icon>
+        <p slot="header" style="color:#464c5b;text-align:left; letter-spacing:1px;font-size: 16px;">
+            <Icon type="document"></Icon>
             <span>{{popupsModal.title}}</span>
         </p>
-        <div style="text-align:center;width: 100%;height:800px;">
+        <div style="text-align:center;width:100%;height:800px;box-sizing: border-box;">
             <iframe id="popupsframe" frameborder="0" scrolling="yes"
                     style="border: 0px; height: 100%; width: 100%;"></iframe>
         </div>

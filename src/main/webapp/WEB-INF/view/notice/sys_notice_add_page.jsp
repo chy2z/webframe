@@ -133,7 +133,9 @@
                 }
             },
             butBack(){
-                window.history.back();
+                vconfirm(this,"确认刷新吗?",()=>{
+                    window.location.reload();
+                });
             },
             butRefresh(){
                 window.location.reload();

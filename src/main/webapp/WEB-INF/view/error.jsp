@@ -6,7 +6,7 @@
 <title>错误页面</title>
 </head>
 <body>
-    <h1>this is error</h1>
+    <h1>出错啦！工程师又要被祭天了！</h1>
     <% Exception ex = (Exception)request.getAttribute("exception");%>
     <% if(ex!=null){ %>
        <H2>Exception: <%=ex.getMessage() %></H2>

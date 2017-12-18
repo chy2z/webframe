@@ -40,8 +40,8 @@ function vPopWindowShow(action,url,title){
  * 全局窗体关闭
  * @param result
  */
-function vPopWindowsColse(result){
-    window.parent.popClose(result);
+function vPopWindowsColse(parameter){
+    window.parent.popClose(parameter);
 }
 
 /**

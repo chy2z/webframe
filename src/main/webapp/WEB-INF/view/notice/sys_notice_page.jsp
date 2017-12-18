@@ -212,8 +212,15 @@
          * @param parameter
          */
         function popupsCallBack(action,parameter){
-             log(action);
-             log(parameter);
+             if(action=="action_add"){
+                 pageHelperNotice.pageIndexChanging(1);
+             }
+             else if(action=="action_update"){
+
+             }
+             else {
+                 return ;
+             }
         }
 </script>
 </html>

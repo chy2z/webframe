@@ -357,8 +357,8 @@
 
     <!-- 全局model -->
     <Modal v-model="popupsModal.modalShow" :closable="true" :mask-closable="false" class-name="vertical-center-modal"  :width="popupsModal.width">
-        <p slot="header" style="color:#f60;text-align:center">
-            <Icon type="information-circled"></Icon>
+        <p slot="header" style="color:#464c5b;text-align:center">
+            <Icon type="edit"></Icon>
             <span>{{popupsModal.title}}</span>
         </p>
         <div style="text-align:center;width: 100%;height:800px;">
@@ -707,7 +707,7 @@
         /**
          * 全局框体显示
          */
-        function popShow(action,url,title){alert(url.indexOf("?"))
+        function popShow(action,url,title){
             if(url.indexOf("?")!=-1) {
                 url += "&version=" + Math.random();
             }

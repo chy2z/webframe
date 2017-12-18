@@ -177,6 +177,20 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
     }
 
     /**
+     * 更新选中行的数据
+     * @param data
+     */
+    this.updateSelectRowData=function(data){
+        let rowData= this.getSelectRowData();
+        $.each(data,function(key,value){
+            if(typeof rowData[key]!=undefined){
+                rowData[key]=value;
+            }
+        });
+        this.setHighlightRow();
+    }
+
+    /**
      * 获取选中的行索引
      * @returns {*}
      */

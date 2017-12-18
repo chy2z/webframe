@@ -66,8 +66,7 @@
                           :show-total="noticePage.showTotal"
                           :show-sizer="noticePage.showSizer"></Page>
                 </div>
-            </i-col >
-
+            </i-col>
         </Row>
     </div>
 </div>
@@ -218,7 +217,7 @@
                  pageHelperNotice.pageIndexChanging(1);
              }
              else if(action=="action_update"){
-
+                 pageHelperNotice.updateSelectRowData(parameter);
              }
              else {
                  return ;

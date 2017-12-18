@@ -1,5 +1,10 @@
 package com.springmvc.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.springmvc.util.DateJsonDeserializerUtil;
+import com.springmvc.util.DateJsonSerializerUtil;
+
 import java.util.Date;
 
 /**
@@ -15,6 +20,8 @@ public class SysNotice {
 
     private String title;
 
+    @JsonSerialize(using = DateJsonSerializerUtil.class)
+    @JsonDeserialize(using = DateJsonDeserializerUtil.class)
     private Date createtime;
 
     private String content;

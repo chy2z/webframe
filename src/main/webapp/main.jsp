@@ -362,7 +362,7 @@
             <span>{{popupsModal.title}}</span>
         </p>
         <div style="text-align:center;width:100%;height:800px;box-sizing: border-box;">
-            <iframe id="popupsframe" frameborder="0" scrolling="yes"
+            <iframe id="popupsframe" frameborder="0" scrolling="no"
                     style="border: 0px; height: 100%; width: 100%;"></iframe>
         </div>
         <div slot="footer">

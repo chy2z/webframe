@@ -64,13 +64,35 @@
                     <Card>
                         <p slot="title" class="card-title">
                             <Icon type="android-checkbox-outline"></Icon>
-                            系统消息
+                            系统通知
                         </p>
                         <a type="text" slot="extra">
-                            <Icon type="plus-round"></Icon>
+                            <Tooltip placement="top" content="刷新">
+                            <Icon type="refresh"></Icon>
+                            </Tooltip>
                         </a>
-                        <div class="to-do-list-con">
-
+                        <div  class="to-do-list-con">
+                            <div v-for="(item, index) in notices" :key="index" class="to-do-item">
+                            <template>
+                                <Row type="flex" justify="start" align="middle" class="to-do-list-item">
+                                    <i-Col span="2" class="height-100">
+                                        <Row type="flex" justify="start" align="middle" class="height-100">
+                                            <Icon type="android-notifications"></Icon>
+                                        </Row>
+                                    </i-Col>
+                                    <i-Col span="18" class="height-100">
+                                        <Row type="flex" justify="start" align="middle" class="height-100">
+                                            <p @click="handleNotice(item.id)" class="to-do-list-item-text"><a href="#">{{ item.title }}</a></p>
+                                        </Row>
+                                    </i-Col>
+                                    <i-Col span="4" class="height-100">
+                                        <Row type="flex" justify="start" align="middle" class="height-100">
+                                            <p class="to-do-list-item-text">{{ item.date }}</p>
+                                        </Row>
+                                    </i-Col>
+                                </Row>
+                            </template>
+                            </div>
                         </div>
                     </Card>
                 </Row>
@@ -269,6 +291,7 @@
 </div>
 </body>
 <script>
+    var domain="${ctx}";
     var cityData=[
         {name: '海门', value: 45},
         {name: '鄂尔多斯', value: 34},
@@ -323,9 +346,18 @@
                     key: 'value',
                     sortable: true
                 }
+            ],
+            notices:[
+                {id:"1",title:"你好",date:"10-19"},
+                {id:"2",title:"你是谁",date:"10-20"}
             ]
         },
-        methods: {},
+        methods: {
+            handleNotice(id){
+                var noticeLook_url=domain+"/sysNotice/path/look?jwt=${requestScope.jwt}";
+                vPopWindowShow("action_look",noticeLook_url+"&id="+id,"系统通知查看");
+            }
+        },
         mounted() {
             CreateCityMap();
             CreateChart1();

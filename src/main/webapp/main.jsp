@@ -113,7 +113,6 @@
             height: 100%;
             min-height: 400px;
             margin: 0px;
-            /*padding: 1px 1px 0px;*/
             padding: 33px 1px 0px;
             overflow: hidden;
             background: #eee;
@@ -147,6 +146,7 @@
         }
 
         /* tab选项卡头部和内容的间距  */
+        /* 和父节点高度一样，所以父节点padding32px,同时头部向上偏移32px*/
         .ivu-tabs-bar {
             border-bottom: 1px solid #dddee1;
             margin-bottom: 2px;

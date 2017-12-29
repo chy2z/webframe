@@ -1,7 +1,7 @@
 package com.springmvc.service;
 
-import com.springmvc.mapper.AuditKindProcessMapper;
-import com.springmvc.model.AuditKindProcess;
+import com.springmvc.mapper.AuditKindProcessStepMapper;
+import com.springmvc.model.AuditKindProcessStep;
 import com.springmvc.model.PageHelper;
 import com.springmvc.util.JsonUtil;
 import com.springmvc.util.StringUtil;
@@ -9,23 +9,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
-* @Title: AuditKindProcessService
-* @Description: 审核流程接口
+* @Title: AuditKindProcessStepService
+* @Description: 审核流程步骤接口
 * @author chy
-* @date 2017/12/29 14:00
+* @date 2017/12/29 14:43
 */
 @Service
-public class AuditKindProcessService {
+public class AuditKindProcessStepService {
 
     @Autowired
-    AuditKindProcessMapper mapper;
+    AuditKindProcessStepMapper mapper;
 
     /**
      * 插入记录
      * @param c
      * @return
      */
-    public boolean insert(AuditKindProcess c) {
+    public boolean insert(AuditKindProcessStep c) {
         return mapper.insertSelective(c) > 0;
     }
 
@@ -34,7 +34,7 @@ public class AuditKindProcessService {
      * @param c
      * @return
      */
-    public boolean update(AuditKindProcess c) {
+    public boolean update(AuditKindProcessStep c) {
         return mapper.updateByPrimaryKeySelective(c) > 0;
     }
 
@@ -87,6 +87,5 @@ public class AuditKindProcessService {
     public String toPaginationJson(int pageNo,int pageSize,String where ,String orderBy) {
         return JsonUtil.writeValueAsString(getPagination(pageNo, pageSize, where, orderBy));
     }
-
 
 }

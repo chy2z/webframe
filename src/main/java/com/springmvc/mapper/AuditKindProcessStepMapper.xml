@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springmvc.mapper.AuditKindProcessStepMapper">
+
   <resultMap id="BaseResultMap" type="com.springmvc.model.AuditKindProcessStep">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="pId" jdbcType="INTEGER" property="pid" />
@@ -8,6 +9,11 @@
     <result column="step" jdbcType="INTEGER" property="step" />
     <result column="enable" jdbcType="VARCHAR" property="enable" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createdate" />
+  </resultMap>
+
+  <resultMap extends="BaseResultMap" id="JoinResultMap" type="com.springmvc.model.AuditKindProcessStep">
+    <!-- 增加级联属性 -->
+    <result column="uname" jdbcType="VARCHAR" property="uname" />
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -24,6 +30,11 @@
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from audit_kind_process_step
     where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteByPrcoessId" parameterType="java.lang.Integer">
+    delete from audit_kind_process_step
+    where pId = #{pId,jdbcType=INTEGER}
   </delete>
 
   <insert id="insertSelective" parameterType="com.springmvc.model.AuditKindProcessStep">
@@ -100,9 +111,9 @@
     <if test="orderBy != null">order by ${orderBy}</if>
   </select>
 
-  <select id="selectPagination" resultMap="BaseResultMap">
+  <select id="selectPagination" resultMap="JoinResultMap">
     select aps.id, aps.pId, aps.uId, aps.step, aps.enable, aps.createDate,
-    u.name
+    u.name as uname
     from audit_kind_process_step aps JOIN audit_kind_process ap on aps.pid=ap.id
     JOIN  users u on aps.uid=u.id
     <if test="where != null">where ${where}</if>

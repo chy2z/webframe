@@ -98,7 +98,7 @@
     <if test="orderBy != null">order by ${orderBy}</if>
   </select>
 
-  <select id="selectPagination" resultMap="BaseResultMap">
+  <select id="selectPagination" resultMap="JoinResultMap">
     select ap.id, ap.kId, ap.stepNum,ap.departId, ap.enable,d.name as departname, ak.name as auditkind
     from audit_kind ak JOIN audit_kind_process ap on ak.id=ap.kid
     JOIN department d on d.id=ap.departId

@@ -48,6 +48,15 @@ public class AuditKindProcessStepService {
         return mapper.deleteByPrimaryKey(id) > 0;
     }
 
+    /**
+     * 删除记录
+     * @param Pid
+     * @return
+     */
+    public boolean deleteByPId(Integer Pid){
+        return mapper.deleteByProcessId(Pid) > 0;
+    }
+
 
     /**
      * 返回分页数据

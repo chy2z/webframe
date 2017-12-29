@@ -10,6 +10,8 @@ public interface AuditKindProcessStepMapper {
 
     int deleteByPrimaryKey(Integer id);
 
+    int deleteByProcessId(Integer pId);
+
     int insertSelective(AuditKindProcessStep record);
 
     AuditKindProcessStep selectByPrimaryKey(Integer id);

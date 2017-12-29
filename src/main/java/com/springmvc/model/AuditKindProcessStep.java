@@ -22,6 +22,10 @@ public class AuditKindProcessStep {
     @JsonDeserialize(using = DateJsonDeserializerUtil.class)
     private Date createdate;
 
+    //===========关联属性===============
+
+    private String uname;
+
     public Integer getId() {
         return id;
     }
@@ -68,5 +72,13 @@ public class AuditKindProcessStep {
 
     public void setCreatedate(Date createdate) {
         this.createdate = createdate;
+    }
+
+    public String getUname() {
+        return uname;
+    }
+
+    public void setUname(String uname) {
+        this.uname = uname;
     }
 }

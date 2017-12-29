@@ -1,12 +1,12 @@
 package com.springmvc.controller;
 
-import com.springmvc.mapper.AuditKindProcessMapper;
-import com.springmvc.model.AuditKind;
 import com.springmvc.model.AuditKindProcess;
 import com.springmvc.model.RequestResult;
 import com.springmvc.service.AuditKindProcessService;
+import com.springmvc.service.AuditKindProcessStepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +27,9 @@ public class AuditKindProcessControl {
 
     @Autowired
     AuditKindProcessService auditKindProcessService;
+
+    @Autowired
+    AuditKindProcessStepService auditKindProcessStepService;
 
     /**
      * 分页
@@ -102,6 +105,7 @@ public class AuditKindProcessControl {
      */
     @ResponseBody
     @RequestMapping(value = "/delete",method = {RequestMethod.POST})
+    @Transactional(rollbackFor = Exception.class)
     public RequestResult delete(String id){
         RequestResult result=new RequestResult();
         if(id==null){
@@ -109,6 +113,12 @@ public class AuditKindProcessControl {
         }
         else{
             if(auditKindProcessService.delete(Integer.parseInt(id))){
+
+                /**
+                 * 同时删除审核步骤
+                 */
+                auditKindProcessStepService.deleteByPId(Integer.parseInt(id));
+
                 result.setSucceed("删除成功",null);
             }
             else{

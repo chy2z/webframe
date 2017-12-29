@@ -33,6 +33,7 @@
                                     <div>
                                         <b class="card-user-infor-name">${requestScope.name}</b>
                                         <p>${requestScope.loginName}</p>
+                                        <p>${requestScope.roleName}</p>
                                     </div>
                                 </Row>
                             </i-Col>

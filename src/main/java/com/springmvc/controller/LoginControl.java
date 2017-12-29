@@ -68,6 +68,7 @@ public class LoginControl extends BaseController {
 		}
 		else {
 			Users u= uService.getUsers(ut.getUserid());
+			Role role=roleService.getRole(u.getRoleid());
 
 			UsersLoginLog currentLog= usersLoginLogService.selectLast(ut.getUserid());
 			UsersLoginLog preLog= usersLoginLogService.getUsersLoginLog(currentLog.getLastid());
@@ -87,7 +88,7 @@ public class LoginControl extends BaseController {
 			model.addAttribute("headImg",u.getImg());
 			model.addAttribute("name",u.getName());
 			model.addAttribute("loginName",u.getLoginname());
-
+			model.addAttribute("roleName",role==null?"超级管理员":role.getName());
 			return "forward:../../index.jsp";
 		}
 	}

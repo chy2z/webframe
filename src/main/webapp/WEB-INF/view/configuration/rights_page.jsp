@@ -26,6 +26,7 @@
         .my-layout-body .ivu-card .ivu-card-body{
             height: 100%;
             overflow: auto;
+            padding: 5px;
         }
 
         .my-layout-body .ivu-card .ivu-card-head {

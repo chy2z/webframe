@@ -39,32 +39,33 @@
                 </Row>
                 <Row class-name="my-layout-body" type="flex">
                     <i-col class-name="col-left" span="24">
-                        <i-Table :height="roleTable.height"
-                                 :width="roleTable.width"
-                                 :show-header="roleTable.showHeader"
-                                 :loading="roleTable.pageLoading"
-                                 :stripe="roleTable.showStripe"
-                                 :border="roleTable.showBorder"
-                                 :highlight-row="roleTable.highlightRow"
-                                 :size="roleTable.tableSize"
-                                 :columns="roleTable.columns"
-                                 :data="roleTable.dataTable"
-                                 @on-row-click="tableRoleRowClick"></i-Table>
+                        <i-Table :height="processTable.height"
+                                 :width="processTable.width"
+                                 :show-header="processTable.showHeader"
+                                 :loading="processTable.pageLoading"
+                                 :stripe="processTable.showStripe"
+                                 :border="processTable.showBorder"
+                                 :highlight-row="processTable.highlightRow"
+                                 :size="processTable.tableSize"
+                                 :columns="processTable.columns"
+                                 :data="processTable.dataTable"
+                                 @on-row-click="tableProcessRowClick"></i-Table>
                     </i-col>
                 </Row>
                 <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
                     <i-col span="6"></i-col>
                     <i-col span="18">
                         <div class="float-right">
-                            <Page @on-change="pageChangeRole" @on-page-size-change="pageSizeChangeRole"
-                                  :page-size="rolePage.pageSize"
-                                  :page-size-opts="rolePage.pageSizeOpts"
-                                  :placement="rolePage.placement"
-                                  :current:="rolePage.pageNo"
-                                  :total="rolePage.totalCount"
-                                  :show-elevator="rolePage.showElevator"
-                                  :show-total="rolePage.showTotal"
-                                  :show-sizer="rolePage.showSizer"></Page>
+                            <Page @on-change="pageChangeProcess"
+                                  @on-page-size-change="pageSizeChangeProcess"
+                                  :page-size="processPage.pageSize"
+                                  :page-size-opts="processPage.pageSizeOpts"
+                                  :placement="processPage.placement"
+                                  :current:="processPage.pageNo"
+                                  :total="processPage.totalCount"
+                                  :show-elevator="processPage.showElevator"
+                                  :show-total="processPage.showTotal"
+                                  :show-sizer="processPage.showSizer"></Page>
                         </div>
                     </i-col>
 
@@ -84,16 +85,16 @@
                 </Row>
                 <Row class-name="my-layout-body" type="flex">
                     <i-col class-name="col-right" span="24">
-                        <i-Table :height="userTable.height"
-                                 :width="userTable.width"
-                                 :show-header="userTable.showHeader"
-                                 :loading="userTable.pageLoading"
-                                 :stripe="userTable.showStripe"
-                                 :border="userTable.showBorder"
-                                 :highlight-row="userTable.highlightRow"
-                                 :size="userTable.tableSize"
-                                 :columns="userTable.columns"
-                                 :data="userTable.dataTable"
+                        <i-Table :height="stepTable.height"
+                                 :width="stepTable.width"
+                                 :show-header="stepTable.showHeader"
+                                 :loading="stepTable.pageLoading"
+                                 :stripe="stepTable.showStripe"
+                                 :border="stepTable.showBorder"
+                                 :highlight-row="stepTable.highlightRow"
+                                 :size="stepTable.tableSize"
+                                 :columns="stepTable.columns"
+                                 :data="stepTable.dataTable"
                         >
                         </i-Table>
                     </i-col>
@@ -103,14 +104,14 @@
                     <i-col span="18">
                         <div class="float-right">
                             <Page
-                                    :page-size="userPage.pageSize"
-                                    :page-size-opts="userPage.pageSizeOpts"
-                                    :placement="userPage.placement"
-                                    :current:="userPage.pageNo"
-                                    :total="userPage.totalCount"
-                                    :show-elevator="userPage.showElevator"
-                                    :show-total="userPage.showTotal"
-                                    :show-sizer="userPage.showSizer"></Page>
+                                    :page-size="stepPage.pageSize"
+                                    :page-size-opts="stepPage.pageSizeOpts"
+                                    :placement="stepPage.placement"
+                                    :current:="stepPage.pageNo"
+                                    :total="stepPage.totalCount"
+                                    :show-elevator="stepPage.showElevator"
+                                    :show-total="stepPage.showTotal"
+                                    :show-sizer="stepPage.showSizer"></Page>
                         </div>
                     </i-col>
 
@@ -118,72 +119,54 @@
             </div>
         </i-col>
     </Row>
-
-    <Modal v-model="formModal.modalShow" :mask-closable="false" :styles="{top: '20px'}" :width="500">
-        <p slot="header" style="text-align:center">
-            <Icon size="16" type="compose"></Icon>
-            <span class="my-modal-title">{{formModal.title}}</span>
-        </p>
-        <div style="text-align:center">
-            <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate"
-                    label-position="right" label-width="70" >
-                <Form-Item label="角色名称" prop="name">
-                    <i-Input v-model="formModal.bindModel.name" placeholder="请输入角色名称"></i-Input>
-                </Form-Item>
-                <Form-Item label="角色备注" prop="memo">
-                    <i-Input v-model="formModal.bindModel.memo" placeholder="请输入角色备注"></i-Input>
-                </Form-Item>
-            </i-Form>
-        </div>
-        <div slot="footer">
-            <i-Button type="text" size="large" @click="formModalCancel" >取消</i-Button>
-            <i-Button type="primary" size="large"  @click="formModalOk"
-                      v-show="formModal.okButShow"
-                      :loading="formModal.okButLoading" >确定</i-Button>
-        </div>
-    </Modal>
 </div>
 </body>
 <script>
     var domain="${ctx}";
     var nomanage=${requestScope.nomanage};
     var corporationId="${requestScope.corporationId}";
-    var insert_url=domain+"/auditing/insert?jwt=${requestScope.jwt}";
-    var update_url=domain+"/auditing/update?jwt=${requestScope.jwt}";
-    var delete_url=domain+"/auditing/delete?jwt=${requestScope.jwt}";
+    var insert_url=domain+"/auditKindProcess/insert?jwt=${requestScope.jwt}";
+    var update_url=domain+"/auditKindProcess/update?jwt=${requestScope.jwt}";
+    var delete_url=domain+"/auditKindProcess/delete?jwt=${requestScope.jwt}";
     var corporation_Select_url="${ctx}/corporation/vselect/selectCorporation?jwt=${requestScope.jwt}";
 
-    var pageHelperProcess=new pageHepler("${ctx}/role/pagination?jwt=${requestScope.jwt}",{
+    var pageHelperProcess=new pageHepler("${ctx}/auditKindProcess/pagination?jwt=${requestScope.jwt}",{
         columns: [
             {
                 title: '序号',
                 key: 'id'
             },
             {
-                title: '角色名称',
-                key: 'name'
+                title: '审核类型',
+                key: 'auditkind'
             },
             {
-                title: '角色备注',
-                key: 'memo',
-                width:300
+                title: '部门',
+                key: 'departname'
+            },
+            {
+                title: '状态',
+                key: 'enable'
+            },
+            {
+                title: '步骤数',
+                key: 'stepnum'
             }
         ]
-    },{orderBy:" id desc "});
+    },{orderBy:" ap.id desc "});
 
-    var pageHelperStep=new pageHepler("${ctx}/users/pagination?jwt=${requestScope.jwt}",{
+    var pageHelperStep=new pageHepler("${ctx}/auditKindProcessStep/pagination?jwt=${requestScope.jwt}",{
         columns: [
             {
-                title: '用户姓名',
-                key: 'name'
+                title: '审核人',
+                key: 'uname'
             },
             {
-                title: '用户职位',
-                key: 'office',
-                width:300
+                title: '步骤',
+                key: 'step'
             }
         ]
-    },{pageSize:50,orderBy:" u.id desc "});
+    },{orderBy:" aps.step asc "});
 
     var selectHelperCorporation=new selectHelper(corporation_Select_url,{});
 
@@ -192,42 +175,24 @@
         data: {
             jwt:"${requestScope.jwt}",
             butShow:${requestScope.rightBut},
-            formModal:{
-                title:"",
-                modalShow:false,
-                okButShow:true,
-                okButLoading:false,
-                isAddStatus:true,
-                bindModel:{
-                    id:null,
-                    corporationid:null,
-                    name:"",
-                    memo:""
-                },
-                ruleValidate:{
-                    name: [
-                        { required: true, message: '名称不能为空', trigger: 'blur' }
-                    ]
-                }
-            },
             selectCorporation:selectHelperCorporation.ivSelect,
-            roleTable:pageHelperRole.ivTable,
-            rolePage:pageHelperRole.ivPage,
-            userTable:pageHelperUser.ivTable,
-            userPage:pageHelperUser.ivPage
+            processTable:pageHelperProcess.ivTable,
+            processPage:pageHelperProcess.ivPage,
+            stepTable:pageHelperStep.ivTable,
+            stepPage:pageHelperStep.ivPage
         },
         created:function(){
 
         },
         mounted:function () {
             //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条
-            pageHelperRole.setHeight($(".my-box-left .my-layout-body").height());
+            pageHelperProcess.setHeight($(".my-box-left .my-layout-body").height());
             //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条
-            pageHelperUser.setHeight($(".my-box-right .my-layout-body").height());
+            pageHelperStep.setHeight($(".my-box-right .my-layout-body").height());
             //权限控制
             if(nomanage){
                 //加载角色表格数据
-                pageHelperRole.load("corporationId='"+corporationId+"'");
+                pageHelperProcess.load(" c.id='"+corporationId+"'");
                 //加载组织机构
                 selectHelperCorporation.load("id='"+corporationId+"'");
                 selectHelperCorporation.setSelectItem(parseInt(corporationId));
@@ -235,72 +200,45 @@
             }
             else{
                 //加载角色表格数据
-                pageHelperRole.load(null);
+                pageHelperProcess.load(null);
                 //加载组织机构
                 selectHelperCorporation.load(null);
             }
         },
         methods:{
-            pageChangeRole(index){
-                pageHelperRole.pageIndexChanging(index);
-            },
-            pageSizeChangeRole(pageSize){
-                pageHelperRole.pageIndexChanging(1);
-            },
-            tableRoleRowClick(data,index){
-                pageHelperRole.setSelectRowIndex(index);
-                pageHelperUser.load(" roleid='" + data.id + "' ");
-            },
             selectCorporationChange(option){
                 if(option==null||option.value==""){
-                    pageHelperRole.load(null);
+                    pageHelperProcess.load(null);
                 }
                 else {
-                    pageHelperRole.load("corporationId='" + option.value + "'");
+                    pageHelperProcess.load(" c.id='" + option.value + "'");
                 }
             },
-            butSearch(){
-                this.queryModal.modalShow=true;
+            pageChangeProcess(index){
+                pageHelperProcess.pageIndexChanging(index);
+            },
+            pageSizeChangeProcess(pageSize){
+                pageHelperProcess.pageIndexChanging(1);
+            },
+            tableProcessRowClick(data,index){
+                pageHelperProcess.setSelectRowIndex(index);
+                pageHelperStep.load(" ap.id='" + data.id + "' ");
             },
             butAdd(){
-                if(selectHelperCorporation.getSelectItem()) {
-                    this.$refs['formModal.bindModel'].resetFields();
-                    this.formModal.modalShow = true;
-                    this.formModal.isAddStatus = true;
-                    this.formModal.okButShow = true;
-                    this.formModal.title = "增加角色";
-                }
-                else{
-                    valert(this,"请先选择组织机构");
-                }
+
             },
             butEdit(){
-                if(pageHelperRole.getSelectRowIndex()>-1){
-                    this.$refs['formModal.bindModel'].resetFields();
-                    this.formModal.modalShow=true;
-                    this.formModal.okButShow=true;
-                    this.formModal.isAddStatus=false;
-                    this.formModal.title="修改组织结构";
-                    let rowData=pageHelperRole.getSelectRowData();
-                    let vue=this;
-                    $.each(rowData,function(key,value){
-                        if(typeof vue.formModal.bindModel[key]!=undefined){
-                            vue.formModal.bindModel[key]=value;
-                        }
-                    });
-                }
-                else{
-                    valert(this,"请选择一行记录修改");
-                }
+
             },
             butDel(){
-                if(pageHelperRole.getSelectRowIndex()>-1){
+                if(pageHelperProcess.getSelectRowIndex()>-1){
                     vconfirm(this,"确认删除吗？",()=>{
-                        let rowData=pageHelperRole.getSelectRowData();
-                        vajaxPost(roleDelete_url,{id:rowData.id},false,(result)=>{
+                        let rowData=pageHelperProcess.getSelectRowData();
+                        vajaxPost(delete_url,{id:rowData.id},false,(result)=>{
                             if(result&&result.success){
-                                pageHelperRole.deleteSelectedRow();
-                                pageHelperRole.setSelectRowIndex(-1);
+                                pageHelperProcess.deleteSelectedRow();
+                                pageHelperProcess.setSelectRowIndex(-1);
+                                pageHelperStep.load(" ap.id=0 ");
                                 vtoast(this,result.tip);
                             }
                             else{
@@ -315,56 +253,6 @@
             },
             butRefresh(){
                 window.location.reload();
-            },
-            butAuditStep(){
-
-            },
-            formModalCancel(){
-                this.formModal.modalShow=false;
-                this.formModal.okButLoading=false;
-            },
-            formModalOk(){
-                this.$refs['formModal.bindModel'].validate((valid) => {
-                    if (valid) {
-                        let vue=this;
-                        let url= this.formModal.isAddStatus?roleInsert_url:roleUpdate_url;
-                        let data=this.formModal.bindModel;
-                        if(this.formModal.isAddStatus){
-                            if(typeof(data["id"])!=undefined){
-                                data["id"]=null;
-                            }
-                            data["corporationid"]=selectHelperCorporation.getSelectItem();
-                        }
-                        vajaxPost(url,data,true,(result)=>{
-                            if(result&&result.success){
-                                vtoast(vue,result.tip);
-                                vue.formModal.modalShow=false;
-                                if(vue.formModal.isAddStatus){
-                                    pageHelperRole.pageIndexChanging(1);
-                                }
-                                else{
-                                    let rowData= pageHelperRole.getSelectRowData();
-                                    $.each(data,function(key,value){
-                                        if(typeof rowData[key]!=undefined){
-                                            rowData[key]=value;
-                                        }
-                                    });
-                                    pageHelperRole.setHighlightRow();
-                                }
-                            }
-                            else{
-                                valert(vue,result.tip);
-                            }
-                        },()=>{
-                            vue.formModal.okButLoading=true;
-                        },()=>{
-                            vue.formModal.okButLoading=false;
-                        });
-
-                    } else {
-                        valert(this,'表单验证失败!');
-                    }
-                });
             }
         }
     });

@@ -15,9 +15,6 @@
     <template v-if="butShow.butUploadHead">
         <i-Button type="primary" @click="butUploadHead()" v-show="butShow.butUploadHead" icon="upload">上传头像</i-Button>
     </template>
-    <template v-if="butShow.butAuditStep">
-        <i-Button type="primary" @click="butAuditStep()" v-show="butShow.butAuditStep" icon="android-share-alt">审核步骤</i-Button>
-    </template>
     <template v-if="butShow.butLook">
         <i-Button type="primary" @click="butLook()" v-show="butShow.butLook" icon="ios-glasses">查看</i-Button>
     </template>

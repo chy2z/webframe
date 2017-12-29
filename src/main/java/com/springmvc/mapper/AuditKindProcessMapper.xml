@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.mapper.AuditKindProcessMapper">
+
+  <resultMap id="BaseResultMap" type="com.springmvc.model.AuditKindProcess">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="kId" jdbcType="INTEGER" property="kid" />
+    <result column="stepNum" jdbcType="INTEGER" property="stepnum" />
+    <result column="departId" jdbcType="INTEGER" property="departid" />
+    <result column="enable" jdbcType="VARCHAR" property="enable" />
+  </resultMap>
+
+  <resultMap extends="BaseResultMap" id="JoinResultMap" type="com.springmvc.model.AuditKindProcess">
+    <!-- 增加级联属性 -->
+    <result column="departname" jdbcType="VARCHAR" property="departname" />
+    <result column="auditkind" jdbcType="VARCHAR" property="auditkind" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, kId, stepNum, departId, enable
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from audit_kind_process
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from audit_kind_process
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.springmvc.model.AuditKindProcess">
+    insert into audit_kind_process
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="kid != null">
+        kId,
+      </if>
+      <if test="stepnum != null">
+        stepNum,
+      </if>
+      <if test="departid != null">
+        departId,
+      </if>
+      <if test="enable != null">
+        enable,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="kid != null">
+        #{kid,jdbcType=INTEGER},
+      </if>
+      <if test="stepnum != null">
+        #{stepnum,jdbcType=INTEGER},
+      </if>
+      <if test="departid != null">
+        #{departid,jdbcType=INTEGER},
+      </if>
+      <if test="enable != null">
+        #{enable,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.model.AuditKindProcess">
+    update audit_kind_process
+    <set>
+      <if test="kid != null">
+        kId = #{kid,jdbcType=INTEGER},
+      </if>
+      <if test="stepnum != null">
+        stepNum = #{stepnum,jdbcType=INTEGER},
+      </if>
+      <if test="departid != null">
+        departId = #{departid,jdbcType=INTEGER},
+      </if>
+      <if test="enable != null">
+        enable = #{enable,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+</mapper>

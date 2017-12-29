@@ -280,7 +280,7 @@
                         this.formModal.modalShow=true;
                         this.formModal.okButShow=true;
                         this.formModal.isAddStatus=false;
-                        this.formModal.title="修改组织结构";
+                        this.formModal.title="修改角色";
                         let rowData=pageHelperRole.getSelectRowData();
                         let vue=this;
                         $.each(rowData,function(key,value){

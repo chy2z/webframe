@@ -1,9 +1,10 @@
 package com.springmvc.controller;
 
-import com.springmvc.model.Department;
+import com.springmvc.mapper.AuditKindProcessMapper;
+import com.springmvc.model.AuditKind;
+import com.springmvc.model.AuditKindProcess;
 import com.springmvc.model.RequestResult;
-import com.springmvc.service.DepartmentService;
-import com.springmvc.service.VSelectService;
+import com.springmvc.service.AuditKindProcessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,36 +16,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
-* @Title: DepartmentControl
-* @Description:
+* @Title: AuditProcessControl
+* @Description: 审核流程接口
 * @author chy
-* @date 2017/10/31 16:30
+* @date 2017/12/29 11:42
 */
 @Controller
-@RequestMapping("/department")
-public class DepartmentControl {
+@RequestMapping("/auditKindProcess")
+public class AuditKindProcessControl {
 
     @Autowired
-    DepartmentService deService;
-
-    @Autowired
-    VSelectService vSeService;
+    AuditKindProcessService auditKindProcessService;
 
     /**
-     * 返回所有部门
-     * @param request
-     * @param response
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/vselect/selectDepartment")
-    public String vselect(HttpServletRequest request, HttpServletResponse response){
-        String where=request.getParameter("where");
-        return  vSeService.toIviewSelectForJson(vSeService.selectDepartment(where));
-    }
-
-    /**
-     * 部门分页
+     * 分页
      * @return
      */
     @ResponseBody
@@ -59,23 +44,23 @@ public class DepartmentControl {
 
         String orderBy=request.getParameter("orderBy");
 
-        return deService.toPaginationJson(pageNo,pageSize,where,orderBy);
+        return auditKindProcessService.toPaginationJson(pageNo,pageSize,where,orderBy);
     }
 
     /**
-     * 部门插入
+     * 插入
      * @param c
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/insert",method = {RequestMethod.POST})
-    public RequestResult insert(@RequestBody Department c){
+    public RequestResult insert(@RequestBody AuditKindProcess c){
         RequestResult result=new RequestResult();
         if(null==c){
             result.setFail("没有数据");
         }
         else{
-            if(deService.insert(c)){
+            if(auditKindProcessService.insert(c)){
                 result.setSucceed("保存成功",null);
             }
             else{
@@ -87,19 +72,19 @@ public class DepartmentControl {
     }
 
     /**
-     * 部门修改
+     * 修改
      * @param c
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/update",method = {RequestMethod.POST})
-    public RequestResult update(@RequestBody Department c){
+    public RequestResult update(@RequestBody AuditKindProcess c){
         RequestResult result=new RequestResult();
         if(null==c){
             result.setFail("没有数据");
         }
         else{
-            if(deService.update(c)){
+            if(auditKindProcessService.update(c)){
                 result.setSucceed("修改成功",null);
             }
             else{
@@ -111,7 +96,7 @@ public class DepartmentControl {
     }
 
     /**
-     * 部门删除
+     * 删除
      * @param id
      * @return
      */
@@ -123,7 +108,7 @@ public class DepartmentControl {
             result.setFail("没有数据");
         }
         else{
-            if(deService.delete(Integer.parseInt(id))){
+            if(auditKindProcessService.delete(Integer.parseInt(id))){
                 result.setSucceed("删除成功",null);
             }
             else{
@@ -132,4 +117,5 @@ public class DepartmentControl {
         }
         return result;
     }
+
 }

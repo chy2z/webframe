@@ -46,7 +46,7 @@ public class AuditKindControl {
     }
 
     /**
-     * 插入机构组织
+     * 插入
      * @param c
      * @return
      */
@@ -94,7 +94,7 @@ public class AuditKindControl {
     }
 
     /**
-     * 删除组织结构
+     * 删除
      * @param id
      * @return
      */

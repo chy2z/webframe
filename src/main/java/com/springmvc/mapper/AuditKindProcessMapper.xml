@@ -89,6 +89,20 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <select id="getCount" resultType="int">
+    select count(1) from audit_kind ak JOIN audit_kind_process ap on ak.id=ap.kid
+    JOIN  department d on d.id=ap.departId
+    <if test="where != null">where ${where}</if>
+    <if test="orderBy != null">order by ${orderBy}</if>
+  </select>
 
+  <select id="selectPagination" resultMap="BaseResultMap">
+    select ap.id, ap.kId, ap.stepNum,ap.departId, ap.enable,d.name as departname, ak.name as auditkind
+    from audit_kind ak JOIN audit_kind_process ap on ak.id=ap.kid
+    JOIN  department d on d.id=ap.departId
+    <if test="where != null">where ${where}</if>
+    <if test="orderBy != null">order by ${orderBy}</if>
+    limit #{start},#{pageSize}
+  </select>
 
 </mapper>

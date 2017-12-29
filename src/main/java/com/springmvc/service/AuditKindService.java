@@ -1,36 +1,32 @@
 package com.springmvc.service;
 
-import com.springmvc.mapper.CorporationMapper;
-import com.springmvc.model.Corporation;
+import com.springmvc.mapper.AuditKindMapper;
+import com.springmvc.model.AuditKind;
 import com.springmvc.model.PageHelper;
 import com.springmvc.util.JsonUtil;
 import com.springmvc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
-
 /**
-* @Title: CorporationService
-* @Description: 组织结构业务
+* @Title: AuditKindService
+* @Description: 审核类型接口
 * @author chy
-* @date 2017/10/28 17:17
+* @date 2017/12/28 15:41
 */
 @Service
-public class CorporationService {
+public class AuditKindService {
 
     @Autowired
-    CorporationMapper cmap;
-
+    AuditKindMapper mapper;
 
     /**
      * 插入记录
      * @param c
      * @return
      */
-    public boolean insert(Corporation c) {
-        return cmap.insertSelective(c) > 0;
+    public boolean insert(AuditKind c) {
+        return mapper.insertSelective(c) > 0;
     }
 
     /**
@@ -38,8 +34,8 @@ public class CorporationService {
      * @param c
      * @return
      */
-    public boolean update(Corporation c) {
-        return cmap.updateByPrimaryKeySelective(c) > 0;
+    public boolean update(AuditKind c) {
+        return mapper.updateByPrimaryKeySelective(c) > 0;
     }
 
 
@@ -49,17 +45,9 @@ public class CorporationService {
      * @return
      */
     public boolean delete(Integer id) {
-        return cmap.deleteByPrimaryKey(id) > 0;
+        return mapper.deleteByPrimaryKey(id) > 0;
     }
 
-    /**
-     * 导出数据
-     * @param where
-     * @return
-     */
-    public List<Corporation> exportForExcel(String where){
-        return cmap.exportForExcel(where);
-    }
 
     /**
      * 返回分页数据
@@ -69,7 +57,7 @@ public class CorporationService {
      * @param orderBy
      * @return
      */
-    public PageHelper getPagination(int pageNo,int pageSize,String where ,String orderBy){
+    public PageHelper getPagination(int pageNo, int pageSize, String where , String orderBy){
 
         PageHelper ph=new PageHelper();
 
@@ -81,9 +69,9 @@ public class CorporationService {
 
         ph.setOrderBy(StringUtil.nullOrString(orderBy));
 
-        ph.setTotalCount(cmap.getCount(ph.getWhere(),ph.getOrderBy()));
+        ph.setTotalCount(mapper.getCount(ph.getWhere(),ph.getOrderBy()));
 
-        ph.setResult(cmap.selectPagination(ph.getWhere(),ph.getOrderBy(),ph.getStart(),ph.getPageSize()));
+        ph.setResult(mapper.selectPagination(ph.getWhere(),ph.getOrderBy(),ph.getStart(),ph.getPageSize()));
 
         return ph;
     }

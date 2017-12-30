@@ -15,10 +15,11 @@
 
     <!-- 配置扫描的包 -->
     <context:component-scan base-package="com.springmvc.*" use-default-filters="false">
-        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />  
-        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
+        <!-- 解决事物不起作用 -->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
    </context:component-scan>
 
     <!-- 注册HandlerMapper、HandlerAdapter两个映射类 -->

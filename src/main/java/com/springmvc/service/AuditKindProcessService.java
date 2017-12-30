@@ -2,11 +2,13 @@ package com.springmvc.service;
 
 import com.springmvc.mapper.AuditKindProcessMapper;
 import com.springmvc.model.AuditKindProcess;
+import com.springmvc.model.AuditKindProcessStep;
 import com.springmvc.model.PageHelper;
 import com.springmvc.util.JsonUtil;
 import com.springmvc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
 * @Title: AuditKindProcessService
@@ -19,6 +21,9 @@ public class AuditKindProcessService {
 
     @Autowired
     AuditKindProcessMapper mapper;
+
+    @Autowired
+    AuditKindProcessStepService auditKindProcessStepService;
 
     /**
      * 插入记录
@@ -44,8 +49,14 @@ public class AuditKindProcessService {
      * @param id
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public boolean delete(Integer id) {
-        return mapper.deleteByPrimaryKey(id) > 0;
+        mapper.deleteByPrimaryKey(id);
+
+        /**
+         * 同时删除审核步骤
+         */
+        return auditKindProcessStepService.deleteByPId(id);
     }
 
 

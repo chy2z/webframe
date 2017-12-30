@@ -32,7 +32,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <delete id="deleteByPrcoessId" parameterType="java.lang.Integer">
+  <delete id="deleteByProcessId" parameterType="java.lang.Integer">
     delete from audit_kind_process_step
     where pId = #{pId,jdbcType=INTEGER}
   </delete>

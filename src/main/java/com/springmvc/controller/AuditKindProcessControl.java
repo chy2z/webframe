@@ -1,15 +1,14 @@
 package com.springmvc.controller;
 
-import com.springmvc.model.AuditKindProcess;
-import com.springmvc.model.RequestResult;
+import com.springmvc.model.*;
 import com.springmvc.service.AuditKindProcessService;
 import com.springmvc.service.AuditKindProcessStepService;
+import com.springmvc.service.UsersService;
+import com.springmvc.service.UsersTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +28,37 @@ public class AuditKindProcessControl {
 
     @Autowired
     AuditKindProcessStepService auditKindProcessStepService;
+
+    @Autowired
+    UsersService uService;
+
+    @Autowired
+    UsersTokenService utService;
+
+    /**
+     * 路径跳转
+     * @return
+     */
+    @RequestMapping("/path/{page}")
+    public String toPage(@PathVariable("page") String page, HttpServletRequest request, Model model) {
+        String jwt = (String) request.getParameter("jwt");
+        UsersToken ut= utService.getUsersToken(jwt);
+        if (page.equals("add")) {
+            Users u= uService.getUsers(ut.getUserid());
+            model.addAttribute("user", u);
+            return "auditing/audit_kind_process_add_page";
+        }
+        else if(page.equals("update")){
+            String id = (String) request.getParameter("id");
+            //SysNotice sModel= auditKindProcessService
+            //model.addAttribute("sysNotice",sModel);
+            return "auditing/audit_kind_process_update_page";
+        }
+        else {
+            return "error";
+        }
+    }
+
 
     /**
      * 分页

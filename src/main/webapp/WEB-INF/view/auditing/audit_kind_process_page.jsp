@@ -125,8 +125,8 @@
     var domain="${ctx}";
     var nomanage=${requestScope.nomanage};
     var corporationId="${requestScope.corporationId}";
-    var insert_url=domain+"/auditKindProcess/insert?jwt=${requestScope.jwt}";
-    var update_url=domain+"/auditKindProcess/update?jwt=${requestScope.jwt}";
+    var add_url=domain+"/auditKindProcess/path/add?jwt=${requestScope.jwt}";
+    var update_url=domain+"/auditKindProcess/path/update?jwt=${requestScope.jwt}";
     var delete_url=domain+"/auditKindProcess/delete?jwt=${requestScope.jwt}";
     var corporation_Select_url="${ctx}/corporation/vselect/selectCorporation?jwt=${requestScope.jwt}";
 
@@ -158,12 +158,14 @@
     var pageHelperStep=new pageHepler("${ctx}/auditKindProcessStep/pagination?jwt=${requestScope.jwt}",{
         columns: [
             {
-                title: '审核人',
-                key: 'uname'
+                title: '步骤',
+                key: 'step',
+                width:100
             },
             {
-                title: '步骤',
-                key: 'step'
+                title: '审核人',
+                key: 'uname',
+                width:100
             }
         ]
     },{orderBy:" aps.step asc "});
@@ -225,10 +227,16 @@
                 pageHelperStep.load(" ap.id='" + data.id + "' ");
             },
             butAdd(){
-
+                vPopWindowShow("action_add",add_url,"审核流程增加");
             },
             butEdit(){
-
+                if(pageHelperProcess.getSelectRowIndex()>-1){
+                    let rowData=pageHelperProcess.getSelectRowData();
+                    vPopWindowShow("action_update",update_url+"&id="+rowData.id,"审核流程修改");
+                }
+                else{
+                    valert(this,"请选择一行记录修改");
+                }
             },
             butDel(){
                 if(pageHelperProcess.getSelectRowIndex()>-1){
@@ -256,6 +264,23 @@
             }
         }
     });
+
+    /**
+     * 全局弹出窗体回调
+     * @param action
+     * @param parameter
+     */
+    function popupsCallBack(action,parameter){
+        if(action=="action_add"){
+            pageHelperProcess.pageIndexChanging(1);
+        }
+        else if(action=="action_update"){
+            pageHelperProcess.updateSelectRowData(parameter);
+        }
+        else {
+            return ;
+        }
+    }
 
 </script>
 </html>

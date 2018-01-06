@@ -1,0 +1,35 @@
+/* 实现card body 高度100% */
+.my-layout-body .ivu-card{
+    height: 100%;
+    padding: 51px 0 0;
+}
+
+.my-layout-body .ivu-card-padding{
+    padding: 2px;
+    height: 100%;
+    width: auto;
+}
+
+/* 实现card body 高度100% */
+.my-layout-body .ivu-card .ivu-card-head{
+    margin: -51px 0 0;
+}
+
+/* 实现card body 高度100% */
+.my-layout-body .ivu-card .ivu-card-body{
+    height: 100%;
+    overflow: auto;
+}
+
+.my-layout-body .ivu-card-body-padding .ivu-card-body {
+    padding: 5px 5px;
+}
+
+/* 实现card head 样式 */
+.my-layout-body .ivu-card .ivu-card-head {
+    border-bottom: 1px solid #e9eaec;
+    padding: 14px 16px;
+    line-height: 1;
+    background-color: #eaf4fe;
+}
+

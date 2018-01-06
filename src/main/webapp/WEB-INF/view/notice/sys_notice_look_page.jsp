@@ -10,31 +10,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>
-    <style>
-        /* 实现card body 高度100% */
-        .my-layout-body .ivu-card{
-            height: 100%;
-            padding: 51px 0 0;
-        }
-
-        /* 实现card body 高度100% */
-        .my-layout-body .ivu-card .ivu-card-head{
-            margin: -51px 0 0;
-        }
-
-        /* 实现card body 高度100% */
-        .my-layout-body .ivu-card .ivu-card-body{
-            height: 100%;
-            overflow: auto;
-        }
-
-        .my-layout-body .ivu-card .ivu-card-head {
-            border-bottom: 1px solid #e9eaec;
-            padding: 14px 16px;
-            line-height: 1;
-            background-color: #eaf4fe;
-        }
-    </style>
 </head>
 <body>
 <div class="my-app" id="app">

@@ -164,8 +164,7 @@
             },
             {
                 title: '审核人',
-                key: 'uname',
-                width:100
+                key: 'uname'
             }
         ]
     },{orderBy:" aps.step asc "});
@@ -227,7 +226,12 @@
                 pageHelperStep.load(" ap.id='" + data.id + "' ");
             },
             butAdd(){
-                vPopWindowShow("action_add",add_url,"审核流程增加");
+                if(isBlank(selectHelperCorporation.getSelectItem())){
+                    valert(this,"请选择组织机构");
+                }
+                else {
+                    vPopWindowShow("action_add", add_url, "审核流程增加");
+                }
             },
             butEdit(){
                 if(pageHelperProcess.getSelectRowIndex()>-1){

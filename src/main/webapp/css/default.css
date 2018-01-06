@@ -153,6 +153,7 @@ html, body {
     height: 0;
     border-bottom: 2px solid #dcdcdc;
 }
+
 .notwrap{
     word-break:keep-all;
     white-space:nowrap;

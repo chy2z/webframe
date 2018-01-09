@@ -66,6 +66,9 @@
                 <Form-Item label="名称" prop="name">
                     <i-Input v-model="formModal.bindModel.name" placeholder="请输入名称"></i-Input>
                 </Form-Item>
+                <Form-Item label="业务" prop="operation">
+                    <i-Input v-model="formModal.bindModel.operation" placeholder="请输入业务名称"></i-Input>
+                </Form-Item>
                 <Form-Item label="备注" prop="code">
                     <i-Input v-model="formModal.bindModel.memo" placeholder="请输入备注"></i-Input>
                 </Form-Item>
@@ -89,6 +92,9 @@
                     label-position="right" label-width="50"  >
                 <Form-Item label="名称" prop="name">
                     <i-Input element-id="qname" v-model="queryModal.bindModel.name" placeholder="请输入名称"></i-Input>
+                </Form-Item>
+                <Form-Item label="业务" prop="operation">
+                    <i-Input element-id="qoperation" v-model="queryModal.bindModel.operation" placeholder="请输入业务标识"></i-Input>
                 </Form-Item>
                 <Form-Item label="备注" prop="code">
                     <i-Input element-id="qcode" v-model="queryModal.bindModel.memo" placeholder="请输入备注"></i-Input>
@@ -124,6 +130,10 @@
                     key: 'name'
                 },
                 {
+                    title: '业务',
+                    key: 'operation'
+                },
+                {
                     title: '备注',
                     key: 'memo'
                 }
@@ -143,7 +153,8 @@
                     bindModel:{
                         id:null,
                         name:"",
-                        memo:""
+                        memo:"",
+                        operation:""
                     },
                     ruleValidate:{}
                 },
@@ -161,6 +172,9 @@
                     ruleValidate:{
                         name: [
                             { required: true, message: '名称不能为空', trigger: 'blur' }
+                        ],
+                        operation: [
+                            { required: true, message: '业务名称不能为空', trigger: 'blur' }
                         ]
                     }
                 },

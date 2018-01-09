@@ -14,10 +14,10 @@
 <body>
 <div class="my-app" id="app">
     <Row class-name="my-box" type="flex">
-        <i-col span="12">
+        <i-col span="14">
             <div class="my-layout my-box-left">
                 <Row class-name="my-layout-top" justify="end" align="middle" type="flex">
-                    <i-col span="10">
+                    <i-col span="24">
                         <div class="float-left">
                             <label class="my-label">组织机构：</label>
                             <i-Select  style="width:200px" @on-change="selectCorporationChange"
@@ -32,9 +32,6 @@
                                           :key="item.id">{{ item.label }}</i-Option>
                             </i-Select>
                         </div>
-                    </i-col>
-                    <i-col span="14">
-
                     </i-col>
                 </Row>
                 <Row class-name="my-layout-body" type="flex">
@@ -72,12 +69,10 @@
                 </Row>
             </div>
         </i-col>
-        <i-col span="12">
+        <i-col span="10">
             <div class="my-layout my-box-right">
                 <Row class-name="my-layout-top" justify="end" align="middle" type="flex">
-                    <i-col span="10">
-                    </i-col>
-                    <i-col span="14">
+                    <i-col span="24">
                         <div class="float-right">
                             <%@include file="../rightTemplate.jsp" %>
                         </div>
@@ -159,12 +154,12 @@
         columns: [
             {
                 title: '步骤',
-                key: 'step',
-                width:100
+                key: 'step'
             },
             {
                 title: '审核人',
-                key: 'uname'
+                key: 'uname',
+                width:300
             }
         ]
     },{orderBy:" aps.step asc "});
@@ -190,6 +185,7 @@
             pageHelperProcess.setHeight($(".my-box-left .my-layout-body").height());
             //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条
             pageHelperStep.setHeight($(".my-box-right .my-layout-body").height());
+
             //权限控制
             if(nomanage){
                 //加载角色表格数据

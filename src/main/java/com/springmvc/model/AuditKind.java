@@ -13,6 +13,8 @@ public class AuditKind {
 
     private String memo;
 
+    private String operation;
+
     public Integer getId() {
         return id;
     }
@@ -35,5 +37,13 @@ public class AuditKind {
 
     public void setMemo(String memo) {
         this.memo = memo == null ? null : memo.trim();
+    }
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
     }
 }

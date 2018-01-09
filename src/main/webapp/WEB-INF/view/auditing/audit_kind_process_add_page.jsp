@@ -15,7 +15,7 @@
 <div class="my-app" id="app">
     <div class="my-layout my-layout-clear-top-10">
         <Row class-name="my-layout-body" justify="center" type="flex">
-            <i-col span="9">
+            <i-col span="10">
                 <div class="ivu-card-padding ivu-card-body-padding">
                 <Card>
                     <p slot="title">审核类型-选择</p>
@@ -30,7 +30,8 @@
                                                :placeholder="selectATDepart.placeholder"
                                                :not-found-text="selectATDepart.notFoundText"
                                                :label-in-value="selectATDepart.labelInValue"
-                                               :size="selectATDepart.size" :clearable="selectATDepart.clearable"
+                                               :size="selectATDepart.size"
+                                               :clearable="selectATDepart.clearable"
                                                :filterable="selectATDepart.filterable">
                                         <i-Option v-for="item in selectATDepart.dataTable" :value="item.id"
                                                   :key="item.id">{{ item.label }}</i-Option>
@@ -38,16 +39,35 @@
                                 </div>
                             </i-col >
                         </Row>
-                        <Row class-name="my-layout-body" justify="center" type="flex">
+                        <Row class-name="my-layout-body my-layout-body-ak"  type="flex">
                             <i-col span="9">
-
+                                <i-Table :height="dataTableAK.height"
+                                         :width="dataTableAK.width"
+                                         :show-header="dataTableAK.showHeader"
+                                         :loading="dataTableAK.pageLoading"
+                                         :stripe="dataTableAK.showStripe"
+                                         :border="dataTableAK.showBorder"
+                                         :highlight-row="dataTableAK.highlightRow"
+                                         :size="dataTableAK.tableSize"
+                                         :columns="dataTableAK.columns"
+                                         :data="dataTableAK.dataTable"
+                                         @on-row-click="tableRowClickAK"></i-Table>
                             </i-col>
                         </Row>
                         <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
                             <i-col span="6"></i-col>
                             <i-col span="18">
                                 <div class="float-right">
-
+                                    <Page @on-change="pageChangeAK"
+                                          @on-page-size-change="pageSizeChangeAK"
+                                          :page-size="dataPageAK.pageSize"
+                                          :page-size-opts="dataPageAK.pageSizeOpts"
+                                          :placement="dataPageAK.placement"
+                                          :current:="dataPageAK.pageNo"
+                                          :total="dataPageAK.totalCount"
+                                          :show-elevator="dataPageAK.showElevator"
+                                          :show-total="dataPageAK.showTotal"
+                                          :show-sizer="dataPageAK.showSizer"></Page>
                                 </div>
                             </i-col>
                         </Row>
@@ -59,13 +79,66 @@
                 <div class="ivu-card-padding ivu-card-body-padding">
                     <Card>
                         <p slot="title">审核人-选择</p>
-                        <div class="fil-height">
-
+                        <div class="my-layout">
+                            <Row id="top" class-name="my-layout-top" justify="end" align="middle" type="flex">
+                                <i-col span="24">
+                                    <div class="float-left">
+                                        <label class="my-label">所属部门：</label>
+                                        <i-Select style="width:200px"
+                                                  @on-change="selectUDepartChange"
+                                                  v-model="selectUDepart.selectItem"
+                                                  :disabled="selectUDepart.disabled"
+                                                  :placeholder="selectUDepart.placeholder"
+                                                  :not-found-text="selectUDepart.notFoundText"
+                                                  :label-in-value="selectUDepart.labelInValue"
+                                                  :size="selectUDepart.size"
+                                                  :clearable="selectUDepart.clearable"
+                                                  :filterable="selectUDepart.filterable">
+                                            <i-Option v-for="item in selectUDepart.dataTable" :value="item.id"
+                                                      :key="item.id">{{ item.label }}</i-Option>
+                                        </i-Select>
+                                    </div>
+                                </i-col >
+                            </Row>
+                            <Row class-name="my-layout-body my-layout-body-u"  type="flex">
+                                <i-col span="9">
+                                    <i-Table :height="userTable.height"
+                                             :width="userTable.width"
+                                             :show-header="userTable.showHeader"
+                                             :loading="userTable.pageLoading"
+                                             :stripe="userTable.showStripe"
+                                             :border="userTable.showBorder"
+                                             :highlight-row="userTable.highlightRow"
+                                             :size="userTable.tableSize"
+                                             :columns="userTable.columns"
+                                             :data="userTable.dataTable"
+                                    >
+                                    </i-Table>
+                                </i-col>
+                            </Row>
+                            <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
+                                <i-col span="6"></i-col>
+                                <i-col span="18">
+                                    <div class="float-right">
+                                        <Page
+                                                @on-change="pageChangeUser"
+                                                @on-page-size-change="pageSizeChangeUser"
+                                                :page-size="userPage.pageSize"
+                                                :page-size-opts="userPage.pageSizeOpts"
+                                                :placement="userPage.placement"
+                                                :current:="userPage.pageNo"
+                                                :total="userPage.totalCount"
+                                                :show-elevator="userPage.showElevator"
+                                                :show-total="userPage.showTotal"
+                                                :show-sizer="userPage.showSizer"></Page>
+                                    </div>
+                                </i-col>
+                            </Row>
                         </div>
                     </Card>
                 </div>
             </i-col>
-            <i-col span="4">
+            <i-col span="3">
                 <div class="ivu-card-padding ivu-card-body-padding">
                     <Card>
                         <p slot="title">审核步骤</p>
@@ -107,6 +180,38 @@
     var department_Select_url="${ctx}/department/vselect/selectDepartment?jwt=${requestScope.jwt}";
 
     var selectHelperATDepartment= new selectHelper(department_Select_url,{});
+    var selectHelperUDepartment= new selectHelper(department_Select_url,{});
+
+    var pagingHelperAK=new pageHepler("${ctx}/auditKind/pagination?jwt=${requestScope.jwt}",{
+        columns: [
+            {
+                title: '序号',
+                key: 'id'
+            },
+            {
+                title: '名称',
+                key: 'name'
+            },
+            {
+                title: '备注',
+                key: 'memo'
+            }
+        ]
+    },{orderBy:" id desc "});
+
+    var pageHelperUser=new pageHepler("${ctx}/users/pagination?jwt=${requestScope.jwt}",{
+        columns: [
+            {
+                title: '用户姓名',
+                key: 'name'
+            },
+            {
+                title: '用户职位',
+                key: 'office',
+                width:300
+            }
+        ]
+    },{pageSize:50,orderBy:" u.id desc "});
 
     new Vue({
         el: '#app',
@@ -114,12 +219,50 @@
             spinShow:false,
             userid:${requestScope.user.id},
             corporationid:${requestScope.user.corporationid},
-            selectATDepart:selectHelperATDepartment.ivSelect
+            selectATDepart:selectHelperATDepartment.ivSelect,
+            selectUDepart:selectHelperUDepartment.ivSelect,
+            dataTableAK:pagingHelperAK.ivTable,
+            dataPageAK:pagingHelperAK.ivPage,
+            userTable:pageHelperUser.ivTable,
+            userPage:pageHelperUser.ivPage
         },
         mounted:function () {
+            pagingHelperAK.setHeight($(".my-layout-body-ak").height());
+            pagingHelperAK.setWidth($(".my-layout-body-ak").width());
+
+            pageHelperUser.setHeight($(".my-layout-body-u").height());
+            pageHelperUser.setWidth($(".my-layout-body-u").width());
+
+            pagingHelperAK.load(null);
+            pageHelperUser.load("u.corporationId='" + this.corporationid + "'");
+
             selectHelperATDepartment.load("corporationId='" + this.corporationid + "'");
+            selectHelperUDepartment.load("corporationId='" + this.corporationid + "'");
         },
         methods:{
+            pageChangeAK(index){
+                pagingHelperAK.pageIndexChanging(index);
+            },
+            pageSizeChangeAK(pageSize){
+                pagingHelperAK.setSelectRowIndex(1);
+            },
+            pageChangeUser(index){
+                pageHelperUser.pageIndexChanging(index);
+            },
+            pageSizeChangeUser(pageSize){
+                pagingHelperAK.setSelectRowIndex(1);
+            },
+            tableRowClickAK(data,index){
+
+            },
+            selectUDepartChange(option){
+                if(option==null||option.value==""){
+                    pageHelperUser.load("u.corporationId='" + this.corporationid + "'");
+                }
+                else {
+                    pageHelperUser.load(" u.departId='"+option.value+"' ");
+                }
+            },
             butRefresh(){
                 vconfirm(this,"确认刷新吗?",()=>{
                     window.location.reload();

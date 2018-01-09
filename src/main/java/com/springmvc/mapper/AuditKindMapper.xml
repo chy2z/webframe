@@ -5,10 +5,11 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="operation" jdbcType="VARCHAR" property="operation" />
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, name, memo
+    id, name, operation,memo
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -32,6 +33,9 @@
       <if test="name != null">
         name,
       </if>
+      <if test="operation != null">
+        operation,
+      </if>
       <if test="memo != null">
         memo,
       </if>
@@ -39,6 +43,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=INTEGER},
+      </if>
+      <if test="operation != null">
+        #{operation,jdbcType=VARCHAR},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
@@ -54,6 +61,9 @@
     <set>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="operation != null">
+        operation = #{operation,jdbcType=VARCHAR},
       </if>
       <if test="memo != null">
         memo = #{memo,jdbcType=VARCHAR},

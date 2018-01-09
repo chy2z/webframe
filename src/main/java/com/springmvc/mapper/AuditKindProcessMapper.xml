@@ -8,6 +8,7 @@
     <result column="stepNum" jdbcType="INTEGER" property="stepnum" />
     <result column="departId" jdbcType="INTEGER" property="departid" />
     <result column="enable" jdbcType="VARCHAR" property="enable" />
+    <result column="pname" jdbcType="VARCHAR" property="pname" />
   </resultMap>
 
   <resultMap extends="BaseResultMap" id="JoinResultMap" type="com.springmvc.model.AuditKindProcess">
@@ -17,7 +18,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, kId, stepNum, departId, enable
+    id,pname, kId, stepNum, departId, enable
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -38,6 +39,9 @@
       <if test="id != null">
         id,
       </if>
+      <if test="pname != null">
+        pname,
+      </if>
       <if test="kid != null">
         kId,
       </if>
@@ -54,6 +58,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pname != null">
+        #{pname,jdbcType=VARCHAR},
       </if>
       <if test="kid != null">
         #{kid,jdbcType=INTEGER},
@@ -73,6 +80,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.model.AuditKindProcess">
     update audit_kind_process
     <set>
+      <if test="pname != null">
+        pname = #{pname,jdbcType=VARCHAR},
+      </if>
       <if test="kid != null">
         kId = #{kid,jdbcType=INTEGER},
       </if>
@@ -99,7 +109,7 @@
   </select>
 
   <select id="selectPagination" resultMap="JoinResultMap">
-    select ap.id, ap.kId, ap.stepNum,ap.departId, ap.enable,d.name as departname, ak.name as auditkind
+    select ap.id,ap.pname,ap.kId,ap.stepNum,ap.departId,ap.enable,d.name as departname, ak.name as auditkind
     from audit_kind ak JOIN audit_kind_process ap on ak.id=ap.kid
     JOIN department d on d.id=ap.departId
     join corporation c on d.corporationId=c.id

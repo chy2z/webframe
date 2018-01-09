@@ -10,12 +10,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>
+    <script type="text/javascript" src="${ctx}/js/sortablejs/Sortable.min.js"></script>
 </head>
 <body>
 <div class="my-app" id="app">
     <div class="my-layout my-layout-clear-top-10">
         <Row class-name="my-layout-body" justify="center" type="flex">
-            <i-col span="10">
+            <i-col span="8">
                 <div class="ivu-card-padding ivu-card-body-padding">
                 <Card>
                     <p slot="title">审核类型-选择</p>
@@ -40,7 +41,7 @@
                             </i-col >
                         </Row>
                         <Row class-name="my-layout-body my-layout-body-ak"  type="flex">
-                            <i-col span="9">
+                            <i-col span="24">
                                 <i-Table :height="dataTableAK.height"
                                          :width="dataTableAK.width"
                                          :show-header="dataTableAK.showHeader"
@@ -55,8 +56,7 @@
                             </i-col>
                         </Row>
                         <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
-                            <i-col span="6"></i-col>
-                            <i-col span="18">
+                            <i-col span="24">
                                 <div class="float-right">
                                     <Page @on-change="pageChangeAK"
                                           @on-page-size-change="pageSizeChangeAK"
@@ -75,7 +75,7 @@
                 </Card>
                 </div>
             </i-col>
-            <i-col span="10">
+            <i-col span="8">
                 <div class="ivu-card-padding ivu-card-body-padding">
                     <Card>
                         <p slot="title">审核人-选择</p>
@@ -101,7 +101,7 @@
                                 </i-col >
                             </Row>
                             <Row class-name="my-layout-body my-layout-body-u"  type="flex">
-                                <i-col span="9">
+                                <i-col span="24">
                                     <i-Table :height="userTable.height"
                                              :width="userTable.width"
                                              :show-header="userTable.showHeader"
@@ -117,8 +117,7 @@
                                 </i-col>
                             </Row>
                             <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
-                                <i-col span="6"></i-col>
-                                <i-col span="18">
+                                <i-col span="24">
                                     <div class="float-right">
                                         <Page
                                                 @on-change="pageChangeUser"
@@ -138,25 +137,13 @@
                     </Card>
                 </div>
             </i-col>
-            <i-col span="3">
+            <i-col span="8">
                 <div class="ivu-card-padding ivu-card-body-padding">
                     <Card>
                         <p slot="title">审核步骤</p>
                         <div class="fil-height">
-                            <Steps :current="0" status="wait" direction="vertical">
-                                <Step title="待进行" content="这里是该步骤的描述信息">
-                                    <Tag color="red" closable >删除</Tag>
-                                </Step>
-                                <Step title="待进行" content="这里是该步骤的描述信息">
-                                    <Tag color="red" closable >删除</Tag>
-                                </Step>
-                                <Step title="待进行" content="这里是该步骤的描述信息">
-                                    <Tag color="red" closable >删除</Tag>
-                                </Step>
-                                <Step title="待进行" content="这里是该步骤的描述信息">
-                                    <Tag color="red" closable >删除</Tag>
-                                </Step>
-                            </Steps>
+                            <dragabletable :columns-List="columnsStep" v-model="dataStep" @on-start="dragOnstart" @on-end="dragOnend" @on-choose="dragOnchoose" >
+                            </dragabletable>
                         </div>
                     </Card>
                 </div>
@@ -198,20 +185,74 @@
             }
         ]
     },{orderBy:" id desc "});
-
     var pageHelperUser=new pageHepler("${ctx}/users/pagination?jwt=${requestScope.jwt}",{
         columns: [
             {
-                title: '用户姓名',
+                title: '姓名',
                 key: 'name'
             },
             {
-                title: '用户职位',
+                title: '职位',
                 key: 'office',
                 width:300
+            },
+            {
+                title:'角色',
+                key:'roleName'
             }
         ]
     },{pageSize:50,orderBy:" u.id desc "});
+
+    // 注册拖拽表格组件
+    Vue.component('dragabletable', {
+        name: 'dragabletable',
+        template: `
+             <i-Table
+            border
+            ref="dragable"
+            :columns="columnsList"
+            :data="value"
+            stripe
+            ></i-Table>
+         `,
+        data () {
+            return {
+
+            };
+        },
+        props: {
+            columnsList: Array,
+            value: Array
+        },
+        methods: {
+            startFunc (e) {
+                this.$emit('on-start', e.oldIndex);
+            },
+            endFunc (e) {
+                let movedRow = this.value[e.oldIndex];
+                this.value.splice(e.oldIndex, 1);
+                this.value.splice(e.newIndex, 0, movedRow);
+                this.$emit('on-end', {
+                    value: this.value,
+                    from: e.oldIndex,
+                    to: e.newIndex
+                });
+            },
+            chooseFunc (e) {
+                this.$emit('on-choose', e.oldIndex);
+            }
+        },
+        mounted () {
+            var el = this.$refs.dragable.$children[1].$el.children[1];
+            let vm = this;
+            Sortable.create(el, {
+                onStart: vm.startFunc,
+                onEnd: vm.endFunc,
+                onChoose: vm.chooseFunc
+            });
+        }
+    });
+
 
     new Vue({
         el: '#app',
@@ -224,7 +265,75 @@
             dataTableAK:pagingHelperAK.ivTable,
             dataPageAK:pagingHelperAK.ivPage,
             userTable:pageHelperUser.ivTable,
-            userPage:pageHelperUser.ivPage
+            userPage:pageHelperUser.ivPage,
+            dragTable: {
+                hasDragged: false,
+                isDragging: false,
+                oldIndex: 0,
+                newIndex: 0,
+                chooseRecord: []
+            },
+            columnsStep: [
+                {
+                    title: '序号',
+                    type: 'index',
+                    width: 80,
+                    align: 'center'
+                },
+                {
+                    title: '姓名',
+                    key: 'name'
+                },
+                {
+                    title: '步骤',
+                    key: 'age'
+                },
+                {
+                    title: 'Action',
+                    key: 'action',
+                    width: 150,
+                    align: 'center',
+                    render: (h, params) => {
+                        return h('div', [
+                            h('Button', {
+                                props: {
+                                    type: 'primary',
+                                    size: 'small'
+                                },
+                                style: {
+                                    marginRight: '5px'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.show(params.index)
+                                    }
+                                }
+                            }, '编辑'),
+                            h('Button', {
+                                props: {
+                                    type: 'error',
+                                    size: 'small'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.remove(params.index)
+                                    }
+                                }
+                            }, '删除')
+                        ]);
+                    }
+                }
+            ],
+            dataStep: [
+                {
+                    name: 'John Brown',
+                    age: 18
+                },
+                {
+                    name: 'Jim Green',
+                    age: 24
+                }
+            ]
         },
         mounted:function () {
             pagingHelperAK.setHeight($(".my-layout-body-ak").height());
@@ -262,6 +371,18 @@
                 else {
                     pageHelperUser.load(" u.departId='"+option.value+"' ");
                 }
+            },
+            dragOnstart (from) {
+                this.dragTable.oldIndex = from;
+                this.dragTable.hasDragged = true;
+                this.dragTable.isDragging = true;
+            },
+            dragOnend (e) {
+                this.dragTable.newIndex = e.to;
+                this.dragTable.isDragging = false;
+            },
+            dragOnchoose (from) {
+                this.dragTable.chooseRecord.unshift(this.dataStep[from].name);
             },
             butRefresh(){
                 vconfirm(this,"确认刷新吗?",()=>{

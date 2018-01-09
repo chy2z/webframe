@@ -132,6 +132,10 @@
                 key: 'id'
             },
             {
+                title: '流程名称',
+                key: 'pname'
+            },
+            {
                 title: '审核类型',
                 key: 'auditkind'
             },

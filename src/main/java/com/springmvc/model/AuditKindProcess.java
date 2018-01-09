@@ -11,6 +11,8 @@ public class AuditKindProcess {
 
     private String enable;
 
+    private String pname;
+
     //===========关联属性===============
 
     private String auditkind;
@@ -55,6 +57,14 @@ public class AuditKindProcess {
 
     public void setEnable(String enable) {
         this.enable = enable == null ? null : enable.trim();
+    }
+
+    public String getPname() {
+        return pname;
+    }
+
+    public void setPname(String pname) {
+        this.pname = pname;
     }
 
     public String getAuditkind() {

@@ -33,3 +33,14 @@
     background-color: #eaf4fe;
 }
 
+/* 实现编辑表格按钮隐藏显示 */
+.show-edit-btn{
+    display: none;
+    margin-left: -10px;
+}
+
+/* 实现编辑表格按钮隐藏显示 */
+.ivu-table-cell:hover .show-edit-btn{
+    display: inline-block;
+}
+

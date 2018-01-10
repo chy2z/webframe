@@ -14,9 +14,26 @@
 </head>
 <body>
 <div class="my-app" id="app">
-    <div class="my-layout my-layout-clear-top-10">
-        <Row class-name="my-layout-body" justify="center" type="flex">
-            <i-col span="8">
+    <Spin size="large" fix v-if="spinShow"></Spin>
+    <div class="my-layout">
+        <Row class-name="my-layout-top" align="middle" type="flex">
+            <i-col span="24">
+                <div class="float-left fil-width">
+                    <Row type="flex">
+                        <i-col span="8">
+                            <label class="my-label">流程名称：</label>
+                            <i-Input v-model="auditProcess.pname" placeholder="请输入流程名称..." class="input-300"></i-Input>
+                        </i-col>
+                        <i-col span="8"><label class="my-label">所属部门：</label>
+                            <label class="my-label">{{auditProcess.departName}}</label></i-col>
+                        <i-col span="8"><label class="my-label">流程类型：</label>
+                            <label class="my-label">{{auditProcess.kind}}</label></i-col>
+                    </Row>
+                </div>
+            </i-col>
+        </Row>
+        <Row class-name="my-layout-body padding-5" justify="center" type="flex">
+            <i-col span="7">
                 <div class="ivu-card-padding ivu-card-body-padding">
                 <Card>
                     <p slot="title">审核类型-选择</p>
@@ -25,7 +42,8 @@
                              <i-col span="24">
                                 <div class="float-left">
                                     <label class="my-label">所属部门：</label>
-                                    <i-Select style="width:200px"
+                                    <i-Select class="input-200"
+                                              @on-change="selectATDepartChange"
                                                v-model="selectATDepart.selectItem"
                                                :disabled="selectATDepart.disabled"
                                                :placeholder="selectATDepart.placeholder"
@@ -75,7 +93,7 @@
                 </Card>
                 </div>
             </i-col>
-            <i-col span="8">
+            <i-col span="7">
                 <div class="ivu-card-padding ivu-card-body-padding">
                     <Card>
                         <p slot="title">审核人-选择</p>
@@ -84,7 +102,7 @@
                                 <i-col span="24">
                                     <div class="float-left">
                                         <label class="my-label">所属部门：</label>
-                                        <i-Select style="width:200px"
+                                        <i-Select class="input-200"
                                                   @on-change="selectUDepartChange"
                                                   v-model="selectUDepart.selectItem"
                                                   :disabled="selectUDepart.disabled"
@@ -112,8 +130,7 @@
                                              :size="userTable.tableSize"
                                              :columns="userTable.columns"
                                              :data="userTable.dataTable"
-                                    >
-                                    </i-Table>
+                                             @on-row-dblclick="tableRowClickUser"></i-Table>
                                 </i-col>
                             </Row>
                             <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
@@ -137,12 +154,19 @@
                     </Card>
                 </div>
             </i-col>
-            <i-col span="8">
+            <i-col span="10">
                 <div class="ivu-card-padding ivu-card-body-padding">
                     <Card>
                         <p slot="title">审核步骤</p>
                         <div class="fil-height">
-                            <dragabletable :columns-List="columnsStep" v-model="dataStep" @on-start="dragOnstart" @on-end="dragOnend" @on-choose="dragOnchoose" >
+                            <dragabletable :columns-List="columnsStep" v-model="dataStep"
+                                           :edit-incell="true"
+                                           @on-cell-change="editCellChange"
+                                           @on-change="editRowChange"
+                                           @on-delete="deleteDataStep"
+                                           @on-start="dragOnstart"
+                                           @on-end="dragOnend"
+                                           @on-choose="dragOnchoose" >
                             </dragabletable>
                         </div>
                     </Card>
@@ -154,10 +178,10 @@
             <i-col span="18">
                 <div class="float-right">
                     <i-Button type="success" @click="butRefresh()" icon="refresh">刷新</i-Button>
+                    <i-Button type="primary" @click="butSave()" icon="checkmark">保存</i-Button>
                 </div>
             </i-col>
         </Row>
-    </div>
     </div>
 </div>
 </body>
@@ -181,7 +205,8 @@
             },
             {
                 title: '备注',
-                key: 'memo'
+                key: 'memo',
+                width:150
             }
         ]
     },{orderBy:" id desc "});
@@ -192,43 +217,308 @@
                 key: 'name'
             },
             {
-                title: '职位',
-                key: 'office',
-                width:300
-            },
-            {
                 title:'角色',
                 key:'roleName'
+            },
+            {
+                title: '职位',
+                key: 'office',
+                width:150
             }
         ]
     },{pageSize:50,orderBy:" u.id desc "});
 
-    // 注册拖拽表格组件
+    const editButton = (vm, h, currentRow, index) => {
+        return h('Button', {
+            props: {
+                type: currentRow.editting ? 'success' : 'primary',
+                loading: currentRow.saving
+            },
+            style: {
+                margin: '0 5px'
+            },
+            on: {
+                'click': () => {
+                    if (!currentRow.editting) {
+                        if (currentRow.edittingCell) {
+                            for (let name in currentRow.edittingCell) {
+                                currentRow.edittingCell[name] = false;
+                                vm.edittingStore[index].edittingCell[name] = false;
+                            }
+                        }
+                        vm.edittingStore[index].editting = true;
+                        vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
+                    } else {
+                        vm.edittingStore[index].saving = true;
+                        vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
+                        let edittingRow = vm.edittingStore[index];
+                        edittingRow.editting = false;
+                        edittingRow.saving = false;
+                        vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
+                        vm.$emit('input', vm.handleBackdata(vm.thisTableData));
+                        vm.$emit('on-change', vm.handleBackdata(vm.thisTableData), index);
+                    }
+                }
+            }
+        }, currentRow.editting ? '保存' : '编辑');
+    };
+
+    const deleteButton = (vm, h, currentRow, index) => {
+        return h('Poptip', {
+            props: {
+                confirm: true,
+                title: '您确定要删除这条数据吗?',
+                transfer: true
+            },
+            on: {
+                'on-ok': () => {
+                    vm.thisTableData.splice(index, 1);
+                    vm.$emit('input', vm.handleBackdata(vm.thisTableData));
+                    vm.$emit('on-delete', vm.handleBackdata(vm.thisTableData), index);
+                }
+            }
+        }, [
+            h('Button', {
+                style: {
+                    margin: '0 5px'
+                },
+                props: {
+                    type: 'error',
+                    placement: 'top'
+                }
+            }, '删除')
+        ]);
+    };
+
+    const incellEditBtn = (vm, h, param) => {
+        if (vm.hoverShow) {
+            return h('div', {
+                'class': {
+                    'show-edit-btn': vm.hoverShow
+                }
+            }, [
+                h('Button', {
+                    props: {
+                        type: 'text',
+                        icon: 'edit'
+                    },
+                    on: {
+                        click: (event) => {
+                            vm.edittingStore[param.index].edittingCell[param.column.key] = true;
+                            vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
+                        }
+                    }
+                })
+            ]);
+        } else {
+            return h('Button', {
+                props: {
+                    type: 'text',
+                    icon: 'edit'
+                },
+                on: {
+                    click: (event) => {
+                        vm.edittingStore[param.index].edittingCell[param.column.key] = true;
+                        vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
+                    }
+                }
+            });
+        }
+    };
+
+    const saveIncellEditBtn = (vm, h, param) => {
+        return h('Button', {
+            props: {
+                type: 'text',
+                icon: 'checkmark'
+            },
+            on: {
+                click: (event) => {
+                    vm.edittingStore[param.index].edittingCell[param.column.key] = false;
+                    vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
+                    vm.$emit('input', vm.handleBackdata(vm.thisTableData));
+                    vm.$emit('on-cell-change', vm.handleBackdata(vm.thisTableData), param.index, param.column.key);
+                }
+            }
+        });
+    };
+
+    const cellInput = (vm, h, param, item) => {
+        return h('Input', {
+            props: {
+                type: 'text',
+                value: vm.edittingStore[param.index][item.key]
+            },
+            on: {
+                'on-change' (event) {
+                    let key = item.key;
+                    vm.edittingStore[param.index][key] = event.target.value;
+                }
+            }
+        });
+    };
+
+    // 注册拖拽和编辑表格组件
     Vue.component('dragabletable', {
         name: 'dragabletable',
         template: `
              <i-Table
             border
+            disabled-hover
             ref="dragable"
             :columns="columnsList"
             :data="value"
-            stripe
-            ></i-Table>
+            stripe></i-Table>
          `,
-        data () {
-            return {
-
-            };
-        },
         props: {
             columnsList: Array,
-            value: Array
+            value: Array,
+            editIncell: {
+                type: Boolean,
+                default: false
+            },
+            hoverShow: {
+                type: Boolean,
+                default: false
+            }
+        },
+        data () {
+            return {
+                columns: [],
+                thisTableData: [],
+                edittingStore: []
+            };
+        },
+        created () {
+            //处理数据（model-value-thisTableData）
+            this.init();
+        },
+        mounted () {
+            var el = this.$refs.dragable.$children[1].$el.children[1];
+            let vm = this;
+            Sortable.create(el, {
+                onStart: vm.startDrag,
+                onEnd: vm.endDrag,
+                onChoose: vm.chooseDrag
+            });
+        },
+        watch: {
+            value (data) {
+                this.init();
+            }
         },
         methods: {
-            startFunc (e) {
+            init(){
+                let vm = this;
+                //获取编辑的表格
+                let editableCell = this.columnsList.filter(item => {
+                    if (item.editable) {
+                        if (item.editable === true) {
+                            return item;
+                        }
+                    }
+                });
+                //克隆数据
+                let cloneData = JSON.parse(JSON.stringify(this.value));
+                let res = [];
+                //初始化编辑信息
+                res = cloneData.map((item, index) => {
+                    this.$set(item, 'editting', false);
+                    let edittingCell = {};
+                    editableCell.forEach(item => {
+                        edittingCell[item.key] = false;
+                    });
+                    this.$set(item, 'edittingCell', edittingCell);
+                    return item;
+                });
+                this.thisTableData = res;
+                this.edittingStore = JSON.parse(JSON.stringify(this.thisTableData));
+                //处理编辑文档框和操作按钮
+                this.columnsList.forEach(item => {
+                    //启动编辑
+                    if (item.editable) {
+                        item.render = (h, param) => {
+                            let currentRow = this.thisTableData[param.index];
+                            if (!currentRow.editting) {
+                                if (this.editIncell) {
+                                    return h('Row', {
+                                        props: {
+                                            type: 'flex',
+                                            align: 'middle',
+                                            justify: 'center'
+                                        }
+                                    }, [
+                                        h('Col', {
+                                            props: {
+                                                span: '14'
+                                            }
+                                        }, [
+                                            !currentRow.edittingCell[param.column.key] ? h('span', currentRow[item.key]) : cellInput(this, h, param, item)
+                                        ]),
+                                        h('Col', {
+                                            props: {
+                                                span: '10'
+                                            }
+                                        }, [
+                                            currentRow.edittingCell[param.column.key] ? saveIncellEditBtn(this, h, param) : incellEditBtn(this, h, param)
+                                        ])
+                                    ]);
+                                } else {
+                                    return h('span', currentRow[item.key]);
+                                }
+                            } else {
+                                return h('Input', {
+                                    props: {
+                                        type: 'text',
+                                        value: currentRow[item.key]
+                                    },
+                                    on: {
+                                        'on-change' (event) {
+                                            let key = param.column.key;
+                                            vm.edittingStore[param.index][key] = event.target.value;
+                                        }
+                                    }
+                                });
+                            }
+                        };
+                    }
+                    //处理操作按钮
+                    if (item.handle) {
+                        item.render = (h, param) => {
+                            let currentRowData = this.thisTableData[param.index];
+                            if (item.handle.length === 2) {
+                                return h('div', [
+                                    editButton(this, h, currentRowData, param.index),
+                                    deleteButton(this, h, currentRowData, param.index)
+                                ]);
+                            } else if (item.handle.length === 1) {
+                                if (item.handle[0] === 'edit') {
+                                    return h('div', [
+                                        editButton(this, h, currentRowData, param.index)
+                                    ]);
+                                } else {
+                                    return h('div', [
+                                        deleteButton(this, h, currentRowData, param.index)
+                                    ]);
+                                }
+                            }
+                        };
+                    }
+                });
+            },
+            handleBackdata (data) {
+                let clonedData = JSON.parse(JSON.stringify(data));
+                clonedData.forEach(item => {
+                    delete item.editting;
+                    delete item.edittingCell;
+                    delete item.saving;
+                });
+                return clonedData;
+            },
+            startDrag (e) {
                 this.$emit('on-start', e.oldIndex);
             },
-            endFunc (e) {
+            endDrag (e) {
                 let movedRow = this.value[e.oldIndex];
                 this.value.splice(e.oldIndex, 1);
                 this.value.splice(e.newIndex, 0, movedRow);
@@ -238,21 +528,11 @@
                     to: e.newIndex
                 });
             },
-            chooseFunc (e) {
+            chooseDrag (e) {
                 this.$emit('on-choose', e.oldIndex);
             }
-        },
-        mounted () {
-            var el = this.$refs.dragable.$children[1].$el.children[1];
-            let vm = this;
-            Sortable.create(el, {
-                onStart: vm.startFunc,
-                onEnd: vm.endFunc,
-                onChoose: vm.chooseFunc
-            });
         }
     });
-
 
     new Vue({
         el: '#app',
@@ -266,6 +546,13 @@
             dataPageAK:pagingHelperAK.ivPage,
             userTable:pageHelperUser.ivTable,
             userPage:pageHelperUser.ivPage,
+            auditProcess:{
+                pname:"",
+                departName:"",
+                kind:"",
+                kId:0,
+                departId:0
+            },
             dragTable: {
                 hasDragged: false,
                 isDragging: false,
@@ -282,58 +569,27 @@
                 },
                 {
                     title: '姓名',
-                    key: 'name'
+                    key: 'name',
+                    editable: true
+                },
+                {
+                    title: '角色',
+                    key: 'roleName'
                 },
                 {
                     title: '步骤',
-                    key: 'age'
+                    key: 'step',
+                    editable: true
                 },
                 {
-                    title: 'Action',
-                    key: 'action',
-                    width: 150,
+                    title: '操作',
                     align: 'center',
-                    render: (h, params) => {
-                        return h('div', [
-                            h('Button', {
-                                props: {
-                                    type: 'primary',
-                                    size: 'small'
-                                },
-                                style: {
-                                    marginRight: '5px'
-                                },
-                                on: {
-                                    click: () => {
-                                        this.show(params.index)
-                                    }
-                                }
-                            }, '编辑'),
-                            h('Button', {
-                                props: {
-                                    type: 'error',
-                                    size: 'small'
-                                },
-                                on: {
-                                    click: () => {
-                                        this.remove(params.index)
-                                    }
-                                }
-                            }, '删除')
-                        ]);
-                    }
+                    width: 190,
+                    key: 'handle',
+                    handle: ['edit', 'delete']
                 }
             ],
-            dataStep: [
-                {
-                    name: 'John Brown',
-                    age: 18
-                },
-                {
-                    name: 'Jim Green',
-                    age: 24
-                }
-            ]
+            dataStep: []
         },
         mounted:function () {
             pagingHelperAK.setHeight($(".my-layout-body-ak").height());
@@ -362,15 +618,39 @@
                 pagingHelperAK.setSelectRowIndex(1);
             },
             tableRowClickAK(data,index){
-
+                this.auditProcess.kind=data.name;
+                this.auditProcess.kId=data.id;
+            },
+            tableRowClickUser(data,index){
+                if(isBlank(this.auditProcess.pname)||isBlank(this.auditProcess.departName)||isBlank(this.auditProcess.kind)) {
+                   valert(this,"请先输入完整的流程信息！");
+                }
+                else{
+                    this.dataStep.push({name: data.name, roleName: data.roleName, step: (this.dataStep.length + 1)});
+                }
+            },
+            selectATDepartChange(option){
+                if(!isBlank(option)) {
+                    this.auditProcess.departName=option.label;
+                    this.auditProcess.departId=option.value;
+                }
             },
             selectUDepartChange(option){
-                if(option==null||option.value==""){
+                if(isBlank(option)){
                     pageHelperUser.load("u.corporationId='" + this.corporationid + "'");
                 }
                 else {
                     pageHelperUser.load(" u.departId='"+option.value+"' ");
                 }
+            },
+            deleteDataStep(row,index){
+                vtoast(this,'删除了第' + (index + 1) + '行数据');
+            },
+            editRowChange(row,index){
+                vtoast(this,'修改了第' + (index + 1) + '行数据');
+            },
+            editCellChange(row,index,key){
+                vtoast(this,'修改了第 ' + (index + 1) + ' 行列名为 ' + key + ' 的数据');
             },
             dragOnstart (from) {
                 this.dragTable.oldIndex = from;
@@ -388,6 +668,9 @@
                 vconfirm(this,"确认刷新吗?",()=>{
                     window.location.reload();
                 });
+            },
+            butSave(){
+
             }
         }
     });

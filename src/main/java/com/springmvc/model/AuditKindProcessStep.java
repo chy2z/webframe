@@ -1,5 +1,6 @@
 package com.springmvc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.springmvc.util.DateJsonDeserializerUtil;
@@ -7,6 +8,7 @@ import com.springmvc.util.DateJsonSerializerUtil;
 
 import java.util.Date;
 
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class AuditKindProcessStep {
     private Integer id;
 

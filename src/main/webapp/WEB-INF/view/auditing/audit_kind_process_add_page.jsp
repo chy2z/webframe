@@ -20,14 +20,21 @@
             <i-col span="24">
                 <div class="float-left fil-width">
                     <Row type="flex">
-                        <i-col span="8">
+                        <i-col span="6">
                             <label class="my-label">流程名称：</label>
-                            <i-Input v-model="auditProcess.pname" placeholder="请输入流程名称..." class="input-300"></i-Input>
+                            <i-Input v-model="auditProcess.pName" placeholder="请输入流程名称..." class="input-300"></i-Input>
                         </i-col>
-                        <i-col span="8"><label class="my-label">所属部门：</label>
+                        <i-col span="6"><label class="my-label">所属部门：</label>
                             <label class="my-label">{{auditProcess.departName}}</label></i-col>
-                        <i-col span="8"><label class="my-label">流程类型：</label>
+                        <i-col span="6"><label class="my-label">流程类型：</label>
                             <label class="my-label">{{auditProcess.kind}}</label></i-col>
+                        <i-col span="4">
+                            <label class="my-label">步骤总数：</label>
+                            <label class="my-label">{{auditProcess.stepNum}}</label>
+                        </i-col>
+                        <i-col span="2">
+                            <Checkbox v-model="auditProcess.enable">启用</Checkbox>
+                        </i-col>
                     </Row>
                 </div>
             </i-col>
@@ -43,7 +50,7 @@
                                 <div class="float-left">
                                     <label class="my-label">所属部门：</label>
                                     <i-Select class="input-200"
-                                              @on-change="selectATDepartChange"
+                                               @on-change="selectATDepartChange"
                                                v-model="selectATDepart.selectItem"
                                                :disabled="selectATDepart.disabled"
                                                :placeholder="selectATDepart.placeholder"
@@ -187,7 +194,7 @@
 </body>
 <script>
     var domain="${ctx}";
-    var add_url=domain+"/sysNotice/insert?jwt=${requestScope.jwt}";
+    var add_url=domain+"/auditKindProcess/insert?jwt=${requestScope.jwt}";
     var department_Select_url="${ctx}/department/vselect/selectDepartment?jwt=${requestScope.jwt}";
 
     var selectHelperATDepartment= new selectHelper(department_Select_url,{});
@@ -213,6 +220,10 @@
     var pageHelperUser=new pageHepler("${ctx}/users/pagination?jwt=${requestScope.jwt}",{
         columns: [
             {
+                title: 'id',
+                key: '序号'
+            },
+            {
                 title: '姓名',
                 key: 'name'
             },
@@ -228,6 +239,7 @@
         ]
     },{pageSize:50,orderBy:" u.id desc "});
 
+    // 编辑按钮
     const editButton = (vm, h, currentRow, index) => {
         return h('Button', {
             props: {
@@ -263,12 +275,14 @@
         }, currentRow.editting ? '保存' : '编辑');
     };
 
+    // 删除按钮
     const deleteButton = (vm, h, currentRow, index) => {
         return h('Poptip', {
             props: {
                 confirm: true,
                 title: '您确定要删除这条数据吗?',
-                transfer: true
+                transfer: true,
+                placement:'top-end'
             },
             on: {
                 'on-ok': () => {
@@ -290,6 +304,7 @@
         ]);
     };
 
+    // 单元格修改按钮
     const incellEditBtn = (vm, h, param) => {
         if (vm.hoverShow) {
             return h('div', {
@@ -326,6 +341,7 @@
         }
     };
 
+    // 单元格删除按钮
     const saveIncellEditBtn = (vm, h, param) => {
         return h('Button', {
             props: {
@@ -343,6 +359,7 @@
         });
     };
 
+    // 单元格修改
     const cellInput = (vm, h, param, item) => {
         return h('Input', {
             props: {
@@ -384,7 +401,6 @@
         },
         data () {
             return {
-                columns: [],
                 thisTableData: [],
                 edittingStore: []
             };
@@ -397,6 +413,7 @@
             var el = this.$refs.dragable.$children[1].$el.children[1];
             let vm = this;
             Sortable.create(el, {
+                handle: ".ivu-icon-arrow-move",
                 onStart: vm.startDrag,
                 onEnd: vm.endDrag,
                 onChoose: vm.chooseDrag
@@ -547,11 +564,14 @@
             userTable:pageHelperUser.ivTable,
             userPage:pageHelperUser.ivPage,
             auditProcess:{
-                pname:"",
+                id:0,
+                pName:"",
                 departName:"",
                 kind:"",
-                kId:0,
-                departId:0
+                kid:0,
+                departid:0,
+                enable:true,
+                stepNum:0
             },
             dragTable: {
                 hasDragged: false,
@@ -570,7 +590,7 @@
                 {
                     title: '姓名',
                     key: 'name',
-                    editable: true
+                    editable: false
                 },
                 {
                     title: '角色',
@@ -582,11 +602,28 @@
                     editable: true
                 },
                 {
+                    title: '拖拽',
+                    key: 'drag',
+                    width: 70,
+                    align: 'center',
+                    render: (h) => {
+                        return h(
+                            'Icon',
+                            {
+                                props: {
+                                    type: 'arrow-move',
+                                    size: 24
+                                }
+                            }
+                        );
+                    }
+                },
+                {
                     title: '操作',
                     align: 'center',
-                    width: 190,
+                    width: 100,
                     key: 'handle',
-                    handle: ['edit', 'delete']
+                    handle: ['delete']
                 }
             ],
             dataStep: []
@@ -619,20 +656,21 @@
             },
             tableRowClickAK(data,index){
                 this.auditProcess.kind=data.name;
-                this.auditProcess.kId=data.id;
+                this.auditProcess.kid=data.id;
             },
             tableRowClickUser(data,index){
-                if(isBlank(this.auditProcess.pname)||isBlank(this.auditProcess.departName)||isBlank(this.auditProcess.kind)) {
+                if(isBlank(this.auditProcess.pName)||isBlank(this.auditProcess.departName)||isBlank(this.auditProcess.kind)) {
                    valert(this,"请先输入完整的流程信息！");
                 }
                 else{
-                    this.dataStep.push({name: data.name, roleName: data.roleName, step: (this.dataStep.length + 1)});
+                    this.dataStep.push({uid: data.id,name: data.name, roleName: data.roleName, step: (this.dataStep.length + 1)});
+                    this.reSort();
                 }
             },
             selectATDepartChange(option){
                 if(!isBlank(option)) {
                     this.auditProcess.departName=option.label;
-                    this.auditProcess.departId=option.value;
+                    this.auditProcess.departid=option.value;
                 }
             },
             selectUDepartChange(option){
@@ -644,13 +682,19 @@
                 }
             },
             deleteDataStep(row,index){
-                vtoast(this,'删除了第' + (index + 1) + '行数据');
+                //vtoast(this,'删除了第' + (index + 1) + '行数据');
+                this.reSort();
             },
             editRowChange(row,index){
-                vtoast(this,'修改了第' + (index + 1) + '行数据');
+                //vtoast(this,'修改了第' + (index + 1) + '行数据');
             },
             editCellChange(row,index,key){
-                vtoast(this,'修改了第 ' + (index + 1) + ' 行列名为 ' + key + ' 的数据');
+                //vtoast(this,'修改了第 ' + (index + 1) + ' 行列名为 ' + key + ' 的数据');
+                this.reSort();
+            },
+            dragOnchoose (from) {
+                //鼠标点击,拖拽开始前触发
+                //this.dragTable.chooseRecord.unshift(this.dataStep[from].name);
             },
             dragOnstart (from) {
                 this.dragTable.oldIndex = from;
@@ -660,9 +704,29 @@
             dragOnend (e) {
                 this.dragTable.newIndex = e.to;
                 this.dragTable.isDragging = false;
+                this.reSort();
             },
-            dragOnchoose (from) {
-                this.dragTable.chooseRecord.unshift(this.dataStep[from].name);
+            reSort(){
+                let preindex=-1;
+                let step=-1;
+                this.dataStep.forEach((item,index) => {
+                    if(index==0) {
+                        step = 1;
+                        preindex=parseInt(item.step);
+                        item.step=step;
+                    }
+                    else{
+                        if(preindex!=parseInt(item.step)) {
+                            step = step + 1;
+                            preindex = parseInt(item.step);
+                            item.step = step;
+                        }
+                        else{
+                            item.step = step;
+                        }
+                    }
+                });
+                this.auditProcess.stepNum=step;
             },
             butRefresh(){
                 vconfirm(this,"确认刷新吗?",()=>{
@@ -670,7 +734,28 @@
                 });
             },
             butSave(){
-
+                if(this.dataStep.length>0){
+                    vajaxPost(add_url,{
+                        process:JSON.stringify({
+                            pname:this.auditProcess.pName,
+                            kid:this.auditProcess.kid,
+                            departid:this.auditProcess.departid,
+                            enable:(this.auditProcess.enable?"启用":"禁用"),
+                            stepnum:this.auditProcess.stepNum
+                        }),
+                        steps:JSON.stringify(this.dataStep)
+                    },false,(result)=>{
+                        vtoast(this, result.tip);
+                        vPopWindowsColse({});
+                    },()=>{
+                        this.spinShow=true;
+                    },()=>{
+                        this.spinShow=false;
+                    })
+                }
+                else{
+                    valert(this,"请选择流程步骤");
+                }
             }
         }
     });

@@ -265,6 +265,9 @@
             },
             butRefresh(){
                 window.location.reload();
+            },
+            butFlowChart(){
+
             }
         }
     });

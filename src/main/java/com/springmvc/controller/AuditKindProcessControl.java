@@ -5,6 +5,7 @@ import com.springmvc.service.AuditKindProcessService;
 import com.springmvc.service.AuditKindProcessStepService;
 import com.springmvc.service.UsersService;
 import com.springmvc.service.UsersTokenService;
+import com.springmvc.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+
 
 /**
 * @Title: AuditProcessControl
@@ -50,8 +53,8 @@ public class AuditKindProcessControl {
         }
         else if(page.equals("update")){
             String id = (String) request.getParameter("id");
-            //SysNotice sModel= auditKindProcessService
-            //model.addAttribute("sysNotice",sModel);
+            AuditKindProcess sModel= auditKindProcessService.getAuditKindProcess(Integer.parseInt(id));
+            model.addAttribute("kindProcess",sModel);
             return "auditing/audit_kind_process_update_page";
         }
         else {
@@ -80,19 +83,24 @@ public class AuditKindProcessControl {
     }
 
     /**
-     * 插入
-     * @param c
+     * 插入流程
+     * @param process
+     * @param steps
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/insert",method = {RequestMethod.POST})
-    public RequestResult insert(@RequestBody AuditKindProcess c){
+    public RequestResult insert(String process , String steps){
         RequestResult result=new RequestResult();
-        if(null==c){
+        if(null==process||null==steps) {
             result.setFail("没有数据");
         }
         else{
-            if(auditKindProcessService.insert(c)){
+            AuditKindProcess c= JsonUtil.jsonToBean(process,AuditKindProcess.class);
+
+            List<AuditKindProcessStep> stepList=(List<AuditKindProcessStep>)JsonUtil.jsonToListBean(steps,AuditKindProcessStep.class);
+
+            if(auditKindProcessService.insertStep(c,stepList)){
                 result.setSucceed("保存成功",null);
             }
             else{

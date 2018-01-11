@@ -4,11 +4,14 @@ import com.springmvc.mapper.AuditKindProcessMapper;
 import com.springmvc.model.AuditKindProcess;
 import com.springmvc.model.AuditKindProcessStep;
 import com.springmvc.model.PageHelper;
+import com.springmvc.model.SysNotice;
 import com.springmvc.util.JsonUtil;
 import com.springmvc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
 * @Title: AuditKindProcessService
@@ -24,6 +27,33 @@ public class AuditKindProcessService {
 
     @Autowired
     AuditKindProcessStepService auditKindProcessStepService;
+
+    /**
+     * 获取信息
+     * @param id
+     * @return
+     */
+    public AuditKindProcess getAuditKindProcess(Integer id) {
+        return mapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 增加流程和流程步骤
+     * @param c
+     * @param steps
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public boolean insertStep(AuditKindProcess p,List<AuditKindProcessStep> steps) {
+        int result = mapper.insertSelective(p);
+        for (AuditKindProcessStep s : steps) {
+            s.setPid(p.getId());
+            if (auditKindProcessStepService.insert(s)) {
+                result++;
+            }
+        }
+        return result > 0;
+    }
 
     /**
      * 插入记录
@@ -58,7 +88,6 @@ public class AuditKindProcessService {
          */
         return auditKindProcessStepService.deleteByPId(id);
     }
-
 
     /**
      * 返回分页数据

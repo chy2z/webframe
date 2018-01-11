@@ -267,7 +267,7 @@
                 window.location.reload();
             },
             butFlowChart(){
-
+                window.open()
             }
         }
     });

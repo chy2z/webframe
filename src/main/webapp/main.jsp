@@ -179,9 +179,9 @@
             <Icon type="document"></Icon>
             <span>{{popupsModal.title}}</span>
         </p>
-        <div style="text-align:center;width:100%;height:800px;box-sizing: border-box;">
+        <div style="width:100%;height:800px;box-sizing: border-box;">
             <iframe id="popupsframe" frameborder="0" scrolling="no"
-                    style="border: 0px; height: 100%; width: 100%;"></iframe>
+                    style="border: 0; padding:0;margin:0; height: 100%; width: 100%;"></iframe>
         </div>
         <div slot="footer">
         </div>
@@ -299,7 +299,7 @@
                 tabItems:[],
                 popupsModal:{
                     modalShow:false,
-                    width:'90%',
+                    width:'800px',
                     title:"全局对话框",
                     style:{
                         top: '100px'
@@ -330,8 +330,12 @@
             },
             created:function(){
                 vSpin(this);
+                // 默认加载页面
                 document.querySelector("#mainframe").src="${ctx}/login/index/${requestScope.jwt}";
+                // 存储图片路径
                 localStorage.avatorImgPath="${ctx}/${requestScope.user.img}";
+                // 计算全局弹出窗体的宽度
+                this.popupsModal.width= document.body.clientWidth*0.95;
             },
             mounted () {
                 // 锁屏相关

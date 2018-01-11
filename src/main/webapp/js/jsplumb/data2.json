@@ -1,0 +1,56 @@
+{
+    "total": 5,
+    "level": "4",
+    "list": [
+        {
+            "prcs_id": 1,
+            "flow_prcs": "1",
+            "prcs_title": "<b>申请人申请</b><br><br><img src=\"../js/jquery-jsplumb/images/flow_next.gif\" align=\"absmiddle\"> <span style=\"text-decoration:underline;font-weight:bold;color:red\">程鸿雁 主办</span>[<font color=green>已办结,用时：4分钟39秒</font>]<br> 开始于：2018-01-08 10:04:30<br> 结束于：2018-01-08 10:09:09<br><br>",
+            "prcs_content": "第1步申请人申请(程鸿雁)",
+            "prcs_type": "",
+            "prcs_class": "window4",
+            "prcs_parent": "0",
+            "gather_node": "0"
+        },
+        {
+            "prcs_id": 2,
+            "flow_prcs": "2",
+            "prcs_title": "<b>申请部门负责人审批意见</b><br><br><img src=\"../js/jquery-jsplumb/images/flow_next.gif\" align=\"absmiddle\"> <span style=\"text-decoration:underline;font-weight:bold;color:red\">夏程云 主办</span>[<font color=green>已办结,用时：15秒</font>]<br> 开始于：2018-01-08 10:19:34<br> 结束于：2018-01-08 10:19:49<br><br>",
+            "prcs_content": "第2步申请部门负责人审批意见(夏程云)",
+            "prcs_type": "",
+            "prcs_class": "window4",
+            "prcs_parent": "1",
+            "gather_node": "0"
+        },
+        {
+            "prcs_id": 3,
+            "flow_prcs": "3",
+            "prcs_title": "<b>产品负责人审批意见</b><br><br><img src=\"../js/jquery-jsplumb/images/flow_next.gif\" align=\"absmiddle\"> <span style=\"text-decoration:underline;font-weight:bold;color:red\">谈涛 主办</span>[<font color=green>已办结,用时：11秒</font>]<br> 开始于：2018-01-08 14:49:18<br> 结束于：2018-01-08 14:49:29<br><br><img src=\"../js/jquery-jsplumb/images/flow_next.gif\" align=\"absmiddle\"> <span style=\"text-decoration:underline;font-weight:bold\">郭杨</span>[<font color=green>已办结,用时：4小时29分钟40秒</font>]<br> 结束于：2018-01-08 14:49:29<br><br>",
+            "prcs_content": "第3步产品负责人审批意见(谈涛)",
+            "prcs_type": "",
+            "prcs_class": "window4",
+            "prcs_parent": "2",
+            "gather_node": "0"
+        },
+        {
+            "prcs_id": 4,
+            "flow_prcs": "4",
+            "prcs_title": "<b>运维组执行上线</b><br><br><img src=\"../js/jquery-jsplumb/images/email_open.gif\" align=\"absmiddle\"> <span style=\"text-decoration:underline;font-weight:bold;color:red\">刘志华 主办</span>[<font color=green>办理中,已用时：44分钟25秒</font>]<br> 开始于：2018-01-08 16:31:20<br><br>",
+            "prcs_content": "第4步运维组执行上线(刘志华)",
+            "prcs_type": "",
+            "prcs_class": "window2",
+            "prcs_parent": "3",
+            "gather_node": "0"
+        },
+        {
+            "prcs_id": 4,
+            "flow_prcs": "6",
+            "prcs_title": "<b>运维组执行上线</b><br><br><img src=\"../js/jquery-jsplumb/images/email_close.gif\" align=\"absmiddle\"> <span style=\"text-decoration:underline;font-weight:bold;color:red\">王乾坤 主办</span>[<font color=green>未接收办理</font>]<br><br>",
+            "prcs_content": "第4步运维组执行上线(王乾坤)",
+            "prcs_type": "",
+            "prcs_class": "window1",
+            "prcs_parent": "3",
+            "gather_node": "0"
+        }
+    ]
+}

@@ -57,6 +57,9 @@ public class AuditKindProcessControl {
             model.addAttribute("kindProcess",sModel);
             return "auditing/audit_kind_process_update_page";
         }
+        else if(page.equals("flowstepview")){
+            return "flowchart/flow_chat_step_view_page";
+        }
         else {
             return "error";
         }

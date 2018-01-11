@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="../../taglib/taglibs.jsp" %>
-<%@ include file="../../taglib/import_jsplumb.jsp" %>
+<%@ include file="../../../taglib/taglibs.jsp" %>
+<%@ include file="../../../taglib/import_jsplumb.jsp" %>
 <html>
 <head>
     <title>测试页面</title>

@@ -121,6 +121,7 @@
     var nomanage=${requestScope.nomanage};
     var corporationId="${requestScope.corporationId}";
     var add_url=domain+"/auditKindProcess/path/add?jwt=${requestScope.jwt}";
+    var flowChartStep_url=domain+"/auditKindProcess/path/flowstepview?jwt=${requestScope.jwt}";
     var update_url=domain+"/auditKindProcess/path/update?jwt=${requestScope.jwt}";
     var delete_url=domain+"/auditKindProcess/delete?jwt=${requestScope.jwt}";
     var corporation_Select_url="${ctx}/corporation/vselect/selectCorporation?jwt=${requestScope.jwt}";
@@ -225,6 +226,9 @@
                 pageHelperProcess.setSelectRowIndex(index);
                 pageHelperStep.load(" ap.id='" + data.id + "' ");
             },
+            butRefresh(){
+                window.location.reload();
+            },
             butAdd(){
                 if(isBlank(selectHelperCorporation.getSelectItem())){
                     valert(this,"请选择组织机构");
@@ -263,11 +267,14 @@
                     valert(this,"请选择一行记录删除");
                 }
             },
-            butRefresh(){
-                window.location.reload();
-            },
             butFlowChart(){
-                window.open()
+                if(pageHelperProcess.getSelectRowIndex()>-1){
+                    let rowData=pageHelperProcess.getSelectRowData();
+                    vPopWindowShow("action_flow_view",flowChartStep_url+"&id="+rowData.id, "流程图查看");
+                }
+                else{
+                    valert(this,"请选择一行记录");
+                }
             }
         }
     });

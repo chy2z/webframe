@@ -6,6 +6,11 @@ html,body {
     background: url('images/bg.gif');
 }
 
+.big3   {
+    font-size: 12pt;COLOR: #124164;FONT-WEIGHT: bold;
+    display:inline-block;vertical-align:middle;
+}
+
 .window { 
     border:1px solid #346789;
     box-shadow: 2px 2px 19px #aaa;

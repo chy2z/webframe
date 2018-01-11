@@ -44,12 +44,22 @@
         },
         {
             "prcs_id": 4,
-            "flow_prcs": "6",
+            "flow_prcs": "5",
             "prcs_title": "<b>运维组执行上线</b><br><br><img src=\"../js/jquery-jsplumb/images/email_close.gif\" align=\"absmiddle\"> <span style=\"text-decoration:underline;font-weight:bold;color:red\">王乾坤 主办</span>[<font color=green>未接收办理</font>]<br><br>",
             "prcs_content": "第4步运维组执行上线(王乾坤)",
             "prcs_type": "",
             "prcs_class": "window1",
             "prcs_parent": "3",
+            "gather_node": "0"
+        },
+        {
+            "prcs_id": 5,
+            "flow_prcs": "6",
+            "prcs_title": "<b>总经理审批意见</b><br><br><img src=\"../js/jquery-jsplumb/images/flow_next.gif\" align=\"absmiddle\"> <span style=\"text-decoration:underline;font-weight:bold;color:red\">谈涛 主办</span>[<font color=green>已办结,用时：11秒</font>]<br> 开始于：2018-01-08 14:49:18<br> 结束于：2018-01-08 14:49:29<br><br><img src=\"../js/jquery-jsplumb/images/flow_next.gif\" align=\"absmiddle\"> <span style=\"text-decoration:underline;font-weight:bold\">郭杨</span>[<font color=green>已办结,用时：4小时29分钟40秒</font>]<br> 结束于：2018-01-08 14:49:29<br><br>",
+            "prcs_content": "第5步产品负责人审批意见(张丽)",
+            "prcs_type": "",
+            "prcs_class": "window5",
+            "prcs_parent": "4,5",
             "gather_node": "0"
         }
     ]

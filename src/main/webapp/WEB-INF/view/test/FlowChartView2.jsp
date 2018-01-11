@@ -12,15 +12,16 @@
 <body>
 <div id="canvas" class="canvas">
     <div class="explanation">
+        <img src="${ctx}/js/jsplumb/images/menu/workflow.gif" align="absmiddle">
         <span class="big3">
-            <img src="${ctx}/js/jsplumb/images/menu/workflow.gif" align="absmiddle"> 流程名称:系统上线/升级申请流程, 流程分类:技术部</span>
-        <div>
-            颜色标识说明：<span style="color: #50C625;">■</span>开始节点 &nbsp;&nbsp;<span style="color: #F4A8BD;">■</span>结束节点
-            &nbsp;&nbsp;<span style="color: #EEEEEE;">■</span>普通节点
+                  流程名称:系统上线/升级申请流程 | 流程分类:技术部 |</span>
+        <div class="big3">
+            颜色标识说明：<span style="color: #FFBC18;">■</span>未接收 &nbsp;&nbsp;<span style="color: #50C625;">■</span>办理中 &nbsp;&nbsp;<span
+                style="color: #7D26CD;">■</span>挂起中
+            &nbsp;&nbsp;<span style="color: #F4A8BD;">■</span>办理完毕 &nbsp;&nbsp;<span style="color: #D7D7D7;">■</span>预设步骤
+            &nbsp;&nbsp;
+            <div id="prcsList"></div>
         </div>
-    </div>
-    <div id="prcsList"></div>
-</div>
 </body>
 <script>
     /**
@@ -65,7 +66,7 @@
                     // 添加一个属性，判断连线方向 DJ 14/8/28
                     row.direction = 'r';
                     if(row.prcs_id==lastPrcsId) {
-                        top += 100;
+                        top += 120;
                         maxTop = top;
                     } else if(lastPrcsId != 0) {
                         lastTop = top;

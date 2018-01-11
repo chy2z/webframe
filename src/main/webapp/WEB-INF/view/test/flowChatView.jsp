@@ -12,9 +12,10 @@
 <body>
 <div id="canvas" class="canvas">
     <div class="explanation">
+        <img src="${ctx}/js/jsplumb/images/menu/workflow.gif">
         <span class="big3">
-            <img src="${ctx}/js/jsplumb/images/menu/workflow.gif" align="absmiddle"> 流程名称:系统上线/升级申请流程, 流程分类:技术部</span>
-        <div>
+             流程名称:系统上线/升级申请流程 | 流程分类:技术部 |</span>
+        <div class="big3">
             颜色标识说明：<span style="color: #50C625;">■</span>开始节点 &nbsp;&nbsp;<span style="color: #F4A8BD;">■</span>结束节点
             &nbsp;&nbsp;<span style="color: #EEEEEE;">■</span>普通节点
         </div>

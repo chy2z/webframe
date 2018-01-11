@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../../../taglib/taglibs.jsp" %>
+<%@ include file="../../../taglib/import_common_js.jsp" %>
 <%@ include file="../../../taglib/import_jsplumb.jsp" %>
 <html>
 <head>
@@ -14,7 +15,7 @@
     <div class="explanation">
         <img src="${ctx}/js/jsplumb/images/menu/workflow.gif" align="absmiddle">
         <span class="big3">
-                  流程名称:系统上线/升级申请流程 | 流程分类:技术部 |</span>
+                  流程名称:${requestScope.kindProcess.auditkind}/${requestScope.kindProcess.pname} | 所属部门:${requestScope.kindProcess.departname} |</span>
         <div class="big3">
             颜色标识说明：<span style="color: #FFBC18;">■</span>未接收 &nbsp;&nbsp;<span style="color: #50C625;">■</span>办理中 &nbsp;&nbsp;<span
                 style="color: #7D26CD;">■</span>挂起中
@@ -26,14 +27,15 @@
         </div>
 </body>
 <script>
-    /**
-     * 需要动态计算连接线
-     * @returns {boolean}
-     */
     // chrome fix.
     document.onselectstart = function () { return false; };
+
+    var data_url="${ctx}/auditKindProcess/flowChartView?jwt="+vGetAuthenticationStorage()+"&id=${requestScope.kindProcess.id}";
+
     $(document).ready(function(){
-        $.getJSON("${ctx}/js/jsplumb/data2.json", function (json) {
+        $.post(data_url, function (result) {
+            log(result);
+            let json=result.data;
             var fillColor = "gray";
             //jsPlumb.setRenderMode(jsPlumb.VML);
             jsPlumb.Defaults.Connector = [ "Straight", { curviness:50 } ];

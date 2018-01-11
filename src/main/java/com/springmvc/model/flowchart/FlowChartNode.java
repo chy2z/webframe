@@ -2,6 +2,8 @@ package com.springmvc.model.flowchart;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
 * @Title: FlowChartNode
@@ -9,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 * @author chy
 * @date 2018/1/11 14:11
 */
+@Getter
+@Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FlowChartNode {
 
@@ -23,76 +27,43 @@ public class FlowChartNode {
      * gather_node : 0
      */
 
+    /**
+     * 级别
+     */
     private int prcs_id;
+
+    /**
+     * 步骤id
+     */
     private String flow_prcs;
+
+    /**
+     * 提示
+     */
     private String prcs_title;
+
+    /**
+     * 内容
+     */
     private String prcs_content;
+
+    /**
+     * 暂时没用
+     */
     private String prcs_type;
+
+    /**
+     * 样式
+     */
     private String prcs_class;
+
+    /**
+     * 父节点
+     */
     private String prcs_parent;
+
+    /**
+     * 暂时没用
+     */
     private String gather_node;
-
-    public int getPrcs_id() {
-        return prcs_id;
-    }
-
-    public void setPrcs_id(int prcs_id) {
-        this.prcs_id = prcs_id;
-    }
-
-    public String getFlow_prcs() {
-        return flow_prcs;
-    }
-
-    public void setFlow_prcs(String flow_prcs) {
-        this.flow_prcs = flow_prcs;
-    }
-
-    public String getPrcs_title() {
-        return prcs_title;
-    }
-
-    public void setPrcs_title(String prcs_title) {
-        this.prcs_title = prcs_title;
-    }
-
-    public String getPrcs_content() {
-        return prcs_content;
-    }
-
-    public void setPrcs_content(String prcs_content) {
-        this.prcs_content = prcs_content;
-    }
-
-    public String getPrcs_type() {
-        return prcs_type;
-    }
-
-    public void setPrcs_type(String prcs_type) {
-        this.prcs_type = prcs_type;
-    }
-
-    public String getPrcs_class() {
-        return prcs_class;
-    }
-
-    public void setPrcs_class(String prcs_class) {
-        this.prcs_class = prcs_class;
-    }
-
-    public String getPrcs_parent() {
-        return prcs_parent;
-    }
-
-    public void setPrcs_parent(String prcs_parent) {
-        this.prcs_parent = prcs_parent;
-    }
-
-    public String getGather_node() {
-        return gather_node;
-    }
-
-    public void setGather_node(String gather_node) {
-        this.gather_node = gather_node;
-    }
 }

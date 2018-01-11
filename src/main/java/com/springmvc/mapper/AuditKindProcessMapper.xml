@@ -21,11 +21,12 @@
     id,pName, kId, stepNum, departId, enable
   </sql>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from audit_kind_process
-    where id = #{id,jdbcType=INTEGER}
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="JoinResultMap">
+    select ap.id,ap.pName,ap.kId,ap.stepNum,ap.departId,ap.enable,d.name as departname, ak.name as auditkind
+    from audit_kind ak JOIN audit_kind_process ap on ak.id=ap.kid
+    JOIN department d on d.id=ap.departId
+    join corporation c on d.corporationId=c.id
+    where ap.id = #{id,jdbcType=INTEGER}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

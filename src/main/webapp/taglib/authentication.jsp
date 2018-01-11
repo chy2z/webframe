@@ -16,5 +16,7 @@
         sessionStorage.removeItem("jwt");
         authentication();
     }
+
     authentication();
+
 </script>

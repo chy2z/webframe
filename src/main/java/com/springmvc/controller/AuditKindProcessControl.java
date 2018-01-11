@@ -1,6 +1,8 @@
 package com.springmvc.controller;
 
 import com.springmvc.model.*;
+import com.springmvc.model.flowchart.FlowChart;
+import com.springmvc.model.flowchart.FlowChartNode;
 import com.springmvc.service.AuditKindProcessService;
 import com.springmvc.service.AuditKindProcessStepService;
 import com.springmvc.service.UsersService;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -58,6 +61,9 @@ public class AuditKindProcessControl {
             return "auditing/audit_kind_process_update_page";
         }
         else if(page.equals("flowstepview")){
+            String id = (String) request.getParameter("id");
+            AuditKindProcess sModel= auditKindProcessService.getAuditKindProcess(Integer.parseInt(id));
+            model.addAttribute("kindProcess",sModel);
             return "flowchart/flow_chat_step_view_page";
         }
         else {
@@ -86,7 +92,7 @@ public class AuditKindProcessControl {
     }
 
     /**
-     * 插入流程
+     * 插入流程和步骤
      * @param process
      * @param steps
      * @return
@@ -158,6 +164,90 @@ public class AuditKindProcessControl {
                 result.setFail("没有数据");
             }
         }
+        return result;
+    }
+
+    /**
+     * 查看流程图
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/flowChartView",method = {RequestMethod.POST})
+    public RequestResult flowChartView(String id){
+        RequestResult result=new RequestResult();
+        if(id==null){
+            result.setFail("没有数据");
+        }
+        else {
+            List<AuditKindProcessStep> steps = auditKindProcessStepService.getList(Integer.parseInt(id));
+
+            List<FlowChartNode> nodes = new ArrayList<>();
+
+            FlowChartNode node;
+
+            Integer level=-1;
+
+            Integer index=0;
+
+            // 存储前一个节点
+            FlowChartNode lastNode=null;
+
+            // 下一级别的父节点
+            List<Integer> parent = new ArrayList<Integer>();
+
+            for (AuditKindProcessStep s : steps) {
+                if (level < s.getStep()) {
+                    level = s.getStep();
+                }
+                node = new FlowChartNode();
+                lastNode = node;
+                // 第一个节点
+                if (index++ == 0) {
+                    parent.add(s.getStep());
+                    node.setPrcs_parent("0");
+                } else {
+                    //同一个级别
+                    if (lastNode.getPrcs_id() == s.getStep().intValue()) {
+                        // 合并父节点集合
+                        parent.add(lastNode.getPrcs_id());
+                        // 和上一个节点父节点一样
+                        node.setPrcs_parent(lastNode.getPrcs_parent());
+                    } else {
+                        // 新的级别
+                       for(int i=0,len=parent.size()-1;i<=len;i++) {
+                           if (i < len) {
+                               node.setPrcs_parent(parent.get(i).toString() + ",");
+                           } else {
+                               node.setPrcs_parent(parent.get(i).toString());
+                           }
+                       }
+
+                        parent.clear();
+
+                        parent.add(s.getStep());
+                    }
+                }
+                node.setPrcs_id(s.getStep());
+                node.setFlow_prcs(index.toString());
+                node.setPrcs_title(s.getUname());
+                node.setPrcs_content("第"+s.getStep().toString()+"步 "+s.getUname());
+                node.setPrcs_type("");
+                node.setPrcs_class("window5");
+                nodes.add(node);
+            }
+
+            FlowChart<FlowChartNode> flowChart = new FlowChart<>();
+
+            flowChart.setTotal(nodes.size());
+
+            flowChart.setLevel(level.toString());
+
+            flowChart.setList(nodes);
+
+            result.setSucceed("保存成功", flowChart);
+        }
+
         return result;
     }
 

@@ -8,6 +8,8 @@ import com.springmvc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
 * @Title: AuditKindProcessStepService
 * @Description: 审核流程步骤接口
@@ -19,6 +21,15 @@ public class AuditKindProcessStepService {
 
     @Autowired
     AuditKindProcessStepMapper mapper;
+
+    /**
+     * 根据流程获取步骤
+     * @param pid
+     * @return
+     */
+    public List<AuditKindProcessStep> getList(Integer pid) {
+        return mapper.selectByPid(pid);
+    }
 
     /**
      * 插入记录

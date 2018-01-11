@@ -27,6 +27,15 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
+  <select id="selectByPid" parameterType="java.lang.Integer" resultMap="JoinResultMap">
+    select aps.id, aps.pId, aps.uId, aps.step, aps.enable, aps.createDate,
+    u.name as uname
+    from audit_kind_process_step aps JOIN audit_kind_process ap on aps.pid=ap.id
+    JOIN  users u on aps.uid=u.id
+    where aps.pid = #{pid,jdbcType=INTEGER}
+    order by aps.id
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from audit_kind_process_step
     where id = #{id,jdbcType=INTEGER}

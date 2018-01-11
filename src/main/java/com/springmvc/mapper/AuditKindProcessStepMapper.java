@@ -16,6 +16,8 @@ public interface AuditKindProcessStepMapper {
 
     AuditKindProcessStep selectByPrimaryKey(Integer id);
 
+    List<AuditKindProcessStep> selectByPid(Integer pid);
+
     int updateByPrimaryKeySelective(AuditKindProcessStep record);
 
     /**

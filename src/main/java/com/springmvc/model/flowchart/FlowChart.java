@@ -35,31 +35,18 @@ public class FlowChart<T> {
      }
      */
 
+    /**
+     * 总节点
+     */
     private int total;
+
+    /**
+     * 级别
+     */
     private String level;
+
+    /**
+     * 节点数据
+     */
     private List<T> list;
-
-    public int getTotal() {
-        return total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
-    public List<T> getList() {
-        return list;
-    }
-
-    public void setList(List<T> list) {
-        this.list = list;
-    }
 }

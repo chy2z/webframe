@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page  pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="${ctx}/css/default.css?v=${requestScope.version}">
 <link rel="stylesheet" href="${ctx}/css/compatible-iview.css?v=${requestScope.version}">
 <script type="text/javascript" src="${ctx}/js/common.js?v=${requestScope.version}"></script>

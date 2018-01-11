@@ -1,0 +1,75 @@
+{
+    "total": 7,
+    "list": [
+        {
+            "id": "3933",
+            "prcs_id": "1",
+            "title": "·下一步骤：2<br>·转入条件列表： 部门编码 = 9 ",
+            "prcs_content": "<b>1</b><br>申请人申请",
+            "left": "32",
+            "top": "19",
+            "prcs_type": "start",
+            "to": "2"
+        },
+        {
+            "id": "3934",
+            "prcs_id": "2",
+            "title": "·下一步骤：3,<br>·转出条件列表： 申请部门负责人审批意见 = 同意 ",
+            "prcs_content": "<b>2</b><br>申请部门负责人审批意见",
+            "left": "240",
+            "top": "28",
+            "prcs_type": "general",
+            "to": "3,"
+        },
+        {
+            "id": "3935",
+            "prcs_id": "3",
+            "title": "·下一步骤：6,4,",
+            "prcs_content": "<b>3</b><br>产品负责人审批意见",
+            "left": "490",
+            "top": "34",
+            "prcs_type": "general",
+            "to": "6,4,"
+        },
+        {
+            "id": "3936",
+            "prcs_id": "4",
+            "title": "·下一步骤：5,7,",
+            "prcs_content": "<b>4</b><br>运维组执行上线",
+            "left": "499",
+            "top": "221",
+            "prcs_type": "general",
+            "to": "5,7,"
+        },
+        {
+            "id": "3937",
+            "prcs_id": "5",
+            "title": "·下一步骤：结束,<br>·转出条件列表： 上线测试验证通过结果 = 已通过 ",
+            "prcs_content": "<b>5</b><br>上线测试验证",
+            "left": "496",
+            "top": "412",
+            "prcs_type": "end",
+            "to": "0,"
+        },
+        {
+            "id": "3938",
+            "prcs_id": "6",
+            "title": "·下一步骤：5,7,",
+            "prcs_content": "<b>6</b><br>运维组执行上线",
+            "left": "211",
+            "top": "223",
+            "prcs_type": "general",
+            "to": "5,7,"
+        },
+        {
+            "id": "3990",
+            "prcs_id": "7",
+            "title": "·下一步骤：结束,<br>·转出条件列表： 上线测试验证通过结果 = 已通过 ",
+            "prcs_content": "<b>7</b><br>上线测试验证",
+            "left": "206",
+            "top": "412",
+            "prcs_type": "end",
+            "to": "0,"
+        }
+    ]
+}

@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page pageEncoding="UTF-8"%>
 <script>
     /**
      * 验证授权信息

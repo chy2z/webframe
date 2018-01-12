@@ -146,7 +146,16 @@
             },
             {
                 title: '状态',
-                key: 'enable'
+                key: 'enable',
+                render: (h, params) => {
+                    return h("div",{
+                        style: {
+                            color: params.row.enable=="启用"?'green':'blue'
+                        }
+                    },[
+                        h('strong', params.row.enable)
+                    ]);
+                }
             },
             {
                 title: '步骤数',
@@ -163,8 +172,15 @@
             },
             {
                 title: '审核人',
-                key: 'uname',
-                width:300
+                key: 'uname'
+            },
+            {
+                title: '角色',
+                key: 'rolename'
+            },
+            {
+                title: '部门',
+                key: 'departname'
             }
         ]
     },{orderBy:" aps.step asc "});

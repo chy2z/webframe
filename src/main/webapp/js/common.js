@@ -127,16 +127,31 @@ function log(msg,target){
 
 /**
  * 整页加载 等待效果
- * @param delayedClosing
+ * @param sleeping
  */
-function vSpin(vue,delayedClosing){
+function vSpin(vue,sleeping){
     vue.$Spin.show();
-    if(!delayedClosing){
-           delayedClosing=2000;
+    if(!sleeping){
+        sleeping=2000;
     }
     setTimeout(() => {
         vue.$Spin.hide();
-    }, delayedClosing);
+    }, sleeping);
+}
+
+/**
+ * 延迟执行
+ * @param sleeping 延迟时间
+ * @param start    延迟前执行方法
+ * @param process  延迟执行的方法
+ * @param end      结束执行方法
+ */
+function vDelay(sleeping,start,process,end) {
+    start();
+    setTimeout(() => {
+        process();
+        end();
+    }, sleeping);
 }
 
 /**

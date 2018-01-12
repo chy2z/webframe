@@ -1,13 +1,9 @@
 package com.springmvc.controller;
 
-import com.springmvc.model.AuditKindProcessStep;
-import com.springmvc.model.RequestResult;
 import com.springmvc.service.AuditKindProcessStepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,77 +39,6 @@ public class AuditKindProcessStepControl {
         String orderBy=request.getParameter("orderBy");
 
         return auditKindProcessStepService.toPaginationJson(pageNo,pageSize,where,orderBy);
-    }
-
-    /**
-     * 插入
-     * @param c
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/insert",method = {RequestMethod.POST})
-    public RequestResult insert(@RequestBody AuditKindProcessStep c){
-        RequestResult result=new RequestResult();
-        if(null==c){
-            result.setFail("没有数据");
-        }
-        else{
-            if(auditKindProcessStepService.insert(c)){
-                result.setSucceed("保存成功",null);
-            }
-            else{
-                result.setFail("没有数据");
-            }
-        }
-
-        return  result;
-    }
-
-    /**
-     * 修改
-     * @param c
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/update",method = {RequestMethod.POST})
-    public RequestResult update(@RequestBody AuditKindProcessStep c){
-        RequestResult result=new RequestResult();
-        if(null==c){
-            result.setFail("没有数据");
-        }
-        else{
-            if(auditKindProcessStepService.update(c)){
-                result.setSucceed("修改成功",null);
-            }
-            else{
-                result.setFail("没有数据");
-            }
-        }
-
-        return  result;
-    }
-
-    /**
-     * 删除
-     * @param id
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/delete",method = {RequestMethod.POST})
-    public RequestResult delete(String id){
-        RequestResult result=new RequestResult();
-        if(id==null){
-            result.setFail("没有数据");
-        }
-        else{
-            if(auditKindProcessStepService.delete(Integer.parseInt(id))){
-                result.setSucceed("删除成功",null);
-            }
-            else{
-                result.setFail("没有数据");
-            }
-        }
-        return result;
     }
 
 }

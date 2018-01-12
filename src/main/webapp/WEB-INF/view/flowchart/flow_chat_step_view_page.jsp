@@ -17,10 +17,10 @@
         <span class="big3">
                   流程名称:${requestScope.kindProcess.auditkind}/${requestScope.kindProcess.pname} | 所属部门:${requestScope.kindProcess.departname} |</span>
         <div class="big3">
-            颜色标识说明：<span style="color: #FFBC18;">■</span>未接收 &nbsp;&nbsp;<span style="color: #50C625;">■</span>办理中 &nbsp;&nbsp;<span
-                style="color: #7D26CD;">■</span>挂起中
-            &nbsp;&nbsp;<span style="color: #F4A8BD;">■</span>办理完毕 &nbsp;&nbsp;<span style="color: #D7D7D7;">■</span>预设步骤
-            &nbsp;&nbsp;
+            颜色标识说明：
+            <span style="color: #50C625;">■</span>&nbsp;&nbsp;开始 &nbsp;&nbsp;
+            <span style="color: #70A0DD;">■</span>&nbsp;&nbsp;过程 &nbsp;&nbsp;
+            <span style="color: #F4A8BD;">■</span>&nbsp;&nbsp;结束 &nbsp;&nbsp;
             <div>
             </div>
             <div id="prcsList"></div>

@@ -238,8 +238,8 @@ public class AuditKindProcessControl {
                 }
                 node.setPrcs_id(s.getStep());
                 node.setFlow_prcs(index.toString());
-                node.setPrcs_title(s.getUname());
-                node.setPrcs_content("第"+s.getStep().toString()+"步 "+s.getUname());
+                node.setPrcs_title(s.getDepartname());
+                node.setPrcs_content(String.format("第 %s 步 %s (%s)",s.getStep(),s.getUname(),s.getRolename()));
                 node.setPrcs_type("");
 
                 // 开始

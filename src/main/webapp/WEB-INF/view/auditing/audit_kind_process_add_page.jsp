@@ -22,7 +22,7 @@
                     <Row type="flex">
                         <i-col span="6">
                             <label class="my-label">流程名称：</label>
-                            <i-Input v-model="auditProcess.pName" placeholder="请输入流程名称..." class="input-300"></i-Input>
+                            <i-Input v-model="auditProcess.pname" placeholder="请输入流程名称..." class="input-300"></i-Input>
                         </i-col>
                         <i-col span="6"><label class="my-label">所属部门：</label>
                             <label class="my-label">{{auditProcess.departName}}</label></i-col>
@@ -220,8 +220,8 @@
     var pageHelperUser=new pageHepler("${ctx}/users/pagination?jwt=${requestScope.jwt}",{
         columns: [
             {
-                title: 'id',
-                key: '序号'
+                title: '序号',
+                key: 'id'
             },
             {
                 title: '姓名',
@@ -565,7 +565,7 @@
             userPage:pageHelperUser.ivPage,
             auditProcess:{
                 id:0,
-                pName:"",
+                pname:"",
                 departName:"",
                 kind:"",
                 kid:0,
@@ -589,12 +589,12 @@
                 },
                 {
                     title: '姓名',
-                    key: 'name',
+                    key: 'uname',
                     editable: false
                 },
                 {
                     title: '角色',
-                    key: 'roleName'
+                    key: 'rolename'
                 },
                 {
                     title: '步骤',
@@ -659,12 +659,22 @@
                 this.auditProcess.kid=data.id;
             },
             tableRowClickUser(data,index){
-                if(isBlank(this.auditProcess.pName)||isBlank(this.auditProcess.departName)||isBlank(this.auditProcess.kind)) {
+                if(isBlank(this.auditProcess.pname)||isBlank(this.auditProcess.departName)||isBlank(this.auditProcess.kind)) {
                    valert(this,"请先输入完整的流程信息！");
                 }
                 else{
-                    this.dataStep.push({uid: data.id,name: data.name, roleName: data.roleName, step: (this.dataStep.length + 1)});
-                    this.reSort();
+                    if(!isBlank(data.roleName)) {
+                        this.dataStep.push({
+                            uid: data.id,
+                            uname: data.name,
+                            rolename: data.roleName,
+                            step: (this.dataStep.length + 1)
+                        });
+                        this.reSort();
+                    }
+                    else{
+                        valert(this,"审核人没有分配角色不能选择！");
+                    }
                 }
             },
             selectATDepartChange(option){
@@ -737,7 +747,7 @@
                 if(this.dataStep.length>0){
                     vajaxPost(add_url,{
                         process:JSON.stringify({
-                            pname:this.auditProcess.pName,
+                            pname:this.auditProcess.pname,
                             kid:this.auditProcess.kid,
                             departid:this.auditProcess.departid,
                             enable:(this.auditProcess.enable?"启用":"禁用"),

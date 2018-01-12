@@ -3,8 +3,10 @@
 function selectHelper(url,ivSelectConfig){
 
     this.ivSelect=$.extend({
-        //绑定的数据项
+        // 绑定的数据项
         selectItem:null,
+        // 在 remote 模式下，初始化时使用。因为仅通过 value 无法得知选项的 label，需手动设置
+        label:null,
         size:"large",
         placeholder:"请选择...",
         notFoundText:"无匹配数据项",
@@ -96,10 +98,12 @@ function selectHelper(url,ivSelectConfig){
 
     /**
      * 设置选中项
+     * 问题：初始化时使用。因为仅通过 value 无法得知选项的 label，需手动设置
+     * 解决方法：始化时使用,延迟执行可以解决
      * @param obj
      */
-    this.setSelectItem=function (obj) {
-        this.ivSelect.selectItem=obj;
+    this.setSelectItem=function (value) {
+        this.ivSelect.selectItem=value;
     }
 
     /**

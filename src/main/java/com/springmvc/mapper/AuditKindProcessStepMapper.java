@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface AuditKindProcessStepMapper {
 
-    int deleteByPrimaryKey(Integer id);
-
     int deleteByProcessId(Integer pId);
 
     int insertSelective(AuditKindProcessStep record);
@@ -17,8 +15,6 @@ public interface AuditKindProcessStepMapper {
     AuditKindProcessStep selectByPrimaryKey(Integer id);
 
     List<AuditKindProcessStep> selectByPid(Integer pid);
-
-    int updateByPrimaryKeySelective(AuditKindProcessStep record);
 
     /**
      * 根据条件获取记录数

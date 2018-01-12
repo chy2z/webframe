@@ -8,6 +8,12 @@ import com.springmvc.util.DateJsonSerializerUtil;
 
 import java.util.Date;
 
+/**
+* @Title: AuditKindProcessStep
+* @Description: 审核步骤
+* @author chy
+* @date 2018/1/12 10:25
+*/
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AuditKindProcessStep {
     private Integer id;
@@ -27,6 +33,10 @@ public class AuditKindProcessStep {
     //===========关联属性===============
 
     private String uname;
+
+    private String rolename;
+
+    private String departname;
 
     public Integer getId() {
         return id;
@@ -82,5 +92,21 @@ public class AuditKindProcessStep {
 
     public void setUname(String uname) {
         this.uname = uname;
+    }
+
+    public String getRolename() {
+        return rolename;
+    }
+
+    public void setRolename(String rolename) {
+        this.rolename = rolename;
+    }
+
+    public String getDepartname() {
+        return departname;
+    }
+
+    public void setDepartname(String departname) {
+        this.departname = departname;
     }
 }

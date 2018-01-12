@@ -45,18 +45,21 @@ public class SysNoticeControl {
         if (page.equals("add")) {
             Users u= uService.getUsers(ut.getUserid());
             model.addAttribute("user", u);
+            model.addAttribute("jwt", jwt);
             return "notice/sys_notice_add_page";
         }
         else if(page.equals("update")){
             String id = (String) request.getParameter("id");
             SysNotice sModel= sysNoticeService.getSysNotice(Integer.parseInt(id));
             model.addAttribute("sysNotice",sModel);
+            model.addAttribute("jwt", jwt);
             return "notice/sys_notice_update_page";
         }
         else if(page.equals("look")){
             String id = (String) request.getParameter("id");
             SysNotice sModel=sysNoticeService.getSysNotice(Integer.parseInt(id));
             model.addAttribute("sysNotice",sModel);
+            model.addAttribute("jwt", jwt);
             return "notice/sys_notice_look_page";
         }
         else {

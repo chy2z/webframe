@@ -40,27 +40,9 @@ public class AuditKindProcessStepService {
         return mapper.insertSelective(c) > 0;
     }
 
-    /**
-     * 更新记录
-     * @param c
-     * @return
-     */
-    public boolean update(AuditKindProcessStep c) {
-        return mapper.updateByPrimaryKeySelective(c) > 0;
-    }
-
 
     /**
-     * 删除记录
-     * @param id
-     * @return
-     */
-    public boolean delete(Integer id) {
-        return mapper.deleteByPrimaryKey(id) > 0;
-    }
-
-    /**
-     * 删除记录
+     * 批量删除记录
      * @param Pid
      * @return
      */

@@ -13,7 +13,9 @@
 
   <resultMap extends="BaseResultMap" id="JoinResultMap" type="com.springmvc.model.AuditKindProcessStep">
     <!-- 增加级联属性 -->
-    <result column="uname" jdbcType="VARCHAR" property="uname" />
+    <result column="uName" jdbcType="VARCHAR" property="uname" />
+    <result column="roleName" jdbcType="VARCHAR" property="rolename" />
+    <result column="departName" jdbcType="VARCHAR" property="departname" />
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -28,18 +30,15 @@
   </select>
 
   <select id="selectByPid" parameterType="java.lang.Integer" resultMap="JoinResultMap">
-    select aps.id, aps.pId, aps.uId, aps.step, aps.enable, aps.createDate,
-    u.name as uname
+   select aps.id, aps.pId, aps.uId, aps.step, aps.enable, aps.createDate,
+    u.name as uName, r.`name` as roleName, d.`name` as departName
     from audit_kind_process_step aps JOIN audit_kind_process ap on aps.pid=ap.id
     JOIN  users u on aps.uid=u.id
+    join  role r on u.roleId=r.id
+    join department d on u.departId=d.id
     where aps.pid = #{pid,jdbcType=INTEGER}
     order by aps.id
   </select>
-
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from audit_kind_process_step
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
 
   <delete id="deleteByProcessId" parameterType="java.lang.Integer">
     delete from audit_kind_process_step
@@ -90,41 +89,23 @@
     </trim>
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.model.AuditKindProcessStep">
-    update audit_kind_process_step
-    <set>
-      <if test="pid != null">
-        pId = #{pid,jdbcType=INTEGER},
-      </if>
-      <if test="uid != null">
-        uId = #{uid,jdbcType=INTEGER},
-      </if>
-      <if test="step != null">
-        step = #{step,jdbcType=INTEGER},
-      </if>
-      <if test="enable != null">
-        enable = #{enable,jdbcType=VARCHAR},
-      </if>
-      <if test="createdate != null">
-        createDate = #{createdate,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-
   <select id="getCount" resultType="int">
     select count(1)
     from audit_kind_process_step aps JOIN audit_kind_process ap on aps.pid=ap.id
     JOIN  users u on aps.uid=u.id
+    join  role r on u.roleId=r.id
+    join department d on u.departId=d.id
     <if test="where != null">where ${where}</if>
     <if test="orderBy != null">order by ${orderBy}</if>
   </select>
 
   <select id="selectPagination" resultMap="JoinResultMap">
     select aps.id, aps.pId, aps.uId, aps.step, aps.enable, aps.createDate,
-    u.name as uname
+    u.name as uName, r.`name` as roleName, d.`name` as departName
     from audit_kind_process_step aps JOIN audit_kind_process ap on aps.pid=ap.id
     JOIN  users u on aps.uid=u.id
+    join  role r on u.roleId=r.id
+    join department d on u.departId=d.id
     <if test="where != null">where ${where}</if>
     <if test="orderBy != null">order by ${orderBy}</if>
     limit #{start},#{pageSize}

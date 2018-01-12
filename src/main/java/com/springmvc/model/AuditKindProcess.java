@@ -2,6 +2,12 @@ package com.springmvc.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+* @Title: AuditKindProcess
+* @Description:审核流程
+* @author chy
+* @date 2018/1/12 10:24
+*/
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AuditKindProcess {
     private Integer id;

@@ -1,5 +1,6 @@
 package com.springmvc.interceptor;
 
+import com.springmvc.config.SysConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -29,6 +30,11 @@ public class LoginInterceptor implements HandlerInterceptor {
      */
     public void postHandle(HttpServletRequest request, HttpServletResponse response,
                            Object handler, ModelAndView modelAndView) throws Exception {
+
+        if(modelAndView!=null) {
+            modelAndView.addObject("version", SysConfig.version);
+        }
+
     }
 
     /**
@@ -37,12 +43,14 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
 
-        //获取请求的URL
+        // 获取请求的URL
         String url = request.getRequestURI();
 
         logger.info("{}:{}","拦截请求",url);
 
         logger.info("{}:{}","jwt",request.getParameter("jwt"));
+
+        // 以后做jwt统一验证
 
 
         /*

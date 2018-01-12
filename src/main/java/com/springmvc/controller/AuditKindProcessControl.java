@@ -49,6 +49,7 @@ public class AuditKindProcessControl {
     public String toPage(@PathVariable("page") String page, HttpServletRequest request, Model model) {
         String jwt = (String) request.getParameter("jwt");
         UsersToken ut= utService.getUsersToken(jwt);
+        model.addAttribute("jwt", jwt);
         if (page.equals("add")) {
             Users u= uService.getUsers(ut.getUserid());
             model.addAttribute("user", u);
@@ -56,7 +57,9 @@ public class AuditKindProcessControl {
         }
         else if(page.equals("update")){
             String id = (String) request.getParameter("id");
+            Users u= uService.getUsers(ut.getUserid());
             AuditKindProcess sModel= auditKindProcessService.getAuditKindProcess(Integer.parseInt(id));
+            model.addAttribute("user", u);
             model.addAttribute("kindProcess",sModel);
             return "auditing/audit_kind_process_update_page";
         }
@@ -186,6 +189,7 @@ public class AuditKindProcessControl {
 
             FlowChartNode node;
 
+            // 级别数
             Integer level=-1;
 
             Integer index=0;
@@ -194,38 +198,42 @@ public class AuditKindProcessControl {
             FlowChartNode lastNode=null;
 
             // 下一级别的父节点
-            List<Integer> parent = new ArrayList<Integer>();
+            List<String> parent = new ArrayList<String>();
 
             for (AuditKindProcessStep s : steps) {
                 if (level < s.getStep()) {
                     level = s.getStep();
                 }
+            }
+
+            for (AuditKindProcessStep s : steps) {
                 node = new FlowChartNode();
-                lastNode = node;
                 // 第一个节点
                 if (index++ == 0) {
-                    parent.add(s.getStep());
+                    parent.add(index.toString());
                     node.setPrcs_parent("0");
                 } else {
                     //同一个级别
                     if (lastNode.getPrcs_id() == s.getStep().intValue()) {
                         // 合并父节点集合
-                        parent.add(lastNode.getPrcs_id());
+                        parent.add(lastNode.getFlow_prcs());
                         // 和上一个节点父节点一样
                         node.setPrcs_parent(lastNode.getPrcs_parent());
                     } else {
                         // 新的级别
                        for(int i=0,len=parent.size()-1;i<=len;i++) {
                            if (i < len) {
+                               // 字符串加
                                node.setPrcs_parent(parent.get(i).toString() + ",");
                            } else {
+                               // 字符串加
                                node.setPrcs_parent(parent.get(i).toString());
                            }
                        }
 
                         parent.clear();
 
-                        parent.add(s.getStep());
+                        parent.add(index.toString());
                     }
                 }
                 node.setPrcs_id(s.getStep());
@@ -233,8 +241,22 @@ public class AuditKindProcessControl {
                 node.setPrcs_title(s.getUname());
                 node.setPrcs_content("第"+s.getStep().toString()+"步 "+s.getUname());
                 node.setPrcs_type("");
-                node.setPrcs_class("window5");
+
+                // 开始
+                if(s.getStep().intValue()==1) {
+                    node.setPrcs_class("window_start");
+                }
+                // 结束
+                else if(s.getStep().intValue()==level){
+                    node.setPrcs_class("window_end");
+                }
+                // 中间过程
+                else{
+                    node.setPrcs_class("window_child");
+                }
+
                 nodes.add(node);
+                lastNode = node;
             }
 
             FlowChart<FlowChartNode> flowChart = new FlowChart<>();

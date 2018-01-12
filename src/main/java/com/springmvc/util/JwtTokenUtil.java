@@ -27,6 +27,7 @@ public class JwtTokenUtil {
 
 	public final static String secret = "#web-frame#";
 
+
 	/**
 	 * 创建token
 	 * @param info

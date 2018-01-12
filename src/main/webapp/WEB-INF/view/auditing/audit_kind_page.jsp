@@ -69,7 +69,7 @@
                 <Form-Item label="业务" prop="operation">
                     <i-Input v-model="formModal.bindModel.operation" placeholder="请输入业务名称"></i-Input>
                 </Form-Item>
-                <Form-Item label="备注" prop="code">
+                <Form-Item label="备注" prop="memo">
                     <i-Input v-model="formModal.bindModel.memo" placeholder="请输入备注"></i-Input>
                 </Form-Item>
             </i-Form>
@@ -96,8 +96,8 @@
                 <Form-Item label="业务" prop="operation">
                     <i-Input element-id="qoperation" v-model="queryModal.bindModel.operation" placeholder="请输入业务标识"></i-Input>
                 </Form-Item>
-                <Form-Item label="备注" prop="code">
-                    <i-Input element-id="qcode" v-model="queryModal.bindModel.memo" placeholder="请输入备注"></i-Input>
+                <Form-Item label="备注" prop="memo">
+                    <i-Input element-id="qmemo" v-model="queryModal.bindModel.memo" placeholder="请输入备注"></i-Input>
                 </Form-Item>
             </i-Form>
         </div>
@@ -167,7 +167,8 @@
                     bindModel:{
                         id:null,
                         name:"",
-                        code:""
+                        memo:"",
+                        operation:""
                     },
                     ruleValidate:{
                         name: [

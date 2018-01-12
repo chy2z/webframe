@@ -44,11 +44,11 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="operation != null">
-        #{operation,jdbcType=VARCHAR},
-      </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="operation != null">
+        #{operation,jdbcType=VARCHAR},
       </if>
       <if test="memo != null">
         #{memo,jdbcType=VARCHAR},

@@ -127,13 +127,15 @@ public class AuditKindProcessControl {
     }
 
     /**
-     * 修改
-     * @param c
+     * 修改流程和步骤
+     * @param process
+     * @param steps
+     * @param editStep 是否更新步骤
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/update",method = {RequestMethod.POST})
-    public RequestResult update(String process , String steps){
+    public RequestResult update(String process , String steps,int editStep){
         RequestResult result=new RequestResult();
         if(null==process||null==steps) {
             result.setFail(LanguageUtil.DATA_LOSS);
@@ -141,11 +143,11 @@ public class AuditKindProcessControl {
         else{
             AuditKindProcess c= JsonUtil.jsonToBean(process,AuditKindProcess.class);
 
-            if(c.getId().intValue()==0) {
+            if(c.getId().intValue()!=0) {
 
                 List<AuditKindProcessStep> stepList = (List<AuditKindProcessStep>) JsonUtil.jsonToListBean(steps, AuditKindProcessStep.class);
 
-                if (auditKindProcessService.updateStep(c, stepList)) {
+                if (auditKindProcessService.updateStep(c, stepList,editStep)) {
                     result.setSucceed(LanguageUtil.UPDATE_SUCESS, null);
                 } else {
                     result.setFail(LanguageUtil.UPDATE_FAIL);

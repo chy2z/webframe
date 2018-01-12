@@ -39,7 +39,7 @@ public class AuditKindProcessService {
 
     /**
      * 增加流程和流程步骤
-     * @param c
+     * @param p
      * @param steps
      * @return
      */
@@ -56,21 +56,28 @@ public class AuditKindProcessService {
     }
 
     /**
-     * 插入记录
-     * @param c
+     * 更新流程和流程步骤
+     * @param p
+     * @param steps
+     * @param editStep 是否更新步骤
      * @return
      */
-    public boolean insert(AuditKindProcess c) {
-        return mapper.insertSelective(c) > 0;
-    }
-
-    /**
-     * 更新记录
-     * @param c
-     * @return
-     */
-    public boolean update(AuditKindProcess c) {
-        return mapper.updateByPrimaryKeySelective(c) > 0;
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateStep(AuditKindProcess p,List<AuditKindProcessStep> steps,int editStep) {
+        int result = mapper.updateByPrimaryKeySelective(p);
+        if (editStep != 0) {
+            //删除旧节点
+            if (auditKindProcessStepService.deleteByPId(p.getId())) {
+                //插入新节点
+                for (AuditKindProcessStep s : steps) {
+                    s.setPid(p.getId());
+                    if (auditKindProcessStepService.insert(s)) {
+                        result++;
+                    }
+                }
+            }
+        }
+        return result > 0;
     }
 
 

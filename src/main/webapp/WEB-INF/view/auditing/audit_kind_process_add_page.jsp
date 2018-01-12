@@ -756,7 +756,9 @@
                         steps:JSON.stringify(this.dataStep)
                     },false,(result)=>{
                         vtoast(this, result.tip);
-                        vPopWindowsColse({});
+                        if(result.success){
+                           vPopWindowsColse({});
+                        }
                     },()=>{
                         this.spinShow=true;
                     },()=>{

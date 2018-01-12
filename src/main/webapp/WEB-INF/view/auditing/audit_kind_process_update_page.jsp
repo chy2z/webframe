@@ -195,7 +195,7 @@
 </body>
 <script>
     var domain="${ctx}";
-    var add_url=domain+"/auditKindProcess/insert?jwt=${requestScope.jwt}";
+    var update_url=domain+"/auditKindProcess/update?jwt=${requestScope.jwt}";
     var department_Select_url="${ctx}/department/vselect/selectDepartment?jwt=${requestScope.jwt}";
 
     var selectHelperATDepartment= new selectHelper(department_Select_url,{});
@@ -564,6 +564,7 @@
             dataPageAK:pagingHelperAK.ivPage,
             userTable:pageHelperUser.ivTable,
             userPage:pageHelperUser.ivPage,
+            editStep:0,
             auditProcess:{
                 id:${requestScope.kindProcess.id},
                 pname:"${requestScope.kindProcess.pname}",
@@ -627,7 +628,7 @@
                     handle: ['delete']
                 }
             ],
-            dataStep: []
+            dataStep:${requestScope.kindProcessStep}
         },
         mounted:function () {
 
@@ -702,19 +703,14 @@
                 }
             },
             deleteDataStep(row,index){
-                //vtoast(this,'删除了第' + (index + 1) + '行数据');
                 this.reSort();
             },
             editRowChange(row,index){
-                //vtoast(this,'修改了第' + (index + 1) + '行数据');
             },
             editCellChange(row,index,key){
-                //vtoast(this,'修改了第 ' + (index + 1) + ' 行列名为 ' + key + ' 的数据');
                 this.reSort();
             },
             dragOnchoose (from) {
-                //鼠标点击,拖拽开始前触发
-                //this.dragTable.chooseRecord.unshift(this.dataStep[from].name);
             },
             dragOnstart (from) {
                 this.dragTable.oldIndex = from;
@@ -747,6 +743,7 @@
                     }
                 });
                 this.auditProcess.stepNum=step;
+                this.editStep=1;
             },
             butRefresh(){
                 vconfirm(this,"确认刷新吗?",()=>{
@@ -755,18 +752,27 @@
             },
             butSave(){
                 if(this.dataStep.length>0){
-                    vajaxPost(add_url,{
+                    vajaxPost(update_url,{
                         process:JSON.stringify({
+                            id:this.auditProcess.id,
                             pname:this.auditProcess.pname,
                             kid:this.auditProcess.kid,
                             departid:this.auditProcess.departid,
                             enable:(this.auditProcess.enable?"启用":"禁用"),
                             stepnum:this.auditProcess.stepNum
                         }),
-                        steps:JSON.stringify(this.dataStep)
+                        steps:JSON.stringify(this.dataStep),
+                        editStep:this.editStep
                     },false,(result)=>{
                         vtoast(this, result.tip);
-                        vPopWindowsColse({});
+                        if(result.success){
+                            vPopWindowsColse({
+                                pname:this.auditProcess.pname,
+                                departname:this.auditProcess.departName,
+                                enable:(this.auditProcess.enable?"启用":"禁用"),
+                                stepnum:this.auditProcess.stepNum
+                            });
+                        }
                     },()=>{
                         this.spinShow=true;
                     },()=>{

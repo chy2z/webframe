@@ -5,6 +5,7 @@ import com.springmvc.model.RequestResult;
 import com.springmvc.model.iview.VTree;
 import com.springmvc.service.MenuItemService;
 import com.springmvc.service.RoleMenuItemService;
+import com.springmvc.util.LanguageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +27,6 @@ import java.util.List;
 @RequestMapping("/right")
 public class RightsControl  extends BaseController {
 
-
     @Autowired
     MenuItemService miService;
 
@@ -40,9 +40,7 @@ public class RightsControl  extends BaseController {
     @ResponseBody
     @RequestMapping(value="/all",method = {RequestMethod.POST})
     public String all(HttpServletRequest request, HttpServletResponse response) {
-
         String roleId=request.getParameter("roleId");
-
         return  miService.toIviewTreeForJson(miService.getRigthsAll(roleId),false);
     }
 
@@ -53,9 +51,7 @@ public class RightsControl  extends BaseController {
     @ResponseBody
     @RequestMapping(value="/own",method = {RequestMethod.POST})
     public String own(HttpServletRequest request, HttpServletResponse response) {
-
         String roleId=request.getParameter("roleId");
-
         return  miService.toIviewTreeForJson(miService.getRigthsOwn(roleId),true);
     }
 
@@ -71,19 +67,17 @@ public class RightsControl  extends BaseController {
         String roleId = request.getParameter("roleId");
         RequestResult result = new RequestResult();
         if (null == trees) {
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         } else {
             try {
                 rmiService.saveRigths(roleId, trees);
-                result.setSucceed("保存成功",null);
+                result.setSucceed(LanguageUtil.INSERT_FAIL,null);
             }
             catch (Exception ex){
-                result.setSucceed("保存异常",null);
+                result.setSucceed(LanguageUtil.EXCEPTER,null);
             }
         }
         return result;
     }
-
-
 
 }

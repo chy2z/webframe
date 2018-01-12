@@ -5,6 +5,7 @@ import com.springmvc.model.Role;
 import com.springmvc.service.RoleService;
 import com.springmvc.service.UsersService;
 import com.springmvc.service.VSelectService;
+import com.springmvc.util.LanguageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -76,14 +77,14 @@ public class RoleControl {
     public RequestResult insert(@RequestBody Role c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else{
             if(rService.insert(c)){
-                result.setSucceed("保存成功",null);
+                result.setSucceed(LanguageUtil.INSERT_SUCESS,null);
             }
             else{
-                result.setFail("没有数据");
+                result.setFail(LanguageUtil.INSERT_FAIL);
             }
         }
 
@@ -100,14 +101,14 @@ public class RoleControl {
     public RequestResult update(@RequestBody Role c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else{
             if(rService.update(c)){
-                result.setSucceed("修改成功",null);
+                result.setSucceed(LanguageUtil.INSERT_SUCESS,null);
             }
             else{
-                result.setFail("没有数据");
+                result.setFail(LanguageUtil.INSERT_FAIL);
             }
         }
 
@@ -124,18 +125,18 @@ public class RoleControl {
     public RequestResult delete(String id){
         RequestResult result=new RequestResult();
         if(id==null){
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else{
             if(uService.getCountByRole(Integer.parseInt(id))<=0) {
                 if (rService.delete(Integer.parseInt(id))) {
-                    result.setSucceed("删除成功", null);
+                    result.setSucceed(LanguageUtil.DELETE_SUCESS, null);
                 } else {
-                    result.setFail("没有数据");
+                    result.setFail(LanguageUtil.DELETE_FAIL);
                 }
             }
             else{
-                result.setFail("此角色有用户在使用,不能删除");
+                result.setFail(LanguageUtil.ROLE_USING_NOT_DELETE);
             }
         }
         return result;

@@ -3,6 +3,7 @@ package com.springmvc.controller;
 import com.springmvc.model.AuditKind;
 import com.springmvc.model.RequestResult;
 import com.springmvc.service.AuditKindService;
+import com.springmvc.util.LanguageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,14 +56,14 @@ public class AuditKindControl {
     public RequestResult insert(@RequestBody AuditKind c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else{
             if(auditKindService.insert(c)){
-                result.setSucceed("保存成功",null);
+                result.setSucceed(LanguageUtil.INSERT_SUCESS,null);
             }
             else{
-                result.setFail("没有数据");
+                result.setFail(LanguageUtil.INSERT_FAIL);
             }
         }
 
@@ -79,14 +80,14 @@ public class AuditKindControl {
     public RequestResult update(@RequestBody AuditKind c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else{
             if(auditKindService.update(c)){
-                result.setSucceed("修改成功",null);
+                result.setSucceed(LanguageUtil.UPDATE_SUCESS,null);
             }
             else{
-                result.setFail("没有数据");
+                result.setFail(LanguageUtil.UPDATE_FAIL);
             }
         }
 
@@ -103,14 +104,14 @@ public class AuditKindControl {
     public RequestResult delete(String id){
         RequestResult result=new RequestResult();
         if(id==null){
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else{
             if(auditKindService.delete(Integer.parseInt(id))){
-                result.setSucceed("删除成功",null);
+                result.setSucceed(LanguageUtil.DELETE_SUCESS,null);
             }
             else{
-                result.setFail("没有数据");
+                result.setFail(LanguageUtil.DELETE_FAIL);
             }
         }
         return result;

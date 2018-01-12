@@ -7,6 +7,7 @@ import com.springmvc.model.UsersToken;
 import com.springmvc.service.SysNoticeService;
 import com.springmvc.service.UsersService;
 import com.springmvc.service.UsersTokenService;
+import com.springmvc.util.LanguageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -96,14 +97,14 @@ public class SysNoticeControl {
     public RequestResult insert(@RequestBody SysNotice c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else{
             if(sysNoticeService.insert(c)){
-                result.setSucceed("保存成功",null);
+                result.setSucceed(LanguageUtil.INSERT_SUCESS,null);
             }
             else{
-                result.setFail("没有数据");
+                result.setFail(LanguageUtil.INSERT_FAIL);
             }
         }
 
@@ -120,14 +121,14 @@ public class SysNoticeControl {
     public RequestResult update(@RequestBody SysNotice c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else{
             if(sysNoticeService.update(c)){
-                result.setSucceed("修改成功",null);
+                result.setSucceed(LanguageUtil.UPDATE_SUCESS,null);
             }
             else{
-                result.setFail("没有数据");
+                result.setFail(LanguageUtil.UPDATE_FAIL);
             }
         }
 
@@ -144,14 +145,14 @@ public class SysNoticeControl {
     public RequestResult delete(String id){
         RequestResult result=new RequestResult();
         if(id==null){
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else{
             if(sysNoticeService.delete(Integer.parseInt(id))){
-                result.setSucceed("删除成功",null);
+                result.setSucceed(LanguageUtil.DELETE_SUCESS,null);
             }
             else{
-                result.setFail("没有数据");
+                result.setFail(LanguageUtil.DELETE_FAIL);
             }
         }
         return result;

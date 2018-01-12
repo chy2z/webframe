@@ -62,33 +62,31 @@ public class LoginControl extends BaseController {
 	 */
 	@RequestMapping("/index/{jwt}")
 	public String index(@PathVariable("jwt") String jwt, Model model) {
-		UsersToken ut= utService.getUsersToken(jwt);
-		if(ut==null){
+		UsersToken ut = utService.getUsersToken(jwt);
+		if (ut == null) {
 			return "redirect:../../login.jsp";
-		}
-		else {
-			Users u= uService.getUsers(ut.getUserid());
-			Role role=roleService.getRole(u.getRoleid());
+		} else {
+			Users u = uService.getUsers(ut.getUserid());
+			Role role = roleService.getRole(u.getRoleid());
 
-			UsersLoginLog currentLog= usersLoginLogService.selectLast(ut.getUserid());
-			UsersLoginLog preLog= usersLoginLogService.getUsersLoginLog(currentLog.getLastid());
+			UsersLoginLog currentLog = usersLoginLogService.selectLast(ut.getUserid());
+			UsersLoginLog preLog = usersLoginLogService.getUsersLoginLog(currentLog.getLastid());
 
-			model.addAttribute("loginDate",DateUtil.formatDate(currentLog.getCreatedate()));
-			model.addAttribute("geo",StringUtil.emptyOrString(currentLog.getProvince())+StringUtil.emptyOrString(currentLog.getCity()));
+			model.addAttribute("loginDate", DateUtil.formatDate(currentLog.getCreatedate()));
+			model.addAttribute("geo", StringUtil.emptyOrString(currentLog.getProvince()) + StringUtil.emptyOrString(currentLog.getCity()));
 
-			if(preLog!=null) {
+			if (preLog != null) {
 				model.addAttribute("loginDateLast", DateUtil.formatDate(preLog.getCreatedate()));
-				model.addAttribute("geoLast", StringUtil.emptyOrString(preLog.getProvince())+StringUtil.emptyOrString(preLog.getCity()));
-			}
-			else{
+				model.addAttribute("geoLast", StringUtil.emptyOrString(preLog.getProvince()) + StringUtil.emptyOrString(preLog.getCity()));
+			} else {
 				model.addAttribute("loginDateLast", "--");
 				model.addAttribute("geoLast", "--");
 			}
 
-			model.addAttribute("headImg",u.getImg());
-			model.addAttribute("name",u.getName());
-			model.addAttribute("loginName",u.getLoginname());
-			model.addAttribute("roleName",role==null?"超级管理员":role.getName());
+			model.addAttribute("headImg", u.getImg());
+			model.addAttribute("name", u.getName());
+			model.addAttribute("loginName", u.getLoginname());
+			model.addAttribute("roleName", role == null ? SysConfig.superAdminRole : role.getName());
 			return "forward:../../index.jsp";
 		}
 	}
@@ -104,14 +102,14 @@ public class LoginControl extends BaseController {
 		try {
 			String info=ClientUtil.queryIp(ip);
 			if(info!=null){
-				result.setSucceed("获取成功",info);
+				result.setSucceed(LanguageUtil.SUCCESS,info);
 			}
 			else{
-				result.setFail("获取ip信息出错");
+				result.setFail(LanguageUtil.GET_DATA_FAIL);
 			}
 		}
 		catch (Exception ex){
-			result.setFail("获取ip信息出错");
+			result.setFail(LanguageUtil.EXCEPTER);
 		}
 
 		return result;
@@ -127,22 +125,20 @@ public class LoginControl extends BaseController {
 	@RequestMapping(value = "/validateLogon",method = {RequestMethod.POST})
 	public RequestResult validateLogon(HttpServletRequest request, HttpServletResponse response) {
 		RequestResult result=new RequestResult();
-		String uName = (String) request.getParameter("uname");
-		String uPwd = (String) request.getParameter("upwd");
-		String ip=(String) request.getParameter("ip");
-		String country=(String) request.getParameter("country");
-		String region=(String) request.getParameter("region");
-		String city=(String) request.getParameter("city");
+		String uName =  request.getParameter("uname");
+		String uPwd =  request.getParameter("upwd");
+		String ip= request.getParameter("ip");
+		String country= request.getParameter("country");
+		String region= request.getParameter("region");
+		String city= request.getParameter("city");
 		String token = "";
-		//System.out.println("账户：" + uName);
-		//System.out.println("密码:" + uPwd);
 		if(uName.trim().equals("")||uPwd.trim().equals("")){
-		    result.setFail("用户名或密码为空");
+		    result.setFail(LanguageUtil.ERROR_NAME_PASSWORD);
 		    return  result;
 		}
 		Users user=uService.getUsers(uName, SecurityUtil.MD5_16(uPwd));
 		if(user==null){
-			result.setFail("用户名或密码不正确");
+			result.setFail(LanguageUtil.ERROR_NAME_PASSWORD);
 			return result;
 		}
 		Map<String, String> map = new HashMap<String, String>();
@@ -179,7 +175,7 @@ public class LoginControl extends BaseController {
 
         usersLoginLogService.saveLogin(user.getId(),ip,country,region,city);
 
-		result.setSucceed("登录成功",ut.getMd5token());
+		result.setSucceed(LanguageUtil.SUCCESS_LOGIN,ut.getMd5token());
 
 		return result;
 	}
@@ -200,17 +196,17 @@ public class LoginControl extends BaseController {
 		}
 		else {
 
-			Users u= uService.getUsers(ut.getUserid());
+			Users u = uService.getUsers(ut.getUserid());
 
-			Role role=roleService.getRole(u.getRoleid());
+			Role role = roleService.getRole(u.getRoleid());
 
 			//是否是超级管理员
-			if(SysConfig.isSuperAdmin(u.getRoleid().toString())){
-				model.addAttribute("menu",miService.toIviewMenuForJson(miService.getMenuAll()));
+			if (SysConfig.isSuperAdmin(u.getRoleid().toString())) {
+				model.addAttribute("menu", miService.toIviewMenuForJson(miService.getMenuAll()));
 			}
 			//不是超级管理员
-			else{
-				model.addAttribute("menu",miService.toIviewMenuForJson(miService.getMenuByRole(role.getId().toString())));
+			else {
+				model.addAttribute("menu", miService.toIviewMenuForJson(miService.getMenuByRole(role.getId().toString())));
 			}
 
 			model.addAttribute("version", SysConfig.version);
@@ -219,11 +215,11 @@ public class LoginControl extends BaseController {
 
 			model.addAttribute("user", u);
 
-			model.addAttribute("role",role==null?"超级管理员":role.getName());
+			model.addAttribute("role", role == null ? SysConfig.superAdminRole : role.getName());
 
-			model.addAttribute("loginTime",DateUtil.formatDate(ut.getLogintime()));
+			model.addAttribute("loginTime", DateUtil.formatDate(ut.getLogintime()));
 
-			model.addAttribute("depart",departmentService.getDepart(u.getDepartid()).getName());
+			model.addAttribute("depart", departmentService.getDepart(u.getDepartid()).getName());
 		}
 
 		return "forward:../../main.jsp";
@@ -299,17 +295,17 @@ public class LoginControl extends BaseController {
 		RequestResult result=new RequestResult();
 
 		if(pwd==null){
-			result.setFail("请输入密码！");
+			result.setFail(LanguageUtil.UN_PASSWORD);
 		}
 		else if(jwt==null||ut==null) {
-			result.setFail("无权限！");
+			result.setFail(LanguageUtil.UN_ANTHORIZED);
 		}
 		else{
 			if(SecurityUtil.MD5_16(pwd).equals(uService.getUsers(ut.getUserid()).getPassword())){
-				result.setSucceed("解锁成功",null);
+				result.setSucceed(LanguageUtil.SUCCESS_UNLOCK,null);
 			}
 			else{
-				result.setFail("密码不正确！");
+				result.setFail(LanguageUtil.ERROR_PASSWORD);
 			}
 		}
 
@@ -331,10 +327,10 @@ public class LoginControl extends BaseController {
 		UsersToken ut= utService.getUsersToken(jwt);
 		RequestResult result=new RequestResult();
 		if(oldPwd==null||newPwd==null){
-			result.setFail("请输入密码！");
+			result.setFail(LanguageUtil.UN_PASSWORD);
 		}
 		else if(jwt==null||ut==null) {
-			result.setFail("无权限！");
+			result.setFail(LanguageUtil.UN_ANTHORIZED);
 		}
 		else{
 
@@ -346,10 +342,10 @@ public class LoginControl extends BaseController {
 
 				uService.update(user);
 
-				result.setSucceed("修改密码成功",null);
+				result.setSucceed(LanguageUtil.SUCCESS_UPDATE_PASSWORD,null);
 			}
 			else{
-				result.setFail("旧的密码不正确！");
+				result.setFail(LanguageUtil.ERROR_OLD_PASSWORD);
 			}
 		}
 		return  result;

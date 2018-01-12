@@ -4,6 +4,7 @@ import com.springmvc.model.DataDictionary;
 import com.springmvc.model.RequestResult;
 import com.springmvc.service.DataDictionaryService;
 import com.springmvc.service.VSelectService;
+import com.springmvc.util.LanguageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,14 +41,14 @@ public class DataDictionaryControl {
     public RequestResult insert(@RequestBody DataDictionary c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else{
             if(ddService.insert(c)){
-                result.setSucceed("保存成功",null);
+                result.setSucceed(LanguageUtil.INSERT_SUCESS,null);
             }
             else{
-                result.setFail("没有数据");
+                result.setFail(LanguageUtil.INSERT_FAIL);
             }
         }
 
@@ -64,14 +65,14 @@ public class DataDictionaryControl {
     public RequestResult update(@RequestBody DataDictionary c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else{
             if(ddService.update(c)){
-                result.setSucceed("修改成功",null);
+                result.setSucceed(LanguageUtil.UPDATE_SUCESS,null);
             }
             else{
-                result.setFail("没有数据");
+                result.setFail(LanguageUtil.UPDATE_FAIL);
             }
         }
 
@@ -88,18 +89,18 @@ public class DataDictionaryControl {
     public RequestResult delete(@RequestBody DataDictionary c){
         RequestResult result=new RequestResult();
         if(c==null){
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else{
             if(ddService.childCount(c)>1) {
                 if (ddService.delete(c.getId())) {
-                    result.setSucceed("删除成功", null);
+                    result.setSucceed(LanguageUtil.DELETE_SUCESS, null);
                 } else {
-                    result.setFail("没有数据");
+                    result.setFail(LanguageUtil.DELETE_FAIL);
                 }
             }
             else{
-                result.setFail("最后一条数据只能修改");
+                result.setFail(LanguageUtil.LAST_DATA_ONLY_UPDATE);
             }
         }
         return result;

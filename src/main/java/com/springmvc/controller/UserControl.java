@@ -4,6 +4,7 @@ import com.springmvc.config.SysConfig;
 import com.springmvc.model.RequestResult;
 import com.springmvc.model.Users;
 import com.springmvc.service.UsersService;
+import com.springmvc.util.LanguageUtil;
 import com.springmvc.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -57,17 +58,17 @@ public class UserControl {
     public RequestResult insert(@RequestBody Users c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else{
             //密码进行加密
             c.setPassword(SecurityUtil.MD5_16(c.getPassword()));
 
             if(uService.insert(c)){
-                result.setSucceed("保存成功",null);
+                result.setSucceed(LanguageUtil.INSERT_SUCESS,null);
             }
             else{
-                result.setFail("没有数据");
+                result.setFail(LanguageUtil.INSERT_FAIL);
             }
         }
 
@@ -84,7 +85,7 @@ public class UserControl {
     public RequestResult update(@RequestBody Users c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else{
             Users u= uService.getUsers(c.getId());
@@ -96,13 +97,13 @@ public class UserControl {
                 }
 
                 if (uService.update(c)) {
-                    result.setSucceed("修改成功", null);
+                    result.setSucceed(LanguageUtil.UPDATE_SUCESS, null);
                 } else {
-                    result.setFail("没有数据");
+                    result.setFail(LanguageUtil.UPDATE_FAIL);
                 }
             }
             else{
-                result.setFail("超级管理员信息不能修改");
+                result.setFail(LanguageUtil.SUPER_ADMIN_FORBID_UPDAET);
             }
         }
 
@@ -119,19 +120,19 @@ public class UserControl {
     public RequestResult delete(String id){
         RequestResult result=new RequestResult();
         if(id==null){
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else{
             Users u= uService.getUsers(Integer.parseInt(id));
             if(!SysConfig.isSuperAdmin(u.getRoleid()==null?"":u.getRoleid().toString())) {
                 if (uService.delete(Integer.parseInt(id))) {
-                    result.setSucceed("删除成功", null);
+                    result.setSucceed(LanguageUtil.DELETE_SUCESS, null);
                 } else {
-                    result.setFail("没有数据");
+                    result.setFail(LanguageUtil.DELETE_FAIL);
                 }
             }
             else{
-                result.setFail("超级管理员信息不能删除");
+                result.setFail(LanguageUtil.SUPER_ADMIN_FORBID_UPDAET);
             }
         }
         return result;

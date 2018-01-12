@@ -4,6 +4,7 @@ import com.springmvc.model.RequestResult;
 import com.springmvc.model.Users;
 import com.springmvc.service.UsersService;
 import com.springmvc.util.JsonUtil;
+import com.springmvc.util.LanguageUtil;
 import com.springmvc.util.StringUtil;
 import com.springmvc.util.UploadFileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,11 +61,11 @@ public class UploadControl {
 
             data.put("fileName", file.getOriginalFilename());
 
-            result.setSucceed("上传成功", data);
+            result.setSucceed(LanguageUtil.UPLOAD_SUCESS, data);
 
         }
         else{
-            result.setFail("上传失败");
+            result.setFail(LanguageUtil.UPLOAD_FAIL);
         }
 
         response.getWriter().write(JsonUtil.writeValueAsString(result));
@@ -106,10 +107,10 @@ public class UploadControl {
 
             data.put("fileName", file.getOriginalFilename());
 
-            result.setSucceed("上传成功", data);
+            result.setSucceed(LanguageUtil.UPLOAD_SUCESS, data);
         }
         else{
-            result.setFail("上传失败");
+            result.setFail(LanguageUtil.UPLOAD_FAIL);
         }
 
         return  result;

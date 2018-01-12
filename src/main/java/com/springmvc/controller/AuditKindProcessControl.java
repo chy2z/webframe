@@ -8,6 +8,7 @@ import com.springmvc.service.AuditKindProcessStepService;
 import com.springmvc.service.UsersService;
 import com.springmvc.service.UsersTokenService;
 import com.springmvc.util.JsonUtil;
+import com.springmvc.util.LanguageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,8 +60,10 @@ public class AuditKindProcessControl {
             String id = (String) request.getParameter("id");
             Users u= uService.getUsers(ut.getUserid());
             AuditKindProcess sModel= auditKindProcessService.getAuditKindProcess(Integer.parseInt(id));
+            List<AuditKindProcessStep> steps= auditKindProcessStepService.getList(Integer.parseInt(id));
             model.addAttribute("user", u);
             model.addAttribute("kindProcess",sModel);
+            model.addAttribute("kindProcessStep",JsonUtil.writeValueAsString(steps));
             return "auditing/audit_kind_process_update_page";
         }
         else if(page.equals("flowstepview")){
@@ -105,7 +108,7 @@ public class AuditKindProcessControl {
     public RequestResult insert(String process , String steps){
         RequestResult result=new RequestResult();
         if(null==process||null==steps) {
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else{
             AuditKindProcess c= JsonUtil.jsonToBean(process,AuditKindProcess.class);
@@ -113,10 +116,10 @@ public class AuditKindProcessControl {
             List<AuditKindProcessStep> stepList=(List<AuditKindProcessStep>)JsonUtil.jsonToListBean(steps,AuditKindProcessStep.class);
 
             if(auditKindProcessService.insertStep(c,stepList)){
-                result.setSucceed("保存成功",null);
+                result.setSucceed(LanguageUtil.INSERT_SUCESS,null);
             }
             else{
-                result.setFail("没有数据");
+                result.setFail(LanguageUtil.INSERT_FAIL);
             }
         }
 
@@ -130,17 +133,26 @@ public class AuditKindProcessControl {
      */
     @ResponseBody
     @RequestMapping(value = "/update",method = {RequestMethod.POST})
-    public RequestResult update(@RequestBody AuditKindProcess c){
+    public RequestResult update(String process , String steps){
         RequestResult result=new RequestResult();
-        if(null==c){
-            result.setFail("没有数据");
+        if(null==process||null==steps) {
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else{
-            if(auditKindProcessService.update(c)){
-                result.setSucceed("修改成功",null);
+            AuditKindProcess c= JsonUtil.jsonToBean(process,AuditKindProcess.class);
+
+            if(c.getId().intValue()==0) {
+
+                List<AuditKindProcessStep> stepList = (List<AuditKindProcessStep>) JsonUtil.jsonToListBean(steps, AuditKindProcessStep.class);
+
+                if (auditKindProcessService.updateStep(c, stepList)) {
+                    result.setSucceed(LanguageUtil.UPDATE_SUCESS, null);
+                } else {
+                    result.setFail(LanguageUtil.UPDATE_FAIL);
+                }
             }
             else{
-                result.setFail("没有数据");
+                result.setFail(LanguageUtil.DATA_EXCEPTION);
             }
         }
 
@@ -157,14 +169,14 @@ public class AuditKindProcessControl {
     public RequestResult delete(String id){
         RequestResult result=new RequestResult();
         if(id==null){
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else{
             if(auditKindProcessService.delete(Integer.parseInt(id))){
-                result.setSucceed("删除成功",null);
+                result.setSucceed(LanguageUtil.DELETE_SUCESS,null);
             }
             else{
-                result.setFail("没有数据");
+                result.setFail(LanguageUtil.DELETE_FAIL);
             }
         }
         return result;
@@ -180,7 +192,7 @@ public class AuditKindProcessControl {
     public RequestResult flowChartView(String id){
         RequestResult result=new RequestResult();
         if(id==null){
-            result.setFail("没有数据");
+            result.setFail(LanguageUtil.DATA_LOSS);
         }
         else {
             List<AuditKindProcessStep> steps = auditKindProcessStepService.getList(Integer.parseInt(id));
@@ -267,7 +279,7 @@ public class AuditKindProcessControl {
 
             flowChart.setList(nodes);
 
-            result.setSucceed("保存成功", flowChart);
+            result.setSucceed(LanguageUtil.SUCCESS, flowChart);
         }
 
         return result;

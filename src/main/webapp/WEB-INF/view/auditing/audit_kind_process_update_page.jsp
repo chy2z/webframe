@@ -557,7 +557,7 @@
         data: {
             spinShow:false,
             userid:${requestScope.user.id},
-            corporationid:${requestScope.user.corporationid},
+            corporationid:${requestScope.corporationId},
             selectATDepart:selectHelperATDepartment.ivSelect,
             selectUDepart:selectHelperUDepartment.ivSelect,
             dataTableAK:pagingHelperAK.ivTable,

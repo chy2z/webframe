@@ -48,12 +48,13 @@ public class AuditKindProcessControl {
      */
     @RequestMapping("/path/{page}")
     public String toPage(@PathVariable("page") String page, HttpServletRequest request, Model model) {
-        String jwt = (String) request.getParameter("jwt");
+        String jwt = request.getParameter("jwt");
         UsersToken ut= utService.getUsersToken(jwt);
         model.addAttribute("jwt", jwt);
         if (page.equals("add")) {
             Users u= uService.getUsers(ut.getUserid());
             model.addAttribute("user", u);
+            model.addAttribute("corporationId",request.getParameter("corporationId"));
             return "auditing/audit_kind_process_add_page";
         }
         else if(page.equals("update")){
@@ -61,6 +62,7 @@ public class AuditKindProcessControl {
             Users u= uService.getUsers(ut.getUserid());
             AuditKindProcess sModel= auditKindProcessService.getAuditKindProcess(Integer.parseInt(id));
             List<AuditKindProcessStep> steps= auditKindProcessStepService.getList(Integer.parseInt(id));
+            model.addAttribute("corporationId",request.getParameter("corporationId"));
             model.addAttribute("user", u);
             model.addAttribute("kindProcess",sModel);
             model.addAttribute("kindProcessStep",JsonUtil.writeValueAsString(steps));

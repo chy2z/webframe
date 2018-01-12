@@ -250,13 +250,13 @@
                     valert(this,"请选择组织机构");
                 }
                 else {
-                    vPopWindowShow("action_add", add_url, "审核流程增加");
+                    vPopWindowShow("action_add", add_url+"&corporationId="+selectHelperCorporation.getSelectItem(), "审核流程增加");
                 }
             },
             butEdit(){
                 if(pageHelperProcess.getSelectRowIndex()>-1){
                     let rowData=pageHelperProcess.getSelectRowData();
-                    vPopWindowShow("action_update",update_url+"&id="+rowData.id,"审核流程修改");
+                    vPopWindowShow("action_update",update_url+"&corporationId="+selectHelperCorporation.getSelectItem()+"&id="+rowData.id,"审核流程修改");
                 }
                 else{
                     valert(this,"请选择一行记录修改");

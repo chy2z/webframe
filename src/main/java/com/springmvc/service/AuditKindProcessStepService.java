@@ -1,5 +1,6 @@
 package com.springmvc.service;
 
+import com.springmvc.base.BaseService;
 import com.springmvc.mapper.AuditKindProcessStepMapper;
 import com.springmvc.model.AuditKindProcessStep;
 import com.springmvc.model.PageHelper;
@@ -17,7 +18,7 @@ import java.util.List;
 * @date 2017/12/29 14:43
 */
 @Service
-public class AuditKindProcessStepService {
+public class AuditKindProcessStepService extends BaseService {
 
     @Autowired
     AuditKindProcessStepMapper mapper;

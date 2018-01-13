@@ -1,5 +1,6 @@
 package com.springmvc.service;
 
+import com.springmvc.base.BaseService;
 import com.springmvc.mapper.EChartMapper;
 import com.springmvc.model.echart.Label;
 import com.springmvc.model.echart.LabelLine;
@@ -29,7 +30,7 @@ import java.util.*;
 * @date 2017/11/20 14:26
 */
 @Service
-public class EChartService {
+public class EChartService extends BaseService {
 
    @Autowired
     EChartMapper eChartMapper;

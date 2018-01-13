@@ -1,5 +1,6 @@
 package com.springmvc.service;
 
+import com.springmvc.base.BaseService;
 import com.springmvc.model.PageHelper;
 import com.springmvc.util.JsonUtil;
 import com.springmvc.util.StringUtil;
@@ -17,7 +18,7 @@ import java.util.List;
 * @date 2017/10/18 16:00
 */
 @Service
-public class UsersService {
+public class UsersService  extends BaseService {
 
 	@Autowired
 	private UsersMapper umap;

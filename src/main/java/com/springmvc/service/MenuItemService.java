@@ -1,5 +1,6 @@
 package com.springmvc.service;
 
+import com.springmvc.base.BaseService;
 import com.springmvc.mapper.MenuItemMapper;
 import com.springmvc.model.MenuItem;
 import com.springmvc.model.iview.VMenu;
@@ -20,7 +21,7 @@ import java.util.Map;
 * @date 2017/10/20 14:33
 */
 @Service
-public class MenuItemService {
+public class MenuItemService extends BaseService {
 
     @Autowired
     MenuItemMapper mimap;

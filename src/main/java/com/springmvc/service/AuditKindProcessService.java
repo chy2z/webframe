@@ -1,10 +1,10 @@
 package com.springmvc.service;
 
+import com.springmvc.base.BaseService;
 import com.springmvc.mapper.AuditKindProcessMapper;
 import com.springmvc.model.AuditKindProcess;
 import com.springmvc.model.AuditKindProcessStep;
 import com.springmvc.model.PageHelper;
-import com.springmvc.model.SysNotice;
 import com.springmvc.util.JsonUtil;
 import com.springmvc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.util.List;
 * @date 2017/12/29 14:00
 */
 @Service
-public class AuditKindProcessService {
+public class AuditKindProcessService extends BaseService {
 
     @Autowired
     AuditKindProcessMapper mapper;

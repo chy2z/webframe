@@ -1,5 +1,6 @@
 package com.springmvc.service;
 
+import com.springmvc.base.BaseService;
 import com.springmvc.mapper.VSelectMapper;
 import com.springmvc.model.iview.VSelect;
 import com.springmvc.util.JsonUtil;
@@ -16,7 +17,7 @@ import java.util.List;
 * @date 2017/10/30 10:03
 */
 @Service
-public class VSelectService {
+public class VSelectService extends BaseService {
 
     @Autowired
     VSelectMapper vSelect;

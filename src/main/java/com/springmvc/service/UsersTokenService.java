@@ -1,5 +1,6 @@
 package com.springmvc.service;
 
+import com.springmvc.base.BaseService;
 import com.springmvc.mapper.UsersTokenMapper;
 import com.springmvc.model.UsersToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 * @date 2017/10/19 15:46
 */
 @Service
-public class UsersTokenService {
+public class UsersTokenService extends BaseService {
 
     @Autowired
     private UsersTokenMapper utmap;

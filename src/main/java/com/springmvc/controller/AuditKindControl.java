@@ -60,7 +60,7 @@ public class AuditKindControl extends BaseControl {
             result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
-            if(!auditKindService.operationRepeat(c.getOperation().trim())) {
+            if(!auditKindService.operationRepeat(c.getOperation().trim(),c.getId().toString())) {
                 if (auditKindService.insert(c)) {
                     result.setSucceed(LanguageFactory.getLanguages().INSERT_SUCESS, null);
                 } else {
@@ -88,11 +88,15 @@ public class AuditKindControl extends BaseControl {
             result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
-            if(auditKindService.update(c)){
-                result.setSucceed(LanguageFactory.getLanguages().UPDATE_SUCESS,null);
+            if(!auditKindService.operationRepeat(c.getOperation().trim(),c.getId().toString())) {
+                if (auditKindService.update(c)) {
+                    result.setSucceed(LanguageFactory.getLanguages().UPDATE_SUCESS, null);
+                } else {
+                    result.setFail(LanguageFactory.getLanguages().UPDATE_FAIL);
+                }
             }
             else{
-                result.setFail(LanguageFactory.getLanguages().UPDATE_FAIL);
+                result.setFail(LanguageFactory.getLanguages().AUDIT_OPERATION_REPEAT);
             }
         }
 

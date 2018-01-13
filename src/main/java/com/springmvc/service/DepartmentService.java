@@ -1,5 +1,6 @@
 package com.springmvc.service;
 
+import com.springmvc.base.BaseService;
 import com.springmvc.mapper.DepartmentMapper;
 import com.springmvc.model.Department;
 import com.springmvc.model.PageHelper;
@@ -17,7 +18,7 @@ import java.util.List;
 * @date 2017/10/26 9:24
 */
 @Service
-public class DepartmentService {
+public class DepartmentService extends BaseService {
 
     @Autowired
     DepartmentMapper dmap;

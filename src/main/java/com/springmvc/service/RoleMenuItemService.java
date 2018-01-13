@@ -1,5 +1,6 @@
 package com.springmvc.service;
 
+import com.springmvc.base.BaseService;
 import com.springmvc.mapper.RoleMenuItemMapper;
 import com.springmvc.model.RoleMenuItem;
 import com.springmvc.model.iview.VTree;
@@ -19,7 +20,7 @@ import java.util.List;
 * @date 2017/11/6 23:35
 */
 @Service
-public class RoleMenuItemService {
+public class RoleMenuItemService extends BaseService {
 
     @Autowired
     RoleMenuItemMapper rmimap;

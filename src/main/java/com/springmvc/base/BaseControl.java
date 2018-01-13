@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 
 /**
 * @Title: BaseControl
-* @Description: 控制基础类
+* @Description: 控制层基类
 * @author chy
 * @date 2018/1/12 17:24
 */

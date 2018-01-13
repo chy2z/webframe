@@ -1,5 +1,6 @@
 package com.springmvc.service;
 
+import com.springmvc.base.BaseService;
 import com.springmvc.mapper.UsersLoginLogMapper;
 import com.springmvc.model.UsersLoginLog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import java.util.Date;
 * @date 2017/11/20 9:55
 */
 @Service
-public class UsersLoginLogService {
+public class UsersLoginLogService extends BaseService {
 
   @Autowired
   UsersLoginLogMapper usersLoginLogMapper;

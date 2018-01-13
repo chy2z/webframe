@@ -1,5 +1,6 @@
 package com.springmvc.service;
 
+import com.springmvc.base.BaseService;
 import com.springmvc.mapper.CorporationMapper;
 import com.springmvc.model.Corporation;
 import com.springmvc.model.PageHelper;
@@ -18,7 +19,7 @@ import java.util.List;
 * @date 2017/10/28 17:17
 */
 @Service
-public class CorporationService {
+public class CorporationService extends BaseService {
 
     @Autowired
     CorporationMapper cmap;

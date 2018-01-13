@@ -1,5 +1,6 @@
 package com.springmvc.service;
 
+import com.springmvc.base.BaseService;
 import com.springmvc.mapper.SysNoticeMapper;
 import com.springmvc.model.PageHelper;
 import com.springmvc.model.SysNotice;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 * @date 2017/12/13 11:09
 */
 @Service
-public class SysNoticeService {
+public class SysNoticeService extends BaseService {
 
     @Autowired
     SysNoticeMapper mapper;

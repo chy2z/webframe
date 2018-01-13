@@ -1,5 +1,6 @@
 package com.springmvc.service;
 
+import com.springmvc.base.BaseService;
 import com.springmvc.mapper.AuditKindMapper;
 import com.springmvc.model.AuditKind;
 import com.springmvc.model.PageHelper;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 * @date 2017/12/28 15:41
 */
 @Service
-public class AuditKindService {
+public class AuditKindService extends BaseService {
 
     @Autowired
     AuditKindMapper mapper;
@@ -25,8 +26,8 @@ public class AuditKindService {
      * @param operation
      * @return
      */
-    public boolean operationRepeat(String operation) {
-        int count = mapper.getCount(" operation='" + operation + "' ", " id ");
+    public boolean operationRepeat(String operation,String id) {
+        int count = mapper.getCount(" operation='" + operation + "' and id!=" + id + " ", " id ");
         return count > 0;
     }
 

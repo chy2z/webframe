@@ -1,5 +1,6 @@
 package com.springmvc.service;
 
+import com.springmvc.base.BaseService;
 import com.springmvc.mapper.RoleMapper;
 import com.springmvc.model.PageHelper;
 import com.springmvc.model.Role;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 * @date 2017/10/30 15:48
 */
 @Service
-public class RoleService {
+public class RoleService extends BaseService {
 
     @Autowired
     RoleMapper rmap;

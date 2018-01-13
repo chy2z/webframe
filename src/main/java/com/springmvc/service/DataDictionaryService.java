@@ -1,5 +1,6 @@
 package com.springmvc.service;
 
+import com.springmvc.base.BaseService;
 import com.springmvc.mapper.DataDictionaryMapper;
 import com.springmvc.model.DataDictionary;
 import com.springmvc.model.PageHelper;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 * @date 2017/10/28 17:18
 */
 @Service
-public class DataDictionaryService {
+public class DataDictionaryService extends BaseService {
 
     @Autowired
     DataDictionaryMapper ddmap;

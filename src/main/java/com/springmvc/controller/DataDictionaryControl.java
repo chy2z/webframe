@@ -1,10 +1,11 @@
 package com.springmvc.controller;
 
+import com.springmvc.base.BaseControl;
+import com.springmvc.config.LanguageFactory;
 import com.springmvc.model.DataDictionary;
 import com.springmvc.model.RequestResult;
 import com.springmvc.service.DataDictionaryService;
 import com.springmvc.service.VSelectService;
-import com.springmvc.util.LanguageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 */
 @Controller
 @RequestMapping("/dataDictionary")
-public class DataDictionaryControl {
+public class DataDictionaryControl extends BaseControl {
 
     @Autowired
     DataDictionaryService ddService;
@@ -41,14 +42,14 @@ public class DataDictionaryControl {
     public RequestResult insert(@RequestBody DataDictionary c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
             if(ddService.insert(c)){
-                result.setSucceed(LanguageUtil.INSERT_SUCESS,null);
+                result.setSucceed(LanguageFactory.getLanguages().INSERT_SUCESS,null);
             }
             else{
-                result.setFail(LanguageUtil.INSERT_FAIL);
+                result.setFail(LanguageFactory.getLanguages().INSERT_FAIL);
             }
         }
 
@@ -65,14 +66,14 @@ public class DataDictionaryControl {
     public RequestResult update(@RequestBody DataDictionary c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
             if(ddService.update(c)){
-                result.setSucceed(LanguageUtil.UPDATE_SUCESS,null);
+                result.setSucceed(LanguageFactory.getLanguages().UPDATE_SUCESS,null);
             }
             else{
-                result.setFail(LanguageUtil.UPDATE_FAIL);
+                result.setFail(LanguageFactory.getLanguages().UPDATE_FAIL);
             }
         }
 
@@ -89,18 +90,18 @@ public class DataDictionaryControl {
     public RequestResult delete(@RequestBody DataDictionary c){
         RequestResult result=new RequestResult();
         if(c==null){
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
             if(ddService.childCount(c)>1) {
                 if (ddService.delete(c.getId())) {
-                    result.setSucceed(LanguageUtil.DELETE_SUCESS, null);
+                    result.setSucceed(LanguageFactory.getLanguages().DELETE_SUCESS, null);
                 } else {
-                    result.setFail(LanguageUtil.DELETE_FAIL);
+                    result.setFail(LanguageFactory.getLanguages().DELETE_FAIL);
                 }
             }
             else{
-                result.setFail(LanguageUtil.LAST_DATA_ONLY_UPDATE);
+                result.setFail(LanguageFactory.getLanguages().LAST_DATA_ONLY_UPDATE);
             }
         }
         return result;

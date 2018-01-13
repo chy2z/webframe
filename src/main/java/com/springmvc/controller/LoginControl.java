@@ -1,6 +1,8 @@
 package com.springmvc.controller;
 
-import com.springmvc.base.BaseController;
+
+import com.springmvc.base.BaseControl;
+import com.springmvc.config.LanguageFactory;
 import com.springmvc.config.SysConfig;
 import com.springmvc.model.*;
 import com.springmvc.service.*;
@@ -27,7 +29,7 @@ import java.util.Map;
 */
 @Controller
 @RequestMapping("/login")
-public class LoginControl extends BaseController {
+public class LoginControl extends BaseControl {
 
 	@Autowired
 	UsersService uService;
@@ -102,14 +104,14 @@ public class LoginControl extends BaseController {
 		try {
 			String info=ClientUtil.queryIp(ip);
 			if(info!=null){
-				result.setSucceed(LanguageUtil.SUCCESS,info);
+				result.setSucceed(LanguageFactory.getLanguages().SUCCESS,info);
 			}
 			else{
-				result.setFail(LanguageUtil.GET_DATA_FAIL);
+				result.setFail(LanguageFactory.getLanguages().GET_DATA_FAIL);
 			}
 		}
 		catch (Exception ex){
-			result.setFail(LanguageUtil.EXCEPTER);
+			result.setFail(LanguageFactory.getLanguages().EXCEPTER);
 		}
 
 		return result;
@@ -133,12 +135,12 @@ public class LoginControl extends BaseController {
 		String city= request.getParameter("city");
 		String token = "";
 		if(uName.trim().equals("")||uPwd.trim().equals("")){
-		    result.setFail(LanguageUtil.ERROR_NAME_PASSWORD);
+		    result.setFail(LanguageFactory.getLanguages().ERROR_NAME_PASSWORD);
 		    return  result;
 		}
 		Users user=uService.getUsers(uName, SecurityUtil.MD5_16(uPwd));
 		if(user==null){
-			result.setFail(LanguageUtil.ERROR_NAME_PASSWORD);
+			result.setFail(LanguageFactory.getLanguages().ERROR_NAME_PASSWORD);
 			return result;
 		}
 		Map<String, String> map = new HashMap<String, String>();
@@ -175,7 +177,7 @@ public class LoginControl extends BaseController {
 
         usersLoginLogService.saveLogin(user.getId(),ip,country,region,city);
 
-		result.setSucceed(LanguageUtil.SUCCESS_LOGIN,ut.getMd5token());
+		result.setSucceed(LanguageFactory.getLanguages().SUCCESS_LOGIN,ut.getMd5token());
 
 		return result;
 	}
@@ -295,17 +297,17 @@ public class LoginControl extends BaseController {
 		RequestResult result=new RequestResult();
 
 		if(pwd==null){
-			result.setFail(LanguageUtil.UN_PASSWORD);
+			result.setFail(LanguageFactory.getLanguages().UN_PASSWORD);
 		}
 		else if(jwt==null||ut==null) {
-			result.setFail(LanguageUtil.UN_ANTHORIZED);
+			result.setFail(LanguageFactory.getLanguages().UN_ANTHORIZED);
 		}
 		else{
 			if(SecurityUtil.MD5_16(pwd).equals(uService.getUsers(ut.getUserid()).getPassword())){
-				result.setSucceed(LanguageUtil.SUCCESS_UNLOCK,null);
+				result.setSucceed(LanguageFactory.getLanguages().SUCCESS_UNLOCK,null);
 			}
 			else{
-				result.setFail(LanguageUtil.ERROR_PASSWORD);
+				result.setFail(LanguageFactory.getLanguages().ERROR_PASSWORD);
 			}
 		}
 
@@ -327,10 +329,10 @@ public class LoginControl extends BaseController {
 		UsersToken ut= utService.getUsersToken(jwt);
 		RequestResult result=new RequestResult();
 		if(oldPwd==null||newPwd==null){
-			result.setFail(LanguageUtil.UN_PASSWORD);
+			result.setFail(LanguageFactory.getLanguages().UN_PASSWORD);
 		}
 		else if(jwt==null||ut==null) {
-			result.setFail(LanguageUtil.UN_ANTHORIZED);
+			result.setFail(LanguageFactory.getLanguages().UN_ANTHORIZED);
 		}
 		else{
 
@@ -342,10 +344,10 @@ public class LoginControl extends BaseController {
 
 				uService.update(user);
 
-				result.setSucceed(LanguageUtil.SUCCESS_UPDATE_PASSWORD,null);
+				result.setSucceed(LanguageFactory.getLanguages().SUCCESS_UPDATE_PASSWORD,null);
 			}
 			else{
-				result.setFail(LanguageUtil.ERROR_OLD_PASSWORD);
+				result.setFail(LanguageFactory.getLanguages().ERROR_OLD_PASSWORD);
 			}
 		}
 		return  result;

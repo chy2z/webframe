@@ -21,6 +21,16 @@ public class AuditKindService {
     AuditKindMapper mapper;
 
     /**
+     * 业务
+     * @param operation
+     * @return
+     */
+    public boolean operationRepeat(String operation) {
+        int count = mapper.getCount(" operation='" + operation + "' ", " id ");
+        return count > 0;
+    }
+
+    /**
      * 插入记录
      * @param c
      * @return

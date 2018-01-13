@@ -1,5 +1,6 @@
 package com.springmvc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.springmvc.util.DateJsonDeserializerUtil;
@@ -13,6 +14,7 @@ import java.util.Date;
 * @author chy
 * @date 2017/12/13 10:05
 */
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class SysNotice {
     private Integer id;
 
@@ -25,6 +27,12 @@ public class SysNotice {
     private Date createtime;
 
     private String content;
+
+    private String auditstate;
+
+    @JsonSerialize(using = DateJsonSerializerUtil.class)
+    @JsonDeserialize(using = DateJsonDeserializerUtil.class)
+    private Date audittime;
 
     //===========关联属性==================
 
@@ -96,5 +104,21 @@ public class SysNotice {
 
     public void setCorporationName(String corporationName) {
         this.corporationName = corporationName;
+    }
+
+    public String getAuditstate() {
+        return auditstate;
+    }
+
+    public void setAuditstate(String auditstate) {
+        this.auditstate = auditstate;
+    }
+
+    public Date getAudittime() {
+        return audittime;
+    }
+
+    public void setAudittime(Date audittime) {
+        this.audittime = audittime;
     }
 }

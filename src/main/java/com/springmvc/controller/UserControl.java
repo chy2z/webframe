@@ -1,10 +1,11 @@
 package com.springmvc.controller;
 
+import com.springmvc.base.BaseControl;
+import com.springmvc.config.LanguageFactory;
 import com.springmvc.config.SysConfig;
 import com.springmvc.model.RequestResult;
 import com.springmvc.model.Users;
 import com.springmvc.service.UsersService;
-import com.springmvc.util.LanguageUtil;
 import com.springmvc.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 */
 @Controller
 @RequestMapping("/users")
-public class UserControl {
+public class UserControl extends BaseControl {
 
     @Autowired
     UsersService uService;
@@ -58,17 +59,17 @@ public class UserControl {
     public RequestResult insert(@RequestBody Users c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
             //密码进行加密
             c.setPassword(SecurityUtil.MD5_16(c.getPassword()));
 
             if(uService.insert(c)){
-                result.setSucceed(LanguageUtil.INSERT_SUCESS,null);
+                result.setSucceed(LanguageFactory.getLanguages().INSERT_SUCESS,null);
             }
             else{
-                result.setFail(LanguageUtil.INSERT_FAIL);
+                result.setFail(LanguageFactory.getLanguages().INSERT_FAIL);
             }
         }
 
@@ -85,7 +86,7 @@ public class UserControl {
     public RequestResult update(@RequestBody Users c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
             Users u= uService.getUsers(c.getId());
@@ -97,13 +98,13 @@ public class UserControl {
                 }
 
                 if (uService.update(c)) {
-                    result.setSucceed(LanguageUtil.UPDATE_SUCESS, null);
+                    result.setSucceed(LanguageFactory.getLanguages().UPDATE_SUCESS, null);
                 } else {
-                    result.setFail(LanguageUtil.UPDATE_FAIL);
+                    result.setFail(LanguageFactory.getLanguages().UPDATE_FAIL);
                 }
             }
             else{
-                result.setFail(LanguageUtil.SUPER_ADMIN_FORBID_UPDAET);
+                result.setFail(LanguageFactory.getLanguages().SUPER_ADMIN_FORBID_UPDAET);
             }
         }
 
@@ -120,19 +121,19 @@ public class UserControl {
     public RequestResult delete(String id){
         RequestResult result=new RequestResult();
         if(id==null){
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
             Users u= uService.getUsers(Integer.parseInt(id));
             if(!SysConfig.isSuperAdmin(u.getRoleid()==null?"":u.getRoleid().toString())) {
                 if (uService.delete(Integer.parseInt(id))) {
-                    result.setSucceed(LanguageUtil.DELETE_SUCESS, null);
+                    result.setSucceed(LanguageFactory.getLanguages().DELETE_SUCESS, null);
                 } else {
-                    result.setFail(LanguageUtil.DELETE_FAIL);
+                    result.setFail(LanguageFactory.getLanguages().DELETE_FAIL);
                 }
             }
             else{
-                result.setFail(LanguageUtil.SUPER_ADMIN_FORBID_UPDAET);
+                result.setFail(LanguageFactory.getLanguages().SUPER_ADMIN_FORBID_UPDAET);
             }
         }
         return result;

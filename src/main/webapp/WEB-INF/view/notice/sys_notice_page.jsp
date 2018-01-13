@@ -105,6 +105,19 @@
                     //    return h('div',
                     //        new Date(this.row.createtime).Format('yyyy-MM-dd'));
                     //}
+                },
+                {
+                    title: '状态',
+                    key: 'auditstate',
+                    render: (h, params) => {
+                        return h("div",{
+                            attrs: {
+                                class: (params.row.auditstate==vLang.audit.pass?vLang.audit.classPass:(params.row.auditstate==vLang.audit.return?vLang.audit.classReturn:vLang.audit.classProcess))
+                            }
+                        },[
+                            h('strong', params.row.auditstate)
+                        ]);
+                    }
                 }
             ]
         },{orderBy:" s.id desc "});

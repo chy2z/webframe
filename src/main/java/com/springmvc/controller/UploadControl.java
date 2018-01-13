@@ -1,10 +1,11 @@
 package com.springmvc.controller;
 
+import com.springmvc.base.BaseControl;
+import com.springmvc.config.LanguageFactory;
 import com.springmvc.model.RequestResult;
 import com.springmvc.model.Users;
 import com.springmvc.service.UsersService;
 import com.springmvc.util.JsonUtil;
-import com.springmvc.util.LanguageUtil;
 import com.springmvc.util.StringUtil;
 import com.springmvc.util.UploadFileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ import java.util.HashMap;
 */
 @Controller
 @RequestMapping("/upload")
-public class UploadControl {
+public class UploadControl extends BaseControl {
 
     @Autowired
     UsersService usersService;
@@ -61,11 +62,11 @@ public class UploadControl {
 
             data.put("fileName", file.getOriginalFilename());
 
-            result.setSucceed(LanguageUtil.UPLOAD_SUCESS, data);
+            result.setSucceed(LanguageFactory.getLanguages().UPLOAD_SUCESS, data);
 
         }
         else{
-            result.setFail(LanguageUtil.UPLOAD_FAIL);
+            result.setFail(LanguageFactory.getLanguages().UPLOAD_FAIL);
         }
 
         response.getWriter().write(JsonUtil.writeValueAsString(result));
@@ -107,10 +108,10 @@ public class UploadControl {
 
             data.put("fileName", file.getOriginalFilename());
 
-            result.setSucceed(LanguageUtil.UPLOAD_SUCESS, data);
+            result.setSucceed(LanguageFactory.getLanguages().UPLOAD_SUCESS, data);
         }
         else{
-            result.setFail(LanguageUtil.UPLOAD_FAIL);
+            result.setFail(LanguageFactory.getLanguages().UPLOAD_FAIL);
         }
 
         return  result;

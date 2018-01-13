@@ -1,5 +1,6 @@
 package com.springmvc.controller;
 
+import com.springmvc.base.BaseControl;
 import com.springmvc.service.AuditKindProcessStepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 */
 @Controller
 @RequestMapping("/auditKindProcessStep")
-public class AuditKindProcessStepControl {
+public class AuditKindProcessStepControl extends BaseControl {
 
    @Autowired
    AuditKindProcessStepService auditKindProcessStepService;

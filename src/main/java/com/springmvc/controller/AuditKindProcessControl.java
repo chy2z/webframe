@@ -1,5 +1,7 @@
 package com.springmvc.controller;
 
+import com.springmvc.base.BaseControl;
+import com.springmvc.config.LanguageFactory;
 import com.springmvc.model.*;
 import com.springmvc.model.flowchart.FlowChart;
 import com.springmvc.model.flowchart.FlowChartNode;
@@ -8,11 +10,13 @@ import com.springmvc.service.AuditKindProcessStepService;
 import com.springmvc.service.UsersService;
 import com.springmvc.service.UsersTokenService;
 import com.springmvc.util.JsonUtil;
-import com.springmvc.util.LanguageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +32,7 @@ import java.util.List;
 */
 @Controller
 @RequestMapping("/auditKindProcess")
-public class AuditKindProcessControl {
+public class AuditKindProcessControl extends BaseControl {
 
     @Autowired
     AuditKindProcessService auditKindProcessService;
@@ -110,7 +114,7 @@ public class AuditKindProcessControl {
     public RequestResult insert(String process , String steps){
         RequestResult result=new RequestResult();
         if(null==process||null==steps) {
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
             AuditKindProcess c= JsonUtil.jsonToBean(process,AuditKindProcess.class);
@@ -118,10 +122,10 @@ public class AuditKindProcessControl {
             List<AuditKindProcessStep> stepList=(List<AuditKindProcessStep>)JsonUtil.jsonToListBean(steps,AuditKindProcessStep.class);
 
             if(auditKindProcessService.insertStep(c,stepList)){
-                result.setSucceed(LanguageUtil.INSERT_SUCESS,null);
+                result.setSucceed(LanguageFactory.getLanguages().INSERT_SUCESS,null);
             }
             else{
-                result.setFail(LanguageUtil.INSERT_FAIL);
+                result.setFail(LanguageFactory.getLanguages().INSERT_FAIL);
             }
         }
 
@@ -140,7 +144,7 @@ public class AuditKindProcessControl {
     public RequestResult update(String process , String steps,int editStep){
         RequestResult result=new RequestResult();
         if(null==process||null==steps) {
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
             AuditKindProcess c= JsonUtil.jsonToBean(process,AuditKindProcess.class);
@@ -150,13 +154,13 @@ public class AuditKindProcessControl {
                 List<AuditKindProcessStep> stepList = (List<AuditKindProcessStep>) JsonUtil.jsonToListBean(steps, AuditKindProcessStep.class);
 
                 if (auditKindProcessService.updateStep(c, stepList,editStep)) {
-                    result.setSucceed(LanguageUtil.UPDATE_SUCESS, null);
+                    result.setSucceed(LanguageFactory.getLanguages().UPDATE_SUCESS, null);
                 } else {
-                    result.setFail(LanguageUtil.UPDATE_FAIL);
+                    result.setFail(LanguageFactory.getLanguages().UPDATE_FAIL);
                 }
             }
             else{
-                result.setFail(LanguageUtil.DATA_EXCEPTION);
+                result.setFail(LanguageFactory.getLanguages().DATA_EXCEPTION);
             }
         }
 
@@ -173,14 +177,14 @@ public class AuditKindProcessControl {
     public RequestResult delete(String id){
         RequestResult result=new RequestResult();
         if(id==null){
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
             if(auditKindProcessService.delete(Integer.parseInt(id))){
-                result.setSucceed(LanguageUtil.DELETE_SUCESS,null);
+                result.setSucceed(LanguageFactory.getLanguages().DELETE_SUCESS,null);
             }
             else{
-                result.setFail(LanguageUtil.DELETE_FAIL);
+                result.setFail(LanguageFactory.getLanguages().DELETE_FAIL);
             }
         }
         return result;
@@ -196,7 +200,7 @@ public class AuditKindProcessControl {
     public RequestResult flowChartView(String id){
         RequestResult result=new RequestResult();
         if(id==null){
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else {
             List<AuditKindProcessStep> steps = auditKindProcessStepService.getList(Integer.parseInt(id));
@@ -283,7 +287,7 @@ public class AuditKindProcessControl {
 
             flowChart.setList(nodes);
 
-            result.setSucceed(LanguageUtil.SUCCESS, flowChart);
+            result.setSucceed(LanguageFactory.getLanguages().SUCCESS, flowChart);
         }
 
         return result;

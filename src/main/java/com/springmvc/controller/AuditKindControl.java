@@ -1,9 +1,10 @@
 package com.springmvc.controller;
 
+import com.springmvc.base.BaseControl;
+import com.springmvc.config.LanguageFactory;
 import com.springmvc.model.AuditKind;
 import com.springmvc.model.RequestResult;
 import com.springmvc.service.AuditKindService;
-import com.springmvc.util.LanguageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 */
 @Controller
 @RequestMapping("/auditKind")
-public class AuditKindControl {
+public class AuditKindControl extends BaseControl {
 
     @Autowired
     AuditKindService auditKindService;
@@ -56,14 +57,18 @@ public class AuditKindControl {
     public RequestResult insert(@RequestBody AuditKind c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
-            if(auditKindService.insert(c)){
-                result.setSucceed(LanguageUtil.INSERT_SUCESS,null);
+            if(!auditKindService.operationRepeat(c.getOperation().trim())) {
+                if (auditKindService.insert(c)) {
+                    result.setSucceed(LanguageFactory.getLanguages().INSERT_SUCESS, null);
+                } else {
+                    result.setFail(LanguageFactory.getLanguages().INSERT_FAIL);
+                }
             }
             else{
-                result.setFail(LanguageUtil.INSERT_FAIL);
+                result.setFail(LanguageFactory.getLanguages().AUDIT_OPERATION_REPEAT);
             }
         }
 
@@ -80,14 +85,14 @@ public class AuditKindControl {
     public RequestResult update(@RequestBody AuditKind c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
             if(auditKindService.update(c)){
-                result.setSucceed(LanguageUtil.UPDATE_SUCESS,null);
+                result.setSucceed(LanguageFactory.getLanguages().UPDATE_SUCESS,null);
             }
             else{
-                result.setFail(LanguageUtil.UPDATE_FAIL);
+                result.setFail(LanguageFactory.getLanguages().UPDATE_FAIL);
             }
         }
 
@@ -104,14 +109,14 @@ public class AuditKindControl {
     public RequestResult delete(String id){
         RequestResult result=new RequestResult();
         if(id==null){
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
             if(auditKindService.delete(Integer.parseInt(id))){
-                result.setSucceed(LanguageUtil.DELETE_SUCESS,null);
+                result.setSucceed(LanguageFactory.getLanguages().DELETE_SUCESS,null);
             }
             else{
-                result.setFail(LanguageUtil.DELETE_FAIL);
+                result.setFail(LanguageFactory.getLanguages().DELETE_FAIL);
             }
         }
         return result;

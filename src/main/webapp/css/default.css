@@ -166,7 +166,6 @@ html, body {
     width:300px;
 }
 
-
 .line-gray{
     height: 0;
     border-bottom: 2px solid #dcdcdc;
@@ -177,4 +176,16 @@ html, body {
     white-space:nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.auditPass{
+    color: #009900;
+}
+
+.auditReturn{
+    color: #EE0000;
+}
+
+.auditProcess{
+    color: #2691ee;
 }

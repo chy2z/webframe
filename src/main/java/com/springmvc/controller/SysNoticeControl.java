@@ -1,5 +1,7 @@
 package com.springmvc.controller;
 
+import com.springmvc.base.BaseControl;
+import com.springmvc.config.LanguageFactory;
 import com.springmvc.model.RequestResult;
 import com.springmvc.model.SysNotice;
 import com.springmvc.model.Users;
@@ -7,7 +9,6 @@ import com.springmvc.model.UsersToken;
 import com.springmvc.service.SysNoticeService;
 import com.springmvc.service.UsersService;
 import com.springmvc.service.UsersTokenService;
-import com.springmvc.util.LanguageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 */
 @Controller
 @RequestMapping("/sysNotice")
-public class SysNoticeControl {
+public class SysNoticeControl extends BaseControl {
 
    @Autowired
    SysNoticeService sysNoticeService;
@@ -97,14 +98,14 @@ public class SysNoticeControl {
     public RequestResult insert(@RequestBody SysNotice c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
             if(sysNoticeService.insert(c)){
-                result.setSucceed(LanguageUtil.INSERT_SUCESS,null);
+                result.setSucceed(LanguageFactory.getLanguages().INSERT_SUCESS,null);
             }
             else{
-                result.setFail(LanguageUtil.INSERT_FAIL);
+                result.setFail(LanguageFactory.getLanguages().INSERT_FAIL);
             }
         }
 
@@ -121,14 +122,14 @@ public class SysNoticeControl {
     public RequestResult update(@RequestBody SysNotice c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
             if(sysNoticeService.update(c)){
-                result.setSucceed(LanguageUtil.UPDATE_SUCESS,null);
+                result.setSucceed(LanguageFactory.getLanguages().UPDATE_SUCESS,null);
             }
             else{
-                result.setFail(LanguageUtil.UPDATE_FAIL);
+                result.setFail(LanguageFactory.getLanguages().UPDATE_FAIL);
             }
         }
 
@@ -145,14 +146,14 @@ public class SysNoticeControl {
     public RequestResult delete(String id){
         RequestResult result=new RequestResult();
         if(id==null){
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
             if(sysNoticeService.delete(Integer.parseInt(id))){
-                result.setSucceed(LanguageUtil.DELETE_SUCESS,null);
+                result.setSucceed(LanguageFactory.getLanguages().DELETE_SUCESS,null);
             }
             else{
-                result.setFail(LanguageUtil.DELETE_FAIL);
+                result.setFail(LanguageFactory.getLanguages().DELETE_FAIL);
             }
         }
         return result;

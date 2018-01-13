@@ -7,6 +7,8 @@
     <result column="userId" jdbcType="INTEGER" property="userid" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="auditTime" jdbcType="TIMESTAMP" property="audittime" />
+    <result column="auditState" jdbcType="VARCHAR" property="auditstate" />
   </resultMap>
 
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.springmvc.model.SysNotice">
@@ -21,7 +23,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, userId, title, createTime
+    id, userId, title, createTime,auditState,auditTime
   </sql>
 
   <sql id="Blob_Column_List">
@@ -60,6 +62,12 @@
       <if test="content != null">
         content,
       </if>
+      <if test="auditstate != null">
+        auditState,
+      </if>
+      <if test="audittime != null">
+        auditTime,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -76,6 +84,12 @@
       </if>
       <if test="content != null">
         #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="auditstate != null">
+        #{auditstate,jdbcType=VARCHAR},
+      </if>
+      <if test="audittime != null">
+        #{audittime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -112,7 +126,7 @@
   </select>
 
   <select id="selectPagination" resultMap="JoinResultMap">
-    select s.id,s.userId,s.title,s.content,s.createTime,
+    select s.id,s.userId,s.title,s.content,s.createTime,s.auditState,s.auditTime,
 
     u.name as userName,d.name as departName,c.name as corporationName
 

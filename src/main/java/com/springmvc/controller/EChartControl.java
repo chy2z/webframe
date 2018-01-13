@@ -1,5 +1,6 @@
 package com.springmvc.controller;
 
+import com.springmvc.base.BaseControl;
 import com.springmvc.model.UsersToken;
 import com.springmvc.service.EChartService;
 import com.springmvc.service.UsersTokenService;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 */
 @Controller
 @RequestMapping("/chart")
-public class EChartControl {
+public class EChartControl extends BaseControl {
 
     @Autowired
     EChartService chartService;

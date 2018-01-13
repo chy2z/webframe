@@ -1,5 +1,6 @@
 package com.springmvc.controller;
 
+import com.springmvc.base.BaseControl;
 import com.springmvc.model.Corporation;
 import com.springmvc.model.Department;
 import com.springmvc.model.Users;
@@ -25,7 +26,7 @@ import java.util.Map;
 */
 @Controller
 @RequestMapping("/export")
-public class ExportControl {
+public class ExportControl extends BaseControl {
 
     @Autowired
     CorporationService corpService;

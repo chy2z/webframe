@@ -1,11 +1,11 @@
 package com.springmvc.controller;
 
-import com.springmvc.base.BaseController;
+import com.springmvc.base.BaseControl;
+import com.springmvc.config.LanguageFactory;
 import com.springmvc.model.RequestResult;
 import com.springmvc.model.iview.VTree;
 import com.springmvc.service.MenuItemService;
 import com.springmvc.service.RoleMenuItemService;
-import com.springmvc.util.LanguageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +25,7 @@ import java.util.List;
 */
 @Controller
 @RequestMapping("/right")
-public class RightsControl  extends BaseController {
+public class RightsControl  extends BaseControl {
 
     @Autowired
     MenuItemService miService;
@@ -67,14 +67,14 @@ public class RightsControl  extends BaseController {
         String roleId = request.getParameter("roleId");
         RequestResult result = new RequestResult();
         if (null == trees) {
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         } else {
             try {
                 rmiService.saveRigths(roleId, trees);
-                result.setSucceed(LanguageUtil.INSERT_FAIL,null);
+                result.setSucceed(LanguageFactory.getLanguages().INSERT_FAIL,null);
             }
             catch (Exception ex){
-                result.setSucceed(LanguageUtil.EXCEPTER,null);
+                result.setSucceed(LanguageFactory.getLanguages().EXCEPTER,null);
             }
         }
         return result;

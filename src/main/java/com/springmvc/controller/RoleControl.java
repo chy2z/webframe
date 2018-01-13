@@ -1,11 +1,12 @@
 package com.springmvc.controller;
 
+import com.springmvc.base.BaseControl;
+import com.springmvc.config.LanguageFactory;
 import com.springmvc.model.RequestResult;
 import com.springmvc.model.Role;
 import com.springmvc.service.RoleService;
 import com.springmvc.service.UsersService;
 import com.springmvc.service.VSelectService;
-import com.springmvc.util.LanguageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 */
 @Controller
 @RequestMapping("/role")
-public class RoleControl {
+public class RoleControl extends BaseControl {
 
     @Autowired
     RoleService rService;
@@ -77,14 +78,14 @@ public class RoleControl {
     public RequestResult insert(@RequestBody Role c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
             if(rService.insert(c)){
-                result.setSucceed(LanguageUtil.INSERT_SUCESS,null);
+                result.setSucceed(LanguageFactory.getLanguages().INSERT_SUCESS,null);
             }
             else{
-                result.setFail(LanguageUtil.INSERT_FAIL);
+                result.setFail(LanguageFactory.getLanguages().INSERT_FAIL);
             }
         }
 
@@ -101,14 +102,14 @@ public class RoleControl {
     public RequestResult update(@RequestBody Role c){
         RequestResult result=new RequestResult();
         if(null==c){
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
             if(rService.update(c)){
-                result.setSucceed(LanguageUtil.INSERT_SUCESS,null);
+                result.setSucceed(LanguageFactory.getLanguages().INSERT_SUCESS,null);
             }
             else{
-                result.setFail(LanguageUtil.INSERT_FAIL);
+                result.setFail(LanguageFactory.getLanguages().INSERT_FAIL);
             }
         }
 
@@ -125,18 +126,18 @@ public class RoleControl {
     public RequestResult delete(String id){
         RequestResult result=new RequestResult();
         if(id==null){
-            result.setFail(LanguageUtil.DATA_LOSS);
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
             if(uService.getCountByRole(Integer.parseInt(id))<=0) {
                 if (rService.delete(Integer.parseInt(id))) {
-                    result.setSucceed(LanguageUtil.DELETE_SUCESS, null);
+                    result.setSucceed(LanguageFactory.getLanguages().DELETE_SUCESS, null);
                 } else {
-                    result.setFail(LanguageUtil.DELETE_FAIL);
+                    result.setFail(LanguageFactory.getLanguages().DELETE_FAIL);
                 }
             }
             else{
-                result.setFail(LanguageUtil.ROLE_USING_NOT_DELETE);
+                result.setFail(LanguageFactory.getLanguages().ROLE_USING_NOT_DELETE);
             }
         }
         return result;

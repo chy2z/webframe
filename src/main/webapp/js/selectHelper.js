@@ -1,5 +1,8 @@
-
-
+/**
+ * 选择列表
+ * @param url
+ * @param ivSelectConfig
+ */
 function selectHelper(url,ivSelectConfig){
 
     this.ivSelect=$.extend({

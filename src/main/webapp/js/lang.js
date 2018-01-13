@@ -1,4 +1,5 @@
 var vLanguage={
+    type:"zh-CN",
     'zh-CN': {
         appName: '管理系统',
         audit:{
@@ -15,10 +16,8 @@ var vLanguage={
     }
 }
 
-var navLang='zh-CN';
-
 // 多语言支持
-var vLang=vLanguage[navLang];
+var vLang=vLanguage[vLanguage.type];
 
 
 

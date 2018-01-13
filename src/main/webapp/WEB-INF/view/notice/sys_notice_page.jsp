@@ -4,6 +4,7 @@
 <%@ include file="../../../taglib/import_iview.jsp"%>
 <%@ include file="../../../taglib/import_jquery.jsp"%>
 <%@ include file="../../../taglib/import_common.jsp"%>
+<%@ include file="../../../taglib/import_audit.jsp"%>
 <html>
 <head>
     <title>系统通知</title>
@@ -80,6 +81,7 @@
         var noticeUpdate_url=domain+"/sysNotice/path/update?jwt=${requestScope.jwt}";
         var noticeLook_url=domain+"/sysNotice/path/look?jwt=${requestScope.jwt}";
         var corporation_Select_url="${ctx}/corporation/vselect/selectCorporation?jwt=${requestScope.jwt}";
+
         var pageHelperNotice=new pageHepler("${ctx}/sysNotice/pagination?jwt=${requestScope.jwt}",{
             columns: [
                 {
@@ -134,7 +136,7 @@
                 noticePage:pageHelperNotice.ivPage
             },
             created:function(){
-
+                Audit.initConfig(Audit.operations.sys_notice,this);
             },
             mounted:function () {
                 //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条

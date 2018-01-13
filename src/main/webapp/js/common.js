@@ -1,3 +1,6 @@
+/**
+ * 通用js操作
+ */
 
 String.prototype.Trim = function(){
     return this.replace(/(^\s*)|(\s*$)/g, "");
@@ -329,8 +332,9 @@ function vtoast(vue,content,type,duration){
  * @param completeEvnent
  * @param beforeSendEvent
  * @param errorEvent
+ * @param async 默认异步
  */
-function vajaxPost(url,data,dataTypeJson,successEvnent,beforeSendEvent,completeEvnent,errorEvent){
+function vajaxPost(url,data,dataTypeJson,successEvnent,beforeSendEvent,completeEvnent,errorEvent,notAsync){
 
     if($==null){ alert("$不是对象"); return ; }
 
@@ -360,7 +364,12 @@ function vajaxPost(url,data,dataTypeJson,successEvnent,beforeSendEvent,completeE
         });
     }
 
-    //log(ajaxConfig);
+    // 开启同步
+    if(notAsync){
+        ajaxConfig = $.extend(ajaxConfig, {
+            async:false
+        });
+    }
 
     $.ajax(ajaxConfig);
 }

@@ -16,6 +16,7 @@ public interface AuditKindMapper {
 
     int updateByPrimaryKeySelective(AuditKind record);
 
+
     /**
      * 根据条件获取记录数
      * @param where

@@ -1,5 +1,12 @@
 package com.springmvc.base;
 
+import com.springmvc.util.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -7,14 +14,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 
-import com.springmvc.util.DateUtil;
-
+/**
+* @Title: BaseDao
+* @Description: 数据访问层基类
+* @author chy
+* @date 2018/1/13 14:00
+*/
 public class BaseDao
 {
 	protected  Logger logger = LoggerFactory.getLogger(getClass());

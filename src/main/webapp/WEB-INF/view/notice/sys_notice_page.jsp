@@ -14,6 +14,7 @@
 </head>
 <body>
 <div class="my-app" id="app">
+    <Spin size="large" fix v-if="spinShow"></Spin>
     <div class="my-layout">
         <Row id="top" class-name="my-layout-top" justify="end" align="middle" type="flex">
             <i-col span="10">
@@ -114,7 +115,7 @@
                     render: (h, params) => {
                         return h("div",{
                             attrs: {
-                                class: (params.row.auditstate==vLang.audit.pass?vLang.audit.classPass:(params.row.auditstate==vLang.audit.return?vLang.audit.classReturn:vLang.audit.classProcess))
+                                class: (params.row.auditstate==vLang.audit.pass?vLang.audit.classPass:(params.row.auditstate==vLang.audit.return?vLang.audit.classReturn:(params.row.auditstate==vLang.audit.new?vLang.audit.classNew:vLang.audit.classProcess)))
                             }
                         },[
                             h('strong', params.row.auditstate)
@@ -129,6 +130,7 @@
         new Vue({
             el: '#app',
             data: {
+                spinShow:false,
                 jwt:"${requestScope.jwt}",
                 butShow:${requestScope.rightBut},
                 selectCorporation:selectHelperCorporation.ivSelect,
@@ -136,7 +138,7 @@
                 noticePage:pageHelperNotice.ivPage
             },
             created:function(){
-                Audit.initConfig(Audit.operations.sys_notice,this);
+                Audit.initConfig(domain,this.jwt,Audit.operationType.sys_notice,${requestScope.useId},${requestScope.departId},this);
             },
             mounted:function () {
                 //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条
@@ -179,33 +181,35 @@
                     vPopWindowShow("action_add",noticeAdd_url,"系统通知增加");
                 },
                 butEdit(){
-                    if(pageHelperNotice.getSelectRowIndex()>-1){
+                    Audit.canEdit(this,pageHelperNotice.getSelectRowIndex(),pageHelperNotice.getSelectRowData(),()=>{
                         let rowData=pageHelperNotice.getSelectRowData();
                         vPopWindowShow("action_update",noticeUpdate_url+"&id="+rowData.id,"系统通知修改");
-                    }
-                    else{
-                        valert(this,"请选择一行记录修改");
-                    }
+                    });
                 },
                 butDel(){
-                    if(pageHelperNotice.getSelectRowIndex()>-1){
-                        vconfirm(this,"确认删除吗？",()=>{
-                            let rowData=pageHelperNotice.getSelectRowData();
-                            vajaxPost(noticeDelete_url,{id:rowData.id},false,(result)=>{
-                                if(result&&result.success){
-                                    pageHelperNotice.deleteSelectedRow();
-                                    pageHelperNotice.setSelectRowIndex(-1);
-                                    vtoast(this,result.tip);
-                                }
-                                else{
-                                    valert(this,result.tip);
-                                }
-                            });
+                    Audit.canDel(this,pageHelperNotice.getSelectRowIndex(),pageHelperNotice.getSelectRowData(),()=>{
+                        let rowData=pageHelperNotice.getSelectRowData();
+                        vajaxPost(noticeDelete_url,{id:rowData.id},false,(result)=>{
+                            if(result&&result.success){
+                                pageHelperNotice.deleteSelectedRow();
+                                pageHelperNotice.setSelectRowIndex(-1);
+                                vtoast(this,result.tip);
+                            }
+                            else{
+                                valert(this,result.tip);
+                            }
+                        },()=>{
+                            this.spinShow=true;
+                        },()=>{
+                            this.spinShow=false;
                         });
-                    }
-                    else{
-                        valert(this,"请选择一行记录删除");
-                    }
+                    });
+                },
+                butAudit(){
+                    Audit.sendAudit(this,pageHelperNotice.getSelectRowIndex(),pageHelperNotice.getSelectRowData(),()=>{
+                        let rowData=pageHelperNotice.getSelectRowData();
+                        vPopWindowShow("action_audit",Audit.urls.sendAudit_url+"&id="+rowData.id,Audit.config.title);
+                    });
                 },
                 butLook(){
                     if(pageHelperNotice.getSelectRowIndex()>-1){
@@ -233,6 +237,9 @@
              }
              else if(action=="action_update"){
                  pageHelperNotice.updateSelectRowData(parameter);
+             }
+             else if(action=="action_audit"){
+
              }
              else {
                  return ;

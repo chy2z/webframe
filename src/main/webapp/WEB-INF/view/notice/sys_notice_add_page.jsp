@@ -5,6 +5,7 @@
 <%@ include file="../../../taglib/import_jquery.jsp"%>
 <%@ include file="../../../taglib/import_common.jsp"%>
 <%@ include file="../../../taglib/import_ckeditor.jsp"%>
+<%@ include file="../../../taglib/import_audit.jsp"%>
 <html>
 <head>
     <title>系统通知新增</title>
@@ -48,7 +49,8 @@
 </body>
 <script>
     var domain="${ctx}";
-    var add_url=domain+"/sysNotice/insert?jwt=${requestScope.jwt}";
+    var add_url=domain+"/sysNotice/insert?jwt=${requestScope.jwt}&departId=${requestScope.user.departid}&operation="+Audit.operationType.sys_notice;
+
     new Vue({
         el: '#app',
         data: {

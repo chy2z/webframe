@@ -142,8 +142,23 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="getAuditState" resultType="int">
+  <select id="getAuditState" resultType="String">
     select ${auditState} from ${tName} where ${tKey}= #{tValue}
+  </select>
+
+  <select id="getAuditProcessCount" resultType="java.lang.Integer">
+    select count(1) from audit_kind k,audit_kind_process p
+    where
+    k.operation=#{operation}
+    and p.departId=#{departId}
+    and p.`enable`=#{enable}
+    and k.id=p.kId
+  </select>
+
+  <select id="getAuditProcess" resultType="java.lang.Integer">
+    select pId from audit_wait
+    where tName=#{tName} and tKey=#{tKey} and tValue=#{tValue}
+    order by id desc limit 1
   </select>
 
 </mapper>

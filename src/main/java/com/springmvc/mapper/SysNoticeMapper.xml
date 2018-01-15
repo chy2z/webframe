@@ -109,6 +109,9 @@
       <if test="content != null">
         content = #{content,jdbcType=LONGVARCHAR},
       </if>
+      <if test="auditstate != null">
+        auditState = #{auditstate,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>

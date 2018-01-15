@@ -236,10 +236,10 @@ public class LoginControl extends BaseControl {
 	 */
 	@RequestMapping(value="/menu/{jwt}",method = {RequestMethod.POST,RequestMethod.GET})
 	public String menu(@PathVariable("jwt") String jwt, HttpServletRequest request,Model model) {
-
-		String menu = (String) request.getParameter("menu"); //菜单url
-
-		String mid = (String) request.getParameter("mid");  //菜单id
+        //菜单url
+		String menu =  request.getParameter("menu");
+		//菜单id
+		String mid =  request.getParameter("mid");
 
 		logger.info("{}:{}","menu",menu);
 
@@ -271,7 +271,9 @@ public class LoginControl extends BaseControl {
 
 			model.addAttribute("jwt", jwt);
 
-			model.addAttribute("depart", u.getDepartid().toString());
+			model.addAttribute("useId", u.getId());
+
+			model.addAttribute("departId", u.getDepartid().toString());
 
 			model.addAttribute("corporationId", u.getCorporationid().toString());
 		}

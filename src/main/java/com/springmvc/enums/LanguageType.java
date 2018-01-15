@@ -1,4 +1,4 @@
-package com.springmvc.config;
+package com.springmvc.enums;
 
 /**
 * @Title: LanguageType

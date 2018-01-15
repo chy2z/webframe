@@ -19,7 +19,7 @@
         <Row class-name="my-layout-top" align="middle" type="flex">
             <i-col span="24">
                 <div class="float-left fil-width">
-                    <Row type="flex">
+                    <Row align="middle" type="flex">
                         <i-col span="6">
                             <label class="my-label">流程名称：</label>
                             <i-Input v-model="auditProcess.pname" placeholder="请输入流程名称..." class="input-300"></i-Input>

@@ -178,6 +178,11 @@ html, body {
     text-overflow: ellipsis;
 }
 
+
+.auditNew{
+    color: #111111;
+}
+
 .auditPass{
     color: #009900;
 }

@@ -5,6 +5,7 @@
 <%@ include file="../../../taglib/import_jquery.jsp"%>
 <%@ include file="../../../taglib/import_common.jsp"%>
 <%@ include file="../../../taglib/import_ckeditor.jsp"%>
+<%@ include file="../../../taglib/import_audit.jsp"%>
 <html>
 <head>
     <title>系统通知修改</title>
@@ -47,7 +48,7 @@
 </body>
 <script>
     var domain="${ctx}";
-    var update_url=domain+"/sysNotice/update?jwt=${requestScope.jwt}";
+    var update_url=domain+"/sysNotice/update?jwt=${requestScope.jwt}&departId=${requestScope.user.departid}&operation="+Audit.operationType.sys_notice;
     new Vue({
         el: '#app',
         data: {
@@ -94,13 +95,13 @@
                 }
                 if(CKEDITOR.instances.contect_text.getData()!=""){
                     //修改日期出现问题
-                    let m={id:this.id,userid:this.userid,title:this.title,createtime:new Date().Format("yyyy-MM-dd HH:mm:ss"),content:CKEDITOR.instances.contect_text.getData()};
+                    let m={id:this.id,userid:this.userid,title:this.title,content:CKEDITOR.instances.contect_text.getData()};
                     vajaxPost(update_url,m,true,(result)=>{
                         vtoast(this, result.tip);
                         this.title="";
                         CKEDITOR.instances.contect_text.setData("");
                         //立即关闭增加窗口
-                        vPopWindowsColse(m);
+                        vPopWindowsColse(result.data);
                     },()=>{
                         this.spinShow=true;
                     },()=>{

@@ -71,7 +71,7 @@ public class RightsControl  extends BaseControl {
         } else {
             try {
                 rmiService.saveRigths(roleId, trees);
-                result.setSucceed(LanguageFactory.getLanguages().INSERT_FAIL,null);
+                result.setSucceed(LanguageFactory.getLanguages().INSERT_SUCESS,null);
             }
             catch (Exception ex){
                 result.setSucceed(LanguageFactory.getLanguages().EXCEPTER,null);

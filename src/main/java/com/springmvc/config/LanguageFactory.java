@@ -1,5 +1,6 @@
 package com.springmvc.config;
 
+import com.springmvc.enums.LanguageType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ public class LanguageFactory {
     /**
      * 默认类型
      */
-    public static LanguageType lType=LanguageType.ZHCN;
+    private static LanguageType lType=LanguageType.ZHCN;
 
     /**
      * 单例

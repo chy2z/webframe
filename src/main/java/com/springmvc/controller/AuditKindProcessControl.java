@@ -78,6 +78,9 @@ public class AuditKindProcessControl extends BaseControl {
             model.addAttribute("kindProcess",sModel);
             return "flowchart/flow_chat_step_view_page";
         }
+        else if(page.equals("sendAudit")){
+            return "auditing/audit_kind_process_select_page";
+        }
         else {
             return "error";
         }

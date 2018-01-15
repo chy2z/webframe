@@ -24,4 +24,26 @@ public interface AuditWaitMapper {
                          @Param("tName") String tName,
                          @Param("tKey") String tKey,
                          @Param("tValue") String tValue);
+
+    /**
+     * 获取审核流程
+     * @param tName
+     * @param tKey
+     * @param tValue
+     * @return
+     */
+    Integer getAuditProcess(@Param("tName") String tName,
+                         @Param("tKey") String tKey,
+                         @Param("tValue") String tValue);
+
+    /**
+     * 获取审核流程数量
+     * @param operation
+     * @param departId
+     * @param enable
+     * @return
+     */
+    Integer getAuditProcessCount(@Param("operation") String operation,
+                                 @Param("departId") String departId,
+                                 @Param("enable") String enable);
 }

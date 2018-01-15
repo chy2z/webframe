@@ -46,5 +46,6 @@ public class Language {
     public final String ROLE_USING_NOT_DELETE = "角色被用户使用禁止删除";
     public final String SUPER_ADMIN_FORBID_UPDAET = "超级管理员信息不能修改";
     public final String AUDIT_OPERATION_REPEAT = "审核业务重复";
+    public final String NOY_ALLOW_AUDIT = "不允许送审";
 
 }

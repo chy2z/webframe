@@ -6,6 +6,7 @@ import com.springmvc.model.RequestResult;
 import com.springmvc.model.SysNotice;
 import com.springmvc.model.Users;
 import com.springmvc.model.UsersToken;
+import com.springmvc.service.AuditWaitService;
 import com.springmvc.service.SysNoticeService;
 import com.springmvc.service.UsersService;
 import com.springmvc.service.UsersTokenService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 /**
 * @Title: SysNoticeControl
@@ -29,6 +31,9 @@ public class SysNoticeControl extends BaseControl {
 
    @Autowired
    SysNoticeService sysNoticeService;
+
+   @Autowired
+    AuditWaitService auditWaitService;
 
     @Autowired
     UsersService uService;
@@ -44,24 +49,24 @@ public class SysNoticeControl extends BaseControl {
     public String toPage(@PathVariable("page") String page,HttpServletRequest request,Model model) {
         String jwt = (String) request.getParameter("jwt");
         UsersToken ut= utService.getUsersToken(jwt);
+        model.addAttribute("jwt", jwt);
         if (page.equals("add")) {
             Users u= uService.getUsers(ut.getUserid());
             model.addAttribute("user", u);
-            model.addAttribute("jwt", jwt);
             return "notice/sys_notice_add_page";
         }
         else if(page.equals("update")){
             String id = (String) request.getParameter("id");
             SysNotice sModel= sysNoticeService.getSysNotice(Integer.parseInt(id));
             model.addAttribute("sysNotice",sModel);
-            model.addAttribute("jwt", jwt);
+            Users u= uService.getUsers(ut.getUserid());
+            model.addAttribute("user", u);
             return "notice/sys_notice_update_page";
         }
         else if(page.equals("look")){
             String id = (String) request.getParameter("id");
             SysNotice sModel=sysNoticeService.getSysNotice(Integer.parseInt(id));
             model.addAttribute("sysNotice",sModel);
-            model.addAttribute("jwt", jwt);
             return "notice/sys_notice_look_page";
         }
         else {
@@ -95,12 +100,17 @@ public class SysNoticeControl extends BaseControl {
      */
     @ResponseBody
     @RequestMapping(value = "/insert",method = {RequestMethod.POST})
-    public RequestResult insert(@RequestBody SysNotice c){
+    public RequestResult insert(@RequestBody SysNotice c,HttpServletRequest request){
         RequestResult result=new RequestResult();
         if(null==c){
             result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
+
+            c.setCreatetime(new Date());
+
+            c.setAuditstate(auditWaitService.getAuditState(request));
+
             if(sysNoticeService.insert(c)){
                 result.setSucceed(LanguageFactory.getLanguages().INSERT_SUCESS,null);
             }
@@ -119,14 +129,19 @@ public class SysNoticeControl extends BaseControl {
      */
     @ResponseBody
     @RequestMapping(value = "/update",method = {RequestMethod.POST})
-    public RequestResult update(@RequestBody SysNotice c){
+    public RequestResult update(@RequestBody SysNotice c,HttpServletRequest request){
         RequestResult result=new RequestResult();
         if(null==c){
             result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
+
+            c.setCreatetime(new Date());
+
+            c.setAuditstate(auditWaitService.getAuditState(request));
+
             if(sysNoticeService.update(c)){
-                result.setSucceed(LanguageFactory.getLanguages().UPDATE_SUCESS,null);
+                result.setSucceed(LanguageFactory.getLanguages().UPDATE_SUCESS,c);
             }
             else{
                 result.setFail(LanguageFactory.getLanguages().UPDATE_FAIL);

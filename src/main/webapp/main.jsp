@@ -89,7 +89,7 @@
                     </Submenu>
                 </i-Menu>
                 <Modal v-model="formModal.modalShow" :closable="false" :mask-closable="false" :styles="{top: '250px'}" width="400">
-                    <p slot="header" style="color:#f60;text-align:center">
+                    <p slot="header" class="my-modal-title">
                         <Icon type="information-circled"></Icon>
                         <span>修改密码</span>
                     </p>
@@ -113,8 +113,8 @@
                         </i-Form>
                     </div>
                     <div slot="footer">
-                        <i-Button type="text" size="large"   @click="modalEditPwdCancel">取消</i-Button>
-                        <i-Button type="error" size="large"   @click="modalEditPwdOk">确定</i-Button>
+                        <i-Button type="error" size="large"   @click="modalEditPwdCancel">取消</i-Button>
+                        <i-Button type="success" size="large"  @click="modalEditPwdOk">确定</i-Button>
                     </div>
                 </Modal>
             </div>
@@ -175,7 +175,7 @@
 
     <!-- 全局model -->
     <Modal v-model="popupsModal.modalShow" :closable="true" :mask-closable="false" class-name="vertical-center-modal"  :width="popupsModal.width">
-        <p slot="header" style="color:#464c5b;text-align:left; letter-spacing:1px;font-size: 16px;">
+        <p slot="header" class="my-modal-title">
             <Icon type="document"></Icon>
             <span>{{popupsModal.title}}</span>
         </p>

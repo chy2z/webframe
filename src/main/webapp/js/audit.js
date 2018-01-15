@@ -45,8 +45,8 @@ var Audit={
        this.urls.allowEditAndDel=domian+this.urls.allowEditAndDel+"?jwt="+jwt;
     },
     canDel(vue,rowIndex,selectRow,callBack){
-        if(rowIndex<0){ alert("请选择一行记录删除!"); return false;}
-        if(!selectRow){ alert("请选择一行记录删除!"); return false;}
+        if(rowIndex<0){ valert(vue,"请选择一行记录删除!"); return false;}
+        if(!selectRow){ valert(vue,"请选择一行记录删除!"); return false;}
         this.config.tValue=selectRow.id;
         vajaxPost(this.urls.allowEditAndDel,this.config,false,(result)=>{
             if(!result||!result.success||!result.data) {
@@ -61,8 +61,8 @@ var Audit={
         },()=>{},()=>{},()=>{},true);
     },
     canEdit(vue,rowIndex,selectRow,callBack){
-        if(rowIndex<0){ alert("请选择一行记录修改!"); return false;}
-        if(!selectRow){ alert("请选择一行记录修改!"); return false;}
+        if(rowIndex<0){ valert(vue,"请选择一行记录修改!"); return false;}
+        if(!selectRow){ valert(vue,"请选择一行记录修改!"); return false;}
         this.config.tValue=selectRow.id;
         vajaxPost(this.urls.allowEditAndDel,this.config,false,(result)=>{
             if(!result||!result.success||!result.data) {
@@ -74,8 +74,8 @@ var Audit={
     },
     // 送审
     sendAudit(vue,rowIndex,selectRow,callBack){
-        if(rowIndex<0){ alert("请选择一行记录送审!"); return false;}
-        if(!selectRow){ alert("请选择一行记录送审!"); return false;}
+        if(rowIndex<0){ valert(vue,"请选择一行记录送审!"); return false;}
+        if(!selectRow){ valert(vue,"请选择一行记录送审!"); return false;}
         this.config.tValue=selectRow.id;
         vajaxPost(this.urls.allowSendAudit,this.config,false,(result)=>{
             if(!result||!result.success||!result.data) {

@@ -203,7 +203,7 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
      * @returns {*}
      */
     this.getSelectRowData=function(){
-        if(this.ivTable.selectRowIndex<0){ alert("行数据为空"); return null; }
+        if(this.ivTable.selectRowIndex<0){ return null; }
         return this.ivTable.dataTable[this.ivTable.selectRowIndex];
     }
 

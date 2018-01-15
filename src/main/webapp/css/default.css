@@ -84,12 +84,6 @@ html, body {
     padding: 0 10px 0 5px;
 }
 
-.my-modal-title{
-    letter-spacing: 1px;
-    font-size:15px;
-    font-weight:700;
-}
-
 .my-label {
     text-align: right;
     vertical-align: middle;

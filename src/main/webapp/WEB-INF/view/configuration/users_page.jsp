@@ -95,9 +95,9 @@
     </div>
 
     <Modal v-model="formModal.modalShow" :mask-closable="false" :styles="{top: '20px'}" :width="500">
-        <p slot="header" style="text-align:center">
-            <Icon size="16" type="compose"></Icon>
-            <span class="my-modal-title">{{formModal.title}}</span>
+        <p slot="header" class="my-modal-title">
+            <Icon type="compose"></Icon>
+            <span >{{formModal.title}}</span>
         </p>
         <div>
             <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate"
@@ -192,12 +192,17 @@
     </Modal>
 
     <Modal v-model="headImg.showHeadImage">
-        <p slot="header">头像查看</p>
+        <p slot="header" class="my-modal-title">
+            <Icon type="image"></Icon>
+            <span>头像查看</span>
+        </p>
         <img :src="headImg.url" alt="" v-if="headImg.showHeadImage" style="width: 100%;">
     </Modal>
 
     <Modal v-model="headImg.showUpload"  :mask-closable="false" :styles="{top: '20px'}" :width="800">
-        <p slot="header">头像上传</p>
+        <p slot="header" class="my-modal-title">
+            <Icon  type="image"></Icon>
+            <span>头像上传</span></p>
         <Row class="margin-top-10 image-editor" type="flex" justify="center" align="middle">
             <i-Col span="23">
                     <Row>

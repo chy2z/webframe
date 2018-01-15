@@ -71,11 +71,10 @@
         </Row>
     </div>
 
-
     <Modal v-model="formModal.modalShow" :mask-closable="false" :styles="{top: '20px'}" :width="500">
-        <p slot="header" style="text-align:center">
-            <Icon size="16" type="compose"></Icon>
-            <span class="my-modal-title">{{formModal.title}}</span>
+        <p slot="header" class="my-modal-title">
+            <Icon type="compose"></Icon>
+            <span>{{formModal.title}}</span>
         </p>
         <div style="text-align:center">
             <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate"
@@ -104,9 +103,6 @@
                       :loading="formModal.okButLoading" >确定</i-Button>
         </div>
     </Modal>
-
-
-
 </div>
 </body>
 <script>

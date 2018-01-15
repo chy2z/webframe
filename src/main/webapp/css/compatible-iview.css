@@ -45,39 +45,3 @@
     display: inline-block;
 }
 
-/* 配置model背景  head 和 foot */
-  .ivu-modal-content {
-      position: relative;
-      background-color: #f8f8f9;
-      border: 0;
-      border-radius: 6px;
-      background-clip: padding-box;
-  }
-
-  /* 配置model背景  head 文字颜色 */
-.ivu-modal-header .my-modal-title{
-    font-size:15px;
-    font-weight:700;
-    color:#000;
-    text-align:left;
-    letter-spacing:1px;
-    font-size: 16px;
-}
-
-
-/* 配置model背景 body */
-  .ivu-modal-body {
-      padding: 16px;
-      font-size: 12px;
-      line-height: 1.5;
-      background-color: #ffffff;
-  }
-
-  /* 关闭按钮白色 */
-  .ivu-modal-close .ivu-icon-ios-close-empty {
-      font-size: 31px;
-      color: #606461;
-      transition: color .2s ease;
-      position: relative;
-      top: 1px;
-  }

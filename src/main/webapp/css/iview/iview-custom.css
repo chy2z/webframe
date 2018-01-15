@@ -59,3 +59,22 @@
     padding: 0;
     font-size: 14px;
 }
+
+/* 配置model背景  head 和 foot */
+.ivu-modal-content {
+    background-color: #f8f8f9;
+}
+
+/* 配置model背景  head 文字颜色 */
+.ivu-modal-header .my-modal-title{
+    font-weight:700;
+    color:#000;
+    text-align:left;
+    letter-spacing:1px;
+    font-size: 15px;
+}
+
+/* 配置model背景 body */
+.ivu-modal-header + .ivu-modal-body {
+    background-color: #ffffff;
+}

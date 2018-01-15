@@ -97,7 +97,7 @@
     <Modal v-model="formModal.modalShow" :mask-closable="false" :styles="{top: '20px'}" :width="500">
         <p slot="header" class="my-modal-title">
             <Icon type="compose"></Icon>
-            <span >{{formModal.title}}</span>
+            <span>{{formModal.title}}</span>
         </p>
         <div>
             <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate"
@@ -202,7 +202,8 @@
     <Modal v-model="headImg.showUpload"  :mask-closable="false" :styles="{top: '20px'}" :width="800">
         <p slot="header" class="my-modal-title">
             <Icon  type="image"></Icon>
-            <span>头像上传</span></p>
+            <span>头像上传</span>
+        </p>
         <Row class="margin-top-10 image-editor" type="flex" justify="center" align="middle">
             <i-Col span="23">
                     <Row>
@@ -233,7 +234,6 @@
             <i-Button  @click="headImg.showUpload=false" type="text" size="large">取消</i-Button>
         </div>
     </Modal>
-
 </div>
 </body>
 <script>

@@ -56,11 +56,10 @@
         </Row>
     </div>
 
-
     <Modal v-model="formModal.modalShow" :mask-closable="false" :styles="{top: '20px'}" :width="500">
-        <p slot="header" style="text-align:center">
+        <p slot="header" class="my-modal-title">
             <Icon size="16" type="compose"></Icon>
-            <span class="my-modal-title">{{formModal.title}}</span>
+            <span >{{formModal.title}}</span>
         </p>
         <div style="text-align:center">
             <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate"
@@ -81,11 +80,10 @@
         </div>
     </Modal>
 
-
     <Modal v-model="queryModal.modalShow" :mask-closable="false" :styles="{top: '20px'}" :width="500">
-        <p slot="header" style="text-align:center">
-            <Icon size="16" type="search"></Icon>
-            <span class="my-modal-title">{{queryModal.title}}</span>
+        <p slot="header" class="my-modal-title">
+            <Icon type="search"></Icon>
+            <span>{{queryModal.title}}</span>
         </p>
         <div style="text-align:center">
             <i-Form ref="queryModal.bindModel" :model="queryModal.bindModel" :rules="queryModal.ruleValidate"

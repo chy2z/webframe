@@ -88,35 +88,6 @@
                         </Menu-Group>
                     </Submenu>
                 </i-Menu>
-                <Modal v-model="formModal.modalShow" :closable="false" :mask-closable="false" :styles="{top: '250px'}" width="400">
-                    <p slot="header" class="my-modal-title">
-                        <Icon type="information-circled"></Icon>
-                        <span>修改密码</span>
-                    </p>
-                    <div style="text-align:center">
-                        <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate" label-position="left" label-width="70"  >
-                            <Form-Item label="旧的密码" prop="oldPwd">
-                                <i-Input v-model="formModal.bindModel.oldPwd" type="password" autocomplete="off" maxlength="25" placeholder="请输入原密码">
-                                    <Icon type="ios-locked" slot="prepend"></Icon>
-                                </i-Input>
-                            </Form-Item>
-                            <Form-Item label="新的密码" prop="newPwd">
-                                <i-Input v-model="formModal.bindModel.newPwd" type="password" autocomplete="off" maxlength="25" placeholder="请输入新密码">
-                                    <Icon type="ios-locked-outline" slot="prepend"></Icon>
-                                </i-Input>
-                            </Form-Item>
-                            <Form-Item label="确认密码" prop="newPwdSecond">
-                                <i-Input v-model="formModal.bindModel.newPwdSecond" type="password" autocomplete="off" maxlength="25" placeholder="请输入确认密码">
-                                    <Icon type="ios-locked-outline" slot="prepend"></Icon>
-                                </i-Input>
-                            </Form-Item>
-                        </i-Form>
-                    </div>
-                    <div slot="footer">
-                        <i-Button type="error" size="large"   @click="modalEditPwdCancel">取消</i-Button>
-                        <i-Button type="success" size="large"  @click="modalEditPwdOk">确定</i-Button>
-                    </div>
-                </Modal>
             </div>
         </div>
     </div>
@@ -173,6 +144,37 @@
         </Row>
     </div>
 
+    <!-- 修改密码 -->
+    <Modal v-model="formModal.modalShow" :closable="false" :mask-closable="false" :styles="{top: '250px'}" width="400">
+        <p slot="header" class="my-modal-title">
+            <Icon type="information-circled"></Icon>
+            <span>修改密码</span>
+        </p>
+        <div style="text-align:center">
+            <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate" label-position="left" label-width="70"  >
+                <Form-Item label="旧的密码" prop="oldPwd">
+                    <i-Input v-model="formModal.bindModel.oldPwd" type="password" autocomplete="off" maxlength="25" placeholder="请输入原密码">
+                        <Icon type="ios-locked" slot="prepend"></Icon>
+                    </i-Input>
+                </Form-Item>
+                <Form-Item label="新的密码" prop="newPwd">
+                    <i-Input v-model="formModal.bindModel.newPwd" type="password" autocomplete="off" maxlength="25" placeholder="请输入新密码">
+                        <Icon type="ios-locked-outline" slot="prepend"></Icon>
+                    </i-Input>
+                </Form-Item>
+                <Form-Item label="确认密码" prop="newPwdSecond">
+                    <i-Input v-model="formModal.bindModel.newPwdSecond" type="password" autocomplete="off" maxlength="25" placeholder="请输入确认密码">
+                        <Icon type="ios-locked-outline" slot="prepend"></Icon>
+                    </i-Input>
+                </Form-Item>
+            </i-Form>
+        </div>
+        <div slot="footer">
+            <i-Button type="text" size="large"   @click="modalEditPwdCancel">取消</i-Button>
+            <i-Button type="primary" size="large"  @click="modalEditPwdOk">确定</i-Button>
+        </div>
+    </Modal>
+
     <!-- 全局model -->
     <Modal v-model="popupsModal.modalShow" :closable="true" :mask-closable="false" class-name="vertical-center-modal"  :width="popupsModal.width">
         <p slot="header" class="my-modal-title">
@@ -186,7 +188,6 @@
         <div slot="footer">
         </div>
     </Modal>
-
 </div>
 </body>
 <script>

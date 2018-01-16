@@ -58,7 +58,6 @@ public class AuditKindProcessControl extends BaseControl {
         if (page.equals("add")) {
             Users u= uService.getUsers(ut.getUserid());
             model.addAttribute("user", u);
-            model.addAttribute("corporationId",request.getParameter("corporationId"));
             return "auditing/audit_kind_process_add_page";
         }
         else if(page.equals("update")){
@@ -66,7 +65,6 @@ public class AuditKindProcessControl extends BaseControl {
             Users u= uService.getUsers(ut.getUserid());
             AuditKindProcess sModel= auditKindProcessService.getAuditKindProcess(Integer.parseInt(id));
             List<AuditKindProcessStep> steps= auditKindProcessStepService.getList(Integer.parseInt(id));
-            model.addAttribute("corporationId",request.getParameter("corporationId"));
             model.addAttribute("user", u);
             model.addAttribute("kindProcess",sModel);
             model.addAttribute("kindProcessStep",JsonUtil.writeValueAsString(steps));
@@ -79,6 +77,8 @@ public class AuditKindProcessControl extends BaseControl {
             return "flowchart/flow_chat_step_view_page";
         }
         else if(page.equals("sendAudit")){
+            Users u= uService.getUsers(ut.getUserid());
+            model.addAttribute("user", u);
             return "auditing/audit_kind_process_select_page";
         }
         else {

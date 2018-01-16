@@ -209,7 +209,7 @@
 
             //权限控制
             if(nomanage){
-                //加载角色表格数据
+                //加载表格数据
                 pageHelperProcess.load(" c.id='"+corporationId+"'");
                 //加载组织机构
                 selectHelperCorporation.load("id='"+corporationId+"'");
@@ -217,7 +217,7 @@
                 selectHelperCorporation.setDisabled(true);
             }
             else{
-                //加载角色表格数据
+                //加载表格数据
                 pageHelperProcess.load(null);
                 //加载组织机构
                 selectHelperCorporation.load(null);

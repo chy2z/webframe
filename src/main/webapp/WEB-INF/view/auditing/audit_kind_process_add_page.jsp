@@ -196,7 +196,6 @@
     var domain="${ctx}";
     var add_url=domain+"/auditKindProcess/insert?jwt=${requestScope.jwt}";
     var department_Select_url="${ctx}/department/vselect/selectDepartment?jwt=${requestScope.jwt}";
-
     var selectHelperATDepartment= new selectHelper(department_Select_url,{});
     var selectHelperUDepartment= new selectHelper(department_Select_url,{});
 
@@ -556,7 +555,7 @@
         data: {
             spinShow:false,
             userid:${requestScope.user.id},
-            corporationid:${requestScope.corporationId},
+            corporationid:${requestScope.user.corporationid},
             selectATDepart:selectHelperATDepartment.ivSelect,
             selectUDepart:selectHelperUDepartment.ivSelect,
             dataTableAK:pagingHelperAK.ivTable,

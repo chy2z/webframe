@@ -17,8 +17,9 @@
             <i-col span="24">
                 <div class="float-left fil-width">
                     <Row align="middle" type="flex">
-                            <label class="my-label">业务名称：</label>
-                            <label class="my-label">业务名称</label>
+                        <i-col>
+                            <label class="my-label">送审业务：</label>
+                            <label class="my-label">{{ operation }}</label>
                         </i-col>
                     </Row>
                 </div>
@@ -111,18 +112,16 @@
             <i-col span="18">
                 <div class="float-right">
                     <i-Button type="success" @click="butRefresh()" icon="refresh">刷新</i-Button>
-                    <i-Button type="primary" @click="butFlowChart()"  icon="android-share-alt">流程图</i-Button>
-                    <i-Button type="primary" @click="butSave()" icon="checkmark">保存</i-Button>
+                    <i-Button type="error" @click="butFlowChart()" icon="android-share-alt">流程图</i-Button>
+                    <i-Button type="primary" @click="butSave()" :disabled="saveState" icon="ios-shuffle-strong">送审</i-Button>
                 </div>
             </i-col>
         </Row>
     </div>
-
 </div>
 </body>
 <script>
     var domain="${ctx}";
-    var corporationId="${requestScope.user.corporationid}";
     var flowChartStep_url=domain+"/auditKindProcess/path/flowstepview?jwt=${requestScope.jwt}";
 
     var pageHelperProcess=new pageHepler("${ctx}/auditKindProcess/pagination?jwt=${requestScope.jwt}",{
@@ -188,6 +187,10 @@
         el: '#app',
         data: {
             jwt:"${requestScope.jwt}",
+            departid:"${requestScope.user.departid}",
+            operation:"${requestScope.auditKind.operation}",
+            kid:"${requestScope.auditKind.id}",
+            saveState:true,
             processTable:pageHelperProcess.ivTable,
             processPage:pageHelperProcess.ivPage,
             stepTable:pageHelperStep.ivTable,
@@ -202,7 +205,7 @@
             //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条
             pageHelperStep.setHeight($(".my-box-right .my-layout-body-right").height());
             //加载表格数据
-            pageHelperProcess.load(" c.id='"+corporationId+"'");
+            pageHelperProcess.load(" ap.departId='"+this.departid+"' and ap.kId='"+this.kid+"' ");
         },
         methods:{
             pageChangeProcess(index){
@@ -214,6 +217,13 @@
             tableProcessRowClick(data,index){
                 pageHelperProcess.setSelectRowIndex(index);
                 pageHelperStep.load(" ap.id='" + data.id + "' ");
+                if(data.enable=="启用") {
+                    this.saveState=false;
+                }
+                else{
+                    this.saveState=true;
+                    vtoast(this,"审核类型被禁用");
+                }
             },
             butRefresh(){
                 window.location.reload();
@@ -221,7 +231,7 @@
             butFlowChart(){
                 if(pageHelperProcess.getSelectRowIndex()>-1){
                     let rowData=pageHelperProcess.getSelectRowData();
-                    vPopWindowShow("action_flow_view",flowChartStep_url+"&id="+rowData.id, "流程图查看");
+                    vOpenWindow(flowChartStep_url+"&id="+rowData.id);
                 }
                 else{
                     valert(this,"请选择一行记录");

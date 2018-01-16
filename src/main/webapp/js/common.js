@@ -15,6 +15,29 @@ String.prototype.RTrim = function(){
 }
 
 /**
+ * 取get参数
+ * @param qs
+ * @returns {string}
+ * @constructor
+ */
+function QueryString(qs,decode) {
+    let s = location.href;
+    s = s.replace("?", "?&").split("&");
+    let re = "";
+    for (let i = 1; i < s.length; i++) {
+        if (s[i].indexOf(qs + "=") == 0) {
+            re = s[i].replace(qs + "=", "");
+        }
+    }
+    if(decode){
+        return decodeURIComponent(re.replace("#", ""));
+    }
+    else {
+        return re.replace("#", "");
+    }
+}
+
+/**
  * 是否空字符
  * @param obj
  * @returns {boolean}
@@ -69,6 +92,15 @@ function vSetAuthenticationStorage(v) {
  */
 function vGetAuthenticationStorage() {
     return sessionStorage.getItem("jwt");
+}
+
+
+/**
+ * 在新窗口打开
+ * @param url
+ */
+function vOpenWindow(url,config){
+    window.open(url,"_blank","top=10,left=10,width=1024,height=768,titlebar=no,menubar=no,scrollbars=no,toolbar=no,status=no");
 }
 
 /**

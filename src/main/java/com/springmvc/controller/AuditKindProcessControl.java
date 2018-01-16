@@ -5,10 +5,7 @@ import com.springmvc.config.LanguageFactory;
 import com.springmvc.model.*;
 import com.springmvc.model.flowchart.FlowChart;
 import com.springmvc.model.flowchart.FlowChartNode;
-import com.springmvc.service.AuditKindProcessService;
-import com.springmvc.service.AuditKindProcessStepService;
-import com.springmvc.service.UsersService;
-import com.springmvc.service.UsersTokenService;
+import com.springmvc.service.*;
 import com.springmvc.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +30,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/auditKindProcess")
 public class AuditKindProcessControl extends BaseControl {
+
+    @Autowired
+    AuditKindService auditKindService;
 
     @Autowired
     AuditKindProcessService auditKindProcessService;
@@ -70,15 +70,20 @@ public class AuditKindProcessControl extends BaseControl {
             model.addAttribute("kindProcessStep",JsonUtil.writeValueAsString(steps));
             return "auditing/audit_kind_process_update_page";
         }
-        else if(page.equals("flowstepview")){
+        else if(page.equals("flowStepView")){
             String id = (String) request.getParameter("id");
             AuditKindProcess sModel= auditKindProcessService.getAuditKindProcess(Integer.parseInt(id));
             model.addAttribute("kindProcess",sModel);
             return "flowchart/flow_chat_step_view_page";
         }
-        else if(page.equals("sendAudit")){
-            Users u= uService.getUsers(ut.getUserid());
+        else if(page.equals("auditProcessView")){
+            return "flowchart/audit_process_step_view_page";
+        }
+        else if(page.equals("sendAudit")) {
+            Users u = uService.getUsers(ut.getUserid());
+            AuditKind auditKind = auditKindService.getModelByOperation(request.getParameter("operation"));
             model.addAttribute("user", u);
+            model.addAttribute("auditKind", auditKind);
             return "auditing/audit_kind_process_select_page";
         }
         else {

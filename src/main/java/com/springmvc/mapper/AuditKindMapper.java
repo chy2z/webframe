@@ -14,6 +14,8 @@ public interface AuditKindMapper {
 
     AuditKind selectByPrimaryKey(Integer id);
 
+    AuditKind selectByOperation(String operation);
+
     int updateByPrimaryKeySelective(AuditKind record);
 
 

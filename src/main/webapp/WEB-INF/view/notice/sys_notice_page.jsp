@@ -205,6 +205,12 @@
                         });
                     });
                 },
+                butAuditProcess(){
+                    Audit.auditProcess(this,pageHelperNotice.getSelectRowIndex(),pageHelperNotice.getSelectRowData(),()=>{
+                        let rowData=pageHelperNotice.getSelectRowData();
+                        vPopWindowShow("action_flow_view",Audit.urls.auditProcess_url+"&id="+rowData.id, "流程图查看");
+                    });
+                },
                 butAudit(){
                     Audit.sendAudit(this,pageHelperNotice.getSelectRowIndex(),pageHelperNotice.getSelectRowData(),()=>{
                         let rowData=pageHelperNotice.getSelectRowData();

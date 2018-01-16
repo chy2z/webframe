@@ -19,6 +19,13 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
+  <select id="selectByOperation" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from audit_kind
+    where operation = #{operation,jdbcType=VARCHAR}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from audit_kind
     where id = #{id,jdbcType=INTEGER}

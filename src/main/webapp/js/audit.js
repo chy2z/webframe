@@ -8,7 +8,9 @@ var Audit={
     },
     // 访问地址
     urls:{
+        auditProcess_url:"/auditKindProcess/path/auditProcessView",
         sendAudit_url:"/auditKindProcess/path/sendAudit",
+        allowViewProcess:"/auditWait/allowViewProcess",
         allowSendAudit:"/auditWait/allowSendAudit",
         allowEditAndDel:"/auditWait/allowEditAndDel"
     },
@@ -40,7 +42,9 @@ var Audit={
                valert(vue,"审核类型找不到");
                break;
        }
-       this.urls.sendAudit_url=domian+this.urls.sendAudit_url+"?jwt="+jwt;
+       this.urls.auditProcess_url=domian+this.urls.auditProcess_url+"?jwt="+jwt;
+       this.urls.sendAudit_url=domian+this.urls.sendAudit_url+"?jwt="+jwt+"&operation="+encodeURIComponent(operation);
+       this.urls.allowViewProcess=domian+this.urls.allowViewProcess+"?jwt="+jwt;
        this.urls.allowSendAudit=domian+this.urls.allowSendAudit+"?jwt="+jwt;
        this.urls.allowEditAndDel=domian+this.urls.allowEditAndDel+"?jwt="+jwt;
     },
@@ -89,8 +93,20 @@ var Audit={
             });
         },()=>{},()=>{},()=>{},true);
     },
-    // 流程图和审核意见
-    auditProcess(){
-
+    // 流程进度图和审核意见
+    auditProcess(vue,rowIndex,selectRow,callBack){
+        if(rowIndex<0){ valert(vue,"请选择一行记录送审!"); return false;}
+        if(!selectRow){ valert(vue,"请选择一行记录送审!"); return false;}
+        if(selectRow.auditstate==vLang.audit.new){
+            valert(vue,"记录不能查看审核进度!"); return false;
+        }
+        this.config.tValue=selectRow.id;
+        vajaxPost(this.urls.allowViewProcess,this.config,false,(result)=>{
+            if(!result||!result.success||!result.data) {
+                valert(vue,"记录不能查看审核进度!");
+                return false;
+            }
+            callBack&&callBack();
+        },()=>{},()=>{},()=>{},true);
     }
 }

@@ -123,6 +123,47 @@ public class AuditWaitService {
     }
 
     /**
+     * 判断是否查看审核流程
+     * @param operation
+     * @param departId
+     * @param auditState
+     * @param tName
+     * @param tKey
+     * @param tValue
+     * @return
+     */
+    public boolean allowViewProcess(String operation,String departId,String auditState,
+                                    String tName,
+                                    String tKey,
+                                    String tValue) {
+        String state = mapper.getAuditState(auditState, tName, tKey, tValue);
+
+        // 判断状态
+        if (null != state) {
+            // 新申请不能查看
+            if (state.equals(AuditStateType.XSQ.getName())) {
+                return false;
+            }
+            // 打回、审核中
+            else if (state.equals(AuditStateType.DH.getName()) || state.equals(AuditStateType.SHZ.getName())) {
+                return true;
+            }
+            // 通过
+            else {
+                Integer pid = mapper.getAuditProcess(tName, tKey, tValue);
+                // 存在送审才能查看流程图
+                if (pid!=null&&pid != 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 获取送审状态
      * @param operation
      * @param departId

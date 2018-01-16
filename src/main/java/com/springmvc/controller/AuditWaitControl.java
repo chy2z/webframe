@@ -108,7 +108,7 @@ public class AuditWaitControl {
                                          String auditState,
                                          String tName,
                                          String tKey,
-                                         String tValue ){
+                                         String tValue){
         RequestResult result=new RequestResult();
         if(auditState==null||tName==null||tKey==null||tValue==null){
             result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
@@ -119,6 +119,34 @@ public class AuditWaitControl {
         return result;
     }
 
-
+    /**
+     * 是否可以查看进度流程
+     * @param request
+     * @param operation
+     * @param departId
+     * @param auditState
+     * @param tName
+     * @param tKey
+     * @param tValue
+     * @return
+     */
+     @ResponseBody
+     @RequestMapping(value = "/allowViewProcess",method = {RequestMethod.POST})
+     public  RequestResult allowViewProcess(HttpServletRequest request,
+                                            String operation,
+                                            String departId,
+                                            String auditState,
+                                            String tName,
+                                            String tKey,
+                                            String tValue){
+         RequestResult result=new RequestResult();
+         if(auditState==null||tName==null||tKey==null||tValue==null){
+             result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
+         }
+         else{
+             result.setSucceed(LanguageFactory.getLanguages().SUCCESS,auditWaitService.allowViewProcess(operation,departId,auditState,tName,tKey,tValue));
+         }
+         return result;
+     }
 
 }

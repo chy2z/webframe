@@ -32,6 +32,15 @@ public class AuditKindService extends BaseService {
     }
 
     /**
+     * 获取实体
+     * @param operation
+     * @return
+     */
+    public AuditKind getModelByOperation(String operation){
+       return  mapper.selectByOperation(operation);
+    }
+
+    /**
      * 插入记录
      * @param c
      * @return

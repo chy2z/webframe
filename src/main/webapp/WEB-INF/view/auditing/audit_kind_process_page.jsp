@@ -121,7 +121,7 @@
     var nomanage=${requestScope.nomanage};
     var corporationId="${requestScope.corporationId}";
     var add_url=domain+"/auditKindProcess/path/add?jwt=${requestScope.jwt}";
-    var flowChartStep_url=domain+"/auditKindProcess/path/flowstepview?jwt=${requestScope.jwt}";
+    var flowChartStep_url=domain+"/auditKindProcess/path/flowStepView?jwt=${requestScope.jwt}";
     var update_url=domain+"/auditKindProcess/path/update?jwt=${requestScope.jwt}";
     var delete_url=domain+"/auditKindProcess/delete?jwt=${requestScope.jwt}";
     var corporation_Select_url="${ctx}/corporation/vselect/selectCorporation?jwt=${requestScope.jwt}";

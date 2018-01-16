@@ -24,6 +24,9 @@
     <template v-if="butShow.butAudit">
         <i-Button type="primary" @click="butAudit()" v-show="butShow.butAudit" icon="ios-shuffle-strong">送审</i-Button>
     </template>
+    <template v-if="butShow.butAuditProcess">
+        <i-Button type="primary" @click="butAuditProcess()" v-show="butShow.butAuditProcess" icon="android-share-alt">审核进度</i-Button>
+    </template>
     <template v-if="butShow.butFlowChart">
         <i-Button type="primary" @click="butFlowChart()" v-show="butShow.butFlowChart" icon="android-share-alt">流程图</i-Button>
     </template>

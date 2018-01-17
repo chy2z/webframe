@@ -138,7 +138,7 @@
                 noticePage:pageHelperNotice.ivPage
             },
             created:function(){
-                Audit.initConfig(domain,this.jwt,Audit.operationType.sys_notice,${requestScope.useId},${requestScope.departId},this);
+                Audit.initConfig(this,domain,this.jwt,Audit.operationType.sys_notice,${requestScope.useId},${requestScope.departId});
             },
             mounted:function () {
                 //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条
@@ -214,7 +214,7 @@
                 butAudit(){
                     Audit.sendAudit(this,pageHelperNotice.getSelectRowIndex(),pageHelperNotice.getSelectRowData(),()=>{
                         let rowData=pageHelperNotice.getSelectRowData();
-                        vPopWindowShow("action_audit",Audit.urls.sendAudit_url+"&id="+rowData.id,Audit.config.title);
+                        vPopWindowShow("action_audit",Audit.urls.sendAudit_url,Audit.config.title,Audit.config);
                     });
                 },
                 butLook(){
@@ -245,7 +245,7 @@
                  pageHelperNotice.updateSelectRowData(parameter);
              }
              else if(action=="action_audit"){
-
+                 pageHelperNotice.updateSelectRowData(parameter);
              }
              else {
                  return ;

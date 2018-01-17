@@ -22,7 +22,7 @@ public class AuditWait {
 
     private Date createdate;
 
-    private Date waitdate;
+    private Date enddate;
 
     private Integer uid;
 
@@ -74,12 +74,12 @@ public class AuditWait {
         this.createdate = createdate;
     }
 
-    public Date getWaitdate() {
-        return waitdate;
+    public Date getEnddate() {
+        return enddate;
     }
 
-    public void setWaitdate(Date waitdate) {
-        this.waitdate = waitdate;
+    public void setEnddate(Date waitdate) {
+        this.enddate = waitdate;
     }
 
     public Integer getUid() {

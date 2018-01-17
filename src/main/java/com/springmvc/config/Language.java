@@ -19,6 +19,7 @@ public class Language {
     public final String ERROR_PASSWORD = "密码不正确";
     public final String ERROR_NAME_PASSWORD = "用户名或密码不正确";
 
+    public final String FAIL = "失败";
     public final String SUCCESS = "成功";
     public final String SUCCESS_UPDATE_PASSWORD = "修改密码成功";
     public final String SUCCESS_UNLOCK = "解锁成功";
@@ -29,6 +30,9 @@ public class Language {
 
     public final String DATA_LOSS = "数据缺失";
     public final String DATA_EXCEPTION = "数据异常";
+
+    public final String AUDIT_SUCESS = "审核成功";
+    public final String AUDIT_FAIL = "审核失败";
 
     public final String INSERT_SUCESS = "保存成功";
     public final String INSERT_FAIL = "保存失败";

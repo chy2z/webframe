@@ -4,6 +4,7 @@
 <%@ include file="../../../taglib/import_iview.jsp"%>
 <%@ include file="../../../taglib/import_jquery.jsp"%>
 <%@ include file="../../../taglib/import_common.jsp"%>
+<%@ include file="../../../taglib/import_audit.jsp"%>
 <head>
     <title>审核流程选择</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -187,6 +188,7 @@
         el: '#app',
         data: {
             jwt:"${requestScope.jwt}",
+            useid:"${requestScope.user.id}",
             departid:"${requestScope.user.departid}",
             operation:"${requestScope.auditKind.operation}",
             kid:"${requestScope.auditKind.id}",
@@ -198,7 +200,7 @@
             stepPage:pageHelperStep.ivPage
         },
         created:function(){
-
+            Audit.initConfig(this,domain,this.jwt,this.operation,this.useid,this.departid);
         },
         mounted:function () {
             //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条
@@ -239,7 +241,9 @@
                 }
             },
             butSave(){
-
+                Audit.selectAudit(this,pageHelperProcess.getSelectRowIndex(),pageHelperProcess.getSelectRowData(),()=>{
+                      vPopWindowsColse({auditstate:vLang.audit.process});
+                });
             }
         }
     });

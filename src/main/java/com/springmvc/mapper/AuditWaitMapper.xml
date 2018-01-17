@@ -7,7 +7,7 @@
     <result column="steps" jdbcType="INTEGER" property="steps" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createdate" />
-    <result column="waitDate" jdbcType="TIMESTAMP" property="waitdate" />
+    <result column="endDate" jdbcType="TIMESTAMP" property="enddate" />
     <result column="uId" jdbcType="INTEGER" property="uid" />
     <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="tName" jdbcType="VARCHAR" property="tname" />
@@ -16,7 +16,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, pId, steps, status, createDate, waitDate, uId, url, tName, tKey, tValue
+    id, pId, steps, status, createDate, enddate, uId, url, tName, tKey, tValue
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -49,8 +49,8 @@
       <if test="createdate != null">
         createDate,
       </if>
-      <if test="waitdate != null">
-        waitDate,
+      <if test="enddate != null">
+        endDate,
       </if>
       <if test="uid != null">
         uId,
@@ -84,8 +84,8 @@
       <if test="createdate != null">
         #{createdate,jdbcType=TIMESTAMP},
       </if>
-      <if test="waitdate != null">
-        #{waitdate,jdbcType=TIMESTAMP},
+      <if test="enddate != null">
+        #{enddate,jdbcType=TIMESTAMP},
       </if>
       <if test="uid != null">
         #{uid,jdbcType=INTEGER},
@@ -120,8 +120,8 @@
       <if test="createdate != null">
         createDate = #{createdate,jdbcType=TIMESTAMP},
       </if>
-      <if test="waitdate != null">
-        waitDate = #{waitdate,jdbcType=TIMESTAMP},
+      <if test="enddate != null">
+        endDate = #{enddate,jdbcType=TIMESTAMP},
       </if>
       <if test="uid != null">
         uId = #{uid,jdbcType=INTEGER},
@@ -142,9 +142,13 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="getAuditState" resultType="String">
+  <select id="getAuditState" resultType="string">
     select ${auditState} from ${tName} where ${tKey}= #{tValue}
   </select>
+
+  <update id="updateOperation">
+    update ${tName} set auditState=#{auditState} where ${tKey}=#{tValue}
+  </update>
 
   <select id="getAuditProcessCount" resultType="java.lang.Integer">
     select count(1) from audit_kind k,audit_kind_process p

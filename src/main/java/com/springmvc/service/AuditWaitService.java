@@ -4,6 +4,7 @@ import com.springmvc.enums.AuditEnableType;
 import com.springmvc.enums.AuditStateType;
 import com.springmvc.mapper.AuditWaitMapper;
 import com.springmvc.model.AuditKindProcess;
+import com.springmvc.model.AuditWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,30 @@ public class AuditWaitService {
 
     @Autowired
     AuditKindProcessService auditKindProcessService;
+
+    /**
+     * 选择审核类型
+     * @param c
+     * @param tName
+     * @param tKey
+     * @param tValue
+     * @return
+     */
+    public boolean selectAudit(AuditWait c,String tName,
+                                String tKey, String tValue) {
+        int result = mapper.insertSelective(c);
+        result += mapper.updateOperation(tName, tKey, tValue,c.getStatus());
+        return result > 0;
+    }
+
+    /**
+     * 插入记录
+     * @param c
+     * @return
+     */
+    public boolean insert(AuditWait c) {
+        return mapper.insertSelective(c) > 0;
+    }
 
     /**
      * 允许修改和删除记录

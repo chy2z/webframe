@@ -109,8 +109,8 @@ function vOpenWindow(url,config){
  * @param url
  * @param title
  */
-function vPopWindowShow(action,url,title){
-    window.parent.popShow(action,url,title);
+function vPopWindowShow(action,url,title,config){
+    window.parent.popShow(action,url,title,JSON.stringify(config));
 }
 
 /**
@@ -126,7 +126,7 @@ function vPopWindowsColse(parameter){
  * @constructor
  */
 function VPopConfig(){
-   return sessionStorage.getItem("popConfig");
+   return JSON.parse(sessionStorage.getItem("popConfig"));
 }
 
 /**

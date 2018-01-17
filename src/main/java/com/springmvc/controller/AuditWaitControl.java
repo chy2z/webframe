@@ -1,6 +1,8 @@
 package com.springmvc.controller;
 
 import com.springmvc.config.LanguageFactory;
+import com.springmvc.enums.AuditStateType;
+import com.springmvc.model.AuditWait;
 import com.springmvc.model.RequestResult;
 import com.springmvc.service.AuditWaitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,26 +38,37 @@ public class AuditWaitControl {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/sendAudit",method = {RequestMethod.POST})
-    public RequestResult sendAudit(String operation,
-                                    String useId,
-                                    String departId,
-                                    String auditState,
-                                    String tName,
-                                    String tKey,
-                                    String tValue ){
+    @RequestMapping(value = "/selectAudit",method = {RequestMethod.POST})
+    public RequestResult selectAudit(String pid,String auditState,String operation,
+                                     String useId,String departId,
+                                    String tName, String tKey,
+                                    String tValue,String url) {
 
-        RequestResult result=new RequestResult();
+        RequestResult result = new RequestResult();
 
-        if(auditState==null||tName==null||tKey==null||tValue==null){
+        if (pid == null || useId == null || operation == null || departId == null || auditState == null || tName == null || tKey == null || tValue == null) {
             result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
-        }
-        else{
+        } else {
             // 是否允许送审
-            if(auditWaitService.allowSendAudit(operation,departId,auditState,tName,tKey,tValue)){
-                result.setSucceed(LanguageFactory.getLanguages().SUCCESS,null);
-            }
-            else{
+            if (auditWaitService.allowSendAudit(operation, departId, auditState, tName, tKey, tValue)) {
+
+                AuditWait aw = new AuditWait();
+                aw.setId(0);
+                aw.setPid(Integer.parseInt(pid));
+                aw.setSteps(1);
+                aw.setUid(Integer.parseInt(useId));
+                aw.setStatus(AuditStateType.SHZ.getName());
+                aw.setTname(tName);
+                aw.setTkey(tKey);
+                aw.setTvalue(tValue);
+                aw.setUrl(url);
+
+                if (auditWaitService.selectAudit(aw, tName, tKey, tValue)) {
+                    result.setSucceed(LanguageFactory.getLanguages().SUCCESS, true);
+                } else {
+                    result.setSucceed(LanguageFactory.getLanguages().FAIL, false);
+                }
+            } else {
                 result.setFail(LanguageFactory.getLanguages().NOY_ALLOW_AUDIT);
             }
         }
@@ -110,7 +123,7 @@ public class AuditWaitControl {
                                          String tKey,
                                          String tValue){
         RequestResult result=new RequestResult();
-        if(auditState==null||tName==null||tKey==null||tValue==null){
+        if(operation==null||departId==null||auditState==null||tName==null||tKey==null||tValue==null){
             result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         }
         else{
@@ -140,7 +153,7 @@ public class AuditWaitControl {
                                             String tKey,
                                             String tValue){
          RequestResult result=new RequestResult();
-         if(auditState==null||tName==null||tKey==null||tValue==null){
+         if(operation==null||departId==null||auditState==null||tName==null||tKey==null||tValue==null){
              result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
          }
          else{

@@ -240,7 +240,7 @@
             },
             computed: {
                 avatorPath () {
-                    return localStorage.avatorImgPath;
+                    return sessionStorage.avatorImgPath;
                 }
             },
             methods: {
@@ -334,7 +334,7 @@
                 // 默认加载页面
                 document.querySelector("#mainframe").src="${ctx}/login/index/${requestScope.jwt}";
                 // 存储图片路径
-                localStorage.avatorImgPath="${ctx}/${requestScope.user.img}";
+                sessionStorage.avatorImgPath="${ctx}/${requestScope.user.img}";
                 // 计算全局弹出窗体的宽度
                 this.popupsModal.width= document.body.clientWidth*0.95;
             },
@@ -358,7 +358,7 @@
                 lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';
 
                 //解决浏览器刷新锁屏消失
-                if(localStorage.islock==1){
+                if(sessionStorage.islock==1){
                     this.lockScreen();
                 }
             },
@@ -367,13 +367,13 @@
                     return this.spanLeft === 3 ? 10 : 24;
                 },
                 avatorPath () {
-                    return localStorage.avatorImgPath;
+                    return sessionStorage.avatorImgPath;
                 }
             },
             methods: {
                 unlockScreen () {
 
-                    localStorage.islock=0;
+                    sessionStorage.islock=0;
 
                     let lockScreenBack = document.getElementById('lock_screen_back');
                     this.showUnlock = false;
@@ -383,7 +383,7 @@
                 },
                 lockScreen () {
 
-                    localStorage.islock=1;
+                    sessionStorage.islock=1;
 
                     let lockScreenBack = document.getElementById('lock_screen_back');
                     lockScreenBack.style.transition = 'all 3s';
@@ -530,14 +530,15 @@
         /**
          * 全局框体显示
          */
-        function popShow(action,url,title){
+        function popShow(action,url,title,popConfig){
             if(url.indexOf("?")!=-1) {
                 url += "&version=" + Math.random();
             }
             else {
                 url += "?version=" + Math.random();
             }
-            localStorage.setItem("popAction",action);
+            sessionStorage.setItem("popConfig",popConfig);
+            sessionStorage.setItem("popAction",action);
             document.querySelector("#popupsframe").src=url;
             mainVue.popupsShow(title);
         }
@@ -548,7 +549,7 @@
         function popClose(parameter){
             mainVue.popupsHide();
             //调用子窗体的回调函数
-            document.getElementById(mainVue.tabSelected).contentWindow.popupsCallBack(localStorage.getItem("popAction"),parameter);
+            document.getElementById(mainVue.tabSelected).contentWindow.popupsCallBack(sessionStorage.getItem("popAction"),parameter);
         }
 </script>
 </html>

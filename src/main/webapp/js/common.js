@@ -122,6 +122,14 @@ function vPopWindowsColse(parameter){
 }
 
 /**
+ * 获取全局数据
+ * @constructor
+ */
+function VPopConfig(){
+   return sessionStorage.getItem("popConfig");
+}
+
+/**
  * Unicode转换成中文
  * @param str
  */

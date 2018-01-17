@@ -208,7 +208,7 @@
                 butAuditProcess(){
                     Audit.auditProcess(this,pageHelperNotice.getSelectRowIndex(),pageHelperNotice.getSelectRowData(),()=>{
                         let rowData=pageHelperNotice.getSelectRowData();
-                        vPopWindowShow("action_flow_view",Audit.urls.auditProcess_url+"&id="+rowData.id, "流程图查看");
+                        vPopWindowShow("action_flow_view",Audit.urls.auditProcess_url+"&id="+rowData.id, "审核进度查看");
                     });
                 },
                 butAudit(){

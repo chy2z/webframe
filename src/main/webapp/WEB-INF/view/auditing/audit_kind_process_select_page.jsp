@@ -112,7 +112,7 @@
             <i-col span="18">
                 <div class="float-right">
                     <i-Button type="success" @click="butRefresh()" icon="refresh">刷新</i-Button>
-                    <i-Button type="error" @click="butFlowChart()" icon="android-share-alt">流程图</i-Button>
+                    <i-Button type="error" @click="butFlowChart()" v-show="flowState" icon="android-share-alt">流程图</i-Button>
                     <i-Button type="primary" @click="butSave()" :disabled="saveState" icon="ios-shuffle-strong">送审</i-Button>
                 </div>
             </i-col>
@@ -122,7 +122,7 @@
 </body>
 <script>
     var domain="${ctx}";
-    var flowChartStep_url=domain+"/auditKindProcess/path/flowstepview?jwt=${requestScope.jwt}";
+    var flowChartStep_url=domain+"/auditKindProcess/path/flowStepView?jwt=${requestScope.jwt}";
 
     var pageHelperProcess=new pageHepler("${ctx}/auditKindProcess/pagination?jwt=${requestScope.jwt}",{
         columns: [
@@ -190,6 +190,7 @@
             departid:"${requestScope.user.departid}",
             operation:"${requestScope.auditKind.operation}",
             kid:"${requestScope.auditKind.id}",
+            flowState:false,
             saveState:true,
             processTable:pageHelperProcess.ivTable,
             processPage:pageHelperProcess.ivPage,

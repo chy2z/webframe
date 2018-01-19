@@ -23,6 +23,7 @@
     <result column="pName" jdbcType="VARCHAR" property="pname" />
     <result column="operation" jdbcType="VARCHAR" property="operation" />
     <result column="kName" jdbcType="VARCHAR" property="kname" />
+    <result column="stepNum" jdbcType="INTEGER" property="stepnum" />
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -204,7 +205,7 @@
   </select>
 
   <select id="selectPagination" resultMap="JoinResultMap">
-    select aw.*,ps.uid as auid,u.`name` as sendUser,d.`name` as sendDepart, p.pName,k.operation,k.`name` as kName from (
+    select aw.*,ps.uid as auid,u.`name` as sendUser,d.`name` as sendDepart,p.stepNum,p.pName,k.operation,k.`name` as kName from (
 
     select aw.id,aw.pid,aw.steps,aw.uid,aw.createDate,aw.url,aw.tName,aw.tKey,aw.tValue,aw.status
 

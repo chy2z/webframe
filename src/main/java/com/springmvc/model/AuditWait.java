@@ -56,6 +56,8 @@ public class AuditWait {
 
     private String kname;
 
+    private Integer stepnum;
+
     public Integer getId() {
         return id;
     }
@@ -190,5 +192,13 @@ public class AuditWait {
 
     public void setKname(String kname) {
         this.kname = kname;
+    }
+
+    public Integer getStepnum() {
+        return stepnum;
+    }
+
+    public void setStepnum(Integer stepnum) {
+        this.stepnum = stepnum;
     }
 }

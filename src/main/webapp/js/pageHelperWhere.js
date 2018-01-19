@@ -93,10 +93,18 @@ function pageHelperWhere(whereRelationArry)
 
         $.each(whereRelationArry, function (i, wr) {
             index--;
-            if (wr.fieldValue == "" && wr.relationValue == null && wr.like)  //加了wr.like
+
+            //  过滤异常数据
+            if(wr.fieldValue==null||typeof(wr.fieldValue)=="undefined") {
+                return true;
+            }
+
+            // 模糊查询过滤空白项
+            if (wr.fieldValue == "" && wr.relationValue == null && wr.like)
             {
                 return true;
             }
+
             if (wr.dataType == WhereDataType.String || wr.dataType == WhereDataType.Datatime) {
                 if (wr.relationValue == null)
                     str = _self.Like(wr);

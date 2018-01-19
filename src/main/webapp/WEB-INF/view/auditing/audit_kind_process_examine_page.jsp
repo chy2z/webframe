@@ -18,18 +18,7 @@
         <Row id="top" class-name="my-layout-top" justify="end" align="middle" type="flex">
             <i-col span="10">
                 <div class="float-left">
-                    <label class="my-label">审核业务：</label>
-                    <i-Select  style="width:200px" @on-change="selectOperationChange"
-                               v-model="selectOperation.selectItem"
-                               :disabled="selectOperation.disabled"
-                               :placeholder="selectOperation.placeholder"
-                               :not-found-text="selectOperation.notFoundText"
-                               :label-in-value="selectOperation.labelInValue"
-                               :size="selectOperation.size" :clearable="selectOperation.clearable"
-                               :filterable="selectOperation.filterable">
-                        <i-Option v-for="item in selectOperation.dataTable" :value="item.id"
-                                  :key="item.id">{{ item.label }}</i-Option>
-                    </i-Select>
+
                 </div>
             </i-col >
             <i-col span="14">
@@ -71,6 +60,40 @@
             </i-col>
         </Row>
     </div>
+
+    <Modal v-model="queryModal.modalShow" :mask-closable="false" :styles="{top: '20px'}" :width="500">
+        <p slot="header" class="my-modal-title">
+            <Icon type="search"></Icon>
+            <span>{{queryModal.title}}</span>
+        </p>
+        <div style="text-align:center">
+            <i-Form ref="queryModal.bindModel" :model="queryModal.bindModel" :rules="queryModal.ruleValidate"
+                    label-position="right" label-width="70">
+                <Form-Item label="审核类型" prop="kid">
+                    <i-Select  v-model="queryModal.bindModel.kid"
+                               :disabled="selectOperation.disabled"
+                               :placeholder="selectOperation.placeholder"
+                               :not-found-text="selectOperation.notFoundText"
+                               :label-in-value="selectOperation.labelInValue"
+                               :size="selectOperation.size" :clearable="selectOperation.clearable"
+                               :filterable="selectOperation.filterable">
+                        <i-Option v-for="item in selectOperation.dataTable" :value="item.id"
+                                  :key="item.id">{{ item.label }}</i-Option>
+                    </i-Select>
+                </Form-Item>
+                <Form-Item label="送审人" prop="sendUser">
+                    <i-Input  v-model="queryModal.bindModel.sendUser" placeholder="请输入送审人"></i-Input>
+                </Form-Item>
+            </i-Form>
+        </div>
+        <div slot="footer">
+            <i-Button type="text" size="large" @click="queryModalCancel" >取消</i-Button>
+            <i-Button type="error" size="large" @click="queryModalReset" >重置</i-Button>
+            <i-Button type="primary" size="large"  @click="queryModalOk"
+                      v-show="queryModal.okButShow"
+                      :loading="queryModal.okButLoading" >确定</i-Button>
+        </div>
+    </Modal>
 </div>
 </body>
 <script>
@@ -88,11 +111,11 @@
                 key: 'id'
             },
             {
-                title: '送审',
+                title: '送审人',
                 key: 'senduser'
             },
             {
-                title:"部门",
+                title:"送审部门",
                 key:"senddepart"
             },
             {
@@ -104,13 +127,21 @@
                 key:"pname"
             },
             {
+                title:"总步骤",
+                key:"stepnum"
+            },
+            {
+                title:"当前步骤",
+                key:"steps"
+            },
+            {
                 title:"操作",
                 key:"url"
             }
         ]
     },{whereInner:" aw.status='"+vLang.audit.process+"' "});
 
-    var selectHelperOperation=new selectHelper(operation_Select_url,{});
+    var selectHelperOperation=new selectHelper(operation_Select_url,{vModel:false});
 
     new Vue({
         el: '#app',
@@ -118,6 +149,17 @@
             spinShow:false,
             jwt:"${requestScope.jwt}",
             butShow:${requestScope.rightBut},
+            queryModal:{
+                title:"条件查询",
+                modalShow:false,
+                okButShow:true,
+                okButLoading:false,
+                bindModel:{
+                    sendUser:"",
+                    kid:undefined
+                },
+                ruleValidate:{}
+            },
             selectOperation:selectHelperOperation.ivSelect,
             WaitAuditTable:pageHelperWaitAudit.ivTable,
             WaitAuditPage:pageHelperWaitAudit.ivPage
@@ -143,14 +185,6 @@
             tableWaitAuditRowClick(data,index){
                 pageHelperWaitAudit.setSelectRowIndex(index);
             },
-            selectOperationChange(option){
-                if(option==null||option.value=="") {
-                    pageHelperWaitAudit.load(null);
-                }
-                else{
-                    pageHelperWaitAudit.load(" aw.operation='" + option.value + "'");
-                }
-            },
             butAudit(){
 
             },
@@ -164,6 +198,29 @@
             },
             butRefresh(){
                 window.location.reload();
+            },
+            butSearch(){
+                this.queryModal.modalShow=true;
+            },
+            queryModalCancel(){
+                this.queryModal.modalShow=false;
+            },
+            queryModalReset(){
+                this.$refs['queryModal.bindModel'].resetFields();
+            },
+            queryModalOk(){
+                this.$refs['queryModal.bindModel'].validate((valid) => {
+                    if (valid) {
+                        let WR = [];
+                        WR[WR.length] = new whereRelation("k.id",this.queryModal.bindModel.kid, "string", null, null, true);
+                        WR[WR.length] = new whereRelation("u.name", this.queryModal.bindModel.sendUser, "string", null, null, true);
+                        pageHelperWaitAudit.load(new pageHelperWhere(WR).getWhere());
+                        this.queryModal.modalShow=false;
+                    }
+                    else{
+                        valert(this,'表单验证失败!');
+                    }
+                });
             }
         }
     });

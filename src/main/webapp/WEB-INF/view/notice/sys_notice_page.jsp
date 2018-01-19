@@ -20,7 +20,8 @@
             <i-col span="10">
                 <div class="float-left">
                     <label class="my-label">组织机构：</label>
-                    <i-Select  style="width:200px" @on-change="selectCorporationChange"
+                    <i-Select  style="width:200px"
+                               @on-change="selectCorporationChange"
                                v-model="selectCorporation.selectItem"
                                :disabled="selectCorporation.disabled"
                                :placeholder="selectCorporation.placeholder"
@@ -31,6 +32,7 @@
                         <i-Option v-for="item in selectCorporation.dataTable" :value="item.id"
                                   :key="item.id">{{ item.label }}</i-Option>
                     </i-Select>
+
                 </div>
             </i-col >
             <i-col span="14">
@@ -71,6 +73,31 @@
             </i-col>
         </Row>
     </div>
+
+    <Modal v-model="queryModal.modalShow" :mask-closable="false" :styles="{top: '20px'}" :width="500">
+        <p slot="header" class="my-modal-title">
+            <Icon type="search"></Icon>
+            <span>{{queryModal.title}}</span>
+        </p>
+        <div style="text-align:center">
+            <i-Form ref="queryModal.bindModel" :model="queryModal.bindModel" :rules="queryModal.ruleValidate"
+                    label-position="right" label-width="50">
+                <Form-Item label="发布人" prop="userName">
+                    <i-Input element-id="quserName" v-model="queryModal.bindModel.userName" placeholder="请输入发布人"></i-Input>
+                </Form-Item>
+                <Form-Item label="标题" prop="title">
+                    <i-Input element-id="qtitle" v-model="queryModal.bindModel.title" placeholder="请输入标题"></i-Input>
+                </Form-Item>
+            </i-Form>
+        </div>
+        <div slot="footer">
+            <i-Button type="text" size="large" @click="queryModalCancel" >取消</i-Button>
+            <i-Button type="error" size="large" @click="queryModalReset" >重置</i-Button>
+            <i-Button type="primary" size="large"  @click="queryModalOk"
+                      v-show="queryModal.okButShow"
+                      :loading="queryModal.okButLoading" >确定</i-Button>
+        </div>
+    </Modal>
 </div>
 </body>
 <script>
@@ -133,6 +160,17 @@
                 spinShow:false,
                 jwt:"${requestScope.jwt}",
                 butShow:${requestScope.rightBut},
+                queryModal:{
+                    title:"条件查询",
+                    modalShow:false,
+                    okButShow:true,
+                    okButLoading:false,
+                    bindModel:{
+                        userName:"",
+                        title:""
+                    },
+                    ruleValidate:{}
+                },
                 selectCorporation:selectHelperCorporation.ivSelect,
                 noticeTable:pageHelperNotice.ivTable,
                 noticePage:pageHelperNotice.ivPage
@@ -228,6 +266,30 @@
                 },
                 butRefresh(){
                     window.location.reload();
+                },
+                butSearch(){
+                    this.queryModal.modalShow=true;
+                },
+                queryModalCancel(){
+                    this.queryModal.modalShow=false;
+                },
+                queryModalReset(){
+                    this.$refs['queryModal.bindModel'].resetFields();
+                },
+                queryModalOk(){
+                    this.$refs['queryModal.bindModel'].validate((valid) => {
+                        if (valid) {
+                            let WR = [];
+                            WR[WR.length] = new whereRelation("u.corporationId", selectHelperCorporation.getSelectItem(), "string", null, null, true);
+                            WR[WR.length] = new whereRelation("u.name", this.queryModal.bindModel.userName, "string", null, null, true);
+                            WR[WR.length] = new whereRelation("s.title",this.queryModal.bindModel.title, "string", null, null, true);
+                            pageHelperNotice.load(new pageHelperWhere(WR).getWhere());
+                            this.queryModal.modalShow=false;
+                        }
+                        else{
+                            valert(this,'表单验证失败!');
+                        }
+                    });
                 }
             }
         });

@@ -6,6 +6,8 @@
 function selectHelper(url,ivSelectConfig){
 
     this.ivSelect=$.extend({
+        // 绑定的数据项启用
+        vModel:true,
         // 绑定的数据项
         selectItem:null,
         // 在 remote 模式下，初始化时使用。因为仅通过 value 无法得知选项的 label，需手动设置
@@ -92,11 +94,16 @@ function selectHelper(url,ivSelectConfig){
     }
 
     /**
-     * 配置选中项
+     * 配置选中项 value
      * @returns {null}
      */
     this.getSelectItem=function () {
-        return this.ivSelect.selectItem;
+        if (this.ivSelect.vModel) {
+            return this.ivSelect.selectItem;
+        }
+        else {
+            alert("获取选择项被禁用");
+        }
     }
 
     /**

@@ -8,15 +8,11 @@ public interface CorporationMapper {
 
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Corporation record);
-
     int insertSelective(Corporation record);
 
     Corporation selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(Corporation record);
-
-    int updateByPrimaryKey(Corporation record);
 
     List<Corporation> exportForExcel(@Param("where") String where);
 

@@ -5,6 +5,9 @@ import com.springmvc.enums.AuditStateType;
 import com.springmvc.mapper.AuditWaitMapper;
 import com.springmvc.model.AuditKindProcess;
 import com.springmvc.model.AuditWait;
+import com.springmvc.model.PageHelper;
+import com.springmvc.util.JsonUtil;
+import com.springmvc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -215,5 +218,49 @@ public class AuditWaitService {
         String operation=request.getParameter("operation");
         String departId=request.getParameter("departId");
         return  getAuditState(operation,departId);
+    }
+
+
+    /**
+     * 返回分页数据
+     * @param pageNo
+     * @param pageSize
+     * @param where
+     * @param orderBy
+     * @return
+     */
+    public PageHelper getPagination(int pageNo, int pageSize, String where , String orderBy,String whereInner,String orderInner){
+
+        PageHelper ph=new PageHelper();
+
+        ph.setPageNo(pageNo);
+
+        ph.setPageSize(pageSize);
+
+        ph.setWhere(StringUtil.nullOrString(where));
+
+        ph.setOrderBy(StringUtil.nullOrString(orderBy));
+
+        ph.setWhereInner(whereInner);
+
+        ph.setOrderByInner(orderInner);
+
+        ph.setTotalCount(mapper.getCount(ph.getWhere(),ph.getOrderBy(),ph.getWhereInner(),ph.getOrderByInner()));
+
+        ph.setResult(mapper.selectPagination(ph.getWhere(),ph.getOrderBy(),ph.getStart(),ph.getPageSize(),ph.getWhereInner(),ph.getOrderByInner()));
+
+        return ph;
+    }
+
+    /**
+     * 返回分页json数据
+     * @param pageNo
+     * @param pageSize
+     * @param where
+     * @param orderBy
+     * @return
+     */
+    public String toPaginationJson(int pageNo,int pageSize,String where ,String orderBy,String whereInner,String orderInner ) {
+        return JsonUtil.writeValueAsString(getPagination(pageNo, pageSize, where, orderBy,whereInner,orderInner));
     }
 }

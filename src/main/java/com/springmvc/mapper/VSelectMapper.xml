@@ -46,4 +46,13 @@
     <if test="where != null">where ${where}</if>
   </select>
 
+
+  <select id="selectAuditOperation" resultMap="BaseResultMap">
+    select
+    name as label,
+    id as id
+    from audit_operation
+    <if test="where != null">where ${where}</if>
+  </select>
+
 </mapper>

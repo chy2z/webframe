@@ -1,3 +1,5 @@
+@CHARSET "UTF-8";
+
 html, body {
     width: 100%;
     height: 100%;
@@ -84,7 +86,7 @@ html, body {
 }
 
 /*使菜单高度沾满屏幕*/
-.layout-menu {
+.layout-fill-height {
     height: 100%;
 }
 
@@ -126,9 +128,16 @@ html, body {
     display: none;
 }
 
-/* 当左侧菜单折叠时，隐藏图标 */
+/* 当左侧菜单折叠时，隐藏菜单子项图标 */
 .layout-hide-text .ivu-menu-submenu-title-icon{
     display: none;
+}
+
+/* 当左侧菜单折叠时，左侧图标居中 */
+.layout-hide-text i{
+    transform: translateX(5px);
+    vertical-align: middle;
+    font-size: 22px;
 }
 
 /* tab选项卡头部和内容的间距  */
@@ -181,19 +190,42 @@ html, body {
 }
 
 .togglemenu {
-    border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
     display: block;
-    height: 21px;
+    height: 40px;
+    line-height: 40px;
     cursor: pointer;
-    background: url(../../images/menucollapsed.png) no-repeat center 0;
-    margin: 10px;
+    color: #aeb9c2;
+    margin: 0px;
+    font-size: 16px;
+    text-align:center;
+    background-color:#394555;
+}
+
+.togglemenu:before{
+    content:"««"
+}
+
+.togglemenu:hover {
+    color: #ffffff;
 }
 
 .togglemenu_collapsed {
-    background-position: center -21px;
-    margin: 10px 5px;
+    height: 40px;
+    line-height: 40px;
+    color: #aeb9c2;
+    margin: 0px;
     border-width: 0;
+    font-size: 16px;
+    text-align:center;
+    background-color:#394555;
+}
+
+.togglemenu_collapsed:before {
+    content:"»»"
+}
+
+.togglemenu_collapsed:hover {
+    color: #ffffff;
 }
 
 a {

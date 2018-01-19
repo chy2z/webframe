@@ -23,13 +23,6 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="com.springmvc.model.Corporation">
-    insert into corporation (id, name, code
-      )
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}
-      )
-  </insert>
-
   <insert id="insertSelective" parameterType="com.springmvc.model.Corporation">
     insert into corporation
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -69,12 +62,6 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.model.Corporation">
-    update corporation
-    set name = #{name,jdbcType=VARCHAR},
-      code = #{code,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
 
   <select id="getCount" resultType="int">
     select count(1) from corporation

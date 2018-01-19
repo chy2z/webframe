@@ -15,6 +15,16 @@
     <result column="tValue" jdbcType="VARCHAR" property="tvalue" />
   </resultMap>
 
+  <resultMap extends="BaseResultMap" id="JoinResultMap" type="com.springmvc.model.AuditWait">
+    <!-- 增加级联属性 -->
+    <result column="auid" jdbcType="INTEGER" property="auid" />
+    <result column="sendUser" jdbcType="VARCHAR" property="senduser" />
+    <result column="sendDepart" jdbcType="VARCHAR" property="senddepart" />
+    <result column="pName" jdbcType="VARCHAR" property="pname" />
+    <result column="operation" jdbcType="VARCHAR" property="operation" />
+    <result column="kName" jdbcType="VARCHAR" property="kname" />
+  </resultMap>
+
   <sql id="Base_Column_List">
     id, pId, steps, status, createDate, enddate, uId, url, tName, tKey, tValue
   </sql>
@@ -163,6 +173,65 @@
     select pId from audit_wait
     where tName=#{tName} and tKey=#{tKey} and tValue=#{tValue}
     order by id desc limit 1
+  </select>
+
+  <select id="getCount" resultType="int">
+    select count(1) from (
+
+    select aw.id,aw.pid,aw.steps,aw.uid
+
+    from audit_wait aw
+
+    <if test="whereInner != null">where ${whereInner}</if>
+
+    order by aw.id
+
+    <if test="orderByInner != null">, ${orderByInner}</if>
+
+    ) aw
+
+    join audit_kind_process_step ps on aw.pid=ps.pId and aw.steps=ps.step
+    join users u on  aw.uid= u.id
+    join department d on u.departId=d.id
+    join  audit_kind_process p on ps.pId=p.id
+    join audit_kind k on  p.kId=k.id
+
+    <if test="where != null">where ${where}</if>
+
+    order by aw.id
+
+    <if test="orderBy != null">, ${orderBy}</if>
+  </select>
+
+  <select id="selectPagination" resultMap="JoinResultMap">
+    select aw.*,ps.uid as auid,u.`name` as sendUser,d.`name` as sendDepart, p.pName,k.operation,k.`name` as kName from (
+
+    select aw.id,aw.pid,aw.steps,aw.uid,aw.createDate,aw.url,aw.tName,aw.tKey,aw.tValue,aw.status
+
+    from audit_wait aw
+
+    <if test="whereInner != null">where ${whereInner}</if>
+
+    order by aw.id
+
+    <if test="orderByInner != null">, ${orderByInner}</if>
+
+    limit #{start},#{pageSize}
+
+    ) aw
+
+    join audit_kind_process_step ps on aw.pid=ps.pId and aw.steps=ps.step
+    join users u on  aw.uid= u.id
+    join department d on u.departId=d.id
+    join  audit_kind_process p on ps.pId=p.id
+    join audit_kind k on  p.kId=k.id
+
+    <if test="where != null">where ${where}</if>
+
+    order by aw.id
+
+    <if test="orderBy != null">, ${orderBy}</if>
+
   </select>
 
 </mapper>

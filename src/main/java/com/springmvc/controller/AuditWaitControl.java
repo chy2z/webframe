@@ -5,6 +5,7 @@ import com.springmvc.enums.AuditStateType;
 import com.springmvc.model.AuditWait;
 import com.springmvc.model.RequestResult;
 import com.springmvc.service.AuditWaitService;
+import com.springmvc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
 * @Title: AuditWaitControl
@@ -25,6 +27,29 @@ public class AuditWaitControl {
 
     @Autowired
     AuditWaitService auditWaitService;
+
+    /**
+     * 分页
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/pagination")
+    public String pagination(HttpServletRequest request, HttpServletResponse response) {
+
+        int pageNo=Integer.parseInt(request.getParameter("pageNo"));
+
+        int pageSize=Integer.parseInt(request.getParameter("pageSize"));
+
+        String where=request.getParameter("where");
+
+        String orderBy=request.getParameter("orderBy");
+
+        String whereInner= StringUtil.nullOrString(request.getParameter("whereInner")) ;
+
+        String orderInner=StringUtil.nullOrString(request.getParameter("orderInner"));
+
+        return auditWaitService.toPaginationJson(pageNo,pageSize,where,orderBy,whereInner,orderInner);
+    }
 
     /**
      * 送审

@@ -92,9 +92,10 @@
         </div>
     </div>
     <!-- body -->
-    <div class="layout" :class="{'layout-hide-text': spanLeft < 3}">
-        <Row class-name="layout-menu" type="flex">
-            <i-col :span="spanLeft" class="layout-menu-left">
+    <div class="layout" >
+        <Row class-name="layout-fill-height" type="flex">
+            <i-col :span="spanLeft" :class="{'layout-hide-text': spanLeft < 3}" class="layout-menu-left">
+                <a class="togglemenu" @click="headMenuItemClick('toggleMenu')" :class="{'togglemenu_collapsed':spanLeft==1}"></a>
                 <i-menu @on-select="menuItemClick" accordion theme="dark" width="auto">
                     <submenu v-for="menu in menus" name="1">
                         <template slot="title">
@@ -123,7 +124,6 @@
 
                     </submenu>
                 </i-menu>
-                <a class="togglemenu" @click="headMenuItemClick('toggleMenu')" :class="{'togglemenu_collapsed':spanLeft==1}"></a>
             </i-col>
             <i-col :span="spanRight">
                 <div class="layout-right">

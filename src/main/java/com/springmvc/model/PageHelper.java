@@ -49,11 +49,25 @@ public class PageHelper<T> {
     private String orderBy=null;
 
     /**
+     * 排序条件
+     */
+    @Getter
+    @Setter
+    private String orderByInner=null;
+
+    /**
      * 查询条件
      */
     @Getter
     @Setter
     private String where=null;
+
+    /**
+     * 内部查询条件
+     */
+    @Getter
+    @Setter
+    private String whereInner=null;
 
     /** 返回结果 */
     @Getter

@@ -43,4 +43,11 @@ public interface VSelectMapper {
      * @return
      */
     List<VSelect> selectDepartment(@Param("where") String where);
+
+    /**
+     * 返回审核业务
+     * @param where
+     * @return
+     */
+    List<VSelect> selectAuditOperation(@Param("where") String where);
 }

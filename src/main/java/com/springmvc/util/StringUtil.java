@@ -14,11 +14,10 @@ public class StringUtil {
      * @param str
      * @return
      */
-    public static String nullOrString(String str){
-        if(str.equals("")||str.toUpperCase().equals("NULL")) {
+    public static String nullOrString(String str) {
+        if (null == str || str.equals("") || str.toUpperCase().equals("NULL")) {
             return null;
-        }
-        else {
+        } else {
             return str;
         }
     }

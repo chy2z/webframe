@@ -1,7 +1,10 @@
 package com.springmvc.mapper;
 
 import com.springmvc.model.AuditWait;
+import com.springmvc.model.Corporation;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface AuditWaitMapper {
     int deleteByPrimaryKey(Integer id);
@@ -59,4 +62,32 @@ public interface AuditWaitMapper {
     Integer getAuditProcessCount(@Param("operation") String operation,
                                  @Param("departId") String departId,
                                  @Param("enable") String enable);
+
+
+    /**
+     * 根据条件获取记录数
+     * @param where
+     * @param orderBy
+     * @return
+     */
+    int getCount(@Param("where") String where,
+                 @Param("orderBy") String orderBy,
+                 @Param("whereInner") String whereInner,
+                 @Param("orderByInner") String orderByInner);
+
+    /**
+     * 分页获取记录
+     * @param where
+     * @param orderBy
+     * @param start
+     * @param pageSize
+     * @return
+     */
+    List<Corporation> selectPagination(@Param("where") String where,
+                                       @Param("orderBy") String orderBy,
+                                       @Param("start") Integer start,
+                                       @Param("pageSize") Integer pageSize,
+                                       @Param("whereInner") String whereInner,
+                                       @Param("orderByInner") String orderByInner
+    );
 }

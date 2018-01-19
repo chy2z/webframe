@@ -1,6 +1,10 @@
 package com.springmvc.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.springmvc.util.DateJsonDeserializerUtil;
+import com.springmvc.util.DateJsonSerializerUtil;
 
 import java.util.Date;
 
@@ -20,8 +24,12 @@ public class AuditWait {
 
     private String status;
 
+    @JsonSerialize(using = DateJsonSerializerUtil.class)
+    @JsonDeserialize(using = DateJsonDeserializerUtil.class)
     private Date createdate;
 
+    @JsonSerialize(using = DateJsonSerializerUtil.class)
+    @JsonDeserialize(using = DateJsonDeserializerUtil.class)
     private Date enddate;
 
     private Integer uid;
@@ -33,6 +41,20 @@ public class AuditWait {
     private String tkey;
 
     private String tvalue;
+
+    //===========关联属性==================
+
+    private Integer auid;
+
+    private String senduser;
+
+    private String senddepart;
+
+    private String pname;
+
+    private String operation;
+
+    private String kname;
 
     public Integer getId() {
         return id;
@@ -120,5 +142,53 @@ public class AuditWait {
 
     public void setTvalue(String tvalue) {
         this.tvalue = tvalue == null ? null : tvalue.trim();
+    }
+
+    public Integer getAuid() {
+        return auid;
+    }
+
+    public void setAuid(Integer auid) {
+        this.auid = auid;
+    }
+
+    public String getSenduser() {
+        return senduser;
+    }
+
+    public void setSenduser(String senduser) {
+        this.senduser = senduser;
+    }
+
+    public String getSenddepart() {
+        return senddepart;
+    }
+
+    public void setSenddepart(String senddepart) {
+        this.senddepart = senddepart;
+    }
+
+    public String getPname() {
+        return pname;
+    }
+
+    public void setPname(String pname) {
+        this.pname = pname;
+    }
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
+
+    public String getKname() {
+        return kname;
+    }
+
+    public void setKname(String kname) {
+        this.kname = kname;
     }
 }

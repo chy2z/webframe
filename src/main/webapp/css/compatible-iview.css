@@ -1,3 +1,5 @@
+@CHARSET "UTF-8";
+
 /* 实现card body 高度100% */
 .my-layout-body .ivu-card{
     height: 100%;

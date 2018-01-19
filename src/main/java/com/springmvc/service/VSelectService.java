@@ -66,6 +66,15 @@ public class VSelectService extends BaseService {
 
 
     /**
+     * 获取所有审核业务
+     * @return
+     */
+    public List<VSelect> selectAuditOperation(String where){
+        return vSelect.selectAuditOperation(StringUtil.nullOrString(where));
+    }
+
+
+    /**
      * 返回json数据
      * @param options
      * @return

@@ -83,10 +83,16 @@ html,body {
 .window3 {background-color:#F4A8BD;}
 .window4 {background-color:#F4A8BD;}
 .window5 {background-color:#D7D7D7;}
+
+.start {color:#50C625;}
+.child {color:#70A0DD;}
+.end {color:#F4A8BD;}
+.current {color:#FFBC18;}
+
 .window_child {background-color:#70A0DD;}
 .window_start {background-color:#50C625;}
 .window_end {background-color:#F4A8BD;}
-.window_out {background-color:#FFBC18;}
+.window_current {background-color:#FFBC18;}
 .window_general {background-color:#EEEEEE;}
 
 ._jsPlumb_connector { z-index:4; }

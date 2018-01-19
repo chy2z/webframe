@@ -10,7 +10,8 @@ var vLanguage={
             classNew:'auditNew',
             classPass:"auditPass",
             classReturn:"auditReturn",
-            classProcess:"auditProcess"
+            classProcess:"auditProcess",
+            processViewTitle:"审核进度查看"
         }
     },
     'en-US': {

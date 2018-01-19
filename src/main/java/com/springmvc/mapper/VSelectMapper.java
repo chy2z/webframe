@@ -50,4 +50,12 @@ public interface VSelectMapper {
      * @return
      */
     List<VSelect> selectAuditOperation(@Param("where") String where);
+
+    /**
+     * 返回审核类型
+     * @param where
+     * @return
+     */
+    List<VSelect> selectAuditKind(@Param("where") String where);
+
 }

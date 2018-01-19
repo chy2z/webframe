@@ -9,7 +9,7 @@ var Audit={
     },
     // 访问地址
     urls:{
-        auditProcess_url:"/auditKindProcess/path/auditProcessView",
+        auditProcess_url:"/auditKindProcess/path/flowProcessView",
         sendAudit_url:"/auditKindProcess/path/sendAudit",
         selectAudit_url:"/auditWait/selectAudit",
         allowViewProcess:"/auditWait/allowViewProcess",
@@ -135,12 +135,13 @@ var Audit={
             valert(vue,"记录不能查看审核进度!"); return false;
         }
         this.config.tValue=selectRow.id;
+        let url=this.urls.auditProcess_url+"&tName="+this.config.tName+"&tKey="+this.config.tKey+"&tValue="+this.config.tValue;
         vajaxPost(this.urls.allowViewProcess,this.config,false,(result)=>{
             if(!result||!result.success||!result.data) {
                 valert(vue,"记录不能查看审核进度!");
                 return false;
             }
-            callBack&&callBack();
+            callBack&&callBack(url);
         },()=>{},()=>{},()=>{},true);
     }
 }

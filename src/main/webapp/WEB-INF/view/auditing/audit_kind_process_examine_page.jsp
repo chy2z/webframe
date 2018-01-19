@@ -66,18 +66,18 @@
             <Icon type="search"></Icon>
             <span>{{queryModal.title}}</span>
         </p>
-        <div style="text-align:center">
+        <div>
             <i-Form ref="queryModal.bindModel" :model="queryModal.bindModel" :rules="queryModal.ruleValidate"
                     label-position="right" label-width="70">
                 <Form-Item label="审核类型" prop="kid">
                     <i-Select  v-model="queryModal.bindModel.kid"
-                               :disabled="selectOperation.disabled"
-                               :placeholder="selectOperation.placeholder"
-                               :not-found-text="selectOperation.notFoundText"
-                               :label-in-value="selectOperation.labelInValue"
-                               :size="selectOperation.size" :clearable="selectOperation.clearable"
-                               :filterable="selectOperation.filterable">
-                        <i-Option v-for="item in selectOperation.dataTable" :value="item.id"
+                               :disabled="selectAuditKind.disabled"
+                               :placeholder="selectAuditKind.placeholder"
+                               :not-found-text="selectAuditKind.notFoundText"
+                               :label-in-value="selectAuditKind.labelInValue"
+                               :size="selectAuditKind.size" :clearable="selectAuditKind.clearable"
+                               :filterable="selectAuditKind.filterable">
+                        <i-Option v-for="item in selectAuditKind.dataTable" :value="item.id"
                                   :key="item.id">{{ item.label }}</i-Option>
                     </i-Select>
                 </Form-Item>
@@ -102,7 +102,7 @@
     var corporationId="${requestScope.corporationId}";
     var look_url=domain+"/sysNotice/path/look?jwt=${requestScope.jwt}";
 
-    var operation_Select_url="${ctx}/auditOperation/vselect/selectAuditOperation?jwt=${requestScope.jwt}";
+    var auditKind_Select_url="${ctx}/auditKind/vselect/selectAuditKind?jwt=${requestScope.jwt}";
 
     var pageHelperWaitAudit=new pageHepler("${ctx}/auditWait/pagination?jwt=${requestScope.jwt}",{
         columns: [
@@ -141,7 +141,7 @@
         ]
     },{whereInner:" aw.status='"+vLang.audit.process+"' "});
 
-    var selectHelperOperation=new selectHelper(operation_Select_url,{vModel:false});
+    var selectHelperAuditKind=new selectHelper(auditKind_Select_url,{vModel:false});
 
     new Vue({
         el: '#app',
@@ -160,7 +160,7 @@
                 },
                 ruleValidate:{}
             },
-            selectOperation:selectHelperOperation.ivSelect,
+            selectAuditKind:selectHelperAuditKind.ivSelect,
             WaitAuditTable:pageHelperWaitAudit.ivTable,
             WaitAuditPage:pageHelperWaitAudit.ivPage
         },
@@ -173,7 +173,7 @@
             //表格加载数据
             pageHelperWaitAudit.load(null);
             //加载组织机构
-            pageHelperWaitAudit.load(null);
+            selectHelperAuditKind.load(null);
         },
         methods:{
             pageChangeWaitAudit(index){

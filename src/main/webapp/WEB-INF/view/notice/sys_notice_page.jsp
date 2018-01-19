@@ -244,14 +244,12 @@
                     });
                 },
                 butAuditProcess(){
-                    Audit.auditProcess(this,pageHelperNotice.getSelectRowIndex(),pageHelperNotice.getSelectRowData(),()=>{
-                        let rowData=pageHelperNotice.getSelectRowData();
-                        vPopWindowShow("action_flow_view",Audit.urls.auditProcess_url+"&id="+rowData.id, "审核进度查看");
+                    Audit.auditProcess(this,pageHelperNotice.getSelectRowIndex(),pageHelperNotice.getSelectRowData(),(url)=>{
+                        vPopWindowShow("action_flow_view",url,vLang.audit.processViewTitle,Audit.config);
                     });
                 },
                 butSendAudit(){
                     Audit.sendAudit(this,pageHelperNotice.getSelectRowIndex(),pageHelperNotice.getSelectRowData(),()=>{
-                        let rowData=pageHelperNotice.getSelectRowData();
                         vPopWindowShow("action_audit",Audit.urls.sendAudit_url,Audit.config.title,Audit.config);
                     });
                 },

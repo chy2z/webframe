@@ -5,6 +5,7 @@ import com.springmvc.config.LanguageFactory;
 import com.springmvc.model.AuditKind;
 import com.springmvc.model.RequestResult;
 import com.springmvc.service.AuditKindService;
+import com.springmvc.service.VSelectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +28,22 @@ public class AuditKindControl extends BaseControl {
 
     @Autowired
     AuditKindService auditKindService;
+
+    @Autowired
+    VSelectService vSeService;
+
+    /**
+     * 返回所有审核类型
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/vselect/selectAuditKind")
+    public String vselect(HttpServletRequest request, HttpServletResponse response){
+        String where=request.getParameter("where");
+        return  vSeService.toIviewSelectForJson(vSeService.selectAuditKind(where));
+    }
 
     /**
      * 分页

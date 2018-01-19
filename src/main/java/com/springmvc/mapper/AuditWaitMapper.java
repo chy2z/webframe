@@ -13,6 +13,18 @@ public interface AuditWaitMapper {
 
     AuditWait selectByPrimaryKey(Integer id);
 
+    /**
+     * 获取待审核信息
+     * @param tName
+     * @param tKey
+     * @param tValue
+     * @return
+     */
+    AuditWait selectByParam(@Param("tName") String tName,
+                                 @Param("tKey") String tKey,
+                                 @Param("tValue") String tValue,
+                                 @Param("status") String status);
+
     int updateByPrimaryKeySelective(AuditWait record);
 
     /**

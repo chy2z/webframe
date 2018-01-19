@@ -44,6 +44,27 @@ public class AuditWaitService {
     }
 
     /**
+     * 获取待审核信息
+     * @param id
+     * @return
+     */
+    public AuditWait getAuditWait(Integer id) {
+        return mapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 获取待审核信息
+     * @param tName
+     * @param tKey
+     * @param tValue
+     * @param status
+     * @return
+     */
+    public AuditWait getAuditWait(String tName,String tKey, String tValue,String status) {
+        return mapper.selectByParam(tName, tKey, tValue, status);
+    }
+
+    /**
      * 插入记录
      * @param c
      * @return
@@ -121,9 +142,7 @@ public class AuditWaitService {
      * @return
      */
     public boolean allowSendAudit(String operation,String departId,String auditState,
-                                  String tName,
-                                  String tKey,
-                                  String tValue) {
+                                  String tName,String tKey,String tValue) {
 
         String state = mapper.getAuditState(auditState, tName, tKey, tValue);
 
@@ -161,9 +180,7 @@ public class AuditWaitService {
      * @return
      */
     public boolean allowViewProcess(String operation,String departId,String auditState,
-                                    String tName,
-                                    String tKey,
-                                    String tValue) {
+                                    String tName,String tKey, String tValue) {
         String state = mapper.getAuditState(auditState, tName, tKey, tValue);
 
         // 判断状态
@@ -189,6 +206,17 @@ public class AuditWaitService {
         } else {
             return false;
         }
+    }
+
+    /**
+     * 获取审核流程类型
+     * @param tName
+     * @param tKey
+     * @param tValue
+     * @return
+     */
+    public Integer getAuditProcess(String tName, String tKey, String tValue) {
+        return mapper.getAuditProcess(tName, tKey, tValue);
     }
 
     /**

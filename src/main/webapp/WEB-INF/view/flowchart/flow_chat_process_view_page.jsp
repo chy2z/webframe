@@ -5,36 +5,37 @@
 <%@ include file="../../../taglib/import_jsplumb.jsp" %>
 <html>
 <head>
-    <title>流程图查看</title>
+    <title>流程进度查看</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>
 </head>
 <body>
-<div id="canvas" class="canvas">
-    <div class="explanation">
-        <img src="${ctx}/js/jsplumb/images/menu/workflow.gif" align="absmiddle">
-        <span class="big3">
+<div class="explanation">
+    <img src="${ctx}/js/jsplumb/images/menu/workflow.gif" align="absmiddle">
+    <span class="big3">
                   流程名称:${requestScope.kindProcess.auditkind}/${requestScope.kindProcess.pname} | 所属部门:${requestScope.kindProcess.departname} |</span>
-        <div class="big3">
-            颜色标识说明：
-            <span class="start">■</span>&nbsp;&nbsp;开始 &nbsp;&nbsp;
-            <span class="child">■</span>&nbsp;&nbsp;过程 &nbsp;&nbsp;
-             <span class="end">■</span>&nbsp;&nbsp;结束 &nbsp;&nbsp;
-            <div>
-            </div>
-            <div id="prcsList"></div>
+    <div class="big3">
+        颜色标识说明：
+        <span class="start">■</span>&nbsp;&nbsp;开始 &nbsp;&nbsp;
+        <span class="child">■</span>&nbsp;&nbsp;过程 &nbsp;&nbsp;
+        <span class="current">■</span>&nbsp;&nbsp;当前 &nbsp;&nbsp;
+        <span class="end">■</span>&nbsp;&nbsp;结束 &nbsp;&nbsp;
+        <div>
         </div>
+        <div id="prcsList"></div>
     </div>
+</div>
 </body>
 <script>
     // chrome fix.
     document.onselectstart = function () { return false; };
 
-    var data_url="${ctx}/auditKindProcess/flowChartStepView?jwt="+vGetAuthenticationStorage()+"&id=${requestScope.kindProcess.id}";
+    var data_url="${ctx}/auditKindProcess/flowChartProcessView?jwt="+vGetAuthenticationStorage();
 
     $(document).ready(function(){
-        $.post(data_url, function (result) {
+        $.post(data_url,VPopConfig(),function (result) {
+            if(!result.success){ valert(this,"获取流程进度失败"); return false; }
             let json=result.data;
             var fillColor = "gray";
             //jsPlumb.setRenderMode(jsPlumb.VML);

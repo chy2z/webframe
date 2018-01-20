@@ -98,9 +98,8 @@
 </body>
 <script>
     var domain="${ctx}";
-    var nomanage=${requestScope.nomanage};
-    var corporationId="${requestScope.corporationId}";
-    var look_url=domain+"/sysNotice/path/look?jwt=${requestScope.jwt}";
+
+    var opinion_url=domain+"/auditKindProcess/path/auditOption?jwt=${requestScope.jwt}";
 
     var auditKind_Select_url="${ctx}/auditKind/vselect/selectAuditKind?jwt=${requestScope.jwt}";
 
@@ -109,6 +108,10 @@
             {
                 title: '序号',
                 key: 'id'
+            },
+            {
+                title: '送审时间',
+                key: 'receivedate'
             },
             {
                 title: '送审人',
@@ -127,16 +130,26 @@
                 key:"pname"
             },
             {
-                title:"总步骤",
-                key:"stepnum"
-            },
-            {
-                title:"当前步骤",
-                key:"steps"
-            },
-            {
                 title:"操作",
-                key:"url"
+                key:"url",
+                width: 150,
+                align: 'center',
+                render: (h, params) => {
+                    return h('div', [
+                        h('Button', {
+                            props: {
+                                type: 'success',
+                                size: 'small'
+                            },
+                            on: {
+                                click: () => {
+                                    log(params.row);
+                                    vPopWindowShow("action_audit",opinion_url,"审核平台",params.row);
+                                }
+                            }
+                        }, '审核')
+                    ]);
+                }
             }
         ]
     },{whereInner:" aw.status='"+vLang.audit.process+"' "});
@@ -165,7 +178,7 @@
             WaitAuditPage:pageHelperWaitAudit.ivPage
         },
         created:function(){
-            //Audit.initConfig(this,domain,this.jwt,Audit.operationType.sys_notice,${requestScope.useId},${requestScope.departId});
+
         },
         mounted:function () {
             //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条

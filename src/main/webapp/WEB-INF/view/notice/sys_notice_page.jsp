@@ -245,7 +245,7 @@
                 },
                 butAuditProcess(){
                     Audit.auditProcess(this,pageHelperNotice.getSelectRowIndex(),pageHelperNotice.getSelectRowData(),(url)=>{
-                        vPopWindowShow("action_flow_view",url,vLang.audit.processViewTitle,Audit.config);
+                        vPopWindowShow("action_flow_view",url,vLang.audit.processViewTitle);
                     });
                 },
                 butSendAudit(){

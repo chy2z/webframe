@@ -7,6 +7,7 @@
     <result column="steps" jdbcType="INTEGER" property="steps" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="receiveDate" jdbcType="TIMESTAMP" property="receivedate" />
     <result column="endDate" jdbcType="TIMESTAMP" property="enddate" />
     <result column="uId" jdbcType="INTEGER" property="uid" />
     <result column="url" jdbcType="VARCHAR" property="url" />
@@ -27,7 +28,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, pId, steps, status, createDate, enddate, uId, url, tName, tKey, tValue
+    id, pId, steps, status, createDate, receiveDate,enddate, uId, url, tName, tKey, tValue
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -67,6 +68,9 @@
       <if test="createdate != null">
         createDate,
       </if>
+      <if test="receivedate != null">
+        receiveDate,
+      </if>
       <if test="enddate != null">
         endDate,
       </if>
@@ -101,6 +105,9 @@
       </if>
       <if test="createdate != null">
         #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receivedate != null">
+        #{receivedate,jdbcType=TIMESTAMP},
       </if>
       <if test="enddate != null">
         #{enddate,jdbcType=TIMESTAMP},
@@ -137,6 +144,9 @@
       </if>
       <if test="createdate != null">
         createDate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receivedate != null">
+        receiveDate = #{receivedate,jdbcType=TIMESTAMP},
       </if>
       <if test="enddate != null">
         endDate = #{enddate,jdbcType=TIMESTAMP},
@@ -214,7 +224,7 @@
   <select id="selectPagination" resultMap="JoinResultMap">
     select aw.*,ps.uid as auid,u.`name` as sendUser,d.`name` as sendDepart,p.stepNum,p.pName,k.operation,k.`name` as kName from (
 
-    select aw.id,aw.pid,aw.steps,aw.uid,aw.createDate,aw.url,aw.tName,aw.tKey,aw.tValue,aw.status
+    select aw.id,aw.pid,aw.steps,aw.uid,aw.createDate,aw.receiveDate,aw.url,aw.tName,aw.tKey,aw.tValue,aw.status
 
     from audit_wait aw
 

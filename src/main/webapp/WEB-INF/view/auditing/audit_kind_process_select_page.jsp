@@ -26,7 +26,7 @@
                 </div>
             </i-col>
         </Row>
-        <Row class-name="my-layout-body padding-5" justify="center" type="flex">
+        <Row class-name="my-layout-body padding-2" justify="center" type="flex">
             <i-col span="12">
                 <div class="ivu-card-padding ivu-card-body-padding">
                     <Card>

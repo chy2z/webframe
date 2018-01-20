@@ -31,10 +31,16 @@
     // chrome fix.
     document.onselectstart = function () { return false; };
 
+    var data={
+        tName:"${requestScope.tName}",
+        tKey:"${requestScope.tKey}",
+        tValue:"${requestScope.tValue}"
+    };
+
     var data_url="${ctx}/auditKindProcess/flowChartProcessView?jwt="+vGetAuthenticationStorage();
 
     $(document).ready(function(){
-        $.post(data_url,VPopConfig(),function (result) {
+        $.post(data_url,data,function (result) {
             if(!result.success){ valert(this,"获取流程进度失败"); return false; }
             let json=result.data;
             var fillColor = "gray";
@@ -179,7 +185,7 @@
                         });
                 });
             }
-            $("[title]").tooltip({track:true,className:"red"});
+            $("[title]").tooltip({track:true,className:"red",top:20,left:20});
         });
     });
 

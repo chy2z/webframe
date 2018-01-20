@@ -47,6 +47,10 @@ html, body {
     padding: 10px 0 60px;
 }
 
+.my-layout-clear-top-bottom {
+    padding: 0px;
+}
+
 .my-layout-top{
     width: 100%;
     height:60px;
@@ -132,8 +136,16 @@ html, body {
     margin-right: 10px;
 }
 
-.padding-5{
+.padding-2{
     padding: 2px;
+}
+
+.padding-5{
+    padding: 5px;
+}
+
+.padding-10{
+    padding: 5px;
 }
 
 .padding-left-5{
@@ -171,7 +183,6 @@ html, body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 
 .auditNew{
     color: #111111;

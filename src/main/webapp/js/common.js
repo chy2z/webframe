@@ -190,10 +190,10 @@ function vSpin(vue,sleeping){
  * @param end      结束执行方法
  */
 function vDelay(sleeping,start,process,end) {
-    start();
+    start && start();
     setTimeout(() => {
-        process();
-        end();
+        process && process();
+        end && end();
     }, sleeping);
 }
 

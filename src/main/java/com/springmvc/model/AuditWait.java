@@ -30,6 +30,10 @@ public class AuditWait {
 
     @JsonSerialize(using = DateJsonSerializerUtil.class)
     @JsonDeserialize(using = DateJsonDeserializerUtil.class)
+    private Date receivedate;
+
+    @JsonSerialize(using = DateJsonSerializerUtil.class)
+    @JsonDeserialize(using = DateJsonDeserializerUtil.class)
     private Date enddate;
 
     private Integer uid;
@@ -88,6 +92,14 @@ public class AuditWait {
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
+    }
+
+    public Date getReceivedate() {
+        return receivedate;
+    }
+
+    public void setReceivedate(Date receivedate) {
+        this.receivedate = receivedate;
     }
 
     public Date getCreatedate() {

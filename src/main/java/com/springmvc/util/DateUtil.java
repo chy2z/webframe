@@ -51,7 +51,7 @@ public class DateUtil {
 
 	/**
 	 * 判断白天黑夜
-	 * 
+	 *
 	 * @return
 	 */
 
@@ -154,5 +154,52 @@ public class DateUtil {
 	 */
 	public static int computerDivideDay(Date bDate, Date eDate) {
 		return (int) (((eDate.getTime() - bDate.getTime()) / 1000) / (24 * 60 * 60));
+	}
+
+	/**
+	 * 相差几天几小时几分几秒
+	 * day + "天" + hour + "时" + min + "分" + sec + "秒"
+	 * @param startTime
+	 * @param endTime
+	 * @return
+	 */
+	public static String dateDiff(Date startTime, Date endTime) {
+		StringBuilder str = new StringBuilder();
+		// 一天的毫秒数
+		long nd = 1000 * 24 * 60 * 60;
+		// 一小时的毫秒数
+		long nh = 1000 * 60 * 60;
+		// 一分钟的毫秒数
+		long nm = 1000 * 60;
+		// 一秒钟的毫秒数
+		long ns = 1000;
+		long diff;
+		try {
+			// 获得两个时间的毫秒时间差异
+			diff = endTime.getTime() - startTime.getTime();
+			// 计算差多少天
+			long day = diff / nd;
+			// 计算差多少小时
+			long hour = diff % nd / nh;
+			// 计算差多少分钟
+			long min = diff % nd % nh / nm;
+			// 计算差多少秒
+			long sec = diff % nd % nh % nm / ns;
+			if (day != 0) {
+				str.append(day).append("天 ");
+			}
+			if (hour != 0) {
+				str.append(hour).append("小时 ");
+			}
+			if (min != 0) {
+				str.append(min).append("分 ");
+			}
+			if (sec != 0) {
+				str.append(sec).append("秒 ");
+			}
+			return str.toString();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

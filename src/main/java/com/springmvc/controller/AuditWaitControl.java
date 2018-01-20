@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 /**
 * @Title: AuditWaitControl
@@ -83,6 +84,7 @@ public class AuditWaitControl {
                 aw.setSteps(1);
                 aw.setUid(Integer.parseInt(useId));
                 aw.setStatus(AuditStateType.SHZ.getName());
+                aw.setReceivedate(new Date());
                 aw.setTname(tName);
                 aw.setTkey(tKey);
                 aw.setTvalue(tValue);

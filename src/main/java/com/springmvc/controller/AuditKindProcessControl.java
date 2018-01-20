@@ -7,7 +7,9 @@ import com.springmvc.model.*;
 import com.springmvc.model.flowchart.FlowChart;
 import com.springmvc.model.flowchart.FlowChartNode;
 import com.springmvc.service.*;
+import com.springmvc.util.DateUtil;
 import com.springmvc.util.JsonUtil;
+import com.springmvc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,6 +45,9 @@ public class AuditKindProcessControl extends BaseControl {
 
     @Autowired
     AuditWaitService auditWaitService;
+
+    @Autowired
+    AuditWaitOptionService auditWaitOptionService;
 
     @Autowired
     UsersService uService;
@@ -86,8 +91,23 @@ public class AuditKindProcessControl extends BaseControl {
             String tValue = request.getParameter("tValue");
             Integer pid = auditWaitService.getAuditProcess(tName, tKey, tValue);
             AuditKindProcess sModel= auditKindProcessService.getAuditKindProcess(pid);
+            model.addAttribute("tName",tName);
+            model.addAttribute("tKey",tKey);
+            model.addAttribute("tValue",tValue);
             model.addAttribute("kindProcess",sModel);
             return "flowchart/flow_chat_process_view_page";
+        }
+        else if(page.equals("auditOption")){
+            String tName = request.getParameter("tName");
+            String tKey = request.getParameter("tKey");
+            String tValue = request.getParameter("tValue");
+            Integer pid = auditWaitService.getAuditProcess(tName, tKey, tValue);
+            AuditKindProcess sModel= auditKindProcessService.getAuditKindProcess(pid);
+            model.addAttribute("tName",tName);
+            model.addAttribute("tKey",tKey);
+            model.addAttribute("tValue",tValue);
+            model.addAttribute("kindProcess",sModel);
+            return "auditing/audit_kind_process_opinion_page";
         }
         else if(page.equals("sendAudit")) {
             Users u = uService.getUsers(ut.getUserid());
@@ -336,8 +356,13 @@ public class AuditKindProcessControl extends BaseControl {
                 //获取待审核信息
                 AuditWait aw= auditWaitService.getAuditWait(tName,tKey,tValue, AuditStateType.SHZ.getName());
 
+                //获取审核意见
+                List<AuditWaitOpinion> options=auditWaitOptionService.getList(aw.getId());
+
                 //获取所有审核步骤
                 List<AuditKindProcessStep> steps = auditKindProcessStepService.getList(pid.intValue());
+
+                StringBuilder tip=new StringBuilder();
 
                 List<FlowChartNode> nodes = new ArrayList<>();
 
@@ -392,8 +417,28 @@ public class AuditKindProcessControl extends BaseControl {
                     }
                     node.setPrcs_id(s.getStep());
                     node.setFlow_prcs(index.toString());
-                    node.setPrcs_title(s.getDepartname());
-                    node.setPrcs_content(String.format("第 %s 步 %s (%s)", s.getStep(), s.getUname(), s.getRolename()));
+
+                    // 提示信息(多个分支)
+                    node.setPrcs_title("无审核信息");
+                    for(AuditWaitOpinion option : options){
+                        if(s.getStep().intValue()==option.getStep().intValue()&&s.getUid().intValue()==option.getUid().intValue()) {
+                            tip.delete(0, tip.length());
+                            tip.append("<b>审核信息:</b><br><br>");
+                            tip.append("<span style=\"text-decoration:underline;font-weight:bold;color:red\">"+s.getUname()+" 主办</span>");
+                            tip.append("[<font color=green>");
+                            tip.append(option.getAuditstate());
+                            tip.append(",用时："+DateUtil.dateDiff(option.getReceivedate(),option.getCreatedate()));
+                            tip.append("</font>]<br>");
+                            tip.append("开始于："+ DateUtil.formatDate(option.getReceivedate())+"<br>");
+                            tip.append("结束于："+DateUtil.formatDate(option.getCreatedate())+"<br><br>");
+                            tip.append("<b>审核意见:</b><br><br>");
+                            tip.append(StringUtil.emptyOrString(option.getOpinion()));
+                            node.setPrcs_title(tip.toString());
+                        }
+                    }
+
+                    // 显示信息
+                    node.setPrcs_content(String.format("第 %s 步 %s-%s (%s)", s.getStep(),s.getDepartname(),s.getUname(),s.getRolename()));
                     node.setPrcs_type("");
 
                     if(s.getStep().intValue()!=aw.getSteps().intValue()) {

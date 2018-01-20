@@ -101,7 +101,7 @@
         </p>
         <div>
             <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate"
-                    label-position="right" label-width="70"  >
+                    label-position="right" label-width="80">
                 <Form-Item label="登录名称" prop="loginname">
                     <i-Input v-model="formModal.bindModel.loginname" placeholder="请输入登录名称"></i-Input>
                 </Form-Item>

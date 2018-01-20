@@ -36,6 +36,47 @@
     background-color: #eaf4fe;
 }
 
+/* 实现tabs高度100% */
+.layout-tabs {
+    height: 100%;
+    padding: 0px 0px 0px;
+    box-sizing: border-box;
+}
+
+/* tab选项卡头部和内容的间距 */
+.layout-tabs-content {
+    height: 100%;
+    min-height: 400px;
+    margin: 0px;
+    padding: 32px 1px 0px;
+    overflow: hidden;
+    background: #eee;
+    border-radius: 4px;
+}
+
+/* tab选项卡头部和内容的间距  */
+/* 和父节点高度一样，所以父节点padding32px,同时头部向上偏移32px*/
+.layout-tabs .ivu-tabs-bar {
+    border-bottom: 1px solid #dddee1;
+    margin-bottom: 2px;
+    margin-top: -32px;
+}
+
+/* tab选项卡内容的高度  */
+.layout-tabs .ivu-tabs .ivu-tabs-content{
+    height:100%;
+}
+
+/* tab选项卡内容的高度  */
+.layout-tabs .ivu-tabs .ivu-tabs-tabpane {
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    width: 100%;
+    height:100%;
+    transition: opacity .3s;
+    opacity: 1;
+}
+
 /* 实现编辑表格按钮隐藏显示 */
 .show-edit-btn{
     display: none;

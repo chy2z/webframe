@@ -145,13 +145,13 @@
     </div>
 
     <!-- 修改密码 -->
-    <Modal v-model="formModal.modalShow" :closable="false" :mask-closable="false" :styles="{top: '250px'}" width="400">
+    <Modal v-model="formModal.modalShow" :closable="false" :mask-closable="false" :styles="{top: '250px'}" width="500">
         <p slot="header" class="my-modal-title">
-            <Icon type="information-circled"></Icon>
+            <Icon type="locked"></Icon>
             <span>修改密码</span>
         </p>
-        <div style="text-align:center">
-            <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate" label-position="left" label-width="70"  >
+        <div>
+            <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate" label-position="left" label-width="80">
                 <Form-Item label="旧的密码" prop="oldPwd">
                     <i-Input v-model="formModal.bindModel.oldPwd" type="password" autocomplete="off" maxlength="25" placeholder="请输入原密码">
                         <Icon type="ios-locked" slot="prepend"></Icon>

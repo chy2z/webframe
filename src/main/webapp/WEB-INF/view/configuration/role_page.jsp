@@ -124,9 +124,9 @@
             <Icon type="compose"></Icon>
             <span>{{formModal.title}}</span>
         </p>
-        <div style="text-align:center">
+        <div>
             <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate"
-                    label-position="right" label-width="70" >
+                    label-position="right" label-width="80">
                 <Form-Item label="角色名称" prop="name">
                     <i-Input v-model="formModal.bindModel.name" placeholder="请输入角色名称"></i-Input>
                 </Form-Item>

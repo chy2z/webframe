@@ -60,7 +60,7 @@
             <Icon type="compose"></Icon>
             <span>{{formModal.title}}</span>
         </p>
-        <div style="text-align:center">
+        <div>
             <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate"
                     label-position="right" label-width="50">
                 <Form-Item label="名称" prop="name">
@@ -87,9 +87,9 @@
             <Icon type="search"></Icon>
             <span>{{queryModal.title}}</span>
         </p>
-        <div style="text-align:center">
+        <div>
             <i-Form ref="queryModal.bindModel" :model="queryModal.bindModel" :rules="queryModal.ruleValidate"
-                    label-position="right" label-width="50"  >
+                    label-position="right" label-width="40"  >
                 <Form-Item label="名称" prop="name">
                     <i-Input element-id="qname" v-model="queryModal.bindModel.name" placeholder="请输入名称"></i-Input>
                 </Form-Item>

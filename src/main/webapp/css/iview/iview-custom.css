@@ -1,5 +1,9 @@
 /* 自定义风格 */
 
+.ivu-form .ivu-form-item-label {
+    font-size: 14px;
+}
+
 /* 修改表格的字体 */
 .ivu-table {
     width: inherit;

@@ -79,9 +79,9 @@
             <Icon type="search"></Icon>
             <span>{{queryModal.title}}</span>
         </p>
-        <div style="text-align:center">
+        <div>
             <i-Form ref="queryModal.bindModel" :model="queryModal.bindModel" :rules="queryModal.ruleValidate"
-                    label-position="right" label-width="50">
+                    label-position="right" label-width="55">
                 <Form-Item label="发布人" prop="userName">
                     <i-Input element-id="quserName" v-model="queryModal.bindModel.userName" placeholder="请输入发布人"></i-Input>
                 </Form-Item>

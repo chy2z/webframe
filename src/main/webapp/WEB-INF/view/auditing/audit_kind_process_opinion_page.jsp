@@ -11,55 +11,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>
 </head>
-<style>
-    .layout-tabs-right {
-        height: 100%;
-        padding: 0px 0px 0px;
-        box-sizing: border-box;
-    }
-
-    /* tab选项卡头部和内容的间距 */
-    .layout-tabs-right-content {
-        height: 100%;
-        min-height: 400px;
-        margin: 0px;
-        padding: 32px 1px 0px;
-        overflow: hidden;
-        background: #eee;
-        border-radius: 4px;
-    }
-
-    /* tab选项卡头部和内容的间距  */
-    /* 和父节点高度一样，所以父节点padding32px,同时头部向上偏移32px*/
-    .ivu-tabs-bar {
-        border-bottom: 1px solid #dddee1;
-        margin-bottom: 2px;
-        margin-top: -32px;
-    }
-
-    /* tab选项卡内容的高度  */
-    .ivu-tabs .ivu-tabs-content{
-        height:100%;
-    }
-
-    /* tab选项卡内容的高度  */
-    .ivu-tabs .ivu-tabs-tabpane {
-        -ms-flex-negative: 0;
-        flex-shrink: 0;
-        width: 100%;
-        height:100%;
-        transition: opacity .3s;
-        opacity: 1;
-    }
-</style>
 <body>
 <div class="my-app" id="app">
     <Spin size="large" fix v-if="spinShow"></Spin>
     <div class="my-layout my-layout-clear-top-bottom">
         <Row class-name="my-layout-body" type="flex">
             <i-col span="24">
-                <div class="layout-tabs-right">
-                    <Tabs class="layout-tabs-right-content" type="card" v-model="tabSelected">
+                <div class="layout-tabs">
+                    <Tabs class="layout-tabs-content" type="card" v-model="tabSelected">
                         <Tab-Pane label="送审内容" name="framePage" icon="ios-glasses">
                             <iframe id="framePage" frameborder="0" scrolling="yes"
                                     style="border: 0px; height: 100%; width: 100%;"></iframe>
@@ -70,18 +29,22 @@
                         </Tab-Pane>
                         <Tab-Pane label="审核意见" name="frameOpinion" icon="ios-compose">
                             <div class="my-layout my-layout-clear-top-bottom">
-                            <Row class-name="my-layout-body" justify="center"  type="flex">
+                            <Row class-name="my-layout-body padding-20" justify="center"  type="flex">
                                 <i-col span="5"></i-col>
                                 <i-col span="14">
-                                    <i-Form :model="auditOpinion" label-position="left" :label-width="80">
-                                        <Form-Item label="审核结果">
+                                    <i-Form ref="auditOpinion" :model="auditOpinion" :rules="ruleValidate" label-position="right" :label-width="80">
+                                        <Form-Item prop="switchState" label="审核结果">
                                             <i-Switch size="large" v-model="auditOpinion.switchState">
                                                 <span slot="open">通过</span>
                                                 <span slot="close">打回</span>
                                             </i-Switch>
                                         </Form-Item>
-                                        <Form-Item label="审核意见">
-                                            <i-Input v-model="auditOpinion.opinion" type="textarea" :autosize="{minRows: 10,maxRows: 20}" placeholder="Enter something..."></i-Input>
+                                        <Form-Item prop="opinion" label="审核意见">
+                                            <i-Input v-model="auditOpinion.opinion" type="textarea" :autosize="{minRows: 10,maxRows: 20}" placeholder="请输入审核意见..."></i-Input>
+                                        </Form-Item>
+                                        <Form-Item>
+                                            <i-Button type="ghost" @click="handleReset('auditOpinion')" >重置</i-Button>
+                                            <i-Button type="primary" @click="handleSubmit('auditOpinion')" style="margin-left: 8px">保存</i-Button>
                                         </Form-Item>
                                     </i-Form>
                                 </i-col>
@@ -91,7 +54,6 @@
                         </Tab-Pane>
                     </Tabs>
                 </div>
-
             </i-col>
         </Row>
     </div>
@@ -109,8 +71,16 @@
             spinShow:false,
             tabSelected:"framePage",
             auditOpinion:{
-                switchState:false,
-                opinion:""
+                switchState:true,
+                opinion:"无意见"
+            },
+            ruleValidate: {
+                switchState: [
+                    {required: true, message: '审核结果必须选择', trigger: 'blur',type:'boolean'}
+                ],
+                opinion: [
+                    {required: true, message: '审核意见不能为空', trigger: 'blur'}
+                ]
             }
         },
         created:function(){
@@ -126,7 +96,18 @@
             },null);
         },
         methods:{
+            handleSubmit (name) {
+                this.$refs[name].validate((valid) => {
+                    if (valid) {
 
+                    } else {
+                        vtoast(this,"数据验证失败!");
+                    }
+                })
+            },
+            handleReset (name) {
+                this.$refs[name].resetFields();
+            }
         }
     });
 </script>

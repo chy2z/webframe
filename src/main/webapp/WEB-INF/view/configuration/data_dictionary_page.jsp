@@ -122,9 +122,9 @@
             <Icon type="compose"></Icon>
             <span>{{formModal.title}}</span>
         </p>
-        <div style="text-align:center">
+        <div>
             <i-Form ref="formModal.bindModel" :model="formModal.bindModel" :rules="formModal.ruleValidate"
-                    label-position="right" label-width="70" >
+                    label-position="right" label-width="80" >
                 <Form-Item label="字典属性" prop="dvalue">
                     <i-Input v-model="formModal.bindModel.dvalue" placeholder="请输入字典属性"></i-Input>
                 </Form-Item>
@@ -140,7 +140,6 @@
                       :loading="formModal.okButLoading" >确定</i-Button>
         </div>
     </Modal>
-
 </div>
 </body>
 <script>
@@ -286,13 +285,13 @@
                 pageHelperChild.pageIndexChanging(1);
             },
             selectDkeyChange(option){
-               if(option=="") {
+               if(isBlank(option)) {
                    pageHelperParent.load(null);
                    pageHelperChild.clearDataTable();
                }
                else{
-                   pageHelperParent.load("dkey='"+option+"'");
-                   pageHelperChild.load("dkey='" +option + "'");
+                   pageHelperParent.load("dkey='"+option.label+"'");
+                   pageHelperChild.load("dkey='" +option.label + "'");
                }
             },
             formModalCancel(){

@@ -164,8 +164,17 @@
             },
             {
                 title: '字典备注',
-                key: 'dmemo',
-                width:300
+                key: 'dmemo'
+            },
+            {
+                title: '属性',
+                key: 'edits',
+                width:100,
+                render: (h, params) => {
+                    return h("div",{},[
+                        h('strong',(params.row.edits==1?"可编辑":"只读"))
+                    ]);
+                }
             }
         ]
     }, {pageSize:20,orderBy: " id desc "});
@@ -228,18 +237,23 @@
             },
             butEdit(){
                 if(pageHelperChild.getSelectRowIndex()>-1){
-                    this.$refs['formModal.bindModel'].resetFields();
-                    this.formModal.modalShow=true;
-                    this.formModal.okButShow=true;
-                    this.formModal.isAddStatus=false;
-                    this.formModal.title="修改字典属性";
-                    let rowData=pageHelperChild.getSelectRowData();
-                    let vue=this;
-                    $.each(rowData,function(key,value){
-                        if(typeof vue.formModal.bindModel[key]!=undefined){
-                            vue.formModal.bindModel[key]=value;
-                        }
-                    });
+                    if(pageHelperChild.getSelectRowData().edits==1) {
+                        this.$refs['formModal.bindModel'].resetFields();
+                        this.formModal.modalShow = true;
+                        this.formModal.okButShow = true;
+                        this.formModal.isAddStatus = false;
+                        this.formModal.title = "修改字典属性";
+                        let rowData = pageHelperChild.getSelectRowData();
+                        let vue = this;
+                        $.each(rowData, function (key, value) {
+                            if (typeof vue.formModal.bindModel[key] != undefined) {
+                                vue.formModal.bindModel[key] = value;
+                            }
+                        });
+                    }
+                    else{
+                        valert(this,"属性只读禁止修改");
+                    }
                 }
                 else{
                     valert(this,"请选择一行记录修改");
@@ -247,19 +261,24 @@
             },
             butDel(){
                 if(pageHelperChild.getSelectRowIndex()>-1){
-                    vconfirm(this,"确认删除吗？",()=>{
-                        let rowData=pageHelperChild.getSelectRowData();
-                        vajaxPost(dataDictionaryDelete_url,rowData,true,(result)=>{
-                            if(result&&result.success){
-                                pageHelperChild.deleteSelectedRow();
-                                pageHelperChild.setSelectRowIndex(-1);
-                                vtoast(this,result.tip);
-                            }
-                            else{
-                                valert(this,result.tip);
-                            }
+                    if(pageHelperChild.getSelectRowData().edits==1) {
+                        vconfirm(this, "确认删除吗？", () => {
+                            let rowData = pageHelperChild.getSelectRowData();
+                            vajaxPost(dataDictionaryDelete_url, rowData, true, (result) => {
+                                if (result && result.success) {
+                                    pageHelperChild.deleteSelectedRow();
+                                    pageHelperChild.setSelectRowIndex(-1);
+                                    vtoast(this, result.tip);
+                                }
+                                else {
+                                    valert(this, result.tip);
+                                }
+                            });
                         });
-                    });
+                    }
+                    else{
+                        valert(this,"属性只读禁止删除");
+                    }
                 }
                 else{
                     valert(this,"请选择一行记录删除");

@@ -16,9 +16,17 @@ public class DataDictionary {
 
     private String dmemo;
 
+    /**
+     * 控制是否显示
+     */
     private Integer display;
 
     private Integer dorder;
+
+    /**
+     * 是否允许修改
+     */
+    private Integer edits;
 
     public Integer getId() {
         return id;
@@ -66,5 +74,13 @@ public class DataDictionary {
 
     public void setDorder(Integer dorder) {
         this.dorder = dorder;
+    }
+
+    public Integer getEdits() {
+        return edits;
+    }
+
+    public void setEdits(Integer edits) {
+        this.edits = edits;
     }
 }

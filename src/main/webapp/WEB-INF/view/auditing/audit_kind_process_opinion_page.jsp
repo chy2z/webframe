@@ -106,7 +106,7 @@
                             opinion:this.auditOpinion.opinion
                         },false,(result)=>{
                             vtoast(this,result.tip);
-                            if(result.success) { alert("111");
+                            if(result.success) {
                                 vPopWindowsColse(null);
                             }
                         },()=>{

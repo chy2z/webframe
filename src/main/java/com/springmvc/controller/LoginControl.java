@@ -4,6 +4,7 @@ package com.springmvc.controller;
 import com.springmvc.base.BaseControl;
 import com.springmvc.config.LanguageFactory;
 import com.springmvc.config.SysConfig;
+import com.springmvc.enums.UserStateType;
 import com.springmvc.model.*;
 import com.springmvc.service.*;
 import com.springmvc.util.*;
@@ -138,11 +139,18 @@ public class LoginControl extends BaseControl {
 		    result.setFail(LanguageFactory.getLanguages().ERROR_NAME_PASSWORD);
 		    return  result;
 		}
+
 		Users user=uService.getUsers(uName, SecurityUtil.MD5_16(uPwd));
 		if(user==null){
 			result.setFail(LanguageFactory.getLanguages().ERROR_NAME_PASSWORD);
 			return result;
 		}
+        // 离职的用户未授权
+		if(user.getState().equals(UserStateType.Quit.getName())){
+			result.setFail(LanguageFactory.getLanguages().UN_ANTHORIZED);
+			return result;
+		}
+
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("id", user.getId().toString());
 		map.put("loginName", user.getLoginname());

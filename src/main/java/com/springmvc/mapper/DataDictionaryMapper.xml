@@ -8,28 +8,25 @@
     <result column="dmemo" jdbcType="VARCHAR" property="dmemo" />
     <result column="display" jdbcType="INTEGER" property="display" />
     <result column="dorder" jdbcType="INTEGER" property="dorder" />
+    <result column="edits" jdbcType="INTEGER" property="edits" />
   </resultMap>
+
   <sql id="Base_Column_List">
-    id, dkey, dvalue, dmemo, display, dorder
+    id, dkey, dvalue, dmemo, display, dorder,edits
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from data_dictionary
     where id = #{id,jdbcType=INTEGER}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from data_dictionary
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.springmvc.model.DataDictionary">
-    insert into data_dictionary (id, dkey, dvalue, 
-      dmemo, display, dorder
-      )
-    values (#{id,jdbcType=INTEGER}, #{dkey,jdbcType=VARCHAR}, #{dvalue,jdbcType=VARCHAR}, 
-      #{dmemo,jdbcType=VARCHAR}, #{display,jdbcType=INTEGER}, #{dorder,jdbcType=INTEGER}
-      )
-  </insert>
+
   <insert id="insertSelective" parameterType="com.springmvc.model.DataDictionary">
     insert into data_dictionary
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -51,6 +48,9 @@
       <if test="dorder != null">
         dorder,
       </if>
+      <if test="edits != null">
+        edits,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -71,8 +71,12 @@
       <if test="dorder != null">
         #{dorder,jdbcType=INTEGER},
       </if>
+      <if test="edits != null">
+        #{edits,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.model.DataDictionary">
     update data_dictionary
     <set>
@@ -91,16 +95,10 @@
       <if test="dorder != null">
         dorder = #{dorder,jdbcType=INTEGER},
       </if>
+      <if test="edits != null">
+        edits = #{edits,jdbcType=INTEGER},
+      </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.model.DataDictionary">
-    update data_dictionary
-    set dkey = #{dkey,jdbcType=VARCHAR},
-      dvalue = #{dvalue,jdbcType=VARCHAR},
-      dmemo = #{dmemo,jdbcType=VARCHAR},
-      display = #{display,jdbcType=INTEGER},
-      dorder = #{dorder,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -138,13 +136,15 @@
 
   </select>
 
-
   <select id="getChildCount" resultType="int">
     select count(1) from data_dictionary
     <!-- 1) 对于形如#{variable} 的变量，Mybatis会将其视为字符串值，在变量替换成功后，缺省地给变量值加上引号 -->
     <!-- 2）对于形如${variable}的变量，Mybatis会将其视作直接变量，即在变量替换成功后，不会再给其加上引号。 -->
     <!-- 此处用$ 不用 #-->
-    <if test="where != null">where ${where}</if>
+    <choose>
+      <when test="where != null">where ${where} and display=1</when>
+      <otherwise>where display=1</otherwise>
+    </choose>
     <if test="orderBy != null">order by ${orderBy}</if>
   </select>
 
@@ -158,7 +158,10 @@
     <!-- 1) 对于形如#{variable} 的变量，Mybatis会将其视为字符串值，在变量替换成功后，缺省地给变量值加上引号 -->
     <!-- 2）对于形如${variable}的变量，Mybatis会将其视作直接变量，即在变量替换成功后，不会再给其加上引号。 -->
     <!-- 此处用$ 不用 #-->
-    <if test="where != null">where ${where}</if>
+    <choose>
+      <when test="where != null">where ${where} and display=1</when>
+      <otherwise>where display=1</otherwise>
+    </choose>
     <if test="orderBy != null">order by ${orderBy}</if>
 
     limit #{start},#{pageSize}

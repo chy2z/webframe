@@ -68,17 +68,20 @@ public class AuditWaitOptionService extends BaseService {
         awOption.setPsid(0);
         awOption.setAuditstate(auditState);
         awOption.setOpinion(opinion);
-        awOption.setStep(aw.getStepnum());
+        awOption.setStep(aw.getSteps());
         awOption.setUid(Integer.parseInt(uid));
+        awOption.setReceivedate(aw.getReceivedate());
         awOption.setCreatedate(new Date());
 
         // 插入审核意见
         result += mapper.insertSelective(awOption);
 
         // 修改待审核记录
-        if (awOption.getAuditstate() == AuditStateType.DH.getName()) {
+        if (awOption.getAuditstate().equals(AuditStateType.DH.getName())) {
             aw.setStatus(AuditStateType.DH.getName());
             aw.setEnddate(new Date());
+            //设置记录的状态
+            // add
         } else {
             // 获取审核类型
             AuditKindProcess akp = auditKindProcessService.getAuditKindProcess(aw.getPid());
@@ -87,6 +90,8 @@ public class AuditWaitOptionService extends BaseService {
             if (aw.getSteps().intValue() == akp.getStepnum().intValue()) {
                 aw.setStatus(AuditStateType.TG.getName());
                 aw.setEnddate(new Date());
+                //设置记录的状态
+                // add
             } else {
                 // 获取下一步审核信息
                 AuditKindProcessStep akps = auditKindProcessStepService.getAuditKindProcessStep(aw.getPid(), aw.getSteps() + 1);

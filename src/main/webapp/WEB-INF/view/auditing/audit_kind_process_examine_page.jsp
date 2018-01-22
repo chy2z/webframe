@@ -143,7 +143,7 @@
                             },
                             on: {
                                 click: () => {
-                                    vPopWindowShow("action_auditaction_audit",opinion_url,"审核平台",params.row);
+                                    vPopWindowShow("action_audit",opinion_url,"审核平台",params.row);
                                 }
                             }
                         }, '审核')

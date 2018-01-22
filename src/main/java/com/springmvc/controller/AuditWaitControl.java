@@ -4,6 +4,7 @@ import com.springmvc.config.LanguageFactory;
 import com.springmvc.enums.AuditStateType;
 import com.springmvc.model.AuditWait;
 import com.springmvc.model.RequestResult;
+import com.springmvc.service.AuditWaitOptionService;
 import com.springmvc.service.AuditWaitService;
 import com.springmvc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class AuditWaitControl {
 
     @Autowired
     AuditWaitService auditWaitService;
+
+    @Autowired
+    AuditWaitOptionService auditWaitOptionService;
 
     /**
      * 分页
@@ -100,6 +104,32 @@ public class AuditWaitControl {
             }
         }
 
+        return result;
+    }
+
+
+    /**
+     * 设置审核意见
+     * @param awid
+     * @param uid
+     * @param auditState
+     * @param opinion
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/setAuditOpinion",method = {RequestMethod.POST})
+    public RequestResult setAuditOpinion(String awid,String uid,String auditState,String opinion) {
+        RequestResult result = new RequestResult();
+        if (awid == null || uid == null || auditState == null || opinion == null) {
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
+        } else {
+            if(auditWaitOptionService.setAuditOpinion(awid, uid, auditState, opinion)){
+                result.setSucceed(LanguageFactory.getLanguages().AUDIT_SUCESS,true);
+            }
+            else{
+                result.setFail(LanguageFactory.getLanguages().AUDIT_FAIL);
+            }
+        }
         return result;
     }
 

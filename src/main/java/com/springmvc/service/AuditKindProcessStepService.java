@@ -24,7 +24,7 @@ public class AuditKindProcessStepService extends BaseService {
     AuditKindProcessStepMapper mapper;
 
     /**
-     * 根据流程获取步骤
+     * 根据流程获取所有步骤
      * @param pid
      * @return
      */
@@ -43,12 +43,23 @@ public class AuditKindProcessStepService extends BaseService {
 
 
     /**
-     * 批量删除记录
-     * @param Pid
+     * 根据流程步骤获取步骤
+     * @param pid
+     * @param step
      * @return
      */
-    public boolean deleteByPId(Integer Pid){
-        return mapper.deleteByProcessId(Pid) > 0;
+    public AuditKindProcessStep getAuditKindProcessStep(Integer pid,Integer step){
+       return mapper.selectByStep(pid,step);
+    }
+
+
+    /**
+     * 批量删除记录
+     * @param pid
+     * @return
+     */
+    public boolean deleteByPId(Integer pid){
+        return mapper.deleteByProcessId(pid) > 0;
     }
 
 

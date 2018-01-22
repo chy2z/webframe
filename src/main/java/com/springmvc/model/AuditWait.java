@@ -36,6 +36,9 @@ public class AuditWait {
     @JsonDeserialize(using = DateJsonDeserializerUtil.class)
     private Date enddate;
 
+    /**
+     * 审核人
+     */
     private Integer uid;
 
     private String url;

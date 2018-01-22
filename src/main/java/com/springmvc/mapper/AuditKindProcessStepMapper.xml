@@ -29,6 +29,13 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
+  <select id="selectByStep" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from audit_kind_process_step
+    where pid = #{pid,jdbcType=INTEGER} and step=#{step,jdbcType=INTEGER}
+  </select>
+
   <select id="selectByPid" parameterType="java.lang.Integer" resultMap="JoinResultMap">
    select aps.id, aps.pId, aps.uId, aps.step, aps.enable, aps.createDate,
     u.name as uName, r.`name` as roleName, d.`name` as departName

@@ -61,7 +61,7 @@
 </body>
 <script>
     var domain="${ctx}";
-
+    var opinion_url=domain+"/auditWait/setAuditOpinion?jwt=${requestScope.jwt}";
     var data=VPopConfig();
 
     new Vue({
@@ -99,7 +99,23 @@
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-
+                        vajaxPost(opinion_url,{
+                            awid:data.id,
+                            uid:${requestScope.user.id},
+                            auditState:this.auditOpinion.switchState?vLang.audit.pass:vLang.audit.return,
+                            opinion:this.auditOpinion.opinion
+                        },false,(result)=>{
+                            vtoast(this,result.tip);
+                            if(result.success) { alert("111");
+                                vPopWindowsColse(null);
+                            }
+                        },()=>{
+                            this.spinShow=true;
+                        },()=>{
+                            this.spinShow=false;
+                        },()=>{
+                            this.spinShow=false;
+                        });
                     } else {
                         vtoast(this,"数据验证失败!");
                     }

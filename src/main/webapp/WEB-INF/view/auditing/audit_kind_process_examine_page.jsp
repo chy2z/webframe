@@ -143,8 +143,7 @@
                             },
                             on: {
                                 click: () => {
-                                    log(params.row);
-                                    vPopWindowShow("action_audit",opinion_url,"审核平台",params.row);
+                                    vPopWindowShow("action_auditaction_audit",opinion_url,"审核平台",params.row);
                                 }
                             }
                         }, '审核')
@@ -161,6 +160,7 @@
         data: {
             spinShow:false,
             jwt:"${requestScope.jwt}",
+            useid:"${requestScope.useId}",
             butShow:${requestScope.rightBut},
             queryModal:{
                 title:"条件查询",
@@ -184,7 +184,7 @@
             //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条
             pageHelperWaitAudit.setHeight($(".my-layout-body").height());
             //表格加载数据
-            pageHelperWaitAudit.load(null);
+            pageHelperWaitAudit.load(" ps.uid='"+this.useid+"' ");
             //加载组织机构
             selectHelperAuditKind.load(null);
         },
@@ -197,9 +197,6 @@
             },
             tableWaitAuditRowClick(data,index){
                 pageHelperWaitAudit.setSelectRowIndex(index);
-            },
-            butAudit(){
-
             },
             butLook(){
                 if(pageHelperWaitAudit.getSelectRowIndex()>-1){
@@ -225,6 +222,7 @@
                 this.$refs['queryModal.bindModel'].validate((valid) => {
                     if (valid) {
                         let WR = [];
+                        WR[WR.length] = new whereRelation("ps.uid",this.useid, "string", null, null, true);
                         WR[WR.length] = new whereRelation("k.id",this.queryModal.bindModel.kid, "string", null, null, true);
                         WR[WR.length] = new whereRelation("u.name", this.queryModal.bindModel.sendUser, "string", null, null, true);
                         pageHelperWaitAudit.load(new pageHelperWhere(WR).getWhere());

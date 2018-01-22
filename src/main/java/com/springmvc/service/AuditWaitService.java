@@ -74,6 +74,15 @@ public class AuditWaitService {
     }
 
     /**
+     * 更细记录
+     * @param c
+     * @return
+     */
+    public boolean update(AuditWait c) {
+        return mapper.updateByPrimaryKeySelective(c) > 0;
+    }
+
+    /**
      * 允许修改和删除记录
      * @param auditState
      * @param tName

@@ -79,12 +79,14 @@ public class AuditKindProcessControl extends BaseControl {
             model.addAttribute("kindProcessStep",JsonUtil.writeValueAsString(steps));
             return "auditing/audit_kind_process_update_page";
         }
+        // 流程图
         else if(page.equals("flowStepView")){
             String id = (String) request.getParameter("id");
             AuditKindProcess sModel= auditKindProcessService.getAuditKindProcess(Integer.parseInt(id));
             model.addAttribute("kindProcess",sModel);
             return "flowchart/flow_chat_step_view_page";
         }
+        // 审核进度
         else if(page.equals("flowProcessView")){
             String tName = request.getParameter("tName");
             String tKey = request.getParameter("tKey");
@@ -97,6 +99,7 @@ public class AuditKindProcessControl extends BaseControl {
             model.addAttribute("kindProcess",sModel);
             return "flowchart/flow_chat_process_view_page";
         }
+        // 审核意见
         else if(page.equals("auditOption")){
             String tName = request.getParameter("tName");
             String tKey = request.getParameter("tKey");
@@ -107,8 +110,11 @@ public class AuditKindProcessControl extends BaseControl {
             model.addAttribute("tKey",tKey);
             model.addAttribute("tValue",tValue);
             model.addAttribute("kindProcess",sModel);
+            Users u = uService.getUsers(ut.getUserid());
+            model.addAttribute("user", u);
             return "auditing/audit_kind_process_opinion_page";
         }
+        // 送审
         else if(page.equals("sendAudit")) {
             Users u = uService.getUsers(ut.getUserid());
             AuditKind auditKind = auditKindService.getModelByOperation(request.getParameter("operation"));

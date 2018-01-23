@@ -68,7 +68,7 @@
                             系统通知
                         </p>
                         <a type="text" slot="extra">
-                            <Tooltip placement="top" content="刷新">
+                            <Tooltip placement="top" content="刷新" @click.prevent="refreshNotices">
                             <Icon type="refresh"></Icon>
                             </Tooltip>
                         </a>
@@ -192,7 +192,7 @@
                     <Card :padding="0">
                         <p slot="title" class="card-title">
                             <Icon type="map"></Icon>
-                            地图
+                            用户登录地图
                         </p>
                         <div class="map-con">
                             <i-Col span="10" class="map-incon">
@@ -302,10 +302,6 @@
         data: {
             tipTransfer:true,
             tableHeight:281,
-            cityData:[
-                {name: '芜湖', value: 20},
-                {name: '马鞍山', value: 200}
-            ],
             columns: [
                 {
                     title: '城市',
@@ -317,16 +313,20 @@
                     sortable: true
                 }
             ],
+            cityData:[],
             notices:[]
         },
         methods: {
             handleNotice(id){
                 var noticeLook_url=domain+"/sysNotice/path/look?jwt=${requestScope.jwt}";
                 vPopWindowShow("action_look",noticeLook_url+"&id="+id,"系统通知查看");
+            },
+            refreshNotices(){
+
             }
         },
         mounted() {
-            CreateCityMap(this.cityData);
+            CreateCityMap();
             CreateChart1();
             CreateChart2();
             CreateChart3();
@@ -338,72 +338,87 @@
         }
     });
 
-    function CreateCityMap(cityData) {
+    function CreateCityMap() {
+
+        let url="${ctx}/chart/getLoginAllUserLastNYears/Geo?jwt=${requestScope.jwt}";
+
         var map = echarts.init(document.getElementById('chinaMap'));
 
-        map.setOption({
-            backgroundColor: '#FFF',
-            visualMap: {
-                min: 0,
-                max: 200,
-                calculable: true,
-                left: 'right',
-                top: 'bottom',
-                text: ['高','低'],
-                inRange: {
-                    color: ['#50a3ba', '#eac736', '#d94e5d']
-                },
-                textStyle: {
-                    color: '#606461'
-                }
-            },
-            geo: {
-                map: 'china',
-                label: {
-                    emphasis: {
-                        show: false
-                    }
-                },
-                itemStyle: {
-                    normal: {
-                        areaColor: '#EFEFEF',
-                        borderColor: '#CCC'
+        vajaxPost(url,{},false,(result)=>{
+            /**
+             [
+               {name: '芜湖', value: 20},
+               {name: '马鞍山', value: 200}
+             ]
+             */
+            let cityData=eval("("+result+")");
+
+            app.cityData=cityData;
+
+            map.setOption({
+                backgroundColor: '#FFF',
+                visualMap: {
+                    min: 0,
+                    max: 200,
+                    calculable: true,
+                    left: 'right',
+                    top: 'bottom',
+                    text: ['高','低'],
+                    inRange: {
+                        color: ['#50a3ba', '#eac736', '#d94e5d']
                     },
-                    emphasis: {
-                        areaColor: '#E5E5E5'
+                    textStyle: {
+                        color: '#606461'
                     }
-                }
-            },
-            grid: {
-                top: 0,
-                left: '2%',
-                right: '2%',
-                bottom: '0',
-                containLabel: true
-            },
-            series: [{
-                type: 'scatter',
-                coordinateSystem: 'geo',
-                data: convertData(cityData),
-                symbolSize: function (val) {
-                    return val[2] / 10;
                 },
-                label: {
-                    normal: {
-                        formatter: '{b}',
-                        position: 'right',
-                        show: false
+                geo: {
+                    map: 'china',
+                    label: {
+                        emphasis: {
+                            show: false
+                        }
                     },
-                    emphasis: {
-                        show: true
+                    itemStyle: {
+                        normal: {
+                            areaColor: '#EFEFEF',
+                            borderColor: '#CCC'
+                        },
+                        emphasis: {
+                            areaColor: '#E5E5E5'
+                        }
                     }
                 },
-                itemStyle: {
-                    normal: {
-                        color: '#0099CC'
+                grid: {
+                    top: 0,
+                    left: '2%',
+                    right: '2%',
+                    bottom: '0',
+                    containLabel: true
+                },
+                series: [{
+                    type: 'scatter',
+                    coordinateSystem: 'geo',
+                    data: convertMapData(cityData),
+                    symbolSize: function (val) {
+                        return val[2] / 10;
+                    },
+                    label: {
+                        normal: {
+                            formatter: '{b}',
+                            position: 'right',
+                            show: false
+                        },
+                        emphasis: {
+                            show: true
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: '#0099CC'
+                        }
                     }
-                }
-            }]
+                }]
+            });
         });
 
         window.addEventListener('resize', function () {
@@ -810,7 +825,6 @@
         let url = domain + "/sysNotice/topNewest?jwt=${requestScope.jwt}";
         vajaxPost(url,{top:5},false,(result)=>{
             if(result.success) {
-                log(result.data);
                 app.notices = result.data;
             }
             else{

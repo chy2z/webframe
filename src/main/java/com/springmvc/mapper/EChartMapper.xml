@@ -3,7 +3,7 @@
 <mapper namespace="com.springmvc.mapper.EChartMapper">
 
     <!-- 查询某个用户最近几年的登录统计 -->
-  <select id="getLoginLogLastNYearsForYearCity" resultType="java.util.Map">
+  <select id="getLoginUserLastNYearsForYearCity" resultType="java.util.Map">
    select date_format(createDate, '%Y') as legend, city as axis,count(1) as data from users_login_log
 
    where usersId=${usersId} and  date_format(createDate, '%Y')>(date_format(now(), '%Y')-${num})
@@ -14,7 +14,7 @@
   </select>
 
     <!-- 查询某个用户最近几年的登录统计 -->
-    <select id="getLoginLogLastNYearsForCityYear" resultType="java.util.Map">
+    <select id="getLoginUserLastNYearsForCityYear" resultType="java.util.Map">
         select city as legend ,date_format(createDate, '%Y') as axis ,count(1) as data from users_login_log
 
         where usersId=${usersId} and  date_format(createDate, '%Y')>(date_format(now(), '%Y')-${num})
@@ -25,16 +25,25 @@
     </select>
 
     <!-- 查询某个用户最近几年的登录统计 -->
-    <select id="getLoginLogLastNYearsForCity" resultType="java.util.Map">
+    <select id="getLoginUserLastNYearsForCity" resultType="java.util.Map">
         select city as legend ,count(1) as data from users_login_log
 
-        where usersId=${usersId} and  date_format(createDate, '%Y')>(date_format(now(), '%Y')-${num})
+        where  usersId=${usersId}
+
+        and  date_format(createDate, '%Y')>(date_format(now(), '%Y')-${num})
 
         and ip is not null
 
         group by city
     </select>
 
+    <!-- 查询某个用户最近几年的登录统计 -->
+    <select id="getLoginAllUserForCity" resultType="java.util.Map">
+        select city as name ,count(1) as value from users_login_log
 
+        where ip is not null
+
+        group by city
+    </select>
 
 </mapper>

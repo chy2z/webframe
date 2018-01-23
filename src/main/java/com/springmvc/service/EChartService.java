@@ -17,6 +17,7 @@ import com.springmvc.model.echart.style.AreaStyle;
 import com.springmvc.model.echart.style.ItemStyle;
 import com.springmvc.model.echart.style.itemstyle.Emphasis;
 import com.springmvc.model.echart.style.itemstyle.Normal;
+import com.springmvc.util.JsonUtil;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ import java.util.*;
 @Service
 public class EChartService extends BaseService {
 
-   @Autowired
+    @Autowired
     EChartMapper eChartMapper;
 
     /**
@@ -45,7 +46,7 @@ public class EChartService extends BaseService {
      */
    public String getLoginLogLastNYearsH(int usersId,int num){
 
-       List<Map<String,Object>> list= eChartMapper.getLoginLogLastNYearsForYearCity(usersId,num);
+       List<Map<String,Object>> list= eChartMapper.getLoginUserLastNYearsForYearCity(usersId,num);
 
        List<String> legend=new ArrayList<>();
 
@@ -155,7 +156,7 @@ public class EChartService extends BaseService {
      */
    public String getLoginLogLastNYearsV(int usersId,int num) {
 
-       List<Map<String, Object>> list = eChartMapper.getLoginLogLastNYearsForYearCity(usersId, num);
+       List<Map<String, Object>> list = eChartMapper.getLoginUserLastNYearsForYearCity(usersId, num);
 
        List<String> legend = new ArrayList<>();
 
@@ -263,7 +264,7 @@ public class EChartService extends BaseService {
      */
     public String getLoginLogLastNYearsStack(int usersId,int num){
 
-        List<Map<String,Object>> list= eChartMapper.getLoginLogLastNYearsForYearCity(usersId,num);
+        List<Map<String,Object>> list= eChartMapper.getLoginUserLastNYearsForYearCity(usersId,num);
 
         List<String> legend=new ArrayList<>();
 
@@ -374,7 +375,7 @@ public class EChartService extends BaseService {
      */
     public String getLoginLogLastNYearsLineStack(int usersId,int num){
 
-        List<Map<String,Object>> list= eChartMapper.getLoginLogLastNYearsForCityYear(usersId,num);
+        List<Map<String,Object>> list= eChartMapper.getLoginUserLastNYearsForCityYear(usersId,num);
 
         List<String> legend=new ArrayList<>();
 
@@ -494,7 +495,7 @@ public class EChartService extends BaseService {
      */
     public String getLoginLogLastNYearsLine(int usersId,int num){
 
-        List<Map<String,Object>> list= eChartMapper.getLoginLogLastNYearsForCityYear(usersId,num);
+        List<Map<String,Object>> list= eChartMapper.getLoginUserLastNYearsForCityYear(usersId,num);
 
         List<String> legend=new ArrayList<>();
 
@@ -608,7 +609,7 @@ public class EChartService extends BaseService {
      */
     public String getLoginLogLastNYearsPie(int usersId,int num){
 
-        List<Map<String,Object>> list= eChartMapper.getLoginLogLastNYearsForCity(usersId,num);
+        List<Map<String,Object>> list= eChartMapper.getLoginUserLastNYearsForCity(usersId,num);
 
         List<String> legend=new ArrayList<>();
 
@@ -689,7 +690,7 @@ public class EChartService extends BaseService {
     }
 
     /**
-     * 查询某个用户最近几年的登录统计
+     * 查询某个用户最近几年的登录统计(模拟数据)
      * pie 仪表盘图
      * @param usersId
      * @param num
@@ -729,5 +730,14 @@ public class EChartService extends BaseService {
         option.setSeries(seriesOption);
 
         return option.toJson();
+    }
+
+    /**
+     * 查询用户最近几年的登录统计(模拟数据)
+     * @return
+     */
+    public String getLoginAllUserLastNYearsGeo() {
+        List<Map<String, Object>> list = eChartMapper.getLoginAllUserForCity();
+        return  JsonUtil.writeValueAsString(list);
     }
 }

@@ -128,4 +128,9 @@ public class EChartControl extends BaseControl {
         return  chartService.getLoginLogLastNYearsGauge(ut.getUserid(),Integer.parseInt(num));
     }
 
+    @ResponseBody
+    @RequestMapping("/getLoginAllUserLastNYears/Geo")
+    public String getLoginAllUserLastNYearsGeo(HttpServletRequest request, HttpServletResponse response){
+        return  chartService.getLoginAllUserLastNYearsGeo();
+    }
 }

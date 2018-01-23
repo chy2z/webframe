@@ -1,3 +1,6 @@
+/**
+ * 城市地理位置信息
+ */
 var geoCoordMap = {
     '海门':[121.15,31.89],
     '鄂尔多斯':[109.781327,39.608266],
@@ -191,11 +194,16 @@ var geoCoordMap = {
     '大庆':[125.03,46.58]
 };
 
-var convertData = function (data) {
+/**
+ * 数据和地理位置关联
+ * @param data
+ * @returns {Array}
+ */
+var convertMapData = function (data) {
     let res = [];
     let len = data.length;
     for (var i = 0; i < len; i++) {
-        var geoCoord = geoCoordMap[data[i].name];
+        var geoCoord = geoCoordMap[data[i].name.replace(/市/, "")];
         if (geoCoord) {
             res.push({
                 name: data[i].name,

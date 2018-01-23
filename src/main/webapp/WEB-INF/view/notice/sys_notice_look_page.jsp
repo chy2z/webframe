@@ -15,7 +15,7 @@
 <div class="my-app" id="app">
     <div class="my-layout my-layout-clear-top-bottom">
         <Row class-name="my-layout-body" justify="center" :gutter="gutter" type="flex">
-            <i-col span="24">
+            <i-col class="fil-height" span="24">
                     <div class="fil-height">
                        ${requestScope.sysNotice.content}
                     </div>

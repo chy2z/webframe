@@ -43,6 +43,19 @@ public class AuditWaitService {
         return result > 0;
     }
 
+
+    /**
+     * 更新送审记录的审核状态
+     * @param tName
+     * @param tKey
+     * @param tValue
+     * @param auditState
+     * @return
+     */
+    public boolean updateOperation(String tName,String tKey, String tValue,String auditState) {
+        return mapper.updateOperation(tName, tKey, tValue, auditState) > 0;
+    }
+
     /**
      * 获取待审核信息
      * @param id
@@ -53,15 +66,14 @@ public class AuditWaitService {
     }
 
     /**
-     * 获取待审核信息
+     * 获取最新的待审核信息
      * @param tName
      * @param tKey
      * @param tValue
-     * @param status
      * @return
      */
-    public AuditWait getAuditWait(String tName,String tKey, String tValue,String status) {
-        return mapper.selectByParam(tName, tKey, tValue, status);
+    public AuditWait getNewestAuditWait(String tName,String tKey, String tValue) {
+        return mapper.selectNewest(tName, tKey, tValue);
     }
 
     /**
@@ -229,7 +241,7 @@ public class AuditWaitService {
     }
 
     /**
-     * 获取送审状态
+     * 获取送审记录审核状态
      * @param operation
      * @param departId
      * @return
@@ -247,7 +259,7 @@ public class AuditWaitService {
     }
 
     /**
-     * 获取送审状态
+     * 获取送审记录审核状态
      * @param request
      * @return
      */

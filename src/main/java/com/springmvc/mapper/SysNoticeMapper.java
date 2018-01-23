@@ -23,6 +23,13 @@ public interface SysNoticeMapper {
     int updateByPrimaryKeySelective(SysNotice record);
 
     /**
+     * 获取最新的消息
+     * @param top
+     * @return
+     */
+    List<SysNotice> selectTopNewest(@Param("where") String where,@Param("top") Integer top);
+
+    /**
      * 根据条件获取记录数
      * @param where
      * @param orderBy

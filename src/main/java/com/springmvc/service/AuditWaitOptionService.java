@@ -80,8 +80,8 @@ public class AuditWaitOptionService extends BaseService {
         if (awOption.getAuditstate().equals(AuditStateType.DH.getName())) {
             aw.setStatus(AuditStateType.DH.getName());
             aw.setEnddate(new Date());
-            //设置记录的状态
-            // add
+            //设置送审记录的状态
+            auditWaitService.updateOperation(aw.getTname(),aw.getTkey(),aw.getTvalue(),aw.getStatus());
         } else {
             // 获取审核类型
             AuditKindProcess akp = auditKindProcessService.getAuditKindProcess(aw.getPid());
@@ -90,8 +90,8 @@ public class AuditWaitOptionService extends BaseService {
             if (aw.getSteps().intValue() == akp.getStepnum().intValue()) {
                 aw.setStatus(AuditStateType.TG.getName());
                 aw.setEnddate(new Date());
-                //设置记录的状态
-                // add
+                //设置送审记录的状态
+                auditWaitService.updateOperation(aw.getTname(),aw.getTkey(),aw.getTvalue(),aw.getStatus());
             } else {
                 // 获取下一步审核信息
                 AuditKindProcessStep akps = auditKindProcessStepService.getAuditKindProcessStep(aw.getPid(), aw.getSteps() + 1);

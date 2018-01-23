@@ -13,21 +13,23 @@
 </head>
 <body>
 <div class="my-app" id="app">
-    <div class="my-layout my-layout-clear-top-10">
-        <Row class-name="my-layout-body" justify="center"  type="flex">
-            <i-col span="23">
+    <div class="my-layout my-layout-clear-top-bottom">
+        <Row class-name="my-layout-body" justify="center" :gutter="gutter" type="flex">
+            <i-col span="24">
                     <div class="fil-height">
                        ${requestScope.sysNotice.content}
                     </div>
             </i-col>
         </Row>
-        <Row class-name="my-layout-bottom" justify="center" align="middle" type="flex">
-            <i-col  span="23">
+        <!--
+        <Row class-name="my-layout-bottom" justify="center" align="middle" :gutter="gutter" type="flex">
+            <i-col span="24">
                 <div class="float-right">
-                    <i-Button type="success" @click="butRefresh()" icon="refresh">刷新</i-Button>
+                    <i-Button type="success" v-show="hidden" @click="butRefresh()" icon="refresh">刷新</i-Button>
                 </div>
             </i-col>
         </Row>
+         -->
     </div>
 </div>
 </body>
@@ -36,7 +38,8 @@
     new Vue({
         el: '#app',
         data: {
-
+            hidden: true,
+            gutter: 0
         },
         mounted:function () {
 

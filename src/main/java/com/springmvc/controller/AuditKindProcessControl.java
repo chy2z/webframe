@@ -2,7 +2,6 @@ package com.springmvc.controller;
 
 import com.springmvc.base.BaseControl;
 import com.springmvc.config.LanguageFactory;
-import com.springmvc.enums.AuditStateType;
 import com.springmvc.model.*;
 import com.springmvc.model.flowchart.FlowChart;
 import com.springmvc.model.flowchart.FlowChartNode;
@@ -360,7 +359,7 @@ public class AuditKindProcessControl extends BaseControl {
             } else {
 
                 //获取待审核信息
-                AuditWait aw= auditWaitService.getAuditWait(tName,tKey,tValue, AuditStateType.SHZ.getName());
+                AuditWait aw= auditWaitService.getNewestAuditWait(tName,tKey,tValue);
 
                 //获取审核意见
                 List<AuditWaitOpinion> options=auditWaitOptionService.getList(aw.getId());

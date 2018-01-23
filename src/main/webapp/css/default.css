@@ -9,6 +9,7 @@ html, body {
 
 .fil-height{
     height: 100%;
+    overflow: auto;
 }
 
 .fil-width{

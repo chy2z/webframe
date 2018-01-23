@@ -9,6 +9,8 @@ import com.springmvc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
 * @Title: SysNoticeService
 * @Description: 通知业务层
@@ -28,6 +30,16 @@ public class SysNoticeService extends BaseService {
      */
     public SysNotice getSysNotice(Integer id){
         return mapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 获取最新列表
+     * @param where
+     * @param top
+     * @return
+     */
+    public List<SysNotice> topNewest(String where,Integer top) {
+        return mapper.selectTopNewest(where, top);
     }
 
     /**

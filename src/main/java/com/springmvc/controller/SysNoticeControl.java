@@ -2,6 +2,7 @@ package com.springmvc.controller;
 
 import com.springmvc.base.BaseControl;
 import com.springmvc.config.LanguageFactory;
+import com.springmvc.enums.AuditStateType;
 import com.springmvc.model.RequestResult;
 import com.springmvc.model.SysNotice;
 import com.springmvc.model.Users;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
 
 /**
 * @Title: SysNoticeControl
@@ -91,6 +93,28 @@ public class SysNoticeControl extends BaseControl {
         String orderBy=request.getParameter("orderBy");
 
         return sysNoticeService.toPaginationJson(pageNo,pageSize,where,orderBy);
+    }
+
+    /**
+     * 获取最新消息列表
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/topNewest")
+    public RequestResult topNewest(HttpServletRequest request, HttpServletResponse response) {
+        RequestResult result = new RequestResult();
+        Integer top = Integer.parseInt(request.getParameter("top"));
+        if (top == null) {
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
+        } else {
+
+            List<SysNotice> notices = sysNoticeService.topNewest("auditState='" + AuditStateType.TG.getName() + "' and TIMESTAMPDIFF(DAY,createTime, NOW())<366 ", top);
+
+            result.setSucceed(LanguageFactory.getLanguages().SUCCESS, notices);
+        }
+        return result;
     }
 
     /**

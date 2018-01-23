@@ -93,6 +93,7 @@ body{
 }
 
 .to-do-list-item-text {
+    width:100%;
     word-break: keep-all;
     white-space: nowrap;
     overflow: hidden;

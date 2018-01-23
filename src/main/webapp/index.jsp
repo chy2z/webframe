@@ -76,19 +76,22 @@
                             <div v-for="(item, index) in notices" :key="index" class="to-do-item">
                             <template>
                                 <Row type="flex" justify="start" align="middle" class="to-do-list-item">
-                                    <i-Col span="2" class="height-100">
+                                    <i-Col span="1" class="height-100">
                                         <Row type="flex" justify="start" align="middle" class="height-100">
                                             <Icon type="android-notifications"></Icon>
                                         </Row>
                                     </i-Col>
                                     <i-Col span="18" class="height-100">
                                         <Row type="flex" justify="start" align="middle" class="height-100">
-                                            <p @click="handleNotice(item.id)" class="to-do-list-item-text"><a href="#">{{ item.title }}</a></p>
+                                            <p @click="handleNotice(item.id)" class="to-do-list-item-text">
+                                                <%--<Tooltip placement="top-start" :transfer="tipTransfer" :content="item.title"></Tooltip>--%>
+                                                <a href="#">{{ item.title }}</a>
+                                            </p>
                                         </Row>
                                     </i-Col>
-                                    <i-Col span="4" class="height-100">
+                                    <i-Col span="5" class="height-100">
                                         <Row type="flex" justify="start" align="middle" class="height-100">
-                                            <p class="to-do-list-item-text">{{ item.date }}</p>
+                                            <p class="to-do-list-item-text">{{ item.createtime }}</p>
                                         </Row>
                                     </i-Col>
                                 </Row>
@@ -293,50 +296,16 @@
 </body>
 <script>
     var domain="${ctx}";
-    var cityData=[
-        {name: '海门', value: 45},
-        {name: '鄂尔多斯', value: 34},
-        {name: '招远', value: 47},
-        {name: '舟山', value: 22},
-        {name: '齐齐哈尔', value: 74},
-        {name: '广州', value: 138},
-        {name: '盐城', value: 15},
-        {name: '北京', value: 250},
-        {name: '深圳', value: 141},
-        {name: '赤峰', value: 16},
-        {name: '青岛', value: 89},
-        {name: '乳山', value: 18},
-        {name: '金昌', value: 34},
-        {name: '泉州', value: 21},
-        {name: '莱西', value: 66},
-        {name: '日照', value: 45},
-        {name: '胶南', value: 23},
-        {name: '南通', value: 54},
-        {name: '拉萨', value: 22},
-        {name: '云浮', value: 78},
-        {name: '梅州', value: 23},
-        {name: '文登', value: 78},
-        {name: '上海', value: 218},
-        {name: '乌鲁木齐', value: 54},
-        {name: '枣庄', value: 84},
-        {name: '杭州', value: 64},
-        {name: '淄博', value: 85},
-        {name: '鞍山', value: 186},
-        {name: '溧阳', value: 86},
-        {name: '库尔勒', value: 200},
-        {name: '安阳', value: 90},
-        {name: '开封', value: 90},
-        {name: '济南', value: 100},
-        {name: '德阳', value: 93},
-        {name: '温州', value: 195},
-        {name: '九江', value: 96}
-    ];
 
-    new Vue({
+    var app=new Vue({
         el: '#app',
         data: {
+            tipTransfer:true,
             tableHeight:281,
-            cityData:cityData,
+            cityData:[
+                {name: '芜湖', value: 20},
+                {name: '马鞍山', value: 200}
+            ],
             columns: [
                 {
                     title: '城市',
@@ -348,10 +317,7 @@
                     sortable: true
                 }
             ],
-            notices:[
-                {id:"1",title:"你好",date:"10-19"},
-                {id:"2",title:"你是谁",date:"10-20"}
-            ]
+            notices:[]
         },
         methods: {
             handleNotice(id){
@@ -360,7 +326,7 @@
             }
         },
         mounted() {
-            CreateCityMap();
+            CreateCityMap(this.cityData);
             CreateChart1();
             CreateChart2();
             CreateChart3();
@@ -368,11 +334,13 @@
             CreateChart6();
             CreateChart7();
             CreateChart8();
+            LoadNotice();
         }
     });
 
-    function CreateCityMap() {
+    function CreateCityMap(cityData) {
         var map = echarts.init(document.getElementById('chinaMap'));
+
         map.setOption({
             backgroundColor: '#FFF',
             visualMap: {
@@ -835,6 +803,19 @@
 
         window.addEventListener('resize', function () {
             chart8.resize();
+        });
+    }
+
+    function LoadNotice() {
+        let url = domain + "/sysNotice/topNewest?jwt=${requestScope.jwt}";
+        vajaxPost(url,{top:5},false,(result)=>{
+            if(result.success) {
+                log(result.data);
+                app.notices = result.data;
+            }
+            else{
+                vtoast("网络不给力～，最新消息努力加载中..");
+            }
         });
     }
 

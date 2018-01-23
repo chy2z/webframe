@@ -84,13 +84,13 @@
             }
         },
         created:function(){
-            vSpin(this,2000);
+            vSpin(this,1000);
 
             // 加载审核内容
             document.querySelector("#framePage").src=domain+data.url+"?jwt="+this.jwt+"&id="+data.tvalue;
 
             // 加载审核进度
-            vDelay(2000,null,()=>{
+            vDelay(1000,null,()=>{
                 let url=domain+"/auditKindProcess/path/flowProcessView?jwt="+this.jwt+"&tName="+data.tname+"&tKey="+data.tkey+"&tValue="+data.tvalue;
                 document.querySelector("#frameProcess").src=url;
             },null);

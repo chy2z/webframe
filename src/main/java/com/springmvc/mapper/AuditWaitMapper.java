@@ -14,21 +14,21 @@ public interface AuditWaitMapper {
     AuditWait selectByPrimaryKey(Integer id);
 
     /**
-     * 获取待审核信息
+     * 获取最新的待审核信息
      * @param tName
      * @param tKey
      * @param tValue
      * @return
      */
-    AuditWait selectByParam(@Param("tName") String tName,
+    AuditWait selectNewest(@Param("tName") String tName,
                                  @Param("tKey") String tKey,
-                                 @Param("tValue") String tValue,
-                                 @Param("status") String status);
+                                 @Param("tValue") String tValue);
+
 
     int updateByPrimaryKeySelective(AuditWait record);
 
     /**
-     * 更新送审记录
+     * 更新送审记录的状态
      * @param tName
      * @param tKey
      * @param tValue
@@ -41,7 +41,7 @@ public interface AuditWaitMapper {
                         );
 
     /**
-     * 获取审核状态
+     * 获取送审记录审核状态
      * @param auditState
      * @param tName
      * @param tKey

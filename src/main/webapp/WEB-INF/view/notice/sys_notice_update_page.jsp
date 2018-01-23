@@ -98,10 +98,10 @@
                     let m={id:this.id,userid:this.userid,title:this.title,content:CKEDITOR.instances.contect_text.getData()};
                     vajaxPost(update_url,m,true,(result)=>{
                         vtoast(this, result.tip);
-                        this.title="";
-                        CKEDITOR.instances.contect_text.setData("");
                         //立即关闭增加窗口
-                        vPopWindowsColse(result.data);
+                        vPopWindowsColse({title:this.title,createtime:result.data.createtime});
+                        //this.title="";
+                        //CKEDITOR.instances.contect_text.setData("");
                     },()=>{
                         this.spinShow=true;
                     },()=>{

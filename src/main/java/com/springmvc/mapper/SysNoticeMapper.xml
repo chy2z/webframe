@@ -9,6 +9,7 @@
     <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="auditTime" jdbcType="TIMESTAMP" property="audittime" />
     <result column="auditState" jdbcType="VARCHAR" property="auditstate" />
+    <result column="corporationId" jdbcType="INTEGER" property="corporationid" />
   </resultMap>
 
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.springmvc.model.SysNotice">
@@ -23,7 +24,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, userId, title, createTime,auditState,auditTime
+    id, userId, title, createTime,auditState,auditTime,corporationId
   </sql>
 
   <sql id="Blob_Column_List">
@@ -77,6 +78,9 @@
       <if test="audittime != null">
         auditTime,
       </if>
+      <if test="corporationid != null">
+        corporationId,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -100,6 +104,9 @@
       <if test="audittime != null">
         #{audittime,jdbcType=TIMESTAMP},
       </if>
+      <if test="corporationid != null">
+        #{corporationid,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
 
@@ -120,6 +127,9 @@
       </if>
       <if test="auditstate != null">
         auditState = #{auditstate,jdbcType=VARCHAR},
+      </if>
+      <if test="corporationid != null">
+        corporationId = #{corporationid,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

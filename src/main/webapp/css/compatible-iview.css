@@ -55,11 +55,12 @@
 }
 
 /* tab选项卡头部和内容的间距  */
-/* 和父节点高度一样，所以父节点padding32px,同时头部向上偏移32px*/
-.layout-tabs .ivu-tabs-bar {
+/* tab选项卡头部和上面2px间距 */
+/* tab选项卡头部和内容0间距 */
+.ivu-tabs-bar {
     border-bottom: 1px solid #dddee1;
-    margin-bottom: 2px;
-    margin-top: -32px;
+    margin-bottom: 0px;
+    margin-top: -30px;
 }
 
 /* tab选项卡内容的高度  */

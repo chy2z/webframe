@@ -34,6 +34,8 @@ public class SysNotice {
     @JsonDeserialize(using = DateJsonDeserializerUtil.class)
     private Date audittime;
 
+    private Integer corporationid;
+
     //===========关联属性==================
 
     private String departName;
@@ -120,5 +122,13 @@ public class SysNotice {
 
     public void setAudittime(Date audittime) {
         this.audittime = audittime;
+    }
+
+    public Integer getCorporationid() {
+        return corporationid;
+    }
+
+    public void setCorporationid(Integer corporationid) {
+        this.corporationid = corporationid;
     }
 }

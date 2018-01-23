@@ -19,9 +19,9 @@
     <div class="my-layout">
         <Row class-name="my-layout-top" justify="center" align="middle" type="flex">
             <i-col  span="23">
-                <div class="float-left">
+                <div class="float-left fil-width">
                     <label class="my-label">通知标题：</label>
-                    <i-Input v-model="title" placeholder="请输入通知标题..."  style="width: 300px"></i-Input>
+                    <i-Input v-model="title" placeholder="请输入通知标题..."  maxlength="100" style="width:70%;"></i-Input>
                 </div>
             </i-col>
         </Row>
@@ -57,6 +57,7 @@
             backBut:false,
             spinShow:false,
             userid:${requestScope.user.id},
+            corporationid:${requestScope.user.corporationid},
             title:""
         },
         mounted:function () {
@@ -92,17 +93,22 @@
                        valert(this,"请输入通知标题");
                        return;
                 }
-                if(CKEDITOR.instances.contect_text.getData()!=""){
-                    vajaxPost(add_url,{userid:this.userid,title:this.title,content:CKEDITOR.instances.contect_text.getData()},true,(result)=>{
+                if(CKEDITOR.instances.contect_text.getData()!="") {
+                    vajaxPost(add_url, {
+                        corporationid:this.corporationid,
+                        userid: this.userid,
+                        title: this.title,
+                        content: CKEDITOR.instances.contect_text.getData()
+                    }, true, (result) => {
                         vtoast(this, result.tip);
-                        this.title="";
+                        this.title = "";
                         CKEDITOR.instances.contect_text.setData("");
                         //立即关闭增加窗口
                         vPopWindowsColse({});
-                    },()=>{
-                        this.spinShow=true;
-                    },()=>{
-                        this.spinShow=false;
+                    }, () => {
+                        this.spinShow = true;
+                    }, () => {
+                        this.spinShow = false;
                     });
                 }
                 else{

@@ -19,9 +19,9 @@
     <div class="my-layout">
         <Row class-name="my-layout-top" justify="center" align="middle" type="flex">
             <i-col  span="23">
-                <div class="float-left">
+                <div class="float-left fil-width">
                     <label class="my-label">通知标题：</label>
-                    <i-Input v-model="title" placeholder="请输入通知标题..."  style="width: 300px"></i-Input>
+                    <i-Input v-model="title" placeholder="请输入通知标题..." maxlength="100" style="width:70%;" ></i-Input>
                 </div>
             </i-col>
         </Row>

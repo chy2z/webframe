@@ -14,7 +14,7 @@
 <body>
 <div class="my-app" id="app">
     <Row class-name="my-box" type="flex">
-        <i-col span="12">
+        <i-col class-name="fil-height" span="12">
             <div class="my-layout my-box-left">
                 <Row class-name="my-layout-top" justify="end" align="middle" type="flex">
                     <i-col span="10">
@@ -54,7 +54,7 @@
                     </i-col>
                 </Row>
                 <Row class-name="my-layout-body" type="flex">
-                    <i-col class-name="col-left" span="24">
+                    <i-col class-name="col-left fil-height" span="24">
                         <Card>
                             <p slot="title">分配权限</p>
                             <div class="tree-box">
@@ -65,13 +65,11 @@
                     </i-col>
                 </Row>
                <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
-                    <i-col span="6"></i-col>
-                    <i-col span="18">
-                    </i-col>
+                    <i-col span="24"></i-col>
                 </Row>
             </div>
         </i-col>
-        <i-col span="12">
+        <i-col class-name="fil-height" span="12">
             <div class="my-layout my-box-right">
                 <Row class-name="my-layout-top" justify="end" align="middle" type="flex">
                     <i-col span="10">
@@ -83,7 +81,7 @@
                     </i-col>
                 </Row>
                 <Row class-name="my-layout-body" type="flex">
-                    <i-col class-name="col-right" span="24">
+                    <i-col class-name="col-right fil-height" span="24">
                         <Card>
                             <p slot="title">已有权限</p>
                             <Tree :data="dataRight"  multiple></Tree>
@@ -92,8 +90,7 @@
                     </i-col>
                 </Row>
                 <Row class-name="my-layout-bottom" justify="end" align="middle" type="flex">
-                    <i-col span="6"></i-col>
-                    <i-col span="18">
+                    <i-col span="24">
                     </i-col>
                 </Row>
             </div>

@@ -145,6 +145,13 @@ public class LoginControl extends BaseControl {
 			result.setFail(LanguageFactory.getLanguages().ERROR_NAME_PASSWORD);
 			return result;
 		}
+
+		// 没有角色用户未授权
+		if(user.getRoleid()==0){
+			result.setFail(LanguageFactory.getLanguages().UN_ANTHORIZED);
+			return result;
+		}
+
         // 离职的用户未授权
 		if(user.getState().equals(UserStateType.Quit.getName())){
 			result.setFail(LanguageFactory.getLanguages().UN_ANTHORIZED);

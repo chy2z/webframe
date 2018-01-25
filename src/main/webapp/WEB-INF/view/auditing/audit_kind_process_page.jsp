@@ -125,7 +125,8 @@
     var add_url=domain+"/auditKindProcess/path/add?jwt=${requestScope.jwt}";
     var update_url=domain+"/auditKindProcess/path/update?jwt=${requestScope.jwt}";
     var delete_url=domain+"/auditKindProcess/delete?jwt=${requestScope.jwt}";
-    var updateEnable_url=domain+"/auditKindProcess/updateEnable?jwt=${requestScope.jwt}";
+    var updateProcessEnable_url=domain+"/auditKindProcess/updateEnable?jwt=${requestScope.jwt}";
+    var updateStepEnable_url=domain+"/auditKindProcessStep/updateEnable?jwt=${requestScope.jwt}";
     var corporation_Select_url="${ctx}/corporation/vselect/selectCorporation?jwt=${requestScope.jwt}";
 
     var pageHelperProcess=new pageHepler("${ctx}/auditKindProcess/pagination?jwt=${requestScope.jwt}",{
@@ -160,19 +161,36 @@
                             textAlign:"center"
                         }
                     },[
-                        h('Button', {
+                        h('Poptip', {
                             props: {
-                                type: params.row.enable=="启用"?'success':"error",
-                                size: 'small'
+                                confirm: true,
+                                title: '您确定要改变状态吗?',
+                                transfer: true,
+                                placement:'top-end'
                             },
                             on: {
-                                click: () => {
+                                'on-ok': () => {
+                                    app.updateProcessEnable(params.row);
+                                }
+                            },
+                            nativeOn: {
+                                click: (e) => {
                                     //阻止事件冒泡
-                                    event.cancelBubble=true;
-                                    app.updateEnable(params.row);
+                                    e.cancelBubble=true;
                                 }
                             }
-                        }, params.row.enable=="启用"?"启用":"禁用")
+                        }, [
+                            h('Button', {
+                                style: {
+                                    margin: '0 5px'
+                                },
+                                props: {
+                                    type: params.row.enable=="启用"?'success':"error",
+                                    size: 'small',
+                                    placement: 'top'
+                                }
+                            }, params.row.enable=="启用"?"启用":"禁用")
+                        ])
                     ]);
                 }
             }
@@ -196,6 +214,49 @@
             {
                 title: '部门',
                 key: 'departname'
+            },
+            {
+                title: '状态',
+                key: 'enable',
+                render: (h, params) => {
+                    return h("div",{
+                        style: {
+                            color: params.row.enable=="启用"?'green':'blue',
+                            textAlign:"center"
+                        }
+                    },[
+                        h('Poptip', {
+                            props: {
+                                confirm: true,
+                                title: '您确定要改变状态吗?',
+                                transfer: true,
+                                placement:'top-end'
+                            },
+                            on: {
+                                'on-ok': () => {
+                                    app.updateStepEnable(params.row);
+                                }
+                            },
+                            nativeOn: {
+                                click: (e) => {
+                                    //阻止事件冒泡
+                                    e.cancelBubble=true;
+                                }
+                            }
+                        }, [
+                            h('Button', {
+                                style: {
+                                    margin: '0 5px'
+                                },
+                                props: {
+                                    type: params.row.enable=="启用"?'success':"error",
+                                    size: 'small',
+                                    placement: 'top'
+                                }
+                            }, params.row.enable=="启用"?"启用":"禁用")
+                        ])
+                    ]);
+                }
             }
         ]
     },{orderBy:" aps.step asc "});
@@ -308,14 +369,29 @@
                     valert(this,"请选择一行记录");
                 }
             },
-            updateEnable(data){
+            updateProcessEnable(data){
                 let enable=(data.enable=="启用"?"禁用":"启用");
-                vajaxPost(updateEnable_url,{pid:data.id,enable:enable},false,(result)=>{
+                vajaxPost(updateProcessEnable_url,{pid:data.id,enable:enable},false,(result)=>{
                     if(result.success){
                         data.enable=enable;
                     }
                     else{
-                        valert(result.tip);
+                        valert(this,result.tip);
+                    }
+                },()=>{
+                    this.spinShow=true;
+                },()=>{
+                    this.spinShow=false;
+                });
+            },
+            updateStepEnable(data){
+                let enable=(data.enable=="启用"?"禁用":"启用");
+                vajaxPost(updateStepEnable_url,{psid:data.id,enable:enable},false,(result)=>{
+                    if(result.success){
+                        data.enable=enable;
+                    }
+                    else{
+                        valert(this,result.tip);
                     }
                 },()=>{
                     this.spinShow=true;

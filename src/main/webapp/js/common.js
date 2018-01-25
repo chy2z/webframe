@@ -94,6 +94,14 @@ function vGetAuthenticationStorage() {
     return sessionStorage.getItem("jwt");
 }
 
+/**
+ *
+ * @returns {Event}
+ */
+function vEvent(){
+    let e = document.all ? window.event : arguments[0] ? arguments[0] : event ;
+    return e;
+}
 
 /**
  * 在新窗口打开
@@ -207,16 +215,13 @@ function vDelay(sleeping,start,process,end) {
  *
  */
 function valert(vue,content,title,type) {
-
     /**
      * vue 默认子页面弹出
      */
-
     /**
      * 改成在main页面弹出
      */
     vue=window.parent.mainVue||vue;
-
     title=title||"信息提示";
     if(!type) {
         vue.$Modal.warning({

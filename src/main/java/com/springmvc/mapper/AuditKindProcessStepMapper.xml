@@ -97,6 +97,25 @@
     </trim>
   </insert>
 
+  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.model.AuditKindProcessStep">
+    update audit_kind_process_step
+    <set>
+      <if test="pid != null">
+        pId = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        uId = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="step != null">
+        step = #{step,jdbcType=INTEGER},
+      </if>
+      <if test="enable != null">
+        enable = #{enable,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
   <select id="getCount" resultType="int">
     select count(1)
     from audit_kind_process_step aps JOIN audit_kind_process ap on aps.pid=ap.id

@@ -12,6 +12,8 @@ public interface AuditKindProcessStepMapper {
 
     int insertSelective(AuditKindProcessStep record);
 
+    int updateByPrimaryKeySelective(AuditKindProcessStep record);
+
     AuditKindProcessStep selectByPrimaryKey(Integer id);
 
     List<AuditKindProcessStep> selectByPid(Integer pid);

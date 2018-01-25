@@ -41,6 +41,14 @@ public class AuditKindProcessStepService extends BaseService {
         return mapper.insertSelective(c) > 0;
     }
 
+    /**
+     * 更新记录
+     * @param c
+     * @return
+     */
+    public boolean update(AuditKindProcessStep c) {
+        return mapper.updateByPrimaryKeySelective(c) > 0;
+    }
 
     /**
      * 根据流程步骤获取步骤

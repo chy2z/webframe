@@ -29,11 +29,12 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="selectByStep" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByEnableStep" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from audit_kind_process_step
-    where pid = #{pid,jdbcType=INTEGER} and step=#{step,jdbcType=INTEGER}
+    where pid = #{pid,jdbcType=INTEGER} and step=#{step,jdbcType=INTEGER} and enable='启用'
+    order by id
   </select>
 
   <select id="selectByPid" parameterType="java.lang.Integer" resultMap="JoinResultMap">

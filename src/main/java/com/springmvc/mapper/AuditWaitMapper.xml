@@ -194,6 +194,10 @@
     order by id desc limit 1
   </select>
 
+  <select id="getCountByPid" parameterType="java.lang.Integer" resultType="int">
+    select count(1) from audit_wait where pId=${pid} and status='审核中'
+  </select>
+
   <select id="getCount" resultType="int">
     select count(1) from (
 
@@ -209,7 +213,7 @@
 
     ) aw
 
-    join audit_kind_process_step ps on aw.pid=ps.pId and aw.steps=ps.step
+    join audit_kind_process_step ps on aw.pid=ps.pId and aw.steps=ps.step and ps.enable='启用'
     join users u on  aw.uid= u.id
     join department d on u.departId=d.id
     join  audit_kind_process p on ps.pId=p.id
@@ -239,10 +243,10 @@
 
     ) aw
 
-    join audit_kind_process_step ps on aw.pid=ps.pId and aw.steps=ps.step
+    join audit_kind_process_step ps on aw.pid=ps.pId and aw.steps=ps.step and ps.enable='启用'
     join users u on  aw.uid= u.id
     join department d on u.departId=d.id
-    join  audit_kind_process p on ps.pId=p.id
+    join audit_kind_process p on ps.pId=p.id
     join audit_kind k on  p.kId=k.id
 
     <if test="where != null">where ${where}</if>

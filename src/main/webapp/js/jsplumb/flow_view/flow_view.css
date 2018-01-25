@@ -88,12 +88,14 @@ html,body {
 .child {color:#70A0DD;}
 .end {color:#F4A8BD;}
 .current {color:#FFBC18;}
+.disable{color:#e6e6e6;}
 
 .window_child {background-color:#70A0DD;}
 .window_start {background-color:#50C625;}
 .window_end {background-color:#F4A8BD;}
 .window_current {background-color:#FFBC18;}
 .window_general {background-color:#EEEEEE;}
+.window_disable {background-color:#e6e6e6;}
 
 ._jsPlumb_connector { z-index:4; }
 ._jsPlumb_endpoint { z-index:21;cursor:pointer; }

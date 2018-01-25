@@ -44,12 +44,13 @@ public class AuditKindProcessStepService extends BaseService {
 
     /**
      * 根据流程步骤获取步骤
+     * 同一个步骤可能有多个审核人(或关系)
      * @param pid
      * @param step
      * @return
      */
-    public AuditKindProcessStep getAuditKindProcessStep(Integer pid,Integer step){
-       return mapper.selectByStep(pid,step);
+    public List<AuditKindProcessStep> getAuditKindProcessStep(Integer pid,Integer step){
+       return mapper.selectByEnableStep(pid,step);
     }
 
 

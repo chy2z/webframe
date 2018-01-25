@@ -13,6 +13,7 @@
 </head>
 <body>
 <div class="my-app" id="app">
+    <Spin size="large" fix v-if="spinShow"></Spin>
     <Row class-name="my-box" type="flex">
         <i-col span="14">
             <div class="my-layout my-box-left">
@@ -120,10 +121,11 @@
     var domain="${ctx}";
     var nomanage=${requestScope.nomanage};
     var corporationId="${requestScope.corporationId}";
-    var add_url=domain+"/auditKindProcess/path/add?jwt=${requestScope.jwt}";
     var flowChartStep_url=domain+"/auditKindProcess/path/flowStepView?jwt=${requestScope.jwt}";
+    var add_url=domain+"/auditKindProcess/path/add?jwt=${requestScope.jwt}";
     var update_url=domain+"/auditKindProcess/path/update?jwt=${requestScope.jwt}";
     var delete_url=domain+"/auditKindProcess/delete?jwt=${requestScope.jwt}";
+    var updateEnable_url=domain+"/auditKindProcess/updateEnable?jwt=${requestScope.jwt}";
     var corporation_Select_url="${ctx}/corporation/vselect/selectCorporation?jwt=${requestScope.jwt}";
 
     var pageHelperProcess=new pageHepler("${ctx}/auditKindProcess/pagination?jwt=${requestScope.jwt}",{
@@ -145,21 +147,34 @@
                 key: 'departname'
             },
             {
+                title: '步骤数',
+                key: 'stepnum'
+            },
+            {
                 title: '状态',
                 key: 'enable',
                 render: (h, params) => {
                     return h("div",{
                         style: {
-                            color: params.row.enable=="启用"?'green':'blue'
+                            color: params.row.enable=="启用"?'green':'blue',
+                            textAlign:"center"
                         }
                     },[
-                        h('strong', params.row.enable)
+                        h('Button', {
+                            props: {
+                                type: params.row.enable=="启用"?'success':"error",
+                                size: 'small'
+                            },
+                            on: {
+                                click: () => {
+                                    //阻止事件冒泡
+                                    event.cancelBubble=true;
+                                    app.updateEnable(params.row);
+                                }
+                            }
+                        }, params.row.enable=="启用"?"启用":"禁用")
                     ]);
                 }
-            },
-            {
-                title: '步骤数',
-                key: 'stepnum'
             }
         ]
     },{orderBy:" ap.id desc "});
@@ -187,9 +202,10 @@
 
     var selectHelperCorporation=new selectHelper(corporation_Select_url,{});
 
-    new Vue({
+    var app=new Vue({
         el: '#app',
         data: {
+            spinShow:false,
             jwt:"${requestScope.jwt}",
             butShow:${requestScope.rightBut},
             selectCorporation:selectHelperCorporation.ivSelect,
@@ -291,6 +307,21 @@
                 else{
                     valert(this,"请选择一行记录");
                 }
+            },
+            updateEnable(data){
+                let enable=(data.enable=="启用"?"禁用":"启用");
+                vajaxPost(updateEnable_url,{pid:data.id,enable:enable},false,(result)=>{
+                    if(result.success){
+                        data.enable=enable;
+                    }
+                    else{
+                        valert(result.tip);
+                    }
+                },()=>{
+                    this.spinShow=true;
+                },()=>{
+                    this.spinShow=false;
+                });
             }
         }
     });
@@ -303,9 +334,11 @@
     function popupsCallBack(action,parameter){
         if(action=="action_add"){
             pageHelperProcess.pageIndexChanging(1);
+            pageHelperStep.clearDataTable();
         }
         else if(action=="action_update"){
             pageHelperProcess.updateSelectRowData(parameter);
+            pageHelperStep.pageIndexChanging(1);
         }
         else {
             return ;

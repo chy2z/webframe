@@ -35,6 +35,7 @@
 
     $(document).ready(function(){
         $.post(data_url, function (result) {
+            if(!result.success){ valert(this,"获取流程图失败"); return false; }
             let json=result.data;
             var fillColor = "gray";
             //jsPlumb.setRenderMode(jsPlumb.VML);

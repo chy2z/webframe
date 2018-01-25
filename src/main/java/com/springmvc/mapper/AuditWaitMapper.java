@@ -41,6 +41,13 @@ public interface AuditWaitMapper {
                         );
 
     /**
+     * 根据Pid获取审核记录数
+     * @param pid
+     * @return
+     */
+    int getCountByPid(@Param("pid")  Integer pid);
+
+    /**
      * 获取送审记录审核状态
      * @param auditState
      * @param tName

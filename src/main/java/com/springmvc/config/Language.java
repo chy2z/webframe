@@ -51,5 +51,7 @@ public class Language {
     public final String SUPER_ADMIN_FORBID_UPDAET = "超级管理员信息不能修改";
     public final String AUDIT_OPERATION_REPEAT = "审核业务重复";
     public final String NOY_ALLOW_AUDIT = "不允许送审";
+    public final String AUDIT_KIND_USING = "审核类型使用中";
+    public final String AUDIT_NEXT_STEP_DISABLE = "后续审核全部禁用";
 
 }

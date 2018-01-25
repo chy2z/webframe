@@ -1,19 +1,19 @@
 package com.springmvc.service;
 
 import com.springmvc.base.BaseService;
+import com.springmvc.config.LanguageFactory;
 import com.springmvc.enums.AuditStateType;
 import com.springmvc.mapper.AuditWaitOpinionMapper;
-import com.springmvc.model.AuditKindProcess;
-import com.springmvc.model.AuditKindProcessStep;
-import com.springmvc.model.AuditWait;
-import com.springmvc.model.AuditWaitOpinion;
+import com.springmvc.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.rtf.RTFEditorKit;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
 * @Title: AuditWaitOptionService
@@ -54,12 +54,29 @@ public class AuditWaitOptionService extends BaseService {
      * @return
      */
     @Transactional(isolation = Isolation.DEFAULT,rollbackFor = Exception.class)
-    public boolean setAuditOpinion(String awid,String uid,String auditState,String opinion) {
+    public RequestResult setAuditOpinion(String awid, String uid, String auditState, String opinion) {
+
+        RequestResult r = new RequestResult();
 
         int result = 0;
 
         // 获取待审核信息
         AuditWait aw = auditWaitService.getAuditWait(Integer.parseInt(awid));
+
+        // 获取审核类型
+        AuditKindProcess akp = auditKindProcessService.getAuditKindProcess(aw.getPid());
+
+        // 获取下一步审核步骤信息
+        List<AuditKindProcessStep> akps = auditKindProcessStepService.getAuditKindProcessStep(aw.getPid(), aw.getSteps() + 1);
+
+        // 不是最后一步
+        if (aw.getSteps().intValue() != akp.getStepnum().intValue()) {
+            // 后续是否存在可用的审核步骤
+            if (akps.size() <= 0) {
+                r.setFail(LanguageFactory.getLanguages().AUDIT_NEXT_STEP_DISABLE);
+                return r;
+            }
+        }
 
         // 审核意见
         AuditWaitOpinion awOption = new AuditWaitOpinion();
@@ -81,23 +98,23 @@ public class AuditWaitOptionService extends BaseService {
             aw.setStatus(AuditStateType.DH.getName());
             aw.setEnddate(new Date());
             //设置送审记录的状态
-            auditWaitService.updateOperation(aw.getTname(),aw.getTkey(),aw.getTvalue(),aw.getStatus());
+            auditWaitService.updateOperation(aw.getTname(), aw.getTkey(), aw.getTvalue(), aw.getStatus());
         } else {
-            // 获取审核类型
-            AuditKindProcess akp = auditKindProcessService.getAuditKindProcess(aw.getPid());
-
             // 是否是最后一步
             if (aw.getSteps().intValue() == akp.getStepnum().intValue()) {
                 aw.setStatus(AuditStateType.TG.getName());
                 aw.setEnddate(new Date());
                 //设置送审记录的状态
-                auditWaitService.updateOperation(aw.getTname(),aw.getTkey(),aw.getTvalue(),aw.getStatus());
+                auditWaitService.updateOperation(aw.getTname(), aw.getTkey(), aw.getTvalue(), aw.getStatus());
             } else {
-                // 获取下一步审核信息
-                AuditKindProcessStep akps = auditKindProcessStepService.getAuditKindProcessStep(aw.getPid(), aw.getSteps() + 1);
-                aw.setStatus(AuditStateType.SHZ.getName());
-                aw.setSteps(akps.getStep());
-                aw.setReceivedate(new Date());
+                if (akps.size() > 0) {
+                    int s = 0;
+                    //Random rand = new Random();
+                    //s=rand.nextInt(akps.size());
+                    aw.setStatus(AuditStateType.SHZ.getName());
+                    aw.setSteps(akps.get(s).getStep());
+                    aw.setReceivedate(new Date());
+                }
             }
         }
 
@@ -105,6 +122,12 @@ public class AuditWaitOptionService extends BaseService {
             result++;
         }
 
-        return result > 0;
+        if (result > 0) {
+            r.setSucceed(LanguageFactory.getLanguages().AUDIT_SUCESS, result);
+        } else {
+            r.setFail(LanguageFactory.getLanguages().AUDIT_FAIL);
+        }
+
+        return r;
     }
 }

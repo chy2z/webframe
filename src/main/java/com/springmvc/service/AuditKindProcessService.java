@@ -80,6 +80,15 @@ public class AuditKindProcessService extends BaseService {
         return result > 0;
     }
 
+    /**
+     * 更新记录
+     * @param p
+     * @return
+     */
+    public boolean update(AuditKindProcess p) {
+        return mapper.updateByPrimaryKeySelective(p) > 0;
+    }
+
 
     /**
      * 删除记录
@@ -134,6 +143,5 @@ public class AuditKindProcessService extends BaseService {
     public String toPaginationJson(int pageNo,int pageSize,String where ,String orderBy) {
         return JsonUtil.writeValueAsString(getPagination(pageNo, pageSize, where, orderBy));
     }
-
 
 }

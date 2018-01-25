@@ -21,8 +21,18 @@ body{
 }
 
 .card-user-infor-name {
+    cursor: pointer;
     font-size: 2em;
     color: #2d8cf0;
+}
+
+.user-infor p{
+    cursor: pointer;
+    margin: 2px 0px;
+}
+
+.user-infor p span {
+    margin-left: 3px;
 }
 
 .card-title {

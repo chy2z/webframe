@@ -38,11 +38,11 @@
                 <Avatar icon="person" size="large" :src="avatorPath" />
             </div>
             <div class="head-right-menu">
-                <i-Menu @on-select="headMenuItemClick" width="auto" mode="horizontal" theme="primary" active-name="userinfo">
-                     <Submenu name="menuOperate">
+                <i-Menu @on-select="headMenuItemClick" width="auto" mode="horizontal" theme="primary" active-name="menuOperate">
+                    <Submenu name="menuOperate">
                         <template slot="title">
                             <Icon type="android-menu"></Icon>
-                            菜单管理
+                            菜单
                         </template>
                          <Menu-Item name="toggleMenu">
                              <Icon type="arrow-swap"></Icon>
@@ -59,21 +59,21 @@
                     </Submenu>
                     <Menu-Item name="fullscreen">
                         <Icon type="arrow-expand"></Icon>
-                        系统全屏
-                    </Menu-Item>
-                    <Menu-Item name="editPwd">
-                        <Icon type="key"></Icon>
-                        修改密码
+                        全屏
                     </Menu-Item>
                     <Menu-Item name="lockSystem">
                         <Icon type="locked"></Icon>
-                        系统锁屏
+                        锁屏
+                    </Menu-Item>
+                    <Menu-Item name="editPwd">
+                        <Icon type="key"></Icon>
+                        密码
                     </Menu-Item>
                     <Menu-Item name="logOut">
                         <Icon type="power"></Icon>
-                        退出系统
+                        退出
                     </Menu-Item>
-                    <Submenu name="userinfo">
+                    <%--<Submenu name="userinfo">
                         <template slot="title">
                             <Icon type="person"></Icon>
                             用户信息
@@ -86,7 +86,7 @@
                             <Menu-Item name="3-5"><Icon type="email"></Icon><Tooltip placement="top" content="邮件">${requestScope.user.email}</Tooltip></Menu-Item>
                             <Menu-Item name="3-6"><Icon type="ribbon-b"></Icon><Tooltip placement="top" content="角色">${requestScope.role}</Tooltip></Menu-Item>
                         </Menu-Group>
-                    </Submenu>
+                    </Submenu>--%>
                 </i-Menu>
             </div>
         </div>
@@ -128,7 +128,7 @@
             <i-col :span="spanRight">
                 <div class="layout-right">
                     <Tabs  @on-tab-remove="tabRemove" class="layout-right-content" type="card" v-model="tabSelected" >
-                        <Tab-Pane label="首页" name="mainframe" icon="ios-home">
+                        <Tab-Pane label="首页" name="mainframe" icon="android-home">
                             <iframe id="mainframe" frameborder="0" scrolling="yes"
                                     style="border: 0px; height: 100%; width: 100%;"></iframe>
                         </Tab-Pane>

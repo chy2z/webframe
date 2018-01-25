@@ -2,6 +2,7 @@ package com.springmvc.controller;
 
 import com.springmvc.base.BaseControl;
 import com.springmvc.config.LanguageFactory;
+import com.springmvc.enums.AuditEnableType;
 import com.springmvc.model.*;
 import com.springmvc.model.flowchart.FlowChart;
 import com.springmvc.model.flowchart.FlowChartNode;
@@ -191,23 +192,50 @@ public class AuditKindProcessControl extends BaseControl {
         }
         else{
             AuditKindProcess c= JsonUtil.jsonToBean(process,AuditKindProcess.class);
-
-            if(c.getId().intValue()!=0) {
-
-                List<AuditKindProcessStep> stepList = (List<AuditKindProcessStep>) JsonUtil.jsonToListBean(steps, AuditKindProcessStep.class);
-
-                if (auditKindProcessService.updateStep(c, stepList,editStep)) {
-                    result.setSucceed(LanguageFactory.getLanguages().UPDATE_SUCESS, null);
+            if(auditWaitService.getCountByPid(c.getId())==0) {
+                if (c.getId().intValue() != 0) {
+                    List<AuditKindProcessStep> stepList = (List<AuditKindProcessStep>) JsonUtil.jsonToListBean(steps, AuditKindProcessStep.class);
+                    if (auditKindProcessService.updateStep(c, stepList, editStep)) {
+                        result.setSucceed(LanguageFactory.getLanguages().UPDATE_SUCESS, null);
+                    } else {
+                        result.setFail(LanguageFactory.getLanguages().UPDATE_FAIL);
+                    }
                 } else {
-                    result.setFail(LanguageFactory.getLanguages().UPDATE_FAIL);
+                    result.setFail(LanguageFactory.getLanguages().DATA_EXCEPTION);
                 }
             }
             else{
-                result.setFail(LanguageFactory.getLanguages().DATA_EXCEPTION);
+                result.setFail(LanguageFactory.getLanguages().AUDIT_KIND_USING);
             }
         }
 
         return  result;
+    }
+
+    /**
+     * 更新状态
+     * @param pid
+     * @param enable
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/updateEnable",method = {RequestMethod.POST})
+    public RequestResult updateEnable(String pid,String enable) {
+        RequestResult result = new RequestResult();
+        if (null == pid || null == enable) {
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
+        } else {
+            AuditKindProcess p=new AuditKindProcess();
+            p.setId(Integer.parseInt(pid));
+            p.setEnable(enable);
+            if(auditKindProcessService.update(p)){
+                result.setSucceed(LanguageFactory.getLanguages().UPDATE_SUCESS, null);
+            }
+            else{
+                result.setSucceed(LanguageFactory.getLanguages().UPDATE_FAIL, null);
+            }
+        }
+        return result;
     }
 
     /**
@@ -217,17 +245,19 @@ public class AuditKindProcessControl extends BaseControl {
      */
     @ResponseBody
     @RequestMapping(value = "/delete",method = {RequestMethod.POST})
-    public RequestResult delete(String id){
-        RequestResult result=new RequestResult();
-        if(id==null){
+    public RequestResult delete(String id) {
+        RequestResult result = new RequestResult();
+        if (id == null) {
             result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
-        }
-        else{
-            if(auditKindProcessService.delete(Integer.parseInt(id))){
-                result.setSucceed(LanguageFactory.getLanguages().DELETE_SUCESS,null);
-            }
-            else{
-                result.setFail(LanguageFactory.getLanguages().DELETE_FAIL);
+        } else {
+            if (auditWaitService.getCountByPid(Integer.parseInt(id)) == 0) {
+                if (auditKindProcessService.delete(Integer.parseInt(id))) {
+                    result.setSucceed(LanguageFactory.getLanguages().DELETE_SUCESS, null);
+                } else {
+                    result.setFail(LanguageFactory.getLanguages().DELETE_FAIL);
+                }
+            } else {
+                result.setFail(LanguageFactory.getLanguages().AUDIT_KIND_USING);
             }
         }
         return result;
@@ -257,6 +287,8 @@ public class AuditKindProcessControl extends BaseControl {
 
             Integer index=0;
 
+            String prcs_parent="";
+
             // 存储前一个节点
             FlowChartNode lastNode=null;
 
@@ -279,20 +311,23 @@ public class AuditKindProcessControl extends BaseControl {
                     //同一个级别
                     if (lastNode.getPrcs_id() == s.getStep().intValue()) {
                         // 合并父节点集合
-                        parent.add(lastNode.getFlow_prcs());
+                        parent.add(index.toString());
                         // 和上一个节点父节点一样
                         node.setPrcs_parent(lastNode.getPrcs_parent());
                     } else {
                         // 新的级别
-                       for(int i=0,len=parent.size()-1;i<=len;i++) {
-                           if (i < len) {
-                               // 字符串加
-                               node.setPrcs_parent(parent.get(i).toString() + ",");
-                           } else {
-                               // 字符串加
-                               node.setPrcs_parent(parent.get(i).toString());
-                           }
-                       }
+                        prcs_parent="";
+                        for (int i = 0, len = parent.size() - 1; i <= len; i++) {
+                            if (i < len) {
+                                // 字符串加
+                                prcs_parent+=parent.get(i).toString() + ",";
+                            } else {
+                                // 字符串加
+                                prcs_parent+=parent.get(i).toString();
+                            }
+                        }
+
+                        node.setPrcs_parent(prcs_parent);
 
                         parent.clear();
 
@@ -319,6 +354,7 @@ public class AuditKindProcessControl extends BaseControl {
                 }
 
                 nodes.add(node);
+
                 lastNode = node;
             }
 
@@ -378,6 +414,8 @@ public class AuditKindProcessControl extends BaseControl {
 
                 Integer index = 0;
 
+                String prcs_parent="";
+
                 // 存储前一个节点
                 FlowChartNode lastNode = null;
 
@@ -400,20 +438,23 @@ public class AuditKindProcessControl extends BaseControl {
                         //同一个级别
                         if (lastNode.getPrcs_id() == s.getStep().intValue()) {
                             // 合并父节点集合
-                            parent.add(lastNode.getFlow_prcs());
+                            parent.add(index.toString());
                             // 和上一个节点父节点一样
                             node.setPrcs_parent(lastNode.getPrcs_parent());
                         } else {
                             // 新的级别
+                            prcs_parent="";
                             for (int i = 0, len = parent.size() - 1; i <= len; i++) {
                                 if (i < len) {
                                     // 字符串加
-                                    node.setPrcs_parent(parent.get(i).toString() + ",");
+                                    prcs_parent+=parent.get(i).toString() + ",";
                                 } else {
                                     // 字符串加
-                                    node.setPrcs_parent(parent.get(i).toString());
+                                    prcs_parent+=parent.get(i).toString();
                                 }
                             }
+
+                            node.setPrcs_parent(prcs_parent);
 
                             parent.clear();
 
@@ -446,28 +487,35 @@ public class AuditKindProcessControl extends BaseControl {
                     node.setPrcs_content(String.format("第 %s 步 %s-%s (%s)", s.getStep(),s.getDepartname(),s.getUname(),s.getRolename()));
                     node.setPrcs_type("");
 
-                    if(s.getStep().intValue()!=aw.getSteps().intValue()) {
+                    // 禁用
+                    if(!s.getEnable().equals(AuditEnableType.YES.getName())){
+                         node.setPrcs_class("window_disable");
+                    }else {
+                        // 不是当前步骤
+                        if (s.getStep().intValue() != aw.getSteps().intValue()) {
 
-                        // 开始
-                        if (s.getStep().intValue() == 1) {
-                            node.setPrcs_class("window_start");
-                        }
+                            // 开始
+                            if (s.getStep().intValue() == 1) {
+                                node.setPrcs_class("window_start");
+                            }
 
-                        // 结束
-                        else if (s.getStep().intValue() == level) {
-                            node.setPrcs_class("window_end");
-                        }
+                            // 结束
+                            else if (s.getStep().intValue() == level) {
+                                node.setPrcs_class("window_end");
+                            }
 
-                        // 中间过程
-                        else {
-                            node.setPrcs_class("window_child");
+                            // 中间过程
+                            else {
+                                node.setPrcs_class("window_child");
+                            }
+                        } else {
+                            // 当前
+                            node.setPrcs_class("window_current");
                         }
-                    }
-                    else{
-                        node.setPrcs_class("window_current");
                     }
 
                     nodes.add(node);
+
                     lastNode = node;
                 }
 

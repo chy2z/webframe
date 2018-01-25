@@ -44,6 +44,7 @@
                                         </Form-Item>
                                         <Form-Item>
                                             <i-Button type="ghost" @click="handleReset('auditOpinion')" >重置</i-Button>
+                                            <i-Button type="success" @click="butRefresh()" style="margin-left: 8px">刷新</i-Button>
                                             <i-Button type="primary" @click="handleSubmit('auditOpinion')" style="margin-left: 8px">保存</i-Button>
                                         </Form-Item>
                                     </i-Form>
@@ -99,30 +100,37 @@
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        vajaxPost(opinion_url,{
-                            awid:data.id,
-                            uid:${requestScope.user.id},
-                            auditState:this.auditOpinion.switchState?vLang.audit.pass:vLang.audit.return,
-                            opinion:this.auditOpinion.opinion
-                        },false,(result)=>{
-                            vtoast(this,result.tip);
-                            if(result.success) {
-                                vPopWindowsColse(null);
-                            }
-                        },()=>{
-                            this.spinShow=true;
-                        },()=>{
-                            this.spinShow=false;
-                        },()=>{
-                            this.spinShow=false;
+                        vconfirm(this,"确认刷新吗?",()=>{
+                            vajaxPost(opinion_url,{
+                                awid:data.id,
+                                uid:${requestScope.user.id},
+                                auditState:this.auditOpinion.switchState?vLang.audit.pass:vLang.audit.return,
+                                opinion:this.auditOpinion.opinion
+                            },false,(result)=>{
+                                vtoast(this,result.tip);
+                                if(result.success) {
+                                    vPopWindowsColse(null);
+                                }
+                            },()=>{
+                                this.spinShow=true;
+                            },()=>{
+                                this.spinShow=false;
+                            },()=>{
+                                this.spinShow=false;
+                            });
                         });
                     } else {
-                        vtoast(this,"数据验证失败!");
+                        vtoast(this, "数据验证失败!");
                     }
-                })
+                });
             },
             handleReset (name) {
                 this.$refs[name].resetFields();
+            },
+            butRefresh(){
+                vconfirm(this,"确认刷新吗?",()=>{
+                    window.location.reload();
+                });
             }
         }
     });

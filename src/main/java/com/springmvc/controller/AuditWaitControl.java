@@ -123,12 +123,7 @@ public class AuditWaitControl {
         if (awid == null || uid == null || auditState == null || opinion == null) {
             result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         } else {
-            if(auditWaitOptionService.setAuditOpinion(awid, uid, auditState, opinion)){
-                result.setSucceed(LanguageFactory.getLanguages().AUDIT_SUCESS,true);
-            }
-            else{
-                result.setFail(LanguageFactory.getLanguages().AUDIT_FAIL);
-            }
+            result = auditWaitOptionService.setAuditOpinion(awid, uid, auditState, opinion);
         }
         return result;
     }

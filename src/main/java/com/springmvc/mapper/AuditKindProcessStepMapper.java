@@ -17,12 +17,12 @@ public interface AuditKindProcessStepMapper {
     List<AuditKindProcessStep> selectByPid(Integer pid);
 
     /**
-     * 根据步骤获取信息
+     * 获取启用的步骤信息
      * @param pid
      * @param step
      * @return
      */
-    AuditKindProcessStep selectByStep(@Param("pid") Integer pid,@Param("step") Integer step);
+    List<AuditKindProcessStep> selectByEnableStep(@Param("pid") Integer pid,@Param("step") Integer step);
 
     /**
      * 根据条件获取记录数

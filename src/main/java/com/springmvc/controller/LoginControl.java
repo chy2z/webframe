@@ -86,10 +86,13 @@ public class LoginControl extends BaseControl {
 				model.addAttribute("geoLast", "--");
 			}
 
-			model.addAttribute("headImg", u.getImg());
-			model.addAttribute("name", u.getName());
-			model.addAttribute("loginName", u.getLoginname());
-			model.addAttribute("roleName", role == null ? SysConfig.superAdminRole : role.getName());
+			// 超级管理员没有角色
+			u.setRoleName(role == null ? SysConfig.superAdminRole : role.getName());
+			// 获取部门
+			u.setDepartName(departmentService.getDepart(u.getDepartid()).getName());
+
+			model.addAttribute("user", u);
+
 			return "forward:../../index.jsp";
 		}
 	}

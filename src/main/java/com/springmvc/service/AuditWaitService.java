@@ -57,6 +57,16 @@ public class AuditWaitService {
     }
 
     /**
+     * 根据审核类型获取待审核记录数
+     * （用于判断审核类型是否可以修改）
+     * @param pid
+     * @return
+     */
+    public int getCountByPid(Integer pid) {
+        return mapper.getCountByPid(pid);
+    }
+
+    /**
      * 获取待审核信息
      * @param id
      * @return

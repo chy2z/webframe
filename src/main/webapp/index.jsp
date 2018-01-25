@@ -23,40 +23,86 @@
                 <Row>
                     <Card>
                         <Row type="flex" class="user-infor">
-                            <i-Col span="8">
+                            <i-Col span="6">
                                 <Row class-name="made-child-con-middle" type="flex" align="middle">
-                                    <img class="avator-img" src="${ctx}/${requestScope.headImg}"/>
+                                    <img class="avator-img" src="${ctx}/${requestScope.user.img}"/>
                                 </Row>
                             </i-Col>
-                            <i-Col span="16" style="padding-left:6px;">
+                            <i-Col span="18" style="padding-left:6px;">
                                 <Row class-name="made-child-con-middle" type="flex" align="middle">
-                                    <div>
-                                        <b class="card-user-infor-name">${requestScope.name}</b>
-                                        <p>${requestScope.loginName}</p>
-                                        <p>${requestScope.roleName}</p>
-                                    </div>
+                                    <i-Col span="24">
+                                        <Tooltip placement="left" :transfer="true" content="姓名">
+                                        <b class="card-user-infor-name">${requestScope.user.name}</b>
+                                       </Tooltip>
+                                    </i-Col>
                                 </Row>
+                                <Row class-name="made-child-con-middle" type="flex" align="middle">
+                                    <i-Col span="12">
+                                        <div>
+                                            <p>
+                                                <Tooltip placement="left" :transfer="true" content="登录名">
+                                                    <Icon type="person"></Icon>
+                                                    <span>${requestScope.user.loginname}</span>
+                                                </Tooltip>
+                                            </p>
+                                            <p>
+                                                <Tooltip placement="left" :transfer="true" content="部门">
+                                                    <Icon type="ios-people"></Icon>
+                                                    <span>${requestScope.user.departName}</span>
+                                                </Tooltip>
+                                            </p>
+                                            <p>
+                                                <Tooltip placement="left" :transfer="true" content="电话">
+                                                    <Icon type="ios-telephone"></Icon>
+                                                    <span>${requestScope.user.phone}</span>
+                                                </Tooltip>
+                                            </p>
+                                        </div>
+                                    </i-Col>
+                                    <i-Col span="12">
+                                        <div>
+                                            <p>
+                                                <Tooltip placement="left" :transfer="true" content="角色">
+                                                    <Icon type="ribbon-b"></Icon>
+                                                    <span>${requestScope.user.roleName}</span></Tooltip>
+                                            </p>
+                                            <p>
+                                                <Tooltip placement="left" :transfer="true" content="职务">
+                                                    <Icon type="trophy"></Icon>
+                                                    <span>${requestScope.user.office}</span>
+                                                </Tooltip>
+                                            </p>
+                                            <p>
+                                                <Tooltip placement="left" :transfer="true" content="邮箱">
+                                                    <Icon type="email"></Icon>
+                                                    <span>${requestScope.user.email}</span>
+                                                </Tooltip>
+                                            </p>
+                                        </div>
+                                    </i-Col>
+                                </Row>
+
                             </i-Col>
                         </Row>
                         <div class="line-gray"></div>
                         <Row class="margin-top-8">
-                            <i-Col span="7">
-                                <p class="notwrap">上次登录信息:</p>
+                            <i-Col span="6">
+                                <p class="notwrap">上次登录信息</p>
                             </i-Col>
-                            <i-Col span="10" class="padding-left-8">
+                            <i-Col span="9" class="padding-left-8">
                                 ${requestScope.loginDateLast}
                             </i-Col>
-                            <i-Col span="7" class="padding-left-8">
+                            <i-Col span="9" class="padding-left-8">
                                 ${requestScope.geoLast}
                             </i-Col>
                         </Row>
                         <Row class="margin-top-8">
-                            <i-Col span="7">
-                                <p class="notwrap">本次登录信息:</p>
+                            <i-Col span="6">
+                                <p class="notwrap">本次登录信息</p>
                             </i-Col>
-                            <i-Col span="10" class="padding-left-8">
+                            <i-Col span="9" class="padding-left-8">
                                 ${requestScope.loginDate}</i-Col>
-                            <i-Col span="7" class="padding-left-8">
+                            <i-Col span="9" class="padding-left-8">
                                 ${requestScope.geo}</i-Col>
                         </Row>
                     </Card>

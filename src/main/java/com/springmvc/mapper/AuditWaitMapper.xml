@@ -198,6 +198,17 @@
     select count(1) from audit_wait where pId=${pid} and status='审核中'
   </select>
 
+  <select id="getAuditWaitCount" resultType="int">
+    select count(1) from (
+      select aw.id,aw.pid,aw.steps,aw.uid
+      from audit_wait aw
+      where status='审核中'
+    ) aw
+    join audit_kind_process_step ps on aw.pid=ps.pId and aw.steps=ps.step and ps.enable='启用'
+    <if test="where != null">where ${where}</if>
+  </select>
+
+
   <select id="getCount" resultType="int">
     select count(1) from (
 

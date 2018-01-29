@@ -100,7 +100,7 @@
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        vconfirm(this,"确认刷新吗?",()=>{
+                        vconfirm(this,"确认保存吗?",()=>{
                             vajaxPost(opinion_url,{
                                 awid:data.id,
                                 uid:${requestScope.user.id},

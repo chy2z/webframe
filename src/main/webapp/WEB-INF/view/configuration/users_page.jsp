@@ -13,7 +13,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>
     <style>
         .outer { width: 100%; height: 70px;padding: 5px 0 0;
-            box-sizing: border-box ;  background-color:#00ffffff;}
+            box-sizing: border-box ;
+         }
 
         .outer img { height: 60px;  width: 100%; }
 

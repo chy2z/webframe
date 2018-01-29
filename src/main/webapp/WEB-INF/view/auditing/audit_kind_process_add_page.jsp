@@ -211,8 +211,7 @@
             },
             {
                 title: '备注',
-                key: 'memo',
-                width:150
+                key: 'memo'
             }
         ]
     },{orderBy:" id desc "});
@@ -232,8 +231,7 @@
             },
             {
                 title: '职位',
-                key: 'office',
-                width:150
+                key: 'office'
             }
         ]
     },{pageSize:50,orderBy:" u.id desc "});

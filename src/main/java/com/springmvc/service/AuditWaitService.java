@@ -281,6 +281,15 @@ public class AuditWaitService {
 
 
     /**
+     * 获取待审核记录数
+     * @param where
+     * @return
+     */
+    public int getAuditWaitCount(String where) {
+        return mapper.getAuditWaitCount(where);
+    }
+
+    /**
      * 返回分页数据
      * @param pageNo
      * @param pageSize

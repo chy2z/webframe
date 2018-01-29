@@ -149,90 +149,29 @@
             </i-Col>
             <i-Col span="16" class-name="padding-left-10">
                 <Row>
-                    <i-Col span="6">
-                        <Card :padding="0">
-                            <div class="infor-card-con">
-                                <i-Col class="infor-card-icon-con" style="background-color: #2d8cf0;color:white;" span="8">
-                                    <Row class="height-100" type="flex" align="middle" justify="center">
-                                        <Icon type="android-person-add" :size="40"></Icon>
-                                    </Row>
-                                </i-Col>
-                                <i-Col span="16" class="height-100">
-                                    <Row type="flex" align="middle" justify="center" class="height-100">
-                                        <div class="infor-card-count user-created-count">
-                                            <p style="text-align: center; color:#2d8cf0; font-size: 30px; font-weight: 700;">
-                                                <span>496</span><span></span>
-                                            </p>
-                                            <p class="infor-intro-text" slot="intro">今日新增</p>
-                                        </div>
-                                    </Row>
-                                </i-Col>
-                            </div>
-                        </Card>
-                    </i-Col>
-                    <i-Col span="6" class-name="padding-left-10">
-                        <Card :padding="0">
-                            <div class="infor-card-con">
-                                <i-Col class="infor-card-icon-con" style="background-color: #64d572;color:white;" span="8">
-                                    <Row class="height-100" type="flex" align="middle" justify="center">
-                                        <Icon type="ios-eye" size="50"></Icon>
-                                    </Row>
-                                </i-Col>
-                                <i-Col span="16" class="height-100">
-                                    <Row type="flex" align="middle" justify="center" class="height-100">
-                                        <div class="infor-card-count user-created-count">
-                                            <p style="text-align: center; color:#64d572; font-size: 30px; font-weight: 700;">
-                                                <span>50</span><span></span>
-                                            </p>
-                                            <p class="infor-intro-text" slot="intro">今日浏览量</p>
-                                        </div>
-                                    </Row>
-                                </i-Col>
-                            </div>
-                        </Card>
-                    </i-Col>
-                    <i-Col span="6" class-name="padding-left-10">
-                        <Card :padding="0">
-                            <div class="infor-card-con">
-                                <i-Col class="infor-card-icon-con" style="background-color: #ffd572; color: white;" span="8">
-                                    <Row class="height-100" type="flex" align="middle" justify="center">
-                                        <Icon type="upload" size="40"></Icon>
-                                    </Row>
-                                </i-Col>
-                                <i-Col span="16" class="height-100">
-                                    <Row type="flex" align="middle" justify="center" class="height-100">
-                                        <div class="infor-card-count user-created-count">
-                                            <p style="text-align: center; color:#ffd572; font-size: 30px; font-weight: 700;">
-                                                <span>24M+</span><span></span>
-                                            </p>
-                                            <p class="infor-intro-text" slot="intro">今日数据采集量</p>
-                                        </div>
-                                    </Row>
-                                </i-Col>
-                            </div>
-                        </Card>
-                    </i-Col>
-                    <i-Col span="6" class-name="padding-left-10">
-                        <Card :padding="0">
-                            <div class="infor-card-con">
-                                <i-Col class="infor-card-icon-con" style="background-color: #f25e43;color: white;" span="8">
-                                    <Row class="height-100" type="flex" align="middle" justify="center">
-                                        <Icon type="shuffle" size="40"></Icon>
-                                    </Row>
-                                </i-Col>
-                                <i-Col span="16" class="height-100">
-                                    <Row type="flex" align="middle" justify="center" class="height-100">
-                                        <div class="infor-card-count user-created-count">
-                                            <p style="text-align: center; color:#f25e43; font-size: 30px; font-weight: 700;">
-                                                <span >50</span><span></span>
-                                            </p>
-                                            <p class="infor-intro-text" slot="intro">今日服务调用量</p>
-                                        </div>
-                                    </Row>
-                                </i-Col>
-                            </div>
-                        </Card>
-                    </i-Col>
+                    <template v-for = "infor in infoBoard">
+                        <i-Col :span="infor.colspan" :class-name="infor.className">
+                            <Card :padding="0">
+                                <div class="infor-card-con">
+                                    <i-Col class="infor-card-icon-con" :style="{backgroundColor:infor.color,color:'white'}" span="8">
+                                        <Row class="height-100" type="flex" align="middle" justify="center">
+                                            <Icon :type="infor.icon" :size="infor.iconSize"></Icon>
+                                        </Row>
+                                    </i-Col>
+                                    <i-Col span="16" class="height-100">
+                                        <Row type="flex" align="middle" justify="center" class="height-100">
+                                            <div class="infor-card-count user-created-count">
+                                                <p :style="{textAlign: 'center', color:infor.color, fontSize: '30px', fontWeight: '700'}">
+                                                    <span>{{infor.content}}</span><span></span>
+                                                </p>
+                                                <p class="infor-intro-text" slot="intro">{{infor.title}}</p>
+                                            </div>
+                                        </Row>
+                                    </i-Col>
+                                </div>
+                            </Card>
+                        </i-Col>
+                    </template>
                 </Row>
                 <Row class="margin-top-10">
                     <Card :padding="0">
@@ -360,7 +299,13 @@
                 }
             ],
             cityData:[],
-            notices:[]
+            notices:[],
+            infoBoard:[
+                {colspan:6,className:"padding-left-0",title:"今日用户新增",content:"496",icon:"android-person-add",iconSize:40,color:"#2d8cf0"},
+                {colspan:6,className:"padding-left-10",title:"今日浏览量",content:"50",icon:"ios-eye",iconSize:40,color:"#64d572"},
+                {colspan:6,className:"padding-left-10",title:"今日数据采集量",content:"24M+",icon:"upload",iconSize:40,color:"#ffd572"},
+                {colspan:6,className:"padding-left-10",title:"今日服务调用量",content:"2000",icon:"shuffle",iconSize:40,color:"#f25e43"}
+            ]
         },
         methods: {
             handleNotice(id){
@@ -368,10 +313,11 @@
                 vPopWindowShow("action_look",noticeLook_url+"&id="+id,"系统通知查看");
             },
             refreshNotices(){
-
+                LoadNotice();
             }
         },
         mounted() {
+            loadNews();
             CreateCityMap();
             CreateChart1();
             CreateChart2();
@@ -383,6 +329,23 @@
             LoadNotice();
         }
     });
+
+    /**
+     * 加载系统消息
+     */
+    function loadNews() {
+        let url = domain + "/auditWait/waitAuditCount?jwt=${requestScope.jwt}";
+        vajaxPost(url,{uid:${requestScope.user.id}},false,(result)=>{
+            if(result.success) {
+                if(parseInt(result.data)>0) {
+                    vnotice(app, 10001, "你有 <a href='#'>" + result.data + "</a> 个业务审核待办！！！", null, "消息通知", 85, 0);
+                }
+            }
+            else{
+                vtoast(app,"网络不给力～，最新消息努力加载中..");
+            }
+        });
+    }
 
     function CreateCityMap() {
 
@@ -867,6 +830,10 @@
         });
     }
 
+    /**
+     * 加载系统发布通知
+     * @constructor
+     */
     function LoadNotice() {
         let url = domain + "/sysNotice/topNewest?jwt=${requestScope.jwt}";
         vajaxPost(url,{top:5},false,(result)=>{
@@ -874,7 +841,7 @@
                 app.notices = result.data;
             }
             else{
-                vtoast("网络不给力～，最新消息努力加载中..");
+                vtoast(app,"网络不给力～，最新消息努力加载中..");
             }
         });
     }

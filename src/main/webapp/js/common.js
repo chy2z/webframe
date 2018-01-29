@@ -95,15 +95,6 @@ function vGetAuthenticationStorage() {
 }
 
 /**
- *
- * @returns {Event}
- */
-function vEvent(){
-    let e = document.all ? window.event : arguments[0] ? arguments[0] : event ;
-    return e;
-}
-
-/**
  * 在新窗口打开
  * @param url
  */
@@ -217,43 +208,29 @@ function vDelay(sleeping,start,process,end) {
 function valert(vue,content,title,type) {
     /**
      * vue 默认子页面弹出
-     */
-    /**
      * 改成在main页面弹出
      */
     vue=window.parent.mainVue||vue;
-    title=title||"信息提示";
+    let config={
+        title: title||"信息提示",
+        content: content
+    };
     if(!type) {
-        vue.$Modal.warning({
-            title: title,
-            content: content
-        });
+        vue.$Modal.warning(config);
     }
     else{
         switch (type) {
             case 'info':
-                vue.$Modal.info({
-                    title: title,
-                    content: content
-                });
+                vue.$Modal.info(config);
                 break;
             case 'success':
-                vue.$Modal.success({
-                    title: title,
-                    content: content
-                });
+                vue.$Modal.success(config);
                 break;
             case 'warning':
-                vue.$Modal.warning({
-                    title: title,
-                    content: content
-                });
+                vue.$Modal.warning(config);
                 break;
             case 'error':
-                vue.$Modal.error({
-                    title: title,
-                    content: content
-                });
+                vue.$Modal.error(config);
                 break;
         }
     }
@@ -274,9 +251,6 @@ function valert(vue,content,title,type) {
 function vconfirm(vue,content,okEvent,cancelEvent){
     /**
      * vue 默认子页面弹出
-     */
-
-    /**
      * 改成在main页面弹出
      */
     vue=window.parent.mainVue||vue;
@@ -302,6 +276,56 @@ function vconfirm(vue,content,okEvent,cancelEvent){
 }
 
 /**
+ * notice 系统消息
+ * @param vue
+ * @param name 当前通知的唯一标识
+ * @param desc 内容
+ * @param render
+ * @param title 标题
+ * @param top 距离顶部距离
+ * @param duration 显示时间
+ * @param type
+ * @param onClose 关闭时间
+ */
+function vnotice(vue,name,desc,render,title,top,duration,type,onClose){
+    vue=window.parent.mainVue||vue;
+    vue.$Notice.config({
+        top: top||85
+    });
+    let config={
+        title: title||"系统消息",
+        desc: desc||"无内容",
+        duration:duration||0,
+        name:name||19999
+    };
+    if(name!=null){
+        vue.$Notice.close(name);
+    }
+    if(!type) {
+        vue.$Notice.info(config);
+    }
+    else{
+        switch (type) {
+            case 'info':
+                vue.$Notice.info(config);
+                break;
+            case 'success':
+                vue.$Notice.success(config);
+                break;
+            case 'warning':
+                vue.$Notice.warning(config);
+                break;
+            case 'error':
+                vue.$Notice.error(config);
+                break;
+            case 'open':
+                vue.$Notice.open(config);
+                break;
+        }
+    }
+}
+
+/**
  * toast 消息提示
  * toast(this,"增加一行记录","success");
  * @param vue
@@ -310,59 +334,31 @@ function vconfirm(vue,content,okEvent,cancelEvent){
  * @param duration
  */
 function vtoast(vue,content,type,duration){
-    /**
-     * vue 默认子页面弹出
-     */
-
-    /**
-     * 改成在main页面弹出
-     */
     vue=window.parent.mainVue||vue;
-
-    duration=duration||4;
+    let config={
+        content: content,
+        duration: duration||4,
+        closable: true
+    };
     if(!type) {
-        vue.$Message.info({
-            content: content,
-            duration: duration,
-            closable: true
-        });
+        vue.$Message.info(config);
     }
     else{
         switch (type) {
             case 'info':
-                vue.$Message.info({
-                    content: content,
-                    duration: duration,
-                    closable: true
-                });
+                vue.$Message.info(config);
                 break;
             case 'success':
-                vue.$Message.success({
-                    content: content,
-                    duration: duration,
-                    closable: true
-                });
+                vue.$Message.success(config);
                 break;
             case 'warning':
-                vue.$Message.warning({
-                    content: content,
-                    duration: duration,
-                    closable: true
-                });
+                vue.$Message.warning(config);
                 break;
             case 'error':
-                vue.$Message.error({
-                    content: content,
-                    duration: duration,
-                    closable: true
-                });
+                vue.$Message.error(config);
                 break;
             case 'loading':
-                vue.$Message.loading({
-                    content: content,
-                    duration: duration,
-                    closable: true
-                });
+                vue.$Message.loading(config);
                 break;
         }
     }

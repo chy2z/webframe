@@ -34,6 +34,27 @@ public class AuditWaitControl {
     AuditWaitOptionService auditWaitOptionService;
 
     /**
+     * 获取等待审核记录数
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/waitAuditCount")
+    public RequestResult waitAuditCount(HttpServletRequest request, HttpServletResponse response) {
+        RequestResult result = new RequestResult();
+        String uid = request.getParameter("uid");
+        if (uid == null) {
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
+        } else {
+            int count = auditWaitService.getAuditWaitCount("ps.uId=" + uid);
+            result.setSucceed(LanguageFactory.getLanguages().SUCCESS, count);
+        }
+
+        return result;
+    }
+
+    /**
      * 分页
      * @return
      */

@@ -153,6 +153,10 @@ html, body {
     padding: 20px;
 }
 
+.padding-left-0{
+    padding-left: 0px;
+}
+
 .padding-left-5{
     padding-left: 5px;
 }

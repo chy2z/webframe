@@ -82,6 +82,12 @@ public interface AuditWaitMapper {
                                  @Param("departId") String departId,
                                  @Param("enable") String enable);
 
+    /**
+     * 获取等待审核记录数
+     * @param where
+     * @return
+     */
+    int getAuditWaitCount(@Param("where") String where);
 
     /**
      * 根据条件获取记录数

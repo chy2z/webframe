@@ -165,8 +165,7 @@
                 },
                 {
                     title: '角色备注',
-                    key: 'memo',
-                    width:300
+                    key: 'memo'
                 }
             ]
         },{orderBy:" id desc "});
@@ -178,9 +177,12 @@
                     key: 'name'
                 },
                 {
-                    title: '用户职位',
-                    key: 'office',
-                    width:300
+                    title: '职位',
+                    key: 'office'
+                },
+                {
+                    title: '状态',
+                    key: 'state'
                 }
             ]
         },{pageSize:50,orderBy:" u.id desc "});

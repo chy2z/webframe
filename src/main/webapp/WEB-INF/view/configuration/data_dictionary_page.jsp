@@ -171,8 +171,12 @@
                 key: 'edits',
                 width:100,
                 render: (h, params) => {
-                    return h("div",{},[
-                        h('strong',(params.row.edits==1?"可编辑":"只读"))
+                    return h("div",{
+                        attrs: {
+                            class: params.row.edits==1?"stateWrite":"stateReadOnly"
+                        }
+                    },[
+                        h('strong',(params.row.edits==1?"编辑":"只读"))
                     ]);
                 }
             }

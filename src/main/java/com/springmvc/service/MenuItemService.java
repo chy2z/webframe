@@ -118,6 +118,7 @@ public class MenuItemService extends BaseService {
                     menu2.setLeaf(true);
                     menu2.setName("m"+mi.getId());
                     menu2.setTitle(mi.getName());
+                    menu2.setIcon(mi.getLmage());
                     menu2.setChilds(new ArrayList<VMenu>());
                     menu1.getChilds().add(menu2);
                 }

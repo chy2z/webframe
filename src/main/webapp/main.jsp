@@ -105,7 +105,7 @@
 
                         <template v-for = "group in menu.childs">
 
-                        <menu-Group class="layout-item-hidden" v-if="group.leaf" :title="group.title">
+                        <%--<menu-Group class="layout-item-hidden" v-if="group.leaf" :title="group.title">
 
                             <!-- 加载自定义属性 url -->
                             <menu-Item v-for="l in group.childs" :url="l.url" :icon="l.icon" :id="l.name" :name="l.name">
@@ -113,7 +113,21 @@
                                 <span >{{l.title}}</span>
                             </menu-Item>
 
-                        </menu-Group>
+                        </menu-Group>--%>
+
+                            <submenu class="layout-item-hidden" v-if="group.leaf" :name="group.name">
+                                <template slot="title">
+                                    <Icon :size="iconSize" :type="group.icon"></Icon>
+                                    <span class="layout-item-hidden">{{ group.title }}</span>
+                                </template>
+
+                                <!-- 加载自定义属性 url -->
+                                <menu-Item v-for="l in group.childs" :url="l.url" :icon="l.icon" :id="l.name" :name="l.name">
+                                    <Icon :type="l.icon"></Icon>
+                                    <span >{{l.title}}</span>
+                                </menu-Item>
+
+                            </submenu>
 
                         <menu-Item class="layout-item-hidden" v-else :id="group.name" :url="group.url" :icon="group.icon" :name="group.name">
                             <Icon :type="group.icon"></Icon>

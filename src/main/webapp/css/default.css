@@ -204,3 +204,11 @@ html, body {
 .auditProcess{
     color: #2d8cf0;
 }
+
+.stateWrite{
+    color: #009900;
+}
+
+.stateReadOnly{
+    color: #ee3834;
+}

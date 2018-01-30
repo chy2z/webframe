@@ -115,14 +115,14 @@
             });
 
 			$("#loginBtn").click(function(){
-			    var name=$("#txtUser").val();
-			    var pwd=$("#txtPwd").val();
-				if(name==""||pwd==""){
+			    let name=$("#txtUser").val();
+                let pwd=$("#txtPwd").val();
+				if(isBlank(name)||isBlank(pwd)){
 					$("#tip").text("用户名和密码都不能为空");
 					$("#myModal").reveal("{data-animation:'none'}");
                 }
                 else{
-                    var data = $.extend({uname:name,upwd:pwd},client.data);
+                    let data = $.extend({uname:name,upwd:pwd},client.data);
                     $.ajax({
                         url: validateLogon_url,
                         type: "POST",
@@ -147,12 +147,12 @@
 	</script>
 </body>
 <script type="text/javascript">
-	var client={};
+	// 默认值
+	var client={country:"中国",region:"安徽省",city:"南京"};
     $.get("http://freegeoip.net/json/",function(data){
         $.get("${ctx}/login/queryIp?ip="+ data.ip, function(result){
             var ipinfo=decodeUnicode(result.data);
             client=eval("("+ipinfo+")");
-            log(client);
         });
     });
 </script>

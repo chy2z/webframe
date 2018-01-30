@@ -203,6 +203,7 @@ var convertMapData = function (data) {
     let res = [];
     let len = data.length;
     for (var i = 0; i < len; i++) {
+        // 去除 市 字
         var geoCoord = geoCoordMap[data[i].name.replace(/市/, "")];
         if (geoCoord) {
             res.push({

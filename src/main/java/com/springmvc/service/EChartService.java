@@ -125,7 +125,7 @@ public class EChartService extends BaseService {
        }
 
        for(String y :axis) {
-           axisDataList.add(new AxisData(mYAxis));
+           axisDataList.add(new AxisData(y));
        }
 
        //标签信息
@@ -234,7 +234,7 @@ public class EChartService extends BaseService {
        }
 
        for (String y : axis) {
-           axisDataList.add(new AxisData(mYAxis));
+           axisDataList.add(new AxisData(y));
        }
 
 
@@ -343,7 +343,7 @@ public class EChartService extends BaseService {
         }
 
         for(String y :axis) {
-            axisDataList.add(new AxisData(mYAxis));
+            axisDataList.add(new AxisData(y));
         }
 
 

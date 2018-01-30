@@ -340,17 +340,23 @@ public class AuditKindProcessControl extends BaseControl {
                 node.setPrcs_content(String.format("第 %s 步 %s (%s)",s.getStep(),s.getUname(),s.getRolename()));
                 node.setPrcs_type("");
 
-                // 开始
-                if(s.getStep().intValue()==1) {
-                    node.setPrcs_class("window_start");
+                // 禁用
+                if(!s.getEnable().equals(AuditEnableType.YES.getName())){
+                    node.setPrcs_class("window_disable");
                 }
-                // 结束
-                else if(s.getStep().intValue()==level){
-                    node.setPrcs_class("window_end");
-                }
-                // 中间过程
-                else{
-                    node.setPrcs_class("window_child");
+                else {
+                    // 开始
+                    if (s.getStep().intValue() == 1) {
+                        node.setPrcs_class("window_start");
+                    }
+                    // 结束
+                    else if (s.getStep().intValue() == level) {
+                        node.setPrcs_class("window_end");
+                    }
+                    // 中间过程
+                    else {
+                        node.setPrcs_class("window_child");
+                    }
                 }
 
                 nodes.add(node);

@@ -21,6 +21,7 @@
             <span class="start">■</span>&nbsp;&nbsp;开始 &nbsp;&nbsp;
             <span class="child">■</span>&nbsp;&nbsp;过程 &nbsp;&nbsp;
              <span class="end">■</span>&nbsp;&nbsp;结束 &nbsp;&nbsp;
+            <span class="disable">■</span>&nbsp;&nbsp;禁用 &nbsp;&nbsp;
             <div>
             </div>
             <div id="prcsList"></div>

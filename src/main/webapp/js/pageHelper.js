@@ -43,7 +43,8 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
         totalCount:0,
         orderBy:null,
         orderInner:null,
-        whereInner:null
+        whereInner:null,
+        rightRecord:null
     },ivPageConfig);
 
     /**
@@ -83,6 +84,12 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
     this.mOrderByInner=null;
 
     /**
+     * 记录权限
+     * @type {null}
+     */
+    this.mRightRecord=null;
+
+    /**
      * 当前选中行
      * @type {null}
      */
@@ -102,11 +109,13 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
         this.mOrderBy=this.ivPage.orderBy;
         this.mOrderByInner=this.ivPage.mOrderByInner;
         this.mWhereInner=this.ivPage.whereInner;
+        this.mRightRecord=this.ivPage.rightRecord;
         let my=this;
         let data = {
             pageNo:this.mpageNo,pageSize:this.mPageSize,
             where:this.mWhere,orderBy:this.mOrderBy,
-            whereInner:this.mWhereInner,orderInner:this.orderInner
+            whereInner:this.mWhereInner,orderInner:this.orderInner,
+            rightRecord:this.mRightRecord
         };
         this.setSelectRowIndex(-1);
         $.ajax({
@@ -149,7 +158,8 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
         let data = {
             pageNo:this.mpageNo,pageSize:this.mPageSize,
             where:this.mWhere,orderBy:this.mOrderBy,
-            whereInner:this.mWhereInner,orderInner:this.orderInner
+            whereInner:this.mWhereInner,orderInner:this.orderInner,
+            rightRecord:this.mRightRecord
         };
         this.setSelectRowIndex(-1);
         $.ajax({

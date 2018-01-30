@@ -286,8 +286,6 @@
 
             //权限控制
             if(nomanage){
-                //加载表格数据
-                pageHelperProcess.load(" c.id='"+corporationId+"'");
                 //加载组织机构
                 selectHelperCorporation.load("id='"+corporationId+"'");
                 selectHelperCorporation.setSelectItem(parseInt(corporationId));

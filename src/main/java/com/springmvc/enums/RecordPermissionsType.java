@@ -19,6 +19,19 @@ public enum RecordPermissionsType {
         this.index = index;
     }
 
+    public static RecordPermissionsType valueOf(int value) {
+        switch (value) {
+            case 1:
+                return U;
+            case 2:
+                return D;
+            case 4:
+                return C;
+            default:
+                return null;
+        }
+    }
+
     public String getName() {
         return name;
     }

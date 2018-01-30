@@ -198,8 +198,6 @@
                 pageHelperDepartment.setHeight($(".my-layout-body").height());
                 //权限控制
                 if(nomanage) {
-                    //表格加载数据
-                    pageHelperDepartment.load("corporationId='"+corporationId+"'");
                     //加载组织机构
                     selectHelperCorporation.load("id='"+corporationId+"'");
                     selectHelperCorporation.setSelectItem(parseInt(corporationId));

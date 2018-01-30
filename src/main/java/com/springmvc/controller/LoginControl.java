@@ -162,12 +162,12 @@ public class LoginControl extends BaseControl {
 		}
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("id", user.getId().toString());
+		map.put("uid", user.getId().toString());
 		map.put("loginName", user.getLoginname());
 		map.put("name", user.getName());
-		map.put("depart", user.getDepartid().toString());
-		map.put("corporationId", user.getCorporationid().toString());
-		map.put("role", user.getRoleid().toString());
+		map.put("departid", user.getDepartid().toString());
+		map.put("corporationid", user.getCorporationid().toString());
+		map.put("roleid", user.getRoleid().toString());
 		map.put("loginTime", DateUtil.formatDate(new Date()));
 		try {
 			token = JwtTokenUtil.createToken(map);
@@ -279,12 +279,12 @@ public class LoginControl extends BaseControl {
 			if(SysConfig.isSuperAdmin(u.getRoleid().toString())){
 				model.addAttribute("nomanage",false);
 				model.addAttribute("rightBut",miService.toIviewButForJson(miService.getButAll(mid)));
-				model.addAttribute("rightRecord",miService.toIviewRecordPermissionsForJson(miService.getButAll(mid)));
+				model.addAttribute("rightRecord",miService.recordPermissions(miService.getButAll(mid)));
 			}
 			else{
 				model.addAttribute("nomanage", true);
                 model.addAttribute("rightBut",miService.toIviewButForJson(miService.getButByRole(role.getId().toString(),mid)));
-				model.addAttribute("rightRecord",miService.toIviewRecordPermissionsForJson(miService.getButByRole(role.getId().toString(),mid)));
+				model.addAttribute("rightRecord",miService.recordPermissions(miService.getButByRole(role.getId().toString(),mid)));
 			}
 
 			model.addAttribute("version", SysConfig.version);

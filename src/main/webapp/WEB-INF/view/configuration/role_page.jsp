@@ -228,8 +228,6 @@
                 pageHelperUser.setHeight($(".my-box-right .my-layout-body").height());
                 //权限控制
                 if(nomanage){
-                    //加载角色表格数据
-                    pageHelperRole.load("corporationId='"+corporationId+"'");
                     //加载组织机构
                     selectHelperCorporation.load("id='"+corporationId+"'");
                     selectHelperCorporation.setSelectItem(parseInt(corporationId));

@@ -84,15 +84,17 @@ public class SysNoticeControl extends BaseControl {
     @RequestMapping("/pagination")
     public String pagination(HttpServletRequest request, HttpServletResponse response) {
 
-        int pageNo=Integer.parseInt(request.getParameter("pageNo"));
+        int pageNo = Integer.parseInt(request.getParameter("pageNo"));
 
-        int pageSize=Integer.parseInt(request.getParameter("pageSize"));
+        int pageSize = Integer.parseInt(request.getParameter("pageSize"));
 
-        String where=request.getParameter("where");
+        String where = request.getParameter("where");
 
-        String orderBy=request.getParameter("orderBy");
+        String orderBy = request.getParameter("orderBy");
 
-        return sysNoticeService.toPaginationJson(pageNo,pageSize,where,orderBy);
+        where = rightRecordCondition(request,utService);
+
+        return sysNoticeService.toPaginationJson(pageNo, pageSize, where, orderBy);
     }
 
     /**

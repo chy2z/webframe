@@ -420,8 +420,7 @@
                 pageHelperUsers.setHeight($(".my-layout-body").height());
                 //权限控制
                 if(nomanage) {
-                    //表格加载数据
-                    pageHelperUsers.load("u.corporationId='"+corporationId+"'");
+                    //加载选择框
                     selectHelperDepartment.load("corporationId='" + corporationId + "'");
                     selectHelperRole.load("corporationId='" + corporationId + "'");
                     selectHelperQueryDepartment.load("corporationId='" + corporationId + "'");

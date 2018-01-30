@@ -170,12 +170,11 @@ public class MenuItemService extends BaseService {
     }
 
     /**
-     * 转换页面记录权限 javascript json 数据
+     * 转换页面记录权限 数据
      * @param listMenuItem
      * @return
      */
-    public String toIviewRecordPermissionsForJson(List<MenuItem> listMenuItem) {
-        Map<String, String> map = new HashMap<String, String>();
+    public String recordPermissions(List<MenuItem> listMenuItem) {
         int udc = 0;
         for (MenuItem mi : listMenuItem) {
             if (mi.getName().equals(RecordPermissionsType.U.getName())) {
@@ -192,8 +191,7 @@ public class MenuItemService extends BaseService {
                 }
             }
         }
-        map.put("rightRecord", SecurityUtil.encryption(String.valueOf(udc), EncryptionType.BASE64));
-        return JsonUtil.writeValueAsString(map);
+        return SecurityUtil.encryption(String.valueOf(udc), EncryptionType.BASE64);
     }
 
     /**

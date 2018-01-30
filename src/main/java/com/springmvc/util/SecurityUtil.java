@@ -89,4 +89,22 @@ public class SecurityUtil {
 		return str;
 	}
 
+	/**
+	 * 解密
+ 	 * @param paramStr
+	 * @param type
+	 * @return
+	 */
+	public final static  String decrypt(String paramStr, EncryptionType type){
+		String str;
+		switch (type) {
+			case BASE64:
+				str = Base64.jdkBase64Decoder(paramStr);
+				break;
+			default:
+				str = paramStr;
+				break;
+		}
+		return str;
+	}
 }

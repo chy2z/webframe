@@ -41,7 +41,7 @@ public class StringUtil {
      * @return
      */
     public static boolean isNotBlank(String str){
-        if(str==null||str.equals("")) {
+        if(str==null||str.equals("")|| str.toUpperCase().equals("NULL")) {
             return false;
         }
         else {

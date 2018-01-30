@@ -40,12 +40,12 @@ public class JwtTokenUtil {
 		map.put("typ", typ);
 		// 创建token
 		String token = JWT.create().withHeader(map)
-				.withClaim("id", info.get("id"))
+				.withClaim("uid", info.get("uid"))
 				.withClaim("loginName", info.get("loginName"))
 				.withClaim("name", info.get("name"))
-				.withClaim("depart", info.get("depart"))
-				.withClaim("corporationId", info.get("corporationId"))
-				.withClaim("role", info.get("role"))
+				.withClaim("departid", info.get("departid"))
+				.withClaim("corporationid", info.get("corporationid"))
+				.withClaim("roleid", info.get("roleid"))
 				.withClaim("loginTime", info.get("loginTime"))
 				.sign(Algorithm.HMAC256(secret));
 		return token;
@@ -61,12 +61,12 @@ public class JwtTokenUtil {
 		DecodedJWT jwt = verifier.verify(token);
 		Map<String, Claim> claims = jwt.getClaims();
 		logger.info("{}","===============解析token================");
-		logger.info("{}:{}","id",claims.get("id").asString());
+		logger.info("{}:{}","uid",claims.get("uid").asString());
 		logger.info("{}:{}","loginName",claims.get("loginName").asString());
 		logger.info("{}:{}","name",claims.get("name").asString());
-		logger.info("{}:{}","depart",claims.get("depart").asString());
-		logger.info("{}:{}","corporationId",claims.get("corporationId").asString());
-		logger.info("{}:{}","role",claims.get("role").asString());
+		logger.info("{}:{}","departid",claims.get("departid").asString());
+		logger.info("{}:{}","corporationid",claims.get("corporationid").asString());
+		logger.info("{}:{}","roleid",claims.get("roleid").asString());
 		logger.info("{}:{}","loginTime",claims.get("loginTime").asString());
 		return claims;
 	}

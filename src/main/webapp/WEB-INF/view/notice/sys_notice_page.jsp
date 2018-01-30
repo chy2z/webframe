@@ -131,10 +131,6 @@
                 {
                     title: '发布时间',
                     key: 'createtime'
-                    //render: function (h, params) {
-                    //    return h('div',
-                    //        new Date(this.row.createtime).Format('yyyy-MM-dd'));
-                    //}
                 },
                 {
                     title: '状态',
@@ -150,7 +146,7 @@
                     }
                 }
             ]
-        },{orderBy:" s.id desc "});
+        },{orderBy:" s.id desc ",rightRecord:"${requestScope.rightRecord}"});
 
         var selectHelperCorporation=new selectHelper(corporation_Select_url,{});
 
@@ -160,6 +156,7 @@
                 spinShow:false,
                 jwt:"${requestScope.jwt}",
                 butShow:${requestScope.rightBut},
+                recordShow:"${requestScope.rightRecord}",
                 queryModal:{
                     title:"条件查询",
                     modalShow:false,
@@ -183,8 +180,6 @@
                 pageHelperNotice.setHeight($(".my-layout-body").height());
                 //权限控制
                 if(nomanage) {
-                    //表格加载数据
-                    pageHelperNotice.load("u.corporationId='"+corporationId+"'");
                     //加载组织机构
                     selectHelperCorporation.load("id='"+corporationId+"'");
                     selectHelperCorporation.setSelectItem(parseInt(corporationId));
@@ -193,6 +188,7 @@
                 else{
                     //表格加载数据
                     pageHelperNotice.load(null);
+
                     //加载组织机构
                     selectHelperCorporation.load(null);
                 }
@@ -278,7 +274,7 @@
                     this.$refs['queryModal.bindModel'].validate((valid) => {
                         if (valid) {
                             let WR = [];
-                            WR[WR.length] = new whereRelation("u.corporationId", selectHelperCorporation.getSelectItem(), "string", null, null, true);
+                            WR[WR.length] = new whereRelation("u.corporationId", selectHelperCorporation.getSelectItem(), "string", null, null, false);
                             WR[WR.length] = new whereRelation("u.name", this.queryModal.bindModel.userName, "string", null, null, true);
                             WR[WR.length] = new whereRelation("s.title",this.queryModal.bindModel.title, "string", null, null, true);
                             pageHelperNotice.load(new pageHelperWhere(WR).getWhere());

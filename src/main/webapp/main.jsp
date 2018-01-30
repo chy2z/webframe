@@ -561,7 +561,7 @@
                         vnotice(app, 10001, "你有 <a onclick='newsEvent(\"m0501\",\"10001\")' href='#'>" + result.data + "</a> 个业务审核待办！！！", null, "消息通知", 85, 0);
                     }
                     else{
-                        vnotice(app, 10001, "暂时没有业务审核待办", null, "消息通知", 85, 0,"warning");
+                        vnotice(app, 10001, "暂时没有业务审核待办", null, "消息通知", 85, 10,"warning");
                     }
                 }
                 else{

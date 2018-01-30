@@ -73,6 +73,12 @@
                         <Icon type="power"></Icon>
                         退出
                     </Menu-Item>
+                    <Menu-Item name="news">
+                        <Badge :count="badgeCount" :dot="badgeDot">
+                        <Icon type="ios-email"></Icon>
+                            消息
+                        </Badge>
+                    </Menu-Item>
                     <%--<Submenu name="userinfo">
                         <template slot="title">
                             <Icon type="person"></Icon>
@@ -103,17 +109,7 @@
                             <span class="layout-item-hidden">{{ menu.title }}</span>
                         </template>
 
-                        <template v-for = "group in menu.childs">
-
-                        <%--<menu-Group class="layout-item-hidden" v-if="group.leaf" :title="group.title">
-
-                            <!-- 加载自定义属性 url -->
-                            <menu-Item v-for="l in group.childs" :url="l.url" :icon="l.icon" :id="l.name" :name="l.name">
-                                <Icon :type="l.icon"></Icon>
-                                <span >{{l.title}}</span>
-                            </menu-Item>
-
-                        </menu-Group>--%>
+                        <template v-for="group in menu.childs">
 
                             <submenu class="layout-item-hidden" v-if="group.leaf" :name="group.name">
                                 <template slot="title">
@@ -122,17 +118,19 @@
                                 </template>
 
                                 <!-- 加载自定义属性 url -->
-                                <menu-Item v-for="l in group.childs" :url="l.url" :icon="l.icon" :id="l.name" :name="l.name">
+                                <menu-Item v-for="l in group.childs" :url="l.url" :icon="l.icon" :id="l.name"
+                                           :name="l.name">
                                     <Icon :type="l.icon"></Icon>
-                                    <span >{{l.title}}</span>
+                                    <span>{{l.title}}</span>
                                 </menu-Item>
 
                             </submenu>
 
-                        <menu-Item class="layout-item-hidden" v-else :id="group.name" :url="group.url" :icon="group.icon" :name="group.name">
-                            <Icon :type="group.icon"></Icon>
-                            <span >{{group.title}}</span>
-                        </menu-Item>
+                            <menu-Item class="layout-item-hidden" v-else :id="group.name" :url="group.url"
+                                       :icon="group.icon" :name="group.name">
+                                <Icon :type="group.icon"></Icon>
+                                <span>{{group.title}}</span>
+                            </menu-Item>
 
                         </template>
 
@@ -298,19 +296,21 @@
             }
         });
 
-        var mainVue=new Vue({
+        var app=new Vue({
             el: '#app',
             data:{
                 jwt:"${requestScope.jwt}",
                 menus:${requestScope.menu},
-                showUnlock: false,
                 tipLock:"系统",
-                lockScreenSize: 0,
+                lockScreenSize:0,
+                showUnlock: false,
                 hideText:true,
                 isFullScreen:false,
-                tabSelected:"mainframe",
                 spanLeft: 3,
                 spanRight: 21,
+                badgeCount:0,
+                badgeDot:true,
+                tabSelected:"mainframe",
                 tabItems:[],
                 popupsModal:{
                     modalShow:false,
@@ -375,6 +375,8 @@
                 if(sessionStorage.islock==1){
                     this.lockScreen();
                 }
+
+                loadNews();
             },
             computed: {
                 iconSize () {
@@ -386,9 +388,7 @@
             },
             methods: {
                 unlockScreen () {
-
                     sessionStorage.islock=0;
-
                     let lockScreenBack = document.getElementById('lock_screen_back');
                     this.showUnlock = false;
                     this.hideText=true;
@@ -396,9 +396,7 @@
                     lockScreenBack.style.boxShadow = '0 0 0 0 #667aa6 inset';
                 },
                 lockScreen () {
-
                     sessionStorage.islock=1;
-
                     let lockScreenBack = document.getElementById('lock_screen_back');
                     lockScreenBack.style.transition = 'all 3s';
                     lockScreenBack.style.zIndex = 10000;
@@ -501,6 +499,10 @@
                         }
                         this.isFullScreen = !this.isFullScreen;
                     }
+                    else if(name=="news"){
+                        this.badgeCountClear();
+                        loadNews();
+                    }
                     else{
 
                     }
@@ -537,9 +539,53 @@
                 },
                 popupsHide(){
                     this.popupsModal.modalShow=false;
+                },
+                badgeCountPlus(count){
+                    this.badgeCount+=count;
+                },
+                badgeCountClear(){
+                    this.badgeCount=0;
                 }
             }
         });
+
+        /**
+         * 加载系统消息
+         */
+        function loadNews() {
+            let url = domain + "/auditWait/waitAuditCount?jwt=${requestScope.jwt}";
+            vajaxPost(url,{uid:${requestScope.user.id}},false,(result)=>{
+                if(result.success) {
+                    if(parseInt(result.data)>0) {
+                        app.badgeCountPlus(result.data);
+                        vnotice(app, 10001, "你有 <a onclick='newsEvent(\"m0501\",\"10001\")' href='#'>" + result.data + "</a> 个业务审核待办！！！", null, "消息通知", 85, 0);
+                    }
+                    else{
+                        vnotice(app, 10001, "暂时没有业务审核待办", null, "消息通知", 85, 0,"warning");
+                    }
+                }
+                else{
+                    vtoast(app,"网络不给力～，最新消息努力加载中..");
+                }
+            });
+        }
+
+        /**
+         * 消息触发时间
+         **/
+        function newsEvent(menuItemName,noticeName){
+             vDelay(1000,null,()=>{
+                 vnoticeClose(app,noticeName);
+             },null);
+             openMenuItem(menuItemName);
+        }
+
+        /**
+         * 子页面打开菜单
+         */
+        function openMenuItem(menuItemName) {
+            app.menuItemClick(menuItemName);
+        }
 
         /**
          * 全局框体显示
@@ -554,16 +600,16 @@
             sessionStorage.setItem("popConfig",popConfig);
             sessionStorage.setItem("popAction",action);
             document.querySelector("#popupsframe").src=url;
-            mainVue.popupsShow(title);
+            app.popupsShow(title);
         }
 
         /**
          * 全局框体关闭
          */
         function popClose(parameter){
-            mainVue.popupsHide();
+            app.popupsHide();
             //调用子窗体的回调函数
-            document.getElementById(mainVue.tabSelected).contentWindow.popupsCallBack(sessionStorage.getItem("popAction"),parameter);
+            document.getElementById(app.tabSelected).contentWindow.popupsCallBack(sessionStorage.getItem("popAction"),parameter);
         }
 </script>
 </html>

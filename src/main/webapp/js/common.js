@@ -95,6 +95,21 @@ function vGetAuthenticationStorage() {
 }
 
 /**
+ * 获取首页vue
+ */
+function vMainVue() {
+    return window.parent.app;
+}
+
+/**
+ * 打开菜单
+ * @param menuName
+ */
+function vOpenMenuItem(menuName){
+    window.parent.openMenuItem(menuName);
+}
+
+/**
  * 在新窗口打开
  * @param url
  */
@@ -210,7 +225,7 @@ function valert(vue,content,title,type) {
      * vue 默认子页面弹出
      * 改成在main页面弹出
      */
-    vue=window.parent.mainVue||vue;
+    vue=vMainVue()||vue;
     let config={
         title: title||"信息提示",
         content: content
@@ -253,8 +268,7 @@ function vconfirm(vue,content,okEvent,cancelEvent){
      * vue 默认子页面弹出
      * 改成在main页面弹出
      */
-    vue=window.parent.mainVue||vue;
-
+    vue=vMainVue()||vue;
     vue.$Modal.confirm({
         title: '确认提示框',
         content: content,
@@ -288,7 +302,7 @@ function vconfirm(vue,content,okEvent,cancelEvent){
  * @param onClose 关闭时间
  */
 function vnotice(vue,name,desc,render,title,top,duration,type,onClose){
-    vue=window.parent.mainVue||vue;
+    vue=vMainVue()||vue;
     vue.$Notice.config({
         top: top||85
     });
@@ -326,6 +340,16 @@ function vnotice(vue,name,desc,render,title,top,duration,type,onClose){
 }
 
 /**
+ * 关闭 notice 系统消息
+ * @param vue
+ * @param name
+ */
+function vnoticeClose(vue,name){
+    vue=vMainVue()||vue;
+    vue.$Notice.close(name);
+}
+
+/**
  * toast 消息提示
  * toast(this,"增加一行记录","success");
  * @param vue
@@ -334,7 +358,7 @@ function vnotice(vue,name,desc,render,title,top,duration,type,onClose){
  * @param duration
  */
 function vtoast(vue,content,type,duration){
-    vue=window.parent.mainVue||vue;
+    vue=vMainVue()||vue;
     let config={
         content: content,
         duration: duration||4,

@@ -152,7 +152,7 @@
 
     u.name as userName,d.name as departName,c.name as corporationName
 
-    from sys_notice  s
+    from sys_notice s
 
     JOIN users u on s.userId=u.id
 

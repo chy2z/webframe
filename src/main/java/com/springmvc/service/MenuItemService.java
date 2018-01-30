@@ -1,11 +1,14 @@
 package com.springmvc.service;
 
 import com.springmvc.base.BaseService;
+import com.springmvc.enums.EncryptionType;
+import com.springmvc.enums.RecordPermissionsType;
 import com.springmvc.mapper.MenuItemMapper;
 import com.springmvc.model.MenuItem;
 import com.springmvc.model.iview.VMenu;
 import com.springmvc.model.iview.VTree;
 import com.springmvc.util.JsonUtil;
+import com.springmvc.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -158,15 +161,38 @@ public class MenuItemService extends BaseService {
      * @param listMenuItem
      * @return
      */
-    public String toIviewButForJson(List<MenuItem> listMenuItem)
-    {
-        Map<String,Boolean> map=new HashMap<String,Boolean>();
-
+    public String toIviewButForJson(List<MenuItem> listMenuItem) {
+        Map<String, Boolean> map = new HashMap<String, Boolean>();
         for (MenuItem mi : listMenuItem) {
-            //按钮名称
-            map.put(mi.getBut(),true);
+                map.put(mi.getBut(), true);
         }
+        return JsonUtil.writeValueAsString(map);
+    }
 
+    /**
+     * 转换页面记录权限 javascript json 数据
+     * @param listMenuItem
+     * @return
+     */
+    public String toIviewRecordPermissionsForJson(List<MenuItem> listMenuItem) {
+        Map<String, String> map = new HashMap<String, String>();
+        int udc = 0;
+        for (MenuItem mi : listMenuItem) {
+            if (mi.getName().equals(RecordPermissionsType.U.getName())) {
+                if (udc < RecordPermissionsType.U.getIndex()) {
+                    udc = RecordPermissionsType.U.getIndex();
+                }
+            } else if (mi.getName().equals(RecordPermissionsType.D.getName())) {
+                if (udc < RecordPermissionsType.D.getIndex()) {
+                    udc = RecordPermissionsType.D.getIndex();
+                }
+            } else if (mi.getName().equals(RecordPermissionsType.C.getName())) {
+                if (udc < RecordPermissionsType.C.getIndex()) {
+                    udc = RecordPermissionsType.C.getIndex();
+                }
+            }
+        }
+        map.put("rightRecord", SecurityUtil.encryption(String.valueOf(udc), EncryptionType.BASE64));
         return JsonUtil.writeValueAsString(map);
     }
 

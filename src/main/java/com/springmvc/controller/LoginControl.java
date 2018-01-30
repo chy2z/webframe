@@ -279,10 +279,12 @@ public class LoginControl extends BaseControl {
 			if(SysConfig.isSuperAdmin(u.getRoleid().toString())){
 				model.addAttribute("nomanage",false);
 				model.addAttribute("rightBut",miService.toIviewButForJson(miService.getButAll(mid)));
+				model.addAttribute("rightRecord",miService.toIviewRecordPermissionsForJson(miService.getButAll(mid)));
 			}
 			else{
 				model.addAttribute("nomanage", true);
                 model.addAttribute("rightBut",miService.toIviewButForJson(miService.getButByRole(role.getId().toString(),mid)));
+				model.addAttribute("rightRecord",miService.toIviewRecordPermissionsForJson(miService.getButByRole(role.getId().toString(),mid)));
 			}
 
 			model.addAttribute("version", SysConfig.version);

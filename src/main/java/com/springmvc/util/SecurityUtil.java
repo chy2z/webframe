@@ -1,5 +1,7 @@
 package com.springmvc.util;
 
+import com.springmvc.enums.EncryptionType;
+
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 
@@ -13,15 +15,14 @@ public class SecurityUtil {
 
 	/**
 	 * 32位md5值.
-	 * 
-	 * @param paramStr 需要md5的字符串.
 	 *
+	 * @param paramStr 需要md5的字符串.
 	 * @return 32位大写md5值.
 	 */
 	public final static String MD5_32(String paramStr) {
 		// 用于加密的字符
-		char md5String[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-				'A', 'B', 'C', 'D', 'E', 'F' };
+		char md5String[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+				'A', 'B', 'C', 'D', 'E', 'F'};
 		try {
 			// 使用平台的默认字符集将此 String 编码为 byte序列，并将结果存储到一个新的 byte数组中
 			byte[] btInput = paramStr.getBytes(Charset.forName("utf-8"));
@@ -58,10 +59,34 @@ public class SecurityUtil {
 
 	/**
 	 * 16位md5值.
+	 *
 	 * @param paramStr
 	 * @return
 	 */
 	public final static String MD5_16(String paramStr) {
-		 return MD5_32(paramStr).substring(8, 24);
-	}	
+		return MD5_32(paramStr).substring(8, 24);
+	}
+
+	/**
+	 * 加密
+	 * @param paramStr
+	 * @param type
+	 * @return
+	 */
+	public final static String  encryption(String paramStr, EncryptionType type) {
+		String str;
+		switch (type) {
+			case MD5:
+				str = MD5_32(paramStr);
+				break;
+			case BASE64:
+				str = Base64.jdkBase64Encoder(paramStr);
+				break;
+			default:
+				str = paramStr;
+				break;
+		}
+		return str;
+	}
+
 }

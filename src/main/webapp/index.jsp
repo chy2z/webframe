@@ -114,8 +114,8 @@
                             系统通知
                         </p>
                         <a type="text" slot="extra">
-                            <Tooltip placement="top" content="刷新" @click.prevent="refreshNotices">
-                            <Icon type="refresh"></Icon>
+                            <Tooltip placement="top" content="刷新">
+                            <Icon @click.native="refreshNotices" type="refresh"></Icon>
                             </Tooltip>
                         </a>
                         <div  class="to-do-list-con">
@@ -313,11 +313,11 @@
                 vPopWindowShow("action_look",noticeLook_url+"&id="+id,"系统通知查看");
             },
             refreshNotices(){
+                vSpin(this);
                 LoadNotice();
             }
         },
         mounted() {
-            loadNews();
             CreateCityMap();
             CreateChart1();
             CreateChart2();
@@ -329,23 +329,6 @@
             LoadNotice();
         }
     });
-
-    /**
-     * 加载系统消息
-     */
-    function loadNews() {
-        let url = domain + "/auditWait/waitAuditCount?jwt=${requestScope.jwt}";
-        vajaxPost(url,{uid:${requestScope.user.id}},false,(result)=>{
-            if(result.success) {
-                if(parseInt(result.data)>0) {
-                    vnotice(app, 10001, "你有 <a href='#'>" + result.data + "</a> 个业务审核待办！！！", null, "消息通知", 85, 0);
-                }
-            }
-            else{
-                vtoast(app,"网络不给力～，最新消息努力加载中..");
-            }
-        });
-    }
 
     function CreateCityMap() {
 

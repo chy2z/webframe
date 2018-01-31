@@ -45,7 +45,7 @@
                 window.history.back();
             },
             goHome() {
-                window.location.href="${ctx}/login.jsp";
+                window.parent.location.href="${ctx}/login.jsp";
             }
         }
     });

@@ -10,4 +10,8 @@
         <!-- 指定 MyBatis 增加到日志名称的前缀 Any String-->
         <setting name="logPrefix" value="mybatis" />
     </settings>
+    <plugins>
+        <!-- 拦截器 -->
+        <plugin interceptor="com.springmvc.interceptor.MyBatisInterceptor"></plugin>
+    </plugins>
 </configuration>

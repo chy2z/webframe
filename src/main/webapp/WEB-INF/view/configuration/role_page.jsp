@@ -245,14 +245,14 @@
                     pageHelperRole.pageIndexChanging(index);
                 },
                 pageSizeChangeRole(pageSize){
-                    pageHelperRole.pageIndexChanging(1);
+                    pageHelperRole.pageIndexChanging(1,pageSize);
                 },
                 tableRoleRowClick(data,index){
                     pageHelperRole.setSelectRowIndex(index);
                     pageHelperUser.load(" roleid='" + data.id + "' ");
                 },
                 selectCorporationChange(option){
-                    if(option==null||option.value==""){
+                    if(isBlank(option)||isBlank(option.value)){
                         pageHelperRole.load(null);
                     }
                     else {

@@ -38,7 +38,6 @@
         <Row class-name="my-layout-bottom" justify="center" align="middle" type="flex">
             <i-col  span="23">
                 <div class="float-right">
-                    <i-Button type="ghost" @click="butBack()" v-show="backBut" icon="arrow-left-c">返回</i-Button>
                     <i-Button type="success" @click="butRefresh()" icon="refresh">刷新</i-Button>
                     <i-Button type="primary" @click="butSave()" icon="checkmark">保存</i-Button>
                 </div>
@@ -54,7 +53,6 @@
     new Vue({
         el: '#app',
         data: {
-            backBut:false,
             spinShow:false,
             userid:${requestScope.user.id},
             corporationid:${requestScope.user.corporationid},
@@ -89,11 +87,11 @@
         },
         methods:{
             butSave(){
-                if(this.title==""){
+                if(isBlank(this.title)){
                        valert(this,"请输入通知标题");
                        return;
                 }
-                if(CKEDITOR.instances.contect_text.getData()!="") {
+                if(!isBlank(CKEDITOR.instances.contect_text.getData())) {
                     vajaxPost(add_url, {
                         corporationid:this.corporationid,
                         userid: this.userid,
@@ -114,9 +112,6 @@
                 else{
                     valert(this,"请编辑通知内容保存");
                 }
-            },
-            butBack(){
-
             },
             butRefresh(){
                 vconfirm(this,"确认刷新吗?",()=>{

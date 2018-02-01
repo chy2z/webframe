@@ -193,18 +193,10 @@
                 pageHelperWaitAudit.pageIndexChanging(index);
             },
             pageSizeChangeWaitAudit(pageSize){
-                pageHelperWaitAudit.pageIndexChanging(1);
+                pageHelperWaitAudit.pageIndexChanging(1,pageSize);
             },
             tableWaitAuditRowClick(data,index){
                 pageHelperWaitAudit.setSelectRowIndex(index);
-            },
-            butLook(){
-                if(pageHelperWaitAudit.getSelectRowIndex()>-1){
-
-                }
-                else{
-                    valert(this,"请选择一行记录查看");
-                }
             },
             butRefresh(){
                 window.location.reload();

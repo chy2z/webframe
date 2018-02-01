@@ -208,7 +208,7 @@
                 pageHelperLogger.setSelectRowIndex(index);
             },
             selectCorporationChange(option){
-                if(option==null||option.value=="") {
+                if(isBlank(option)||isBlank(option.value)) {
                     pageHelperLogger.load(null);
                 }
                 else{

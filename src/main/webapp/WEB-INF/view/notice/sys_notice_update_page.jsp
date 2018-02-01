@@ -89,11 +89,11 @@
         },
         methods:{
             butSave(){
-                if(this.title==""){
+                if(isBlank(this.title)){
                        valert(this,"请输入通知标题");
                        return;
                 }
-                if(CKEDITOR.instances.contect_text.getData()!=""){
+                if(!isBlank(CKEDITOR.instances.contect_text.getData())){
                     //修改日期出现问题
                     let m={id:this.id,userid:this.userid,title:this.title,content:CKEDITOR.instances.contect_text.getData()};
                     vajaxPost(update_url,m,true,(result)=>{

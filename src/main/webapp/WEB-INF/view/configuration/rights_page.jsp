@@ -133,7 +133,6 @@
                 selectHelperCorporation.load("id='"+corporationId+"'");
                 selectHelperCorporation.setSelectItem(parseInt(corporationId));
                 selectHelperCorporation.setDisabled(true);
-                selectHelperRole.load("corporationId='"+corporationId+"'");
             }
             else{
                 //加载组织机构
@@ -168,7 +167,7 @@
                 });
             },
             selectCorporationChange(option){
-                if(option==null||option.value==""){
+                if(isBlank(option)||isBlank(option.value)){
                     selectHelperRole.load(null);
                 }
                 else {
@@ -176,7 +175,7 @@
                 }
             },
             selectRoleChange(option){
-                if(option&&option.value!="") {
+                if(!isBlank(option)&&!isBlank(option.value)) {
                     this.all_right(option.value);
                     this.own_right(option.value);
                 }

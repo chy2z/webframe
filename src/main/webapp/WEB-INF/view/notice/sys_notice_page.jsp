@@ -178,6 +178,7 @@
             mounted:function () {
                 //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条
                 pageHelperNotice.setHeight($(".my-layout-body").height());
+
                 //权限控制
                 if(nomanage) {
                     //加载组织机构
@@ -198,13 +199,13 @@
                     pageHelperNotice.pageIndexChanging(index);
                 },
                 pageSizeChangeNotice(pageSize){
-                    pageHelperNotice.pageIndexChanging(1);
+                    pageHelperNotice.pageIndexChanging(1,pageSize);
                 },
                 tableNoticeRowClick(data,index){
                     pageHelperNotice.setSelectRowIndex(index);
                 },
                 selectCorporationChange(option){
-                    if(option==null||option.value=="") {
+                    if(isBlank(option)||isBlank(option.value)) {
                         pageHelperNotice.load(null);
                     }
                     else{

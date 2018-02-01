@@ -217,9 +217,6 @@
         created: function () {
         },
         mounted: function () {
-            //设置表格宽度(左右布局有bug必须设置宽度)
-            //pageHelperParent.setWidth($(".my-box-left .my-layout-body").width());
-            //pageHelperChild.setWidth($(".my-box-right .my-layout-body").width());
             //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条
             pageHelperParent.setHeight($(".my-box-left .my-layout-body").height());
             pageHelperChild.setHeight($(".my-box-right .my-layout-body").height());

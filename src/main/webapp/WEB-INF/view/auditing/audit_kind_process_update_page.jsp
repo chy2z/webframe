@@ -655,13 +655,13 @@
                 pagingHelperAK.pageIndexChanging(index);
             },
             pageSizeChangeAK(pageSize){
-                pagingHelperAK.setSelectRowIndex(1);
+                pagingHelperAK.setSelectRowIndex(1,pageSize);
             },
             pageChangeUser(index){
                 pageHelperUser.pageIndexChanging(index);
             },
             pageSizeChangeUser(pageSize){
-                pagingHelperAK.setSelectRowIndex(1);
+                pagingHelperAK.setSelectRowIndex(1,pageSize);
             },
             tableRowClickAK(data,index){
                 this.auditProcess.kind=data.name;
@@ -693,11 +693,11 @@
                 }
             },
             selectUDepartChange(option){
-                if(isBlank(option)){
+                if(isBlank(option.value)){
                     pageHelperUser.load("u.corporationId='" + this.corporationid + "'");
                 }
                 else {
-                    pageHelperUser.load(" u.departId='"+option.value+"' ");
+                    pageHelperUser.load("u.departId='"+option.value+"' ");
                 }
             },
             deleteDataStep(row,index){

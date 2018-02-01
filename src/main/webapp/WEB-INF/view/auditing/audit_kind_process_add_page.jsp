@@ -643,13 +643,13 @@
                 pagingHelperAK.pageIndexChanging(index);
             },
             pageSizeChangeAK(pageSize){
-                pagingHelperAK.setSelectRowIndex(1);
+                pagingHelperAK.setSelectRowIndex(1,pageSize);
             },
             pageChangeUser(index){
                 pageHelperUser.pageIndexChanging(index);
             },
             pageSizeChangeUser(pageSize){
-                pagingHelperAK.setSelectRowIndex(1);
+                pagingHelperAK.setSelectRowIndex(1,pageSize);
             },
             tableRowClickAK(data,index){
                 this.auditProcess.kind=data.name;
@@ -681,7 +681,7 @@
                 }
             },
             selectUDepartChange(option){
-                if(isBlank(option)){
+                if(isBlank(option.value)){
                     pageHelperUser.load("u.corporationId='" + this.corporationid + "'");
                 }
                 else {
@@ -689,7 +689,6 @@
                 }
             },
             deleteDataStep(row,index){
-                //vtoast(this,'删除了第' + (index + 1) + '行数据');
                 this.reSort();
             },
             editRowChange(row,index){

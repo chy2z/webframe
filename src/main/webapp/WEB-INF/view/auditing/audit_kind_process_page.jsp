@@ -299,23 +299,23 @@
             }
         },
         methods:{
+            pageChangeProcess(index){
+                pageHelperProcess.pageIndexChanging(index);
+            },
+            pageSizeChangeProcess(pageSize){
+                pageHelperProcess.pageIndexChanging(1,pageSize);
+            },
+            tableProcessRowClick(data,index){
+                pageHelperProcess.setSelectRowIndex(index);
+                pageHelperStep.load(" ap.id='" + data.id + "' ");
+            },
             selectCorporationChange(option){
-                if(option==null||option.value==""){
+                if(isBlank(option.value)){
                     pageHelperProcess.load(null);
                 }
                 else {
                     pageHelperProcess.load(" c.id='" + option.value + "'");
                 }
-            },
-            pageChangeProcess(index){
-                pageHelperProcess.pageIndexChanging(index);
-            },
-            pageSizeChangeProcess(pageSize){
-                pageHelperProcess.pageIndexChanging(1);
-            },
-            tableProcessRowClick(data,index){
-                pageHelperProcess.setSelectRowIndex(index);
-                pageHelperStep.load(" ap.id='" + data.id + "' ");
             },
             butRefresh(){
                 window.location.reload();

@@ -221,10 +221,10 @@
                     pageHelperDepartment.setSelectRowIndex(index);
                 },
                 selectCorporationChange(option){
-                    if(option==null||option.value=="") {
+                    if(isBlank(option)||isBlank(option.value)) {
                         pageHelperDepartment.load(null);
                     }
-                    else{
+                    else {
                         pageHelperDepartment.load("corporationId='" + option.value + "'");
                     }
                 },

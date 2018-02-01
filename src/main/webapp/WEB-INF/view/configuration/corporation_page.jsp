@@ -104,7 +104,6 @@
                       :loading="queryModal.okButLoading" >确定</i-Button>
         </div>
     </Modal>
-
 </div>
 </body>
 <script>
@@ -191,7 +190,7 @@
                     pageHelperCroporation.pageIndexChanging(index);
                 },
                 pageSizeChange(pageSize){
-                    pageHelperCroporation.pageIndexChanging(1);
+                    pageHelperCroporation.pageIndexChanging(1,pageSize);
                 },
                 tableCroporationRowClick(data,index){
                     pageHelperCroporation.setSelectRowIndex(index);

@@ -194,7 +194,7 @@
                     pagingHelper.pageIndexChanging(index);
                 },
                 pageSizeChange(pageSize){
-                    pagingHelper.pageIndexChanging(1);
+                    pagingHelper.pageIndexChanging(1,pageSize);
                 },
                 tableRowClick(data,index){
                     pagingHelper.setSelectRowIndex(index);

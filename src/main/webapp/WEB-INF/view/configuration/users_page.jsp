@@ -490,7 +490,7 @@
                     pageHelperUsers.setSelectRowIndex(index);
                 },
                 selectCorporationChange(option){
-                    if(option==null||option.value=="") {
+                    if(isBlank(option)||isBlank(option.value)) {
                         pageHelperUsers.load(null);
                     }
                     else{
@@ -501,7 +501,7 @@
                     }
                 },
                 selectQueryDepartChange(option){
-                    if(option==null||option.value=="") {
+                    if(isBlank(option)||isBlank(option.value)) {
                         pageHelperUsers.load("u.corporationId='" + selectHelperCorporation.getSelectItem() + "'");
                     }
                     else{

@@ -215,7 +215,7 @@
                 pageHelperProcess.pageIndexChanging(index);
             },
             pageSizeChangeProcess(pageSize){
-                pageHelperProcess.pageIndexChanging(1);
+                pageHelperProcess.pageIndexChanging(1,pageSize);
             },
             tableProcessRowClick(data,index){
                 pageHelperProcess.setSelectRowIndex(index);

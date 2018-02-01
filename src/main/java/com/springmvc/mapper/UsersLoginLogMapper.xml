@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springmvc.mapper.UsersLoginLogMapper">
+
   <resultMap id="BaseResultMap" type="com.springmvc.model.UsersLoginLog">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="lastId" jdbcType="INTEGER" property="lastid" />
@@ -11,6 +12,12 @@
     <result column="city" jdbcType="VARCHAR" property="city" />
     <result column="result" jdbcType="VARCHAR" property="result" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createdate" />
+  </resultMap>
+
+  <!-- 增加级联属性 -->
+  <resultMap extends="BaseResultMap" id="JoinResultMap" type="com.springmvc.model.UsersLoginLog">
+    <result column="departName" jdbcType="VARCHAR" property="departName" />
+    <result column="uName" jdbcType="VARCHAR" property="uName" />
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -97,6 +104,26 @@
     from users_login_log
     where usersid = #{usersid,jdbcType=INTEGER}
     order by id desc limit 1
+  </select>
+
+  <select id="getCount" resultType="int">
+    select count(1)
+    from users_login_log l
+    JOIN users u on l.usersId=u.id
+    join department d on u.departId=d.id
+    <if test="where != null">where ${where}</if>
+    <if test="orderBy != null">order by ${orderBy}</if>
+  </select>
+
+  <select id="selectPagination" resultMap="BaseResultMap">
+    select l.id,l.lastId, l.usersId, l.ip, l.country, l.province, l.city, l.result,l.createDate,
+    u.name as uName, d.`name` as departName
+    from users_login_log l
+    JOIN users u on l.usersId=u.id
+    join department d on u.departId=d.id
+    <if test="where != null">where ${where}</if>
+    <if test="orderBy != null">order by ${orderBy}</if>
+    limit #{start},#{pageSize}
   </select>
 
 </mapper>

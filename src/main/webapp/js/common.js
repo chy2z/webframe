@@ -80,6 +80,22 @@ Date.prototype.Format = function (fmt) {
 }
 
 /**
+ * 日期格式化
+ * @param date
+ * @param format
+ * @returns {*}
+ * @constructor
+ */
+function vDateFormat(date,format) {
+    if (date != null) {
+        if (date instanceof Date) {
+            return date.Format(format);
+        }
+    }
+    return date;
+}
+
+/**
  * 存储授权信息
  * @param v
  */

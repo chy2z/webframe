@@ -152,8 +152,11 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
      * @param where
      * @param orderBy
      */
-    this.pageIndexChanging=function(pageNo){
+    this.pageIndexChanging=function(pageNo,pageSize){
         this.mpageNo=pageNo;
+        if(pageSize!=null) {
+            this.mPageSize = pageSize;
+        }
         let my=this;
         let data = {
             pageNo:this.mpageNo,pageSize:this.mPageSize,
@@ -229,7 +232,7 @@ function pageHepler(url,ivTableConfig,ivPageConfig){
      * @returns {*}
      */
     this.getSelectRowIndex=function(){
-        return  this.ivTable.selectRowIndex;
+        return this.ivTable.selectRowIndex;
     }
 
     /**

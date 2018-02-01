@@ -28,6 +28,12 @@ public class UsersLoginLog {
 
     private Date createdate;
 
+    //===========关联属性==============
+
+    private String uName;
+
+    private String departName;
+
     public Integer getId() {
         return id;
     }
@@ -99,4 +105,21 @@ public class UsersLoginLog {
     public void setLastid(Integer lastid) {
         this.lastid = lastid;
     }
+
+    public String getuName() {
+        return uName;
+    }
+
+    public void setuName(String uName) {
+        this.uName = uName;
+    }
+
+    public String getDepartName() {
+        return departName;
+    }
+
+    public void setDepartName(String departName) {
+        this.departName = departName;
+    }
+
 }

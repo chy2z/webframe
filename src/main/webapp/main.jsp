@@ -7,7 +7,7 @@
 <%@ include file="taglib/import_common.jsp"%>
 <html>
 <head>
-    <title>主页</title>
+    <title>${requestScope.sysTitle}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>
@@ -33,7 +33,7 @@
             <div class="head-logo-left-logo">
                 <img src="../../images/logo.png" >
             </div>
-            <div class="head-logo-left-title">后台管理系统</div>
+            <div class="head-logo-left-title">${requestScope.sysTitle}</div>
             <div class="head-right-avatar">
                 <Avatar icon="person" size="large" :src="avatorPath" />
             </div>
@@ -187,7 +187,7 @@
         </div>
     </Modal>
 
-    <!-- 全局model -->
+    <!-- 全局Window -->
     <Modal v-model="popupsModal.modalShow" :closable="true" :mask-closable="false" class-name="vertical-center-modal"  :width="popupsModal.width">
         <p slot="header" class="my-modal-title">
             <Icon type="document"></Icon>
@@ -207,7 +207,9 @@
         var unLock_url=domain+"/login/unLock/${requestScope.jwt}";
         var editPwd_url=domain+"/login/editPwd/${requestScope.jwt}";
 
-        // 注册锁屏组件
+        /**
+         * 注册锁屏组件
+         */
         Vue.component('unlock', {
             name: 'Unlock',
             template: `
@@ -571,8 +573,8 @@
         }
 
         /**
-         * 消息触发时间
-         **/
+         * 系统消息展开触发事件
+         */
         function newsEvent(menuItemName,noticeName){
              vDelay(1000,null,()=>{
                  vnoticeClose(app,noticeName);

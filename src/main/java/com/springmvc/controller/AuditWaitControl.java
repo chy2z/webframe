@@ -150,6 +150,29 @@ public class AuditWaitControl {
     }
 
     /**
+     * 审核撤销
+     * @param awid
+     * @param uid
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/setAuditCancel",method = {RequestMethod.POST})
+    public RequestResult setAuditCancel(String awid,String uid) {
+        RequestResult result = new RequestResult();
+        if (awid == null || uid == null) {
+            result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
+        } else {
+            if (auditWaitService.auditCancel(awid, uid)) {
+                result.setSucceed(LanguageFactory.getLanguages().SUCCESS, null);
+            } else {
+                result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
+            }
+        }
+        return result;
+    }
+
+
+    /**
      * 是否允许编辑和删除
      * @param request
      * @param auditState

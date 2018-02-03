@@ -22,6 +22,15 @@ public class DataDictionaryService extends BaseService {
     DataDictionaryMapper ddmap;
 
     /**
+     * 根据字典关键字获取数据
+     * @param deky
+     * @return
+     */
+    public DataDictionary getModel(String deky){
+        return  ddmap.selectByDkey(deky);
+    }
+
+    /**
      * 插入记录
      * @param m
      * @return

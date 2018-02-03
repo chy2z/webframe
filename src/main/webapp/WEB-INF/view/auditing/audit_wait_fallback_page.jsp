@@ -95,6 +95,21 @@
                 <Form-Item label="送审人" prop="sendUser">
                     <i-Input  v-model="queryModal.bindModel.sendUser" placeholder="请输入送审人"></i-Input>
                 </Form-Item>
+                <Form-Item label="结束时间">
+                    <Row>
+                        <i-Col span="11">
+                            <Form-Item prop="sDate">
+                                <Date-Picker type="datetime" format="yyyy-MM-dd HH:mm"  v-model="queryModal.bindModel.sDate"  placeholder="选择开始时间"></Date-Picker>
+                            </Form-Item>
+                        </i-Col>
+                        <i-Col span="2" style="text-align: center">-</i-Col>
+                        <i-Col span="11">
+                            <Form-Item prop="eDate">
+                                <Date-Picker type="datetime" format="yyyy-MM-dd HH:mm"  v-model="queryModal.bindModel.eDate"  placeholder="选择结束时间"></Date-Picker>
+                            </Form-Item>
+                        </i-Col>
+                    </Row>
+                </Form-Item>
             </i-Form>
         </div>
         <div slot="footer">
@@ -127,7 +142,11 @@
             },
             {
                 title: '送审时间',
-                key: 'receivedate'
+                key: 'createdate'
+            },
+            {
+                title: '结束时间',
+                key: 'enddate'
             },
             {
                 title: '送审人',
@@ -186,8 +205,10 @@
                 okButShow:true,
                 okButLoading:false,
                 bindModel:{
+                    kid:undefined,
                     sendUser:"",
-                    kid:undefined
+                    sDate:"",
+                    eDate:""
                 },
                 ruleValidate:{}
             },
@@ -259,6 +280,7 @@
                         WR[WR.length] = new whereRelation("u.corporationId", this.selectCorporation.selectItem, "int", null, "=", true);
                         WR[WR.length] = new whereRelation("k.id", this.queryModal.bindModel.kid, "int", null, "=", true);
                         WR[WR.length] = new whereRelation("u.name", this.queryModal.bindModel.sendUser, "string", null, null, true);
+                        WR[WR.length] = new whereRelation("aw.endDate", vDateFormat(this.queryModal.bindModel.sDate,"yyyy-MM-dd HH:mm:ss"), "datatime", vDateFormat(this.queryModal.bindModel.eDate,"yyyy-MM-dd HH:mm:ss"), null, true);
                         pageHelperWaitAudit.load(new pageHelperWhere(WR).getWhere());
                         this.queryModal.modalShow = false;
                     }

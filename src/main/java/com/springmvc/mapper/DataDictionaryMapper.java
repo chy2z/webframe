@@ -13,6 +13,8 @@ public interface DataDictionaryMapper {
 
     DataDictionary selectByPrimaryKey(Integer id);
 
+    DataDictionary selectByDkey(String dkey);
+
     int updateByPrimaryKeySelective(DataDictionary record);
 
     /**

@@ -35,7 +35,7 @@ html, body {
 
 .head-logo-left-title {
     float:left;
-    width: 180px;
+    min-width: 180px;
     height: 30px;
     font-size: 25px;
     line-height: 30px;

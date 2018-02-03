@@ -39,7 +39,7 @@
 									<div class="tMainWrap">
 										<p class="tUserWrap">
 											<i class="tUserImg"></i>
-											<input  name="username" id="txtUser" class="tUser" placeholder="用户名" value="admins" type="text" >
+											<input  name="username" id="txtUser" class="tUser" placeholder="用户名" value="51aspx" type="text" >
 											<span class="tUserExt"></span>
 										</p>
 
@@ -85,13 +85,11 @@
 			</div>
 		</div>
 	</form>
-
 	<div id="myModal" class="reveal-modal">
 		<h3 style="margin-bottom: 20px; font-size: 16px;">温馨提示</h3>
 		<p id="tip" style="text-align: center; font-size: 15px;">信息不正确!</p>
 		<a class="close-reveal-modal">&#215;</a>
 	</div>
-
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/login/jquery.reveal.js"></script>
 	<script type="text/javascript" src="js/login/jquery.backstretch.js"></script>

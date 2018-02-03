@@ -1,5 +1,6 @@
 package com.springmvc.service;
 
+import com.springmvc.config.LanguageFactory;
 import com.springmvc.enums.AuditEnableType;
 import com.springmvc.enums.AuditStateType;
 import com.springmvc.mapper.AuditWaitMapper;
@@ -10,6 +11,8 @@ import com.springmvc.util.JsonUtil;
 import com.springmvc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -43,6 +46,26 @@ public class AuditWaitService {
         return result > 0;
     }
 
+
+    /**
+     * 取消审核
+     * @param awid
+     * @param uid
+     * @return
+     */
+    @Transactional(isolation = Isolation.DEFAULT,rollbackFor = Exception.class)
+    public boolean auditCancel(String awid, String uid) {
+        AuditWait aw = getAuditWait(Integer.parseInt(awid));
+        aw.setId(Integer.parseInt(awid));
+        aw.setStatus(AuditStateType.DH.getName());
+
+        // 更新审核记录 和 送审记录
+        if (update(aw)&&updateOperation(aw.getTname(),aw.getTkey(),aw.getTvalue(),AuditStateType.DH.getName())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * 更新送审记录的审核状态

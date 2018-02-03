@@ -221,7 +221,7 @@
   <select id="getCount" resultType="int">
     select count(1) from (
 
-    select aw.id,aw.pid,aw.steps,aw.uid
+    select aw.id,aw.pid,aw.steps,aw.uid,aw.createDate,aw.endDate
 
     from audit_wait aw
 
@@ -249,7 +249,7 @@
   <select id="selectPagination" resultMap="JoinResultMap">
     select aw.*,ps.uid as auid,u.`name` as sendUser,d.`name` as sendDepart,p.stepNum,p.pName,k.operation,k.`name` as kName from (
 
-    select aw.id,aw.pid,aw.steps,aw.uid,aw.createDate,aw.receiveDate,aw.url,aw.tName,aw.tKey,aw.tValue,aw.status,aw.content
+    select aw.id,aw.pid,aw.steps,aw.uid,aw.createDate,aw.receiveDate,aw.endDate,aw.url,aw.tName,aw.tKey,aw.tValue,aw.status,aw.content
 
     from audit_wait aw
 

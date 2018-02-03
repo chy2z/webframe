@@ -19,6 +19,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     /**
      * Handler执行完成之后调用这个方法
      */
+    @Override
     public void afterCompletion(HttpServletRequest request,
                                 HttpServletResponse response, Object handler, Exception exc)
             throws Exception {
@@ -28,6 +29,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     /**
      * Handler执行之后，ModelAndView返回之前调用这个方法
      */
+    @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response,
                            Object handler, ModelAndView modelAndView) throws Exception {
 
@@ -40,6 +42,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     /**
      * Handler执行之前调用这个方法
      */
+    @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
 

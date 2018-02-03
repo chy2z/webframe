@@ -50,6 +50,9 @@ public class LoginControl extends BaseControl {
 	@Autowired
 	UsersLoginLogService usersLoginLogService;
 
+	@Autowired
+	DataDictionaryService dataDictionaryService;
+
 	/**
 	 * 测试
 	 * @return
@@ -228,6 +231,8 @@ public class LoginControl extends BaseControl {
 			else {
 				model.addAttribute("menu", miService.toIviewMenuForJson(miService.getMenuByRole(role.getId().toString())));
 			}
+
+			model.addAttribute("sysTitle",dataDictionaryService.getModel("系统名称").getDvalue());
 
 			model.addAttribute("version", SysConfig.version);
 

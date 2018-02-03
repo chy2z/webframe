@@ -145,6 +145,7 @@
                             </div>
                         </div>
                     </Card>
+                    <Spin size="large" fix v-if="spinShowNotices"></Spin>
                 </Row>
             </i-Col>
             <i-Col span="16" class-name="padding-left-10">
@@ -286,6 +287,7 @@
         el: '#app',
         data: {
             tipTransfer:true,
+            spinShowNotices:false,
             tableHeight:281,
             columns: [
                 {
@@ -293,7 +295,7 @@
                     key: 'name'
                 },
                 {
-                    title: '流量(k)',
+                    title: '次数',
                     key: 'value',
                     sortable: true
                 }
@@ -313,11 +315,25 @@
                 vPopWindowShow("action_look",noticeLook_url+"&id="+id,"系统通知查看");
             },
             refreshNotices(){
-                vSpin(this);
-                LoadNotice();
+                let url = domain + "/sysNotice/topNewest?jwt=${requestScope.jwt}";
+                vajaxPost(url,{top:5},false,(result)=>{
+                    if(result.success) {
+                        this.notices = result.data;
+                    }
+                    else{
+                        vtoast(this,"网络不给力～，最新消息努力加载中..");
+                    }
+                },()=>{
+                     this.spinShowNotices=true;
+                },()=>{
+                    vDelay(1000,null,()=>{
+                        this.spinShowNotices=false;
+                    },null);
+                });
             }
         },
         mounted() {
+            this.refreshNotices();
             CreateCityMap();
             CreateChart1();
             CreateChart2();
@@ -326,7 +342,6 @@
             CreateChart6();
             CreateChart7();
             CreateChart8();
-            LoadNotice();
         }
     });
 
@@ -810,22 +825,6 @@
 
         window.addEventListener('resize', function () {
             chart8.resize();
-        });
-    }
-
-    /**
-     * 加载系统发布通知
-     * @constructor
-     */
-    function LoadNotice() {
-        let url = domain + "/sysNotice/topNewest?jwt=${requestScope.jwt}";
-        vajaxPost(url,{top:5},false,(result)=>{
-            if(result.success) {
-                app.notices = result.data;
-            }
-            else{
-                vtoast(app,"网络不给力～，最新消息努力加载中..");
-            }
         });
     }
 

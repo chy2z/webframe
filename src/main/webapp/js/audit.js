@@ -20,6 +20,7 @@ var Audit={
     config:{
         auditState:"auditState",
         title:"送审",
+        content:"",
         useId:0,
         departId:0,
         operation:null,
@@ -93,10 +94,11 @@ var Audit={
         },()=>{},()=>{},()=>{},true);
     },
     // 送审
-    sendAudit(vue,rowIndex,selectRow,callBack){
+    sendAudit(vue,rowIndex,selectRow,getContent,callBack){
         if(rowIndex<0){ valert(vue,"请选择一行记录送审!"); return false;}
         if(!selectRow){ valert(vue,"请选择一行记录送审!"); return false;}
         this.config.tValue=selectRow.id;
+        this.config.content=getContent(selectRow);
         vajaxPost(this.urls.allowSendAudit,this.config,false,(result)=>{
             if(!result||!result.success||!result.data) {
                 valert(vue,"记录不能送审!");
@@ -114,7 +116,9 @@ var Audit={
         if(rowIndex<0){ valert(vue,"请选择审核类型!"); return false;}
         if(!selectRow){ valert(vue,"请选择审核类型!"); return false;}
         vconfirm(vue,"确认要送审吗？",()=>{
-            this.config.tValue=VPopConfig().tValue;
+            let cacheConfig=VPopConfig();
+            this.config.tValue=cacheConfig.tValue;
+            this.config.content=cacheConfig.content;
             vajaxPost(this.urls.selectAudit_url,$.extend(this.config,{pid:selectRow.id}),false,(result)=>{
                 if(!result||!result.success||!result.data) {
                     valert(vue,"记录送审失败!");

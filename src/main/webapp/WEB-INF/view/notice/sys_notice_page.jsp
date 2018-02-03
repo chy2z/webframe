@@ -246,7 +246,10 @@
                     });
                 },
                 butSendAudit(){
-                    Audit.sendAudit(this,pageHelperNotice.getSelectRowIndex(),pageHelperNotice.getSelectRowData(),()=>{
+                    Audit.sendAudit(this,pageHelperNotice.getSelectRowIndex(),pageHelperNotice.getSelectRowData(),(row)=>{
+                        let content=row==null?"":row.title;
+                        return content;
+                    },()=>{
                         vPopWindowShow("action_audit",Audit.urls.sendAudit_url,Audit.config.title,Audit.config);
                     });
                 },

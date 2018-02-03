@@ -6,7 +6,7 @@
 <%@ include file="../../../taglib/import_common.jsp"%>
 <html>
 <head>
-    <title>业务审核</title>
+    <title>撤销审核</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>
@@ -18,7 +18,18 @@
         <Row id="top" class-name="my-layout-top" justify="end" align="middle" type="flex">
             <i-col span="10">
                 <div class="float-left">
-
+                    <label class="my-label">组织机构：</label>
+                    <i-Select  style="width:200px" @on-change="selectCorporationChange"
+                               v-model="selectCorporation.selectItem"
+                               :disabled="selectCorporation.disabled"
+                               :placeholder="selectCorporation.placeholder"
+                               :not-found-text="selectCorporation.notFoundText"
+                               :label-in-value="selectCorporation.labelInValue"
+                               :size="selectCorporation.size" :clearable="selectCorporation.clearable"
+                               :filterable="selectCorporation.filterable">
+                        <i-Option v-for="item in selectCorporation.dataTable" :value="item.id"
+                                  :key="item.id">{{ item.label }}</i-Option>
+                    </i-Select>
                 </div>
             </i-col >
             <i-col span="14">
@@ -98,16 +109,21 @@
 </body>
 <script>
     var domain="${ctx}";
-
-    var opinion_url=domain+"/auditKindProcess/path/auditOption?jwt=${requestScope.jwt}";
-
+    var nomanage=${requestScope.nomanage};
+    var corporationId="${requestScope.corporationId}";
+    var opinion_url=domain+"/auditKindProcess/path/cancelAudit?jwt=${requestScope.jwt}";
     var auditKind_Select_url="${ctx}/auditKind/vselect/selectAuditKind?jwt=${requestScope.jwt}";
+    var corporation_Select_url="${ctx}/corporation/vselect/selectCorporation?jwt=${requestScope.jwt}";
 
     var pageHelperWaitAudit=new pageHepler("${ctx}/auditWait/pagination?jwt=${requestScope.jwt}",{
         columns: [
             {
                 title: '序号',
                 key: 'id'
+            },
+            {
+                title:"送审内容",
+                key:"content"
             },
             {
                 title: '送审时间',
@@ -126,8 +142,8 @@
                 key:"kname"
             },
             {
-                title:"业务流程",
-                key:"pname"
+                title:"审核状态",
+                key:"status"
             },
             {
                 title:"操作",
@@ -143,15 +159,17 @@
                             },
                             on: {
                                 click: () => {
-                                    vPopWindowShow("action_audit",opinion_url,"审核平台",params.row);
+                                    vPopWindowShow("action_cancel_audit",opinion_url,"撤销审核",params.row);
                                 }
                             }
-                        }, '审核')
+                        }, '撤销')
                     ]);
                 }
             }
         ]
-    },{whereInner:" aw.status='"+vLang.audit.process+"' "});
+    },{whereInner:" aw.status='"+vLang.audit.pass+"' "});
+
+    var selectHelperCorporation=new selectHelper(corporation_Select_url,{});
 
     var selectHelperAuditKind=new selectHelper(auditKind_Select_url,{vModel:false});
 
@@ -174,6 +192,7 @@
                 ruleValidate:{}
             },
             selectAuditKind:selectHelperAuditKind.ivSelect,
+            selectCorporation:selectHelperCorporation.ivSelect,
             WaitAuditTable:pageHelperWaitAudit.ivTable,
             WaitAuditPage:pageHelperWaitAudit.ivPage
         },
@@ -181,12 +200,27 @@
 
         },
         mounted:function () {
-            //设置表格的高度，显示记录较多时，出现滚动条，仅仅设置height=100%，不会出现滚动条
             pageHelperWaitAudit.setHeight($(".my-layout-body").height());
-            //表格加载数据
-            pageHelperWaitAudit.load(" ps.uid='"+this.useid+"' ");
-            //加载组织机构
-            selectHelperAuditKind.load(null);
+            if(nomanage){
+                //加载组织机构
+                selectHelperCorporation.load("id='"+corporationId+"'");
+                selectHelperCorporation.setSelectItem(parseInt(corporationId));
+                selectHelperCorporation.setDisabled(true);
+
+                //加载审核类型
+                selectHelperAuditKind.load(null);
+            }
+            else{
+
+                //加载组织机构
+                selectHelperCorporation.load(null);
+
+                //加载审核类型
+                selectHelperAuditKind.load(null);
+
+                //加载审核记录
+                pageHelperWaitAudit.load(null);
+            }
         },
         methods:{
             pageChangeWaitAudit(index){
@@ -197,6 +231,14 @@
             },
             tableWaitAuditRowClick(data,index){
                 pageHelperWaitAudit.setSelectRowIndex(index);
+            },
+            selectCorporationChange(option){
+                if(isBlank(option)||isBlank(option.value)){
+                    pageHelperWaitAudit.load(null);
+                }
+                else {
+                    pageHelperWaitAudit.load("u.corporationId='"+option.value+"'");
+                }
             },
             butRefresh(){
                 window.location.reload();
@@ -210,18 +252,18 @@
             queryModalReset(){
                 this.$refs['queryModal.bindModel'].resetFields();
             },
-            queryModalOk(){
+            queryModalOk() {
                 this.$refs['queryModal.bindModel'].validate((valid) => {
                     if (valid) {
                         let WR = [];
-                        WR[WR.length] = new whereRelation("ps.uid",this.useid, "string", null, null, true);
-                        WR[WR.length] = new whereRelation("k.id",this.queryModal.bindModel.kid, "string", null, null, true);
+                        WR[WR.length] = new whereRelation("u.corporationId", this.selectCorporation.selectItem, "int", null, "=", true);
+                        WR[WR.length] = new whereRelation("k.id", this.queryModal.bindModel.kid, "int", null, "=", true);
                         WR[WR.length] = new whereRelation("u.name", this.queryModal.bindModel.sendUser, "string", null, null, true);
                         pageHelperWaitAudit.load(new pageHelperWhere(WR).getWhere());
-                        this.queryModal.modalShow=false;
+                        this.queryModal.modalShow = false;
                     }
-                    else{
-                        valert(this,'表单验证失败!');
+                    else {
+                        valert(this, '表单验证失败!');
                     }
                 });
             }
@@ -234,7 +276,7 @@
      * @param parameter
      */
     function popupsCallBack(action,parameter){
-        if(action=="action_audit"){
+        if(action=="action_cancel_audit"){
             pageHelperWaitAudit.pageIndexChanging(1);
         }
         else {

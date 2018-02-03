@@ -14,6 +14,7 @@
     <result column="tName" jdbcType="VARCHAR" property="tname" />
     <result column="tKey" jdbcType="VARCHAR" property="tkey" />
     <result column="tValue" jdbcType="VARCHAR" property="tvalue" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
   </resultMap>
 
   <resultMap extends="BaseResultMap" id="JoinResultMap" type="com.springmvc.model.AuditWait">
@@ -28,7 +29,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, pId, steps, status, createDate, receiveDate,enddate, uId, url, tName, tKey, tValue
+    id, pId, steps, status, createDate, receiveDate,enddate, uId, url, tName, tKey, tValue,content
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -90,6 +91,9 @@
       <if test="tvalue != null">
         tValue,
       </if>
+      <if test="content != null">
+        content,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -127,6 +131,9 @@
       </if>
       <if test="tvalue != null">
         #{tvalue,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -166,6 +173,9 @@
       </if>
       <if test="tvalue != null">
         tValue = #{tvalue,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -208,7 +218,6 @@
     <if test="where != null">where ${where}</if>
   </select>
 
-
   <select id="getCount" resultType="int">
     select count(1) from (
 
@@ -240,7 +249,7 @@
   <select id="selectPagination" resultMap="JoinResultMap">
     select aw.*,ps.uid as auid,u.`name` as sendUser,d.`name` as sendDepart,p.stepNum,p.pName,k.operation,k.`name` as kName from (
 
-    select aw.id,aw.pid,aw.steps,aw.uid,aw.createDate,aw.receiveDate,aw.url,aw.tName,aw.tKey,aw.tValue,aw.status
+    select aw.id,aw.pid,aw.steps,aw.uid,aw.createDate,aw.receiveDate,aw.url,aw.tName,aw.tKey,aw.tValue,aw.status,aw.content
 
     from audit_wait aw
 

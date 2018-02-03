@@ -62,7 +62,7 @@
 								</div>
 
 								<div class="ModuleLogin-Copyright">
-									<p>程序员有限公司</p>
+									<p>无忧有限公司</p>
 									<p>Copyright chy Corporation, All Rights Reserved</p>
 									<p>
 										<em>©</em>chy 版权所有

@@ -91,13 +91,12 @@ public class AuditWaitControl {
     @ResponseBody
     @RequestMapping(value = "/selectAudit",method = {RequestMethod.POST})
     public RequestResult selectAudit(String pid,String auditState,String operation,
-                                     String useId,String departId,
-                                    String tName, String tKey,
-                                    String tValue,String url) {
+                                     String content, String useId,String departId,
+                                    String tName, String tKey, String tValue,String url) {
 
         RequestResult result = new RequestResult();
 
-        if (pid == null || useId == null || operation == null || departId == null || auditState == null || tName == null || tKey == null || tValue == null) {
+        if (pid == null || useId == null || operation == null || content==null || departId == null || auditState == null || tName == null || tKey == null || tValue == null) {
             result.setFail(LanguageFactory.getLanguages().DATA_LOSS);
         } else {
             // 是否允许送审
@@ -107,6 +106,7 @@ public class AuditWaitControl {
                 aw.setId(0);
                 aw.setPid(Integer.parseInt(pid));
                 aw.setSteps(1);
+                aw.setContent(StringUtil.emptyOrString(content));
                 aw.setUid(Integer.parseInt(useId));
                 aw.setStatus(AuditStateType.SHZ.getName());
                 aw.setReceivedate(new Date());

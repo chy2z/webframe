@@ -49,6 +49,8 @@ public class AuditWait {
 
     private String tvalue;
 
+    private String content;
+
     //===========关联属性==================
 
     private Integer auid;
@@ -215,5 +217,13 @@ public class AuditWait {
 
     public void setStepnum(Integer stepnum) {
         this.stepnum = stepnum;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

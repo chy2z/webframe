@@ -112,7 +112,7 @@ public class AuditKindProcessControl extends BaseControl {
             model.addAttribute("kindProcess",sModel);
             Users u = uService.getUsers(ut.getUserid());
             model.addAttribute("user", u);
-            return "auditing/audit_kind_process_opinion_page";
+            return "auditing/audit_wait_opinion_page";
         }
         // 送审
         else if(page.equals("sendAudit")) {
@@ -121,6 +121,20 @@ public class AuditKindProcessControl extends BaseControl {
             model.addAttribute("user", u);
             model.addAttribute("auditKind", auditKind);
             return "auditing/audit_kind_process_select_page";
+        }
+        else if(page.equals("cancelAudit")){
+            String tName = request.getParameter("tName");
+            String tKey = request.getParameter("tKey");
+            String tValue = request.getParameter("tValue");
+            Integer pid = auditWaitService.getAuditProcess(tName, tKey, tValue);
+            AuditKindProcess sModel= auditKindProcessService.getAuditKindProcess(pid);
+            model.addAttribute("tName",tName);
+            model.addAttribute("tKey",tKey);
+            model.addAttribute("tValue",tValue);
+            model.addAttribute("kindProcess",sModel);
+            Users u = uService.getUsers(ut.getUserid());
+            model.addAttribute("user", u);
+            return "auditing/audit_wait_cancel_page";
         }
         else {
             return "error";

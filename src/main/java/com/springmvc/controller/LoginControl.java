@@ -196,7 +196,7 @@ public class LoginControl extends BaseControl {
 			utService.update(ut);
 		}
 
-        usersLoginLogService.saveLogin(user.getId(),ip,country,region,city);
+        usersLoginLogService.saveLogin(user.getId(),ut.getMd5token(),ip,country,region,city);
 
 		result.setSucceed(LanguageFactory.getLanguages().SUCCESS_LOGIN,ut.getMd5token());
 

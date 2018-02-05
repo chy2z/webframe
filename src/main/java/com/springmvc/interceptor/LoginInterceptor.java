@@ -1,6 +1,10 @@
 package com.springmvc.interceptor;
 
 import com.springmvc.config.SysConfig;
+import com.springmvc.model.UsersToken;
+import com.springmvc.service.UsersTokenService;
+import com.springmvc.util.SpringContextUtil;
+import com.springmvc.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -10,14 +14,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by chy on 2017/10/18.
- */
+* @Title: LoginInterceptor
+* @Description: 用于登录用户身份合法性验证
+* @author chy
+* @date 2018/2/5 14:27
+*/
 public class LoginInterceptor implements HandlerInterceptor {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
+    private static UsersTokenService utService;
+
     /**
      * Handler执行完成之后调用这个方法
+     * @param request
+     * @param response
+     * @param handler
+     * @param exc
+     * @throws Exception
      */
     @Override
     public void afterCompletion(HttpServletRequest request,
@@ -28,6 +42,11 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     /**
      * Handler执行之后，ModelAndView返回之前调用这个方法
+     * @param request
+     * @param response
+     * @param handler
+     * @param modelAndView
+     * @throws Exception
      */
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response,
@@ -36,7 +55,6 @@ public class LoginInterceptor implements HandlerInterceptor {
         if(modelAndView!=null) {
             modelAndView.addObject("version", SysConfig.version);
         }
-
     }
 
     /**
@@ -46,36 +64,34 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
 
+        // 登录页面
+        String loginUrl = "/login.jsp";
+
         // 获取请求的URL
         String url = request.getRequestURI();
 
-        logger.info("{}:{}","拦截请求",url);
+        // 获取token
+        String jwt= request.getParameter("jwt");
 
-        logger.info("{}:{}","jwt",request.getParameter("jwt"));
-
-        // 以后做jwt统一验证
-
-
-        /*
-
-        if(url.indexOf("login.action")>=0){
-            return true;
+        if(!StringUtil.isNotBlank(jwt)){
+            response.sendRedirect(request.getContextPath() + loginUrl);
+            return false;
         }
 
-        //获取Session
-        HttpSession session = request.getSession();
-
-        String username = (String)session.getAttribute("username");
-
-        if(username != null){
-            return true;
+        if (LoginInterceptor.utService == null) {
+            synchronized (this) {
+                if (LoginInterceptor.utService == null) {
+                    utService = (UsersTokenService) SpringContextUtil.getBean("usersTokenService");
+                }
+            }
         }
-        //不符合条件的，跳转到登录界面
-        request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
 
-        return false;
+        UsersToken ut= utService.getUsersToken(jwt);
 
-        */
+        if(ut==null){
+            response.sendRedirect(request.getContextPath() + loginUrl);
+            return false;
+        }
 
         return true;
     }

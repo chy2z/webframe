@@ -57,13 +57,14 @@ public class UsersLoginLogService extends BaseService {
      * 保存登录信息
      *
      * @param useid
+     * @param token
      * @param ip
      * @param country
      * @param region
      * @param city
      * @return
      */
-    public boolean saveLogin(int useid, String ip, String country, String region, String city) {
+    public boolean saveLogin(int useid,String token, String ip, String country, String region, String city) {
 
         //上一次登录信息
         UsersLoginLog ulogLast = selectLast(useid);
@@ -71,6 +72,7 @@ public class UsersLoginLogService extends BaseService {
         //本次登录信息
         UsersLoginLog ulog = new UsersLoginLog();
         ulog.setLastid(ulogLast == null ? 0 : ulogLast.getId());
+        ulog.setToken(token);
         ulog.setIp(ip);
         ulog.setUsersid(useid);
         ulog.setCountry(country);

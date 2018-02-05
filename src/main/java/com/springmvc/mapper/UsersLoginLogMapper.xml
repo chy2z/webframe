@@ -12,6 +12,7 @@
     <result column="city" jdbcType="VARCHAR" property="city" />
     <result column="result" jdbcType="VARCHAR" property="result" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
   </resultMap>
 
   <!-- 增加级联属性 -->
@@ -21,7 +22,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id,lastId, usersId, ip, country, province, city, result,createDate
+    id,lastId, usersId, ip, country, province, city, result,createDate,token
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -66,6 +67,9 @@
       <if test="createdate != null">
         createDate,
       </if>
+      <if test="token != null">
+        token,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -95,6 +99,9 @@
       <if test="createdate != null">
         #{createdate,jdbcType=TIMESTAMP},
       </if>
+      <if test="token != null">
+        #{token,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
 
@@ -116,7 +123,7 @@
   </select>
 
   <select id="selectPagination" resultMap="BaseResultMap">
-    select l.id,l.lastId, l.usersId, l.ip, l.country, l.province, l.city, l.result,l.createDate,
+    select l.id,l.lastId, l.usersId, l.ip, l.country, l.province, l.city, l.result,l.createDate,l.token,
     u.name as uName, d.`name` as departName
     from users_login_log l
     JOIN users u on l.usersId=u.id

@@ -82,10 +82,13 @@
         <div>
             <i-Form ref="queryModal.bindModel" :model="queryModal.bindModel" :rules="queryModal.ruleValidate"
                     label-position="right" label-width="70">
-                <Form-Item label="登录人" prop="uName">
+                <Form-Item label="登录姓名" prop="uName">
                     <i-Input v-model="queryModal.bindModel.uName" placeholder="请输入登录人"></i-Input>
                 </Form-Item>
-                <Form-Item label="时间范围">
+                <Form-Item label="登录令牌" prop="uToken">
+                    <i-Input v-model="queryModal.bindModel.uToken" placeholder="请输入登录令牌"></i-Input>
+                </Form-Item>
+                <Form-Item label="登录时间">
                     <Row>
                         <i-Col span="11">
                             <Form-Item prop="sDate">
@@ -125,7 +128,7 @@
                 key: 'id'
             },
             {
-                title: '登录人',
+                title: '姓名',
                 key: 'uName'
             },
             {
@@ -145,8 +148,14 @@
                 key: 'city'
             },
             {
+                title: '令牌',
+                key: 'token',
+                width:350,
+            },
+            {
                 title: '登录时间',
-                key: 'createdate'
+                key: 'createdate',
+                width:200
             }
         ]
     },{orderBy:" l.id desc ",rightRecord:"${requestScope.rightRecord}"});
@@ -167,6 +176,7 @@
                 okButLoading:false,
                 bindModel:{
                     uName:"",
+                    uToken:"",
                     sDate:"",
                     eDate:""
                 },
@@ -233,7 +243,9 @@
                         let WR = [];
                         WR[WR.length] = new whereRelation("u.corporationId", selectHelperCorporation.getSelectItem(), "string", null, null, false);
                         WR[WR.length] = new whereRelation("u.name", this.queryModal.bindModel.uName, "string", null, null, true);
+                        WR[WR.length] = new whereRelation("l.token",this.queryModal.bindModel.uToken , "string", null, null, false);
                         WR[WR.length] = new whereRelation("l.createDate", vDateFormat(this.queryModal.bindModel.sDate,"yyyy-MM-dd HH:mm:ss"), "datatime", vDateFormat(this.queryModal.bindModel.eDate,"yyyy-MM-dd HH:mm:ss"), null, true);
+                        alert(new pageHelperWhere(WR).getWhere());
                         pageHelperLogger.load(new pageHelperWhere(WR).getWhere());
                         this.queryModal.modalShow=false;
                     }

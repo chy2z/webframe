@@ -24,9 +24,11 @@ public class UsersLoginLog {
 
     private String city;
 
-    private  String result;
+    private String result;
 
     private Date createdate;
+
+    private String token;
 
     //===========关联属性==============
 
@@ -88,6 +90,14 @@ public class UsersLoginLog {
 
     public void setCreatedate(Date createdate) {
         this.createdate = createdate;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getResult() {

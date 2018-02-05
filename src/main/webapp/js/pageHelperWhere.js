@@ -29,7 +29,7 @@ function whereRelation(_fieldName,_fieldValue,_dataType,_relationValue,_operate,
 
 /**
  * 字段类别
- * @type {{String: string, Int: string, Decimal: string, Float: string, Datatime: string}}
+ * @type
  */
 var WhereDataType={
      String : "string",
@@ -45,20 +45,35 @@ var WhereDataType={
  */
 function pageHelperWhere(whereRelationArry)
 {
-    //whereRelation  wr
+    /**
+     * 模糊查询
+     * @param wr
+     * @returns {string}
+     * @constructor
+     */
     this.Like=function(wr){
        if(wr.like) 
            return   wr.fieldName + " like '%" + wr.fieldValue + "%'";    
        else
            return   wr.fieldName + " = '" + wr.fieldValue + "'";    
     }
- 
-    //whereRelation wr
+
+    /**
+     * 精确查询
+     * @param wr
+     * @returns {*}
+     * @constructor
+     */
     this.Equal=function(wr){
        return wr.fieldName + wr.operate + wr.fieldValue;
     }
-     
-    //whereRelation wr 
+
+    /**
+     * 区间查询
+     * @param wr
+     * @returns {*}
+     * @constructor
+     */
     this.CompareTo=function(wr){
         if (wr.dataType == WhereDataType.String || wr.dataType == WhereDataType.Datatime){
             if (wr.fieldValue != "" && wr.relationValue != "")
@@ -81,7 +96,11 @@ function pageHelperWhere(whereRelationArry)
                 return "";
         }
     }
-    
+
+    /**
+     * 获取查询条件
+     * @returns {*}
+     */
     this.getWhere=function() {
         var _self = this;
 
@@ -94,22 +113,28 @@ function pageHelperWhere(whereRelationArry)
         $.each(whereRelationArry, function (i, wr) {
             index--;
 
-            //  过滤异常数据
-            if(wr.fieldValue==null||typeof(wr.fieldValue)=="undefined") {
+            // 过滤异常数据
+            if (wr.fieldValue == null || typeof(wr.fieldValue) == "undefined") {
                 return true;
             }
 
-            // 模糊查询过滤空白项
-            if (wr.fieldValue == "" && wr.relationValue == null && wr.like)
-            {
+            // 字符串非模糊查询过滤空白项
+            if (wr.fieldValue == "" && wr.relationValue == null && wr.operate == null && !wr.like) {
+                return true;
+            }
+
+            // 字符串模糊查询过滤空白项
+            if (wr.fieldValue == "" && wr.relationValue == null && wr.like) {
                 return true;
             }
 
             if (wr.dataType == WhereDataType.String || wr.dataType == WhereDataType.Datatime) {
-                if (wr.relationValue == null)
+                if (wr.relationValue == null){
                     str = _self.Like(wr);
-                else
+                }
+                else{
                     str = _self.CompareTo(wr);
+                }
             }
             else if (wr.dataType == WhereDataType.Int || wr.dataType == WhereDataType.Decimal || wr.dataType == WhereDataType.Float) {
                 if (wr.relationValue == null) {
@@ -119,22 +144,27 @@ function pageHelperWhere(whereRelationArry)
                     str = _self.CompareTo(wr);
                 }
             }
-            if (str.Trim() == "" && sb.length != 0)
+            if (str.Trim() == "" && sb.length != 0) {
                 sb = sb.substring(0, sb.length - 4);
-            else
+            }
+            else {
                 sb = sb + str;
+            }
             if (index != 0) {
-                if (sb.Trim() != "")
+                if (sb.Trim() != "") {
                     sb = sb + " and ";
+                }
             }
         });
 
         if (sb.Trim().length != 0) {
             var stt = sb.split("and");
-            if (stt[stt.length - 1].Trim() == "")
+            if (stt[stt.length - 1].Trim() == ""){
                 sb = sb.substring(0, sb.length - 4);
-            if (stt[0].Trim() == "")
+            }
+            if (stt[0].Trim() == ""){
                 sb = sb.substring(4);
+            }
             stt = null;
         }
         else {

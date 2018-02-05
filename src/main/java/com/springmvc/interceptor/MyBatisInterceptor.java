@@ -1,6 +1,9 @@
 package com.springmvc.interceptor;
 
+import com.springmvc.model.SysDataLog;
+import com.springmvc.service.SysDataLogService;
 import com.springmvc.util.JsonUtil;
+import com.springmvc.util.SpringContextUtil;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.*;
@@ -26,10 +29,8 @@ public class MyBatisInterceptor implements Interceptor {
      * ParameterHandler (getParameterObject, setParameters)
      * ResultSetHandler (handleResultSets, handleOutputParameters)
      * StatementHandler (prepare, parameterize, batch, update, query)
-     */
 
-    /*
-    method表示需要拦截的方法，mybatis有
+     method表示需要拦截的方法，mybatis有
             update, query, flushStatements, commit, rollback, getTransaction, close, isClosed
     方法，其中，update包括新增、修改、删除等方法，query用于查询，其它的基本用不到。
     type表示拦截的接口类型，有Executor、StatementHandler、ParameterHandler和ResultSetHandler。
@@ -39,6 +40,8 @@ public class MyBatisInterceptor implements Interceptor {
     private static final Logger LOGGER = LoggerFactory.getLogger(MyBatisInterceptor.class);
 
     private Properties properties;
+
+    private static SysDataLogService sysDataLogService;
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
@@ -52,25 +55,43 @@ public class MyBatisInterceptor implements Interceptor {
         return invocation.proceed();
     }
 
+    /**
+     * 存储mybatis 操作数据日志
+     * @param arg
+     * @param obj
+     */
     private void saveLog(Object arg, Object obj) {
-        MappedStatement mappedStatement = (MappedStatement) arg;
-        // 执行的方法名
-        String name = mappedStatement.getSqlCommandType().name();
-        String change = JsonUtil.writeValueAsString(obj);
-        if (name.startsWith("INSERT")) {
-            //log.setType("新增" + obj.getClass().getSimpleName());
-            //log.setNewContent(change);
-        } else if (name.startsWith("UPDATE")) {
-            //log.setType("修改" + obj.getClass().getSimpleName());
-            //log.setNewContent(change);
-        } else if (name.startsWith("DELETE")) {
-            //log.setType("删除" + obj.getClass().getSimpleName());
-            //log.setOldContent(change);
-        }
 
-        LOGGER.info("----------------------------------------------");
-        LOGGER.info("mybatis----->"+change);
-        LOGGER.info("----------------------------------------------");
+        MappedStatement mappedStatement = (MappedStatement) arg;
+
+        // 执行的函数id
+        String id=mappedStatement.getId();
+
+        // 执行的method表方法名
+        String name = mappedStatement.getSqlCommandType().name();
+
+        // 排除死循环
+        if(!"com.springmvc.mapper.SysDataLogMapper.insertSelective".equals(id)) {
+            if(!"INSERT".equals(name)) {
+                SysDataLog datalog = new SysDataLog();
+                // 执行的参数
+                String change = JsonUtil.writeValueAsString(obj);
+                datalog.setType("mybatis");
+                datalog.setName(name);
+                datalog.setChanged(change);
+                datalog.setResource(obj.getClass().getSimpleName());
+                datalog.setFunid(id);
+                //解决service为null无法注入问题
+                if (MyBatisInterceptor.sysDataLogService == null) {
+                    synchronized (this) {
+                        if (MyBatisInterceptor.sysDataLogService == null) {
+                            sysDataLogService = (SysDataLogService) SpringContextUtil.getBean("sysDataLogService");
+                        }
+                    }
+                }
+                sysDataLogService.insert(datalog);
+            }
+        }
     }
 
     @Override

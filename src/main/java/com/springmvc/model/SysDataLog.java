@@ -1,14 +1,19 @@
 package com.springmvc.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.springmvc.util.DateJsonDeserializerUtil;
+import com.springmvc.util.DateJsonSerializerUtil;
+
 import java.util.Date;
 
 /**
-* @Title: SysOperationLog
+* @Title: SysDataLog
 * @Description: 系统操作日志
 * @author chy
 * @date 2018/1/31 9:46
 */
-public class SysOperationLog {
+public class SysDataLog {
     private Integer id;
 
     private Integer uid;
@@ -21,9 +26,11 @@ public class SysOperationLog {
 
     private String resource;
 
+    @JsonSerialize(using = DateJsonSerializerUtil.class)
+    @JsonDeserialize(using = DateJsonDeserializerUtil.class)
     private Date createtime;
 
-    private String change;
+    private String changed;
 
     public Integer getId() {
         return id;
@@ -81,11 +88,11 @@ public class SysOperationLog {
         this.createtime = createtime;
     }
 
-    public String getChange() {
-        return change;
+    public String getChanged() {
+        return changed;
     }
 
-    public void setChange(String change) {
-        this.change = change == null ? null : change.trim();
+    public void setChanged(String changed) {
+        this.changed = changed == null ? null : changed.trim();
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.springmvc.mapper.SysOperationLogMapper">
-  <resultMap id="BaseResultMap" type="com.springmvc.model.SysOperationLog">
+<mapper namespace="com.springmvc.mapper.SysDataLogMapper">
+  <resultMap id="BaseResultMap" type="com.springmvc.model.SysDataLog">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="uId" jdbcType="INTEGER" property="uid" />
     <result column="type" jdbcType="VARCHAR" property="type" />
@@ -11,15 +11,16 @@
     <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
   </resultMap>
 
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.springmvc.model.SysOperationLog">
-    <result column="change" jdbcType="LONGVARCHAR" property="change" />
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.springmvc.model.SysDataLog">
+    <result column="changed" jdbcType="LONGVARCHAR" property="changed" />
   </resultMap>
 
   <sql id="Base_Column_List">
     id, uId, type, name, funId, resource, createTime
   </sql>
+
   <sql id="Blob_Column_List">
-    change
+    changed
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
@@ -27,17 +28,17 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from sys_operation_log
+    from sys_data_log
     where id = #{id,jdbcType=INTEGER}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from sys_operation_log
+    delete from sys_data_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insertSelective" parameterType="com.springmvc.model.SysOperationLog">
-    insert into sys_operation_log
+  <insert id="insertSelective" parameterType="com.springmvc.model.SysDataLog">
+    insert into sys_data_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -60,8 +61,8 @@
       <if test="createtime != null">
         createTime,
       </if>
-      <if test="change != null">
-        change,
+      <if test="changed != null">
+        changed,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -86,10 +87,26 @@
       <if test="createtime != null">
         #{createtime,jdbcType=TIMESTAMP},
       </if>
-      <if test="change != null">
-        #{change,jdbcType=LONGVARCHAR},
+      <if test="changed != null">
+        #{changed,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
+
+  <select id="getCount" resultType="int">
+    select count(1)
+    from sys_data_log s
+    <if test="where != null">where ${where}</if>
+    <if test="orderBy != null">order by ${orderBy}</if>
+  </select>
+
+  <select id="selectPagination" resultMap="BaseResultMap">
+    select id, uId, type, name, funId, resource, createTime
+    from sys_data_log s
+    <if test="where != null">where ${where}</if>
+    <if test="orderBy != null">order by ${orderBy}</if>
+    limit #{start},#{pageSize}
+  </select>
+
 
 </mapper>

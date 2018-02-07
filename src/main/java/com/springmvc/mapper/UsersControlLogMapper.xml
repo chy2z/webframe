@@ -92,4 +92,24 @@
     </trim>
   </insert>
 
+  <select id="getCount" resultType="int">
+    select count(1)
+    from users_control_log l
+    JOIN users u on l.uid=u.id
+    join department d on u.departId=d.id
+    <if test="where != null">where ${where}</if>
+    <if test="orderBy != null">order by ${orderBy}</if>
+  </select>
+
+  <select id="selectPagination" resultMap="BaseResultMap">
+    select l.id, l.uid, l.token, l.type, l.url, l.name, l.createDate,
+    u.name as uName, d.`name` as departName
+    from users_control_log l
+    JOIN users u on l.uid=u.id
+    join department d on u.departId=d.id
+    <if test="where != null">where ${where}</if>
+    <if test="orderBy != null">order by ${orderBy}</if>
+    limit #{start},#{pageSize}
+  </select>
+
 </mapper>

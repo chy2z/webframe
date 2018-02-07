@@ -13,7 +13,7 @@ import java.util.Date;
 
 /**
 * @Title: UsersLoginLogService
-* @Description: 用户登录业务层
+* @Description: 用户登录日志业务层
 * @author chy
 * @date 2017/11/20 9:55
 */

@@ -1,8 +1,11 @@
 package com.springmvc.interceptor;
 
 import com.springmvc.config.SysConfig;
+import com.springmvc.model.UsersControlLog;
 import com.springmvc.model.UsersToken;
+import com.springmvc.service.UsersControlLogService;
 import com.springmvc.service.UsersTokenService;
+import com.springmvc.util.JsonUtil;
 import com.springmvc.util.SpringContextUtil;
 import com.springmvc.util.StringUtil;
 import org.slf4j.Logger;
@@ -12,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 /**
 * @Title: LoginInterceptor
@@ -24,6 +28,8 @@ public class LoginInterceptor implements HandlerInterceptor {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     private static UsersTokenService utService;
+
+    private static UsersControlLogService usersControlLogService;
 
     /**
      * Handler执行完成之后调用这个方法
@@ -63,7 +69,6 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
-
         // 登录页面
         String loginUrl = "/login.jsp";
 
@@ -82,6 +87,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             synchronized (this) {
                 if (LoginInterceptor.utService == null) {
                     utService = (UsersTokenService) SpringContextUtil.getBean("usersTokenService");
+                    usersControlLogService= (UsersControlLogService) SpringContextUtil.getBean("usersControlLogService");
                 }
             }
         }
@@ -92,6 +98,16 @@ public class LoginInterceptor implements HandlerInterceptor {
             response.sendRedirect(request.getContextPath() + loginUrl);
             return false;
         }
+
+        UsersControlLog ucl=new UsersControlLog();
+        ucl.setUid(ut.getUserid());
+        ucl.setToken(jwt);
+        ucl.setType(request.getMethod());
+        ucl.setUrl(url);
+        ucl.setParameter(JsonUtil.writeValueAsString(request.getParameterMap()));
+        ucl.setCreatedate(new Date());
+
+        usersControlLogService.insert(ucl);
 
         return true;
     }

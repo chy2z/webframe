@@ -32,6 +32,12 @@ public class UsersControlLog {
 
     private String parameter;
 
+    //===========关联属性==============
+
+    private String uName;
+
+    private String departName;
+
     public Integer getId() {
         return id;
     }
@@ -94,5 +100,21 @@ public class UsersControlLog {
 
     public void setParameter(String parameter) {
         this.parameter = parameter == null ? null : parameter.trim();
+    }
+
+    public String getuName() {
+        return uName;
+    }
+
+    public void setuName(String uName) {
+        this.uName = uName;
+    }
+
+    public String getDepartName() {
+        return departName;
+    }
+
+    public void setDepartName(String departName) {
+        this.departName = departName;
     }
 }

@@ -7,7 +7,7 @@
 <%@ include file="../../../taglib/import_audit.jsp"%>
 <html>
 <head>
-    <title>用户登录日志</title>
+    <title>系统数据日志</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="shortcut icon" type="image/x-icon" href="${ctx}/images/favicon.ico" media="screen"/>
@@ -82,23 +82,26 @@
         <div>
             <i-Form ref="queryModal.bindModel" :model="queryModal.bindModel" :rules="queryModal.ruleValidate"
                     label-position="right" label-width="70">
-                <Form-Item label="登录姓名" prop="uName">
-                    <i-Input v-model="queryModal.bindModel.uName" placeholder="请输入登录人"></i-Input>
+                <Form-Item label="日志类型" prop="funname">
+                    <i-Input v-model="queryModal.bindModel.funname" placeholder="请输入登录人"></i-Input>
                 </Form-Item>
-                <Form-Item label="登录令牌" prop="uToken">
-                    <i-Input v-model="queryModal.bindModel.uToken" placeholder="请输入登录令牌"></i-Input>
+                <Form-Item label="命令类型" prop="type">
+                    <i-Input v-model="queryModal.bindModel.type" placeholder="请输入登录令牌"></i-Input>
                 </Form-Item>
-                <Form-Item label="登录时间">
+                <Form-Item label="功能模块" prop="funname">
+                    <i-Input v-model="queryModal.bindModel.funName" placeholder="请输入登录令牌"></i-Input>
+                </Form-Item>
+                <Form-Item label="创建时间">
                     <Row>
                         <i-Col span="11">
                             <Form-Item prop="sDate">
-                           <Date-Picker type="datetime" format="yyyy-MM-dd HH:mm"  v-model="queryModal.bindModel.sDate"  placeholder="选择开始时间"></Date-Picker>
+                                <Date-Picker type="datetime" format="yyyy-MM-dd HH:mm"  v-model="queryModal.bindModel.sDate"  placeholder="选择开始时间"></Date-Picker>
                             </Form-Item>
                         </i-Col>
                         <i-Col span="2" style="text-align: center">-</i-Col>
                         <i-Col span="11">
                             <Form-Item prop="eDate">
-                            <Date-Picker type="datetime" format="yyyy-MM-dd HH:mm"  v-model="queryModal.bindModel.eDate"  placeholder="选择结束时间"></Date-Picker>
+                                <Date-Picker type="datetime" format="yyyy-MM-dd HH:mm"  v-model="queryModal.bindModel.eDate"  placeholder="选择结束时间"></Date-Picker>
                             </Form-Item>
                         </i-Col>
                     </Row>
@@ -127,44 +130,41 @@
     var corporationId="${requestScope.corporationId}";
     var corporation_Select_url="${ctx}/corporation/vselect/selectCorporation?jwt=${requestScope.jwt}";
 
-    var pageHelperLogger=new pageHepler("${ctx}/userLoginLog/pagination?jwt=${requestScope.jwt}",{
+    var pageHelperLogger=new pageHepler("${ctx}/sysDataLogControl/pagination?jwt=${requestScope.jwt}",{
         columns: [
             {
                 title: '序号',
                 key: 'id'
             },
             {
-                title: '姓名',
-                key: 'uName'
+                title: '日志类型',
+                key: 'name'
             },
             {
-                title: '部门',
-                key: 'departName'
+                title: '命令类型',
+                key: 'type'
             },
             {
-                title: '国家',
-                key: 'country'
+                title: '功能模块',
+                key: 'funname'
             },
             {
-                title: '地区',
-                key: 'province'
+                title: '执行路径',
+                key: 'funid',
+                width:350
             },
             {
-                title: '城市',
-                key: 'city'
+                title: '资源',
+                key: 'resource',
+                width:350
             },
             {
-                title: '令牌',
-                key: 'token',
-                width:350,
-            },
-            {
-                title: '登录时间',
-                key: 'createdate',
+                title: '操作时间',
+                key: 'createtime',
                 width:200
             }
         ]
-    },{orderBy:" l.id desc ",rightRecord:"${requestScope.rightRecord}"});
+    },{orderBy:" s.id desc ",rightRecord:"${requestScope.rightRecord}"});
 
     var selectHelperCorporation=new selectHelper(corporation_Select_url,{});
 
@@ -181,8 +181,9 @@
                 okButShow:true,
                 okButLoading:false,
                 bindModel:{
-                    uName:"",
-                    uToken:"",
+                    name:"",
+                    type:"",
+                    funName:"",
                     sDate:"",
                     eDate:"",
                     likeState:true
@@ -229,7 +230,7 @@
                     pageHelperLogger.load(null);
                 }
                 else{
-                    pageHelperLogger.load("u.corporationId='" + option.value + "'");
+                    pageHelperLogger.load(null);
                 }
             },
             butRefresh(){
@@ -248,10 +249,10 @@
                 this.$refs['queryModal.bindModel'].validate((valid) => {
                     if (valid) {
                         let WR = [];
-                        WR[WR.length] = new whereRelation("u.corporationId", selectHelperCorporation.getSelectItem(), "string", null, null, false);
-                        WR[WR.length] = new whereRelation("u.name", this.queryModal.bindModel.uName, "string", null, null, this.queryModal.bindModel.likeState);
-                        WR[WR.length] = new whereRelation("l.token",this.queryModal.bindModel.uToken , "string", null, null, this.queryModal.bindModel.likeState);
-                        WR[WR.length] = new whereRelation("l.createDate", vDateFormat(this.queryModal.bindModel.sDate,"yyyy-MM-dd HH:mm:ss"), "datatime", vDateFormat(this.queryModal.bindModel.eDate,"yyyy-MM-dd HH:mm:ss"), null, true);
+                        WR[WR.length] = new whereRelation("s.name", this.queryModal.bindModel.name, "string", null, null, this.queryModal.bindModel.likeState);
+                        WR[WR.length] = new whereRelation("s.type",this.queryModal.bindModel.type , "string", null, null, this.queryModal.bindModel.likeState);
+                        WR[WR.length] = new whereRelation("s.funName",this.queryModal.bindModel.funName , "string", null, null, this.queryModal.bindModel.likeState);
+                        WR[WR.length] = new whereRelation("s.createDate", vDateFormat(this.queryModal.bindModel.sDate,"yyyy-MM-dd HH:mm:ss"), "datatime", vDateFormat(this.queryModal.bindModel.eDate,"yyyy-MM-dd HH:mm:ss"), null, false);
                         pageHelperLogger.load(new pageHelperWhere(WR).getWhere());
                         this.queryModal.modalShow=false;
                     }

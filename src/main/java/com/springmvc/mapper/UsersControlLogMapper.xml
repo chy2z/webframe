@@ -15,6 +15,12 @@
     <result column="parameter" jdbcType="LONGVARCHAR" property="parameter" />
   </resultMap>
 
+  <!-- 增加级联属性 -->
+  <resultMap extends="ResultMapWithBLOBs" id="JoinResultMap" type="com.springmvc.model.UsersControlLog">
+    <result column="departName" jdbcType="VARCHAR" property="departName" />
+    <result column="uName" jdbcType="VARCHAR" property="uName" />
+  </resultMap>
+
   <sql id="Base_Column_List">
     id, uid, token, type, url, name, createDate
   </sql>
@@ -101,7 +107,7 @@
     <if test="orderBy != null">order by ${orderBy}</if>
   </select>
 
-  <select id="selectPagination" resultMap="BaseResultMap">
+  <select id="selectPagination" resultMap="JoinResultMap">
     select l.id, l.uid, l.token, l.type, l.url, l.name, l.createDate,
     u.name as uName, d.`name` as departName
     from users_control_log l

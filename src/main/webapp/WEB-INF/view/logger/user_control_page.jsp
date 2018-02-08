@@ -88,6 +88,9 @@
                 <Form-Item label="登录令牌" prop="uToken">
                     <i-Input v-model="queryModal.bindModel.uToken" placeholder="请输入登录令牌"></i-Input>
                 </Form-Item>
+                <Form-Item label="功能模块" prop="name">
+                    <i-Input v-model="queryModal.bindModel.name" placeholder="请输入登录令牌"></i-Input>
+                </Form-Item>
                 <Form-Item label="登录时间">
                     <Row>
                         <i-Col span="11">
@@ -102,6 +105,12 @@
                             </Form-Item>
                         </i-Col>
                     </Row>
+                </Form-Item>
+                <Form-Item label="模糊查询" prop="likeState">
+                    <i-Switch size="large" v-model="queryModal.bindModel.likeState">
+                        <span slot="open">模糊</span>
+                        <span slot="close">精确</span>
+                    </i-Switch>
                 </Form-Item>
             </i-Form>
         </div>
@@ -136,12 +145,12 @@
                 key: 'departName'
             },
             {
-                title: '类型',
-                key: 'type'
+                title: '模块',
+                key: 'name'
             },
             {
                 title: '路径',
-                key: 'path',
+                key: 'url',
                 width:350
             },
             {
@@ -174,8 +183,10 @@
                 bindModel:{
                     uName:"",
                     uToken:"",
+                    name:"",
                     sDate:"",
-                    eDate:""
+                    eDate:"",
+                    likeState:true
                 },
                 ruleValidate:{}
             },
@@ -239,10 +250,10 @@
                     if (valid) {
                         let WR = [];
                         WR[WR.length] = new whereRelation("u.corporationId", selectHelperCorporation.getSelectItem(), "string", null, null, false);
-                        WR[WR.length] = new whereRelation("u.name", this.queryModal.bindModel.uName, "string", null, null, true);
-                        WR[WR.length] = new whereRelation("l.token",this.queryModal.bindModel.uToken , "string", null, null, false);
-                        WR[WR.length] = new whereRelation("l.createDate", vDateFormat(this.queryModal.bindModel.sDate,"yyyy-MM-dd HH:mm:ss"), "datatime", vDateFormat(this.queryModal.bindModel.eDate,"yyyy-MM-dd HH:mm:ss"), null, true);
-                        alert(new pageHelperWhere(WR).getWhere());
+                        WR[WR.length] = new whereRelation("u.name", this.queryModal.bindModel.uName, "string", null, null, this.queryModal.bindModel.likeState);
+                        WR[WR.length] = new whereRelation("l.token",this.queryModal.bindModel.uToken , "string", null, null, this.queryModal.bindModel.likeState);
+                        WR[WR.length] = new whereRelation("l.name",this.queryModal.bindModel.name , "string", null, null, this.queryModal.bindModel.likeState);
+                        WR[WR.length] = new whereRelation("l.createDate", vDateFormat(this.queryModal.bindModel.sDate,"yyyy-MM-dd HH:mm:ss"), "datatime", vDateFormat(this.queryModal.bindModel.eDate,"yyyy-MM-dd HH:mm:ss"), null, false);
                         pageHelperLogger.load(new pageHelperWhere(WR).getWhere());
                         this.queryModal.modalShow=false;
                     }

@@ -76,11 +76,12 @@ public class MyBatisInterceptor implements Interceptor {
                 SysDataLog datalog = new SysDataLog();
                 // 执行的参数
                 String change = JsonUtil.writeValueAsString(obj);
-                datalog.setType("mybatis");
-                datalog.setName(name);
+                datalog.setName("mybatis");
+                datalog.setType(name);
                 datalog.setChanged(change);
                 datalog.setResource(obj.getClass().getSimpleName());
                 datalog.setFunid(id);
+                datalog.setFunname(id.split("\\.")[3]);
                 //解决service为null无法注入问题
                 if (MyBatisInterceptor.sysDataLogService == null) {
                     synchronized (this) {

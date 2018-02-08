@@ -1,7 +1,7 @@
 package com.springmvc.controller;
 
 import com.springmvc.base.BaseControl;
-import com.springmvc.service.UsersControlLogService;
+import com.springmvc.service.SysDataLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,18 +11,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
-* @Title: UsersControlLogControl
-* @Description:
+* @Title: SysDataLogControl
+* @Description: 系统数据日志 （mybatis）
 * @author chy
-* @date 2018/2/7 8:01 
+* @date 2018/2/8 9:42
 */
 @Controller
-@RequestMapping("/userControlLog")
-public class UsersControlLogControl extends BaseControl {
+@RequestMapping("/sysDataLogControl")
+public class SysDataLogControl extends BaseControl {
 
     @Autowired
-    UsersControlLogService usersControlLogService;
-
+    SysDataLogService sysDataLogService;
 
     /**
      * 分页
@@ -40,7 +39,6 @@ public class UsersControlLogControl extends BaseControl {
 
         String orderBy=request.getParameter("orderBy");
 
-        return usersControlLogService.toPaginationJson(pageNo,pageSize,where,orderBy);
+        return sysDataLogService.toPaginationJson(pageNo,pageSize,where,orderBy);
     }
-
 }

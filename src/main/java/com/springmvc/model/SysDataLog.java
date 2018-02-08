@@ -24,6 +24,8 @@ public class SysDataLog {
 
     private String funid;
 
+    private String funname;
+
     private String resource;
 
     @JsonSerialize(using = DateJsonSerializerUtil.class)
@@ -70,6 +72,14 @@ public class SysDataLog {
 
     public void setFunid(String funid) {
         this.funid = funid == null ? null : funid.trim();
+    }
+
+    public String getFunname() {
+        return funname;
+    }
+
+    public void setFunname(String funname) {
+        this.funname = funname;
     }
 
     public String getResource() {

@@ -104,6 +104,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         ucl.setToken(jwt);
         ucl.setType(request.getMethod());
         ucl.setUrl(url);
+        ucl.setName(url.split("/")[1]);
         ucl.setParameter(JsonUtil.writeValueAsString(request.getParameterMap()));
         ucl.setCreatedate(new Date());
 

@@ -7,6 +7,7 @@
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="funId" jdbcType="VARCHAR" property="funid" />
+    <result column="funName" jdbcType="VARCHAR" property="funname" />
     <result column="resource" jdbcType="VARCHAR" property="resource" />
     <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
   </resultMap>
@@ -16,7 +17,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, uId, type, name, funId, resource, createTime
+    id, uId, type, name, funId,funName, resource, createTime
   </sql>
 
   <sql id="Blob_Column_List">
@@ -55,6 +56,9 @@
       <if test="funid != null">
         funId,
       </if>
+      <if test="funname != null">
+        funName,
+      </if>
       <if test="resource != null">
         resource,
       </if>
@@ -81,6 +85,9 @@
       <if test="funid != null">
         #{funid,jdbcType=VARCHAR},
       </if>
+      <if test="funname != null">
+        #{funname,jdbcType=VARCHAR},
+      </if>
       <if test="resource != null">
         #{resource,jdbcType=VARCHAR},
       </if>
@@ -101,7 +108,7 @@
   </select>
 
   <select id="selectPagination" resultMap="BaseResultMap">
-    select id, uId, type, name, funId, resource, createTime
+    select id, uId, type, name, funId,funName, resource, createTime
     from sys_data_log s
     <if test="where != null">where ${where}</if>
     <if test="orderBy != null">order by ${orderBy}</if>

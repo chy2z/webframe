@@ -91,6 +91,8 @@
             <mvc:mapping path="/**"/>
             <!-- 排除login路径 注意** -->
             <mvc:exclude-mapping path="/login/**"/>
+            <!-- 排除upload路径 注意** -->
+            <mvc:exclude-mapping path="/upload/**"/>
             <bean class="com.springmvc.interceptor.LoginInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>

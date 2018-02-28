@@ -54,6 +54,7 @@
            <url-pattern>/fileUpload/*</url-pattern>
            <url-pattern>/images/*</url-pattern>
            <url-pattern>/html/*</url-pattern>
+           <url-pattern>/.well-known/*</url-pattern>
      </servlet-mapping>
          
     <!-- spring框架提供的字符集过滤器 -->

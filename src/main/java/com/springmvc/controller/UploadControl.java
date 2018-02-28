@@ -5,6 +5,7 @@ import com.springmvc.config.LanguageFactory;
 import com.springmvc.model.RequestResult;
 import com.springmvc.model.Users;
 import com.springmvc.service.UsersService;
+import com.springmvc.util.FastDFSUtil;
 import com.springmvc.util.JsonUtil;
 import com.springmvc.util.StringUtil;
 import com.springmvc.util.UploadFileUtil;
@@ -169,4 +170,36 @@ public class UploadControl extends BaseControl {
                 + imgUrl+ "','')");
         out.println("</script>");
     }
+
+
+    /**
+     * FastFDS上传测试
+     * @param file
+     * @param request
+     * @param model
+     * @param response
+     */
+    @RequestMapping(value = "/fastFDSImageUpload")
+    public void  fastFDSImageUpload(@RequestParam(value = "upload", required = false) MultipartFile file,
+                                    HttpServletRequest request, ModelMap model,
+                                    HttpServletResponse response) throws IOException {
+
+        RequestResult result = new RequestResult();
+
+        String fileExt = "png";
+
+        String fileName = file.getOriginalFilename();
+
+        if (StringUtil.isNotBlank(fileName) && fileName.contains(".")) {
+            //去除"."字符
+            fileExt = fileName.substring(fileName.lastIndexOf(".") + 1);
+        }
+
+        String path = FastDFSUtil.uploadPic(fileExt, file);
+
+        result.setSucceed(LanguageFactory.getLanguages().UPLOAD_SUCESS, path);
+
+        response.getWriter().write(JsonUtil.writeValueAsString(result));
+    }
+
 }

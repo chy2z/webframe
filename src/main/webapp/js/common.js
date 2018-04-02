@@ -415,7 +415,7 @@ function vtoast(vue,content,type,duration){
  * @param errorEvent
  * @param async 默认异步
  */
-function vajaxPost(url,data,dataTypeJson,successEvnent,beforeSendEvent,completeEvnent,errorEvent,notAsync){
+function vajaxPost(url,data,dataTypeJson,successEvent,beforeSendEvent,completeEvnent,errorEvent,notAsync){
 
     if($==null){ alert("$不是对象"); return ; }
 
@@ -430,7 +430,7 @@ function vajaxPost(url,data,dataTypeJson,successEvnent,beforeSendEvent,completeE
             completeEvnent&&completeEvnent();
         },
         success: function(result){
-            successEvnent&&successEvnent(result);
+            successEvent&&successEvent(result);
         },
         error: function(res){
             alert(res.responseText);

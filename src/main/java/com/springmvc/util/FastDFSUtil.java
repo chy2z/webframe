@@ -19,8 +19,7 @@ public class FastDFSUtil {
     public static final Logger logger = LoggerFactory.getLogger(FastDFSUtil.class);
 
     static TrackerClient tClient;
-    static TrackerServer tServer;
-    static StorageClient sClient;
+
     static StorageServer sServer;
 
     public static String uploadPic(String fileExt,MultipartFile pic) {
@@ -29,24 +28,24 @@ public class FastDFSUtil {
         String remoteFileName="";
         try {
 
-            if (sClient == null) {
+            if (tClient == null) {
 
                 synchronized (FastDFSUtil.class) {
 
-                    if (sClient == null) {
+                    if (tClient == null) {
 
                         ClientGlobal.init("fdfs_client.conf");
 
                         logger.info("FastDFS配置信息: " + ClientGlobal.configInfo());
 
                         tClient = new TrackerClient();
-
-                        tServer = tClient.getConnection();
-
-                        sClient = new StorageClient(tServer, sServer);
                     }
                 }
             }
+
+            TrackerServer tServer= tClient.getConnection();
+
+            StorageClient sClient= new StorageClient(tServer, sServer);
 
             NameValuePair[] pair = new NameValuePair[3];
             // 文件名称

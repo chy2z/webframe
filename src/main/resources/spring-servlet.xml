@@ -18,7 +18,7 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
-        <!-- 解决事物不起作用 -->
+        <!--不扫描service注解 解决事物不起作用 防止service重复初始化 -->
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
    </context:component-scan>
 
@@ -48,6 +48,9 @@
         <property name="prefix" value="/WEB-INF/view/"></property>
         <property name="suffix" value=".jsp"></property>
     </bean>
+
+    <!-- 自定义全局异常处理 -->
+    <bean class="com.springmvc.exception.MyExceptionResolver"></bean>
 
     <!--定义异常处理页面-->
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
@@ -81,7 +84,6 @@
     <mvc:cors>
          <mvc:mapping path="/**" />
     </mvc:cors>
-
 
     <!-- 拦截器 -->
     <mvc:interceptors>

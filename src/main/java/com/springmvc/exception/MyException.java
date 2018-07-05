@@ -6,11 +6,11 @@ package com.springmvc.exception;
 * @author chy
 * @date 2017/10/18 14:25
 */
-public class CustomException  extends  Exception{
+public class MyException  extends  Exception{
 
     public String message;
 
-    public CustomException(String message){
+    public MyException(String message){
         super(message);
         this.message = message;
     }

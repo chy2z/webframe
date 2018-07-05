@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +62,22 @@ public class LoginControl extends BaseControl {
 	public String test(@PathVariable("path") String path) {
 		return path;
 	}
+
+	/**
+	 * 测试异常捕获
+	 * @return
+	 */
+	@RequestMapping("/test/exception")
+	public String exception() throws Exception {
+		boolean flag=true;
+		if(flag) {
+			//throw new MyException("自定义异常");
+
+			throw new IOException("自定义IO异常");
+		}
+		return "异常";
+	}
+
 
 	/**
 	 * 首页

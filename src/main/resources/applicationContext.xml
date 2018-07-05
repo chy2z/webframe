@@ -20,7 +20,7 @@
         ">
 
 	<context:component-scan base-package="com.springmvc.*" use-default-filters="false">
-		<!-- 解决事物不起作用 -->
+		<!--扫描service注解 解决事物不起作用 给service 增加事物处理能力 -->
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
 	</context:component-scan>
 

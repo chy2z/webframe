@@ -64,8 +64,9 @@
     
     <!-- configure jsonConverters  -->
     <!-- Ajax请求时编码 -->
-    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-        <property name="messageConverters">
+    <!--<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">-->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+    <property name="messageConverters">
             <list>
                 <ref bean="jsonHttpMessageConverter" />
             </list>
@@ -80,9 +81,18 @@
         </property>
     </bean>
     
-    <!-- 跨域访问 -->
+    <!-- 跨域访问
     <mvc:cors>
-         <mvc:mapping path="/**" />
+         <mvc:mapping path="/**" allowed-origins="*" />
+    </mvc:cors>
+    -->
+
+    <mvc:cors>
+        <mvc:mapping path="/**"
+                     allowed-origins="*"
+                     allowed-methods="*"
+                     allowed-headers="*"
+                     allow-credentials="true"/>
     </mvc:cors>
 
     <!-- 拦截器 -->

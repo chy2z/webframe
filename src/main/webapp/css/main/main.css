@@ -14,7 +14,7 @@ html, body {
 .head {
     height: 80px;
     box-shadow: 0 1px 1px rgba(0,0,0,0.2);
-    background-color:#2d8cf0;
+    background-color:#222d32;
 }
 
 .head-content{
@@ -65,7 +65,7 @@ html, body {
 
 /* 头部右侧菜单项选中颜色和背景色一致 */
 .head-right-menu .ivu-menu-horizontal .ivu-menu-item-active {
-    background: #2d8cf0;
+    background: #222d32;
 }
 
 /* 兼容获取浏览器，下拉菜单宽度不够 */
@@ -170,6 +170,13 @@ html, body {
     border-right: 2px solid #fff;
 }
 */
+
+/**
+head头部右侧菜单黑色
+ */
+.ivu-menu-primary {
+    background: #222d32;
+}
 
 /*全局对话框样式垂直剧中*/
 .vertical-center-modal{
